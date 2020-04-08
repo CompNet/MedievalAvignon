@@ -1,501 +1,502 @@
-Id	Label
-/BD_1	hospitium
-/BD_2	hospitium
-/BD_3	operatorium
-/BD_4	hospitium cum operatorium
-/BD_5	hospitium
-/BD_6	hospitium
-/BD_7	2 operatoria
-/BD_8	operatorium
-/BD_9	hospitium
-/BD_10	hospitium
-/BD_11	hospitium
-/BD_12	hospitium cum crota
-/BD_13	2 hospitia contigua
-/BD_14	hospitium
-/BD_15	hospitium
-/BD_16	hospitium
-/BD_17	hospitium
-/BD_18	hospitium
-/BD_19	hospitium
-/BD_20	hospitium
-/BD_21	hospitium
-/BD_22	hospitium
-/BD_23	2 hospitia contigua et unita et in unus hospitium reductus
-/BD_24	2 hospitia contigua et sese tenentia
-/BD_25	hospitium
-/BD_26	hospitium
-/BD_27	hospitium
-/BD_28	hospitium
-/BD_29	hospitium
-/BD_30	hospitium
-/BD_31	hospitium
-/BD_32	hospitium
-/BD_33	hospitium
-/BD_34	hospitium
-/BD_35	hospitium
-/BD_36	hospitium
-/BD_37	operatoria
-/BD_38	hospitium
-/BD_39	hospitium
-/BD_40	hospitium
-/BD_41	hospitium
-/BD_42	hospitium
-/BD_43	operatorium
-/BD_44	hospitium
-/BD_45	hospitium
-/BD_46	hospitium in quo est furnus pasticerii
-/BD_47	hospitium
-/BD_48	hospitium
-/BD_49	hospitium
-/BD_50	hospitium
-/BD_51	hospitium
-/BD_52	hospitium
-/BD_53	hospitium
-/BD_54	hospitium
-/BD_55	hospitium
-/BD_56	hospitium
-/BD_57	hospitium
-/BD_58	hospitium
-/BD_59	hospitium
-/BD_60	hospitium
-/BD_61	hospitium
-/BD_62	2 hospitia contigua et sese tenentia
-/BD_63	partes pro indiviso hospitium
-/BD_64	partes pro indiviso hospitium
-/BD_65	partes pro indiviso hospitium
-/BD_66	hospitium
-/BD_67	hospitium
-/BD_68	hospitium
-/BD_69	hospitium
-/BD_70	2 partes hospitium cum puteo
-/BD_71	3 partes hospitium
-/BD_72	hospitium
-/BD_73	hospitium
-/BD_74	2 hospitia contigua et unita et in unus hospitium reductus
-/BD_75	hospitium
-/BD_76	hospitium
-/BD_77	hospitium
-/BD_78	hospitium
-/BD_79	hospitium
-/BD_80	hospitium
-/BD_81	hospitium
-/BD_82	hospitium
-/BD_83	hospitium
-/BD_84	hospitium in quo est furnus
-/BD_85	hospitium
-/BD_86	2 hospitia contigua et unita et in unus hospitium reductus in quo est puteo
-/BD_87	hospitium
-/BD_88	2 hospitia contigua et unita et in unus hospitium reductus
-/BD_89	hospitium
-/BD_90	hospitium cum puteo et platea
-/BD_91	hospitium
-/BD_92	hospitium
-/BD_93	hospitium
-/BD_94	hospitium
-/BD_95	hospitium
-/BD_96	hospitium
-/BD_97	hospitium
-/BD_98	hospitium
-/BD_99	hospitium
-/BD_100	hospitium
-/BD_101	hospitium
-/BD_102	hospitium
-/BD_103	2 hospitia contigua et unita et in unus hospitium reductus
-/BD_104	2 hospitia contigua et sese tenentia
-/BD_105	partes hospitium
-/BD_106	hospitium
-/BD_107	hospitium cum crota seu cum cellari profundus cum arcu volto de lapidus
-/BD_108	hospitium
-/BD_109	hospitium
-/BD_110	hospitium
-/BD_111	domus
-/BD_112	curtilus et domus
-/BD_113	domus cum curte
-/BD_114	localis et curtis contiguus
-/BD_115	hospitium
-/BD_116	hospitium cum solarium
-/BD_117	hospitium et curtis contiguus et sese tenere et unitis
-/BD_118	hospitium contiguus et sese tenere
-/BD_119	hospitium
-/BD_120	hospitium
-/BD_121	hospitium
-/BD_122	hospitium
-/BD_123	hospitium
-/BD_124	hospitium
-/BD_125	parietum seu fundamentum hospitium et domus cum patuis et solo terra
-/BD_126	hospitium
-/BD_127	hospitium
-/BD_128	hospitium
-/BD_129	hospitium
-/BD_130	hospitium cum curte
-/BD_131	partes pro indiviso hospitium cum magnum platea cum puteuo et viridarium
-/BD_132	hospitium cum curtis
-/BD_133	hospitium
-/BD_134	hospitium
-/BD_135	hospitium
-/BD_136	hospitium
-/BD_137	hospitium
-/BD_138	hospitium
-/BD_139	hospitium
-/BD_140	hospitium
-/BD_141	hospitium
-/BD_142	hospitium
-/BD_143	hospitium
-/BD_144	hospitium
-/BD_145	hospitium
-/BD_146	hospitium
-/BD_147	hospitium
-/BD_148	hospitium
-/BD_149	hospitium indivisi
-/BD_150	hospitium
-/BD_151	hospitium in quo est puteo
-/BD_152	hospitium
-/BD_153	hospitium
-/BD_154	cellarium cum solarium seu camera de super
-/BD_155	hospitium
-/BD_156	hospitium in quo est puteo
-/BD_157	hospitium
-/BD_158	hospitium
-/BD_159	2 hospitia contigua et sese tenentia
-/BD_160	hospitium
-/BD_161	hospitium
-/BD_162	transcurtis
-/BD_163	hospitium
-/BD_164	hospitium
-/BD_165	hospitium
-/BD_166	viridarium
-/BD_167	hospitium
-/BD_168	hospitium
-/BD_169	hospitium
-/BD_170	hospitium
-/BD_171	2 hospitia contigua et unita et in unus hospitium reductus
-/BD_172	hospitium
-/BD_173	hospitium
-/BD_174	hospitium
-/BD_175	hospitium
-/BD_176	hospitium
-/BD_177	hospitium
-/BD_178	hospitium
-/BD_179	viridarium
-/BD_180	hospitium et viridarium contigua et unitis
-/BD_181	hospitium
-/BD_182	hospitium
-/BD_183	hospitium cum curtis
-/BD_184	hospitium
-/BD_185	hospitium
-/BD_186	hospitium
-/BD_187	hospitium
-/BD_188	hospitium et curtis in quo ipse construxit et fecit fieri unum bonum puteum de novo
-/BD_189	burguetus
-/BD_190	hospitium et viridarium contigua et unitis
-/BD_191	hospitium
-/BD_192	hospitium
-/BD_193	hospitium
-/BD_194	hospitium et curtis
-/BD_195	hospitium et viridarium contigua et unitis
-/BD_196	hospitium et viridarium contigua et unitis
-/BD_197	2 hospitia cum magnum platea
-/BD_198	hospitium
-/BD_199	2 hospitia contigua et sese tenentia
-/BD_200	hospitium
-/BD_201	burguetus
-/BD_202	hospitium
-/BD_203	hospitium
-/BD_204	hospitium cum puteo et viridarium
-/BD_205	2 hospitia contigua et unita et in unus hospitium reductus cum puteo
-/BD_206	hospitium
-/BD_207	hospitium
-/BD_208	hospitium
-/BD_209	hospitium cum magna platea sive curtis cum puteo
-/BD_210	hospitium
-/BD_211	hospitia contigua et unita et ad unus et idem hospitium reductus
-/BD_212	hospitium
-/BD_213	hospitium
-/BD_214	hospitium
-/BD_215	hospitium
-/BD_216	hospitium
-/BD_217	hospitium
-/BD_218	soli seu terreni cum edificio suo desuper facto quod quidem terrenum vulgariter dicitur pozaca
-/BD_219	burguetus
-/BD_220	ortus
-/BD_221	ortus
-/BD_222	ortulus
-/BD_223	domus et palherie
-/BD_224	logue
-/BD_225	domus et curtis contigua
-/BD_226	hospitium et logue contiguorum
-/BD_227	hospitium
-/BD_228	hospitium
-/BD_229	domus et logua contigua et sese tenentia unita
-/BD_230	hospitia et magazina et logua contigua et unita
-/BD_231	hospitia et magazina contigua et unita
-/BD_232	grangia cum logis et curtibus
-/BD_233	domus et logis contigua et unita
-/BD_234	grangia cum domibus et logis sive curtibus et sese tenentibus
-/BD_235	hospitia et viridaria
-/BD_236	hospitia et viridaria ac curtis
-/BD_237	hospitia et magazina ac logua sive curtis et magne platee terre cum viridario et puteo
-/BD_238	domus et orti
-/BD_239	ortum sive viridarium cum domo in introitu ipsius
-/BD_240	ortolum
-/BD_241	ortus
-/BD_242	ortus
-/BD_243	hospitium et viridarium contiguorum et sese tenentium
-/BD_244	terre
-/BD_245	hospitium et viridarium contiguorum et sese tenentium
-/BD_246	2 hospitia contigua et unita et viridarium cum bono puteo
-/BD_247	hospitium
-/BD_248	burguetus
-/BD_249	hospitium
-/BD_250	hospitium et aliarum septem botigiarum, domorum sive hospitiorum et magazinorum
-/BD_251	hospitium cum magazinis contiguis
-/BD_252	hospitium
-/BD_253	domus
-/BD_254	domus
-/BD_255	domus et magazinus contigua et sese tenentia
-/BD_256	loge et grangie contiguarum et sese tenentium
-/BD_257	hospitium et viridarium
-/BD_443	hospitium in quo est furnus panis
-/BD_444	2 hospitia contigua et sese tenentia
-/BD_445	2 hospitia contigua et sese tenentia
-/BD_446	hospitium
-/BD_447	domuncula sive stabulum cum solerio
-/BD_448	hospitium
-/BD_449	hospitium cum platea magna et lata
-/BD_450	hospitium
-/BD_451	hospitium
-/BD_452	hospitium
-/BD_453	hospitium
-/BD_454	hospitium
-/BD_455	hospitium
-/BD_456	hospitia et viridaria et orti contigua et sese tenentia
-/BD_457	2 hospitia contigua et unita cum platea et puteo aque
-/BD_458	hospitium
-/BD_459	hospitium
-/BD_460	hospitium
-/BD_461	hospitium
-/BD_462	hospitium
-/BD_463	hospitium
-/BD_464	2 hospitia
-/BD_465	hospitium
-/BD_466	curtis sive logua
-/BD_467	logua et curtis
-/BD_468	logua sive curte
-/BD_469	logua
-/BD_470	logua sive curtis
-/BD_471	hospitium
-/BD_472	hospitium
-/BD_473	logua sive curtis
-/BD_474	hospitiolum sive domus parva
-/BD_475	hospitium
-/BD_476	hospitiolum
-/BD_477	hospitium
-/BD_478	hospitium
-/BD_479	2 hospitia contigua et sese tenentia
-/BD_480	hospitium
-/BD_481	hospitium
-/BD_482	2 hospitia contigua et sese tenentia
-/BD_483	hospitium
-/BD_484	hospitium
-/BD_485	hospitium
-/BD_486	hospitium
-/BD_487	hospitium
-/BD_488	hospitium
-/BD_489	hospitium
-/BD_490	hospitium
-/BD_491	hospitium
-/BD_492	hospitium
-/BD_493	3 hospitia contigua et sese tenentia
-/BD_494	2 hospitia et viridarium contigua et sese tenentia
-/BD_495	logua sive viridarium
-/BD_496	domus cum curte
-/BD_497	domus
-/BD_498	hospitium et viridarium
-/BD_499	hospitium
-/BD_500	hospitium
-/BD_501	logua
-/BD_502	logua
-/BD_503	domus
-/BD_504	hospitium et retrocurtis
-/BND_801	hospitium
-/BND_802	hospitium sive operatorium
-/BND_803	hospitium
-/BND_804	hospitium
-/BND_805	hospitium
-/BND_806	hospitium
-/BND_807	hospitium
-/BND_808	hospitium
-/BND_809	hospitium
-/BND_810	hospitium
-/BND_811	hospitium
-/BND_812	hospitium
-/BND_813	hospitium
-/BND_814	hospitium
-/BND_815	hospitium
-/BND_816	hospitium
-/BND_817	hospitium
-/BND_818	hospitium
-/BND_819	hospitium
-/BND_820	curtis et hospitium
-/BND_821	hospitium
-/BND_822	hospitium
-/BND_823	hospitium
-/BND_824	hospitium
-/BND_825	hospitium
-/BND_826	hospitium
-/BND_827	hospitium
-/BND_828	hospitium
-/BND_829	hospitium
-/BND_830	hospitium sive curtis sive viridariumum
-/BND_831	hospitium
-/BND_832	hospitium
-/BND_833	hospitium
-/BND_834	hospitium
-/BND_835	hospitium
-/BND_836	hospitium
-/BND_837	hospitium et curtis
-/BND_838	viridarium
-/BND_839	curtis
-/BND_840	hospitium
-/BND_841	hospitium
-/BND_842	logua
-/BND_843	hospitiumum et viridarium sive curtis
-/BND_844	viridarium
-/BND_845	hospitium
-/BND_846	hospitium
-/BND_847	hospitium
-/BND_848	hospitium
-/BND_849	domum
-/BND_850	hospitium
-/BND_851	hospitium
-/BND_852	hospitium
-/BND_853	hospitium et curtis
-/BND_854	hospitium
-/BND_855	hospitium
-/BND_856	hospitium
-/BND_857	casale sive domus
-/BND_858	hospito
-/BND_859	viridarium et hospitium
-/BND_860	hospitium et viridarium
-/BND_861	viridarium
-/BND_862	hospitium et viridarium
-/BND_863	viridarium
-/BND_864	hospitium
-/BND_865	hospitium
-/BND_866	hospitium
-/BND_867	hospitium
-/BND_868	domus
-/BND_869	burguetus
-/BND_870	ortus
-/BND_871	ortus
-/BND_872	ortus sive viridarium
-/BND_873	ortus sive viridarium
-/BND_874	ortus
-/BND_875	ortus
-/BND_876	ortus
-/BND_877	ortus
-/BND_878	hospitium
-/BND_879	hospitium
-/BND_880	hospitium
-/BND_881	hospitium
-/BND_882	hospitium
-/BND_883	hospitium
-/BND_884	hospitium
-/BND_885	hospitium
-/BND_886	logua
-/BND_887	hospitium
-/BD_1012	hospitium
-/BD_1014	hospitium
-/BD_1143	hospitium
-/BD_1144	hospitium
-/R_3	Rue des Grottes
-/R_5	Rue de la Petite Fusterie
-/R_7	Rue allant de la Poissonerie
-/R_8	Rue des Masses
-/R_9	Rue des Ortolans
-/R_10	Rue Hugues de Sade ou Vieille Bouquerie
-/R_11	Rue du Four de la Vieille Bouquerie
-/R_12	Rue des Retrans ou des Banons
-/R_13	Rue du Portail Brianson
-/R_14	Rue Saint-Jean ou Derriere le Temple
-/R_15	Traverse derriere le Temple
-/R_16	Rue Vieille Blanquerie ou de Notre-Dame des Fours
-/R_17	Rue Bouquerie
-/R_18	Rue Argenterie ou de la Muse
-/R_39	Rue au marche au fil
-/R_54	Rue Vieille Pelleterie
-/R_55	Rue Pelleterie Neuve
-/R_62	Rue Principale
-/R_68	Rue de la Draperie
-/R_69	Rue du Portail Boquier
-/R_74	Plan de Lunel
-/R_75	Place des Changes
-/R_76	Place de l'eglise Notre-Dame La Principale
-/R_79	Place du Portail Brianson
-/R_80	Place du Portail Boquier
-/R_96	Rue proche du Plan de Lunel et du Portail Brianson
-/R_97	Rue de l'Amelhier
-/R_99	Rue allant du Portail de l'eveque aux nouveaux murs de la ville
-/R_108	Place de le porte Aiguiere
-/R_109	Rue vers les lices des freres Precheurs
-/R_110	Rue allant du port des Perriers a l'eglise des Miracles
-/R_111	Rue allant au Port des Periers
-/R_112	Traverse allant de la rue des masses aux lices
-/R_113	Rue allant du Portail Eveque au Portail Boquier
-/R_114	Place des Periers
-/R_115	Place des Lombards
-/R_116	Rue droite du Portail Eveque
-/RN_00117	traversia burgus Guillaume Ortolan
-/RN_00118	carreria burgus Guillaume Ortolan
-/RN_00119	traversia non transeunte7
-/RN_00120	carreria publica5
-/RN_00121	traversia public et transeunte3
-/RN_00122	traversia8
-/RN_00123	transversa publica et traseun2
-/RN_00124	traversia non transeunte1
-/RN_00125	curtil sive platea communi et publica
-/RN_00126	platea
-/RN_00127	traversia non transeunte
-/RN_00128	carreria publica
-/RN_00129	carreria que est subtus cellarium sive penus monasterii Sancti Ruphi
-/RN_00130	traversia public et transeunte
-/RN_00131	traversia public et transeunte
-/RN_00132	traversiola
-/RN_00133	transversia transeunte de dicta via de miraculis ad murorum novorum3
-/RN_00134	carreria publica
-/RN_00135	traversia sive itinere
-/RN_00136	traversia sive carreria publica per quam homo vadit ad ortos ermenchardis boerie et johanneti alvernhatii
-/RN_00137	transversia introitus burgueti Bernardi de Rodesio
-/Mur_412	Rempart neuf
-/Mur_402	Rempart vieux
-/L_206	Livree de Poitiers
-/L_212	Livree de Naples
-/L_223	Livree de Mirault
-/L_224	Livree de Cambrai
-/H_185	Rhone
-/H_205	Sorgues
-/BG_419	Bourgs de Jean Boerii
-/BG_423	Bourg de Jean de Gigognan puis Guimet Abert
-/BG_425	Bourg de Guillaume Ortolan
-/BG_432	Bourg de Berenger de Tarascon
-/BG_434	Bourg de Bernard de Rodez
-/BG_437	Bourg de Guillaume Martin
-/BGN_0051	Bourg de rixendis lanse
-/E_119	Saint-Jean-de-Jerusalem
-/E_131	Notre-Dame La Principale
-/E_132	Saint-Agricol
-/E_133	Saint-Didier
-/E_146	Petit Hopital
-/E_152	Hopital du Saint-Esprit
-/E_154	Eglise Saint-Genies
-/E_155	Cimetiere de Saint-Genis
-/E_156	Cimetiere de l'eglise de la Principale
-/E_157	Cimetiere de l'eglise Saint-Agricol
-/E_158	Notre-Dame des Miracles
-/E_159	Notre-Dame d'Esperance
-/E_160	Port des Periers
-/E_161	Verger d'Urbain V
-/E_163	Notre-Dame des Fours
-/E_164	Verger du monastere Notre-Dame des Fours
-/EN_0049	hospitio furnus bocarie veteris
+Id	Label	Type
+/BD_1	hospitium	biendeclare
+/BD_2	hospitium	biendeclare
+/BD_3	operatorium	biendeclare
+/BD_4	hospitium cum operatorium	biendeclare
+/BD_5	hospitium	biendeclare
+/BD_6	hospitium	biendeclare
+/BD_7	2 operatoria	biendeclare
+/BD_8	operatorium	biendeclare
+/BD_9	hospitium	biendeclare
+/BD_10	hospitium	biendeclare
+/BD_11	hospitium	biendeclare
+/BD_12	hospitium cum crota	biendeclare
+/BD_13	2 hospitia contigua	biendeclare
+/BD_14	hospitium	biendeclare
+/BD_15	hospitium	biendeclare
+/BD_16	hospitium	biendeclare
+/BD_17	hospitium	biendeclare
+/BD_18	hospitium	biendeclare
+/BD_19	hospitium	biendeclare
+/BD_20	hospitium	biendeclare
+/BD_21	hospitium	biendeclare
+/BD_22	hospitium	biendeclare
+/BD_23	2 hospitia contigua et unita et in unus hospitium reductus	biendeclare
+/BD_24	2 hospitia contigua et sese tenentia	biendeclare
+/BD_25	hospitium	biendeclare
+/BD_26	hospitium	biendeclare
+/BD_27	hospitium	biendeclare
+/BD_28	hospitium	biendeclare
+/BD_29	hospitium	biendeclare
+/BD_30	hospitium	biendeclare
+/BD_31	hospitium	biendeclare
+/BD_32	hospitium	biendeclare
+/BD_33	hospitium	biendeclare
+/BD_34	hospitium	biendeclare
+/BD_35	hospitium	biendeclare
+/BD_36	hospitium	biendeclare
+/BD_37	operatoria	biendeclare
+/BD_38	hospitium	biendeclare
+/BD_39	hospitium	biendeclare
+/BD_40	hospitium	biendeclare
+/BD_41	hospitium	biendeclare
+/BD_42	hospitium	biendeclare
+/BD_43	operatorium	biendeclare
+/BD_44	hospitium	biendeclare
+/BD_45	hospitium	biendeclare
+/BD_46	hospitium in quo est furnus pasticerii	biendeclare
+/BD_47	hospitium	biendeclare
+/BD_48	hospitium	biendeclare
+/BD_49	hospitium	biendeclare
+/BD_50	hospitium	biendeclare
+/BD_51	hospitium	biendeclare
+/BD_52	hospitium	biendeclare
+/BD_53	hospitium	biendeclare
+/BD_54	hospitium	biendeclare
+/BD_55	hospitium	biendeclare
+/BD_56	hospitium	biendeclare
+/BD_57	hospitium	biendeclare
+/BD_58	hospitium	biendeclare
+/BD_59	hospitium	biendeclare
+/BD_60	hospitium	biendeclare
+/BD_61	hospitium	biendeclare
+/BD_62	2 hospitia contigua et sese tenentia	biendeclare
+/BD_63	partes pro indiviso hospitium	biendeclare
+/BD_64	partes pro indiviso hospitium	biendeclare
+/BD_65	partes pro indiviso hospitium	biendeclare
+/BD_66	hospitium	biendeclare
+/BD_67	hospitium	biendeclare
+/BD_68	hospitium	biendeclare
+/BD_69	hospitium	biendeclare
+/BD_70	2 partes hospitium cum puteo	biendeclare
+/BD_71	3 partes hospitium	biendeclare
+/BD_72	hospitium	biendeclare
+/BD_73	hospitium	biendeclare
+/BD_74	2 hospitia contigua et unita et in unus hospitium reductus	biendeclare
+/BD_75	hospitium	biendeclare
+/BD_76	hospitium	biendeclare
+/BD_77	hospitium	biendeclare
+/BD_78	hospitium	biendeclare
+/BD_79	hospitium	biendeclare
+/BD_80	hospitium	biendeclare
+/BD_81	hospitium	biendeclare
+/BD_82	hospitium	biendeclare
+/BD_83	hospitium	biendeclare
+/BD_84	hospitium in quo est furnus	biendeclare
+/BD_85	hospitium	biendeclare
+/BD_86	2 hospitia contigua et unita et in unus hospitium reductus in quo est puteo	biendeclare
+/BD_87	hospitium	biendeclare
+/BD_88	2 hospitia contigua et unita et in unus hospitium reductus	biendeclare
+/BD_89	hospitium	biendeclare
+/BD_90	hospitium cum puteo et platea	biendeclare
+/BD_91	hospitium	biendeclare
+/BD_92	hospitium	biendeclare
+/BD_93	hospitium	biendeclare
+/BD_94	hospitium	biendeclare
+/BD_95	hospitium	biendeclare
+/BD_96	hospitium	biendeclare
+/BD_97	hospitium	biendeclare
+/BD_98	hospitium	biendeclare
+/BD_99	hospitium	biendeclare
+/BD_100	hospitium	biendeclare
+/BD_101	hospitium	biendeclare
+/BD_102	hospitium	biendeclare
+/BD_103	2 hospitia contigua et unita et in unus hospitium reductus	biendeclare
+/BD_104	2 hospitia contigua et sese tenentia	biendeclare
+/BD_105	partes hospitium	biendeclare
+/BD_106	hospitium	biendeclare
+/BD_107	hospitium cum crota seu cum cellari profundus cum arcu volto de lapidus	biendeclare
+/BD_108	hospitium	biendeclare
+/BD_109	hospitium	biendeclare
+/BD_110	hospitium	biendeclare
+/BD_111	domus	biendeclare
+/BD_112	curtilus et domus	biendeclare
+/BD_113	domus cum curte	biendeclare
+/BD_114	localis et curtis contiguus	biendeclare
+/BD_115	hospitium	biendeclare
+/BD_116	hospitium cum solarium	biendeclare
+/BD_117	hospitium et curtis contiguus et sese tenere et unitis	biendeclare
+/BD_118	hospitium contiguus et sese tenere	biendeclare
+/BD_119	hospitium	biendeclare
+/BD_120	hospitium	biendeclare
+/BD_121	hospitium	biendeclare
+/BD_122	hospitium	biendeclare
+/BD_123	hospitium	biendeclare
+/BD_124	hospitium	biendeclare
+/BD_125	parietum seu fundamentum hospitium et domus cum patuis et solo terra	biendeclare
+/BD_126	hospitium	biendeclare
+/BD_127	hospitium	biendeclare
+/BD_128	hospitium	biendeclare
+/BD_129	hospitium	biendeclare
+/BD_130	hospitium cum curte	biendeclare
+/BD_131	partes pro indiviso hospitium cum magnum platea cum puteuo et viridarium	biendeclare
+/BD_132	hospitium cum curtis	biendeclare
+/BD_133	hospitium	biendeclare
+/BD_134	hospitium	biendeclare
+/BD_135	hospitium	biendeclare
+/BD_136	hospitium	biendeclare
+/BD_137	hospitium	biendeclare
+/BD_138	hospitium	biendeclare
+/BD_139	hospitium	biendeclare
+/BD_140	hospitium	biendeclare
+/BD_141	hospitium	biendeclare
+/BD_142	hospitium	biendeclare
+/BD_143	hospitium	biendeclare
+/BD_144	hospitium	biendeclare
+/BD_145	hospitium	biendeclare
+/BD_146	hospitium	biendeclare
+/BD_147	hospitium	biendeclare
+/BD_148	hospitium	biendeclare
+/BD_149	hospitium indivisi	biendeclare
+/BD_150	hospitium	biendeclare
+/BD_151	hospitium in quo est puteo	biendeclare
+/BD_152	hospitium	biendeclare
+/BD_153	hospitium	biendeclare
+/BD_154	cellarium cum solarium seu camera de super	biendeclare
+/BD_155	hospitium	biendeclare
+/BD_156	hospitium in quo est puteo	biendeclare
+/BD_157	hospitium	biendeclare
+/BD_158	hospitium	biendeclare
+/BD_159	2 hospitia contigua et sese tenentia	biendeclare
+/BD_160	hospitium	biendeclare
+/BD_161	hospitium	biendeclare
+/BD_162	transcurtis	biendeclare
+/BD_163	hospitium	biendeclare
+/BD_164	hospitium	biendeclare
+/BD_165	hospitium	biendeclare
+/BD_166	viridarium	biendeclare
+/BD_167	hospitium	biendeclare
+/BD_168	hospitium	biendeclare
+/BD_169	hospitium	biendeclare
+/BD_170	hospitium	biendeclare
+/BD_171	2 hospitia contigua et unita et in unus hospitium reductus	biendeclare
+/BD_172	hospitium	biendeclare
+/BD_173	hospitium	biendeclare
+/BD_174	hospitium	biendeclare
+/BD_175	hospitium	biendeclare
+/BD_176	hospitium	biendeclare
+/BD_177	hospitium	biendeclare
+/BD_178	hospitium	biendeclare
+/BD_179	viridarium	biendeclare
+/BD_180	hospitium et viridarium contigua et unitis	biendeclare
+/BD_181	hospitium	biendeclare
+/BD_182	hospitium	biendeclare
+/BD_183	hospitium cum curtis	biendeclare
+/BD_184	hospitium	biendeclare
+/BD_185	hospitium	biendeclare
+/BD_186	hospitium	biendeclare
+/BD_187	hospitium	biendeclare
+/BD_188	hospitium et curtis in quo ipse construxit et fecit fieri unum bonum puteum de novo	biendeclare
+/BD_189	burguetus	biendeclare
+/BD_190	hospitium et viridarium contigua et unitis	biendeclare
+/BD_191	hospitium	biendeclare
+/BD_192	hospitium	biendeclare
+/BD_193	hospitium	biendeclare
+/BD_194	hospitium et curtis	biendeclare
+/BD_195	hospitium et viridarium contigua et unitis	biendeclare
+/BD_196	hospitium et viridarium contigua et unitis	biendeclare
+/BD_197	2 hospitia cum magnum platea	biendeclare
+/BD_198	hospitium	biendeclare
+/BD_199	2 hospitia contigua et sese tenentia	biendeclare
+/BD_200	hospitium	biendeclare
+/BD_201	burguetus	biendeclare
+/BD_202	hospitium	biendeclare
+/BD_203	hospitium	biendeclare
+/BD_204	hospitium cum puteo et viridarium	biendeclare
+/BD_205	2 hospitia contigua et unita et in unus hospitium reductus cum puteo	biendeclare
+/BD_206	hospitium	biendeclare
+/BD_207	hospitium	biendeclare
+/BD_208	hospitium	biendeclare
+/BD_209	hospitium cum magna platea sive curtis cum puteo	biendeclare
+/BD_210	hospitium	biendeclare
+/BD_211	hospitia contigua et unita et ad unus et idem hospitium reductus	biendeclare
+/BD_212	hospitium	biendeclare
+/BD_213	hospitium	biendeclare
+/BD_214	hospitium	biendeclare
+/BD_215	hospitium	biendeclare
+/BD_216	hospitium	biendeclare
+/BD_217	hospitium	biendeclare
+/BD_218	soli seu terreni cum edificio suo desuper facto quod quidem terrenum vulgariter dicitur pozaca	biendeclare
+/BD_219	burguetus	biendeclare
+/BD_220	ortus	biendeclare
+/BD_221	ortus	biendeclare
+/BD_222	ortulus	biendeclare
+/BD_223	domus et palherie	biendeclare
+/BD_224	logue	biendeclare
+/BD_225	domus et curtis contigua	biendeclare
+/BD_226	hospitium et logue contiguorum	biendeclare
+/BD_227	hospitium	biendeclare
+/BD_228	hospitium	biendeclare
+/BD_229	domus et logua contigua et sese tenentia unita	biendeclare
+/BD_230	hospitia et magazina et logua contigua et unita	biendeclare
+/BD_231	hospitia et magazina contigua et unita	biendeclare
+/BD_232	grangia cum logis et curtibus	biendeclare
+/BD_233	domus et logis contigua et unita	biendeclare
+/BD_234	grangia cum domibus et logis sive curtibus et sese tenentibus	biendeclare
+/BD_235	hospitia et viridaria	biendeclare
+/BD_236	hospitia et viridaria ac curtis	biendeclare
+/BD_237	hospitia et magazina ac logua sive curtis et magne platee terre cum viridario et puteo	biendeclare
+/BD_238	domus et orti	biendeclare
+/BD_239	ortum sive viridarium cum domo in introitu ipsius	biendeclare
+/BD_240	ortolum	biendeclare
+/BD_241	ortus	biendeclare
+/BD_242	ortus	biendeclare
+/BD_243	hospitium et viridarium contiguorum et sese tenentium	biendeclare
+/BD_244	terre	biendeclare
+/BD_245	hospitium et viridarium contiguorum et sese tenentium	biendeclare
+/BD_246	2 hospitia contigua et unita et viridarium cum bono puteo	biendeclare
+/BD_247	hospitium	biendeclare
+/BD_248	burguetus	biendeclare
+/BD_249	hospitium	biendeclare
+/BD_250	hospitium et aliarum septem botigiarum	biendeclare
+/BD_251	hospitium cum magazinis contiguis	biendeclare
+/BD_252	hospitium	biendeclare
+/BD_253	domus	biendeclare
+/BD_254	domus	biendeclare
+/BD_255	domus et magazinus contigua et sese tenentia	biendeclare
+/BD_256	loge et grangie contiguarum et sese tenentium	biendeclare
+/BD_257	hospitium et viridarium	biendeclare
+/BD_443	hospitium in quo est furnus panis	biendeclare
+/BD_444	2 hospitia contigua et sese tenentia	biendeclare
+/BD_445	2 hospitia contigua et sese tenentia	biendeclare
+/BD_446	hospitium	biendeclare
+/BD_447	domuncula sive stabulum cum solerio	biendeclare
+/BD_448	hospitium	biendeclare
+/BD_449	hospitium cum platea magna et lata	biendeclare
+/BD_450	hospitium	biendeclare
+/BD_451	hospitium	biendeclare
+/BD_452	hospitium	biendeclare
+/BD_453	hospitium	biendeclare
+/BD_454	hospitium	biendeclare
+/BD_455	hospitium	biendeclare
+/BD_456	hospitia et viridaria et orti contigua et sese tenentia	biendeclare
+/BD_457	2 hospitia contigua et unita cum platea et puteo aque	biendeclare
+/BD_458	hospitium	biendeclare
+/BD_459	hospitium	biendeclare
+/BD_460	hospitium	biendeclare
+/BD_461	hospitium	biendeclare
+/BD_462	hospitium	biendeclare
+/BD_463	hospitium	biendeclare
+/BD_464	2 hospitia	biendeclare
+/BD_465	hospitium	biendeclare
+/BD_466	curtis sive logua	biendeclare
+/BD_467	logua et curtis	biendeclare
+/BD_468	logua sive curte	biendeclare
+/BD_469	logua	biendeclare
+/BD_470	logua sive curtis	biendeclare
+/BD_471	hospitium	biendeclare
+/BD_472	hospitium	biendeclare
+/BD_473	logua sive curtis	biendeclare
+/BD_474	hospitiolum sive domus parva	biendeclare
+/BD_475	hospitium	biendeclare
+/BD_476	hospitiolum	biendeclare
+/BD_477	hospitium	biendeclare
+/BD_478	hospitium	biendeclare
+/BD_479	2 hospitia contigua et sese tenentia	biendeclare
+/BD_480	hospitium	biendeclare
+/BD_481	hospitium	biendeclare
+/BD_482	2 hospitia contigua et sese tenentia	biendeclare
+/BD_483	hospitium	biendeclare
+/BD_484	hospitium	biendeclare
+/BD_485	hospitium	biendeclare
+/BD_486	hospitium	biendeclare
+/BD_487	hospitium	biendeclare
+/BD_488	hospitium	biendeclare
+/BD_489	hospitium	biendeclare
+/BD_490	hospitium	biendeclare
+/BD_491	hospitium	biendeclare
+/BD_492	hospitium	biendeclare
+/BD_493	3 hospitia contigua et sese tenentia	biendeclare
+/BD_494	2 hospitia et viridarium contigua et sese tenentia	biendeclare
+/BD_495	logua sive viridarium	biendeclare
+/BD_496	domus cum curte	biendeclare
+/BD_497	domus	biendeclare
+/BD_498	hospitium et viridarium	biendeclare
+/BD_499	hospitium	biendeclare
+/BD_500	hospitium	biendeclare
+/BD_501	logua	biendeclare
+/BD_502	logua	biendeclare
+/BD_503	domus	biendeclare
+/BD_504	hospitium et retrocurtis	biendeclare
+/BND_801	hospitium	biennondeclare
+/BND_802	hospitium sive operatorium	biennondeclare
+/BND_803	hospitium	biennondeclare
+/BND_804	hospitium	biennondeclare
+/BND_805	hospitium	biennondeclare
+/BND_806	hospitium	biennondeclare
+/BND_807	hospitium	biennondeclare
+/BND_808	hospitium	biennondeclare
+/BND_809	hospitium	biennondeclare
+/BND_810	hospitium	biennondeclare
+/BND_811	hospitium	biennondeclare
+/BND_812	hospitium	biennondeclare
+/BND_813	hospitium	biennondeclare
+/BND_814	hospitium	biennondeclare
+/BND_815	hospitium	biennondeclare
+/BND_816	hospitium	biennondeclare
+/BND_817	hospitium	biennondeclare
+/BND_818	hospitium	biennondeclare
+/BND_819	hospitium	biennondeclare
+/BND_820	curtis et hospitium	biennondeclare
+/BND_821	hospitium	biennondeclare
+/BND_822	hospitium	biennondeclare
+/BND_823	hospitium	biennondeclare
+/BND_824	hospitium	biennondeclare
+/BND_825	hospitium	biennondeclare
+/BND_826	hospitium	biennondeclare
+/BND_827	hospitium	biennondeclare
+/BND_828	hospitium	biennondeclare
+/BND_829	hospitium	biennondeclare
+/BND_830	hospitium sive curtis sive viridariumum	biennondeclare
+/BND_831	hospitium	biennondeclare
+/BND_832	hospitium	biennondeclare
+/BND_833	hospitium	biennondeclare
+/BND_834	hospitium	biennondeclare
+/BND_835	hospitium	biennondeclare
+/BND_836	hospitium	biennondeclare
+/BND_837	hospitium et curtis	biennondeclare
+/BND_838	viridarium	biennondeclare
+/BND_839	curtis	biennondeclare
+/BND_840	hospitium	biennondeclare
+/BND_841	hospitium	biennondeclare
+/BND_842	logua	biennondeclare
+/BND_843	hospitiumum et viridarium sive curtis	biennondeclare
+/BND_844	viridarium	biennondeclare
+/BND_845	hospitium	biennondeclare
+/BND_846	hospitium	biennondeclare
+/BND_847	hospitium	biennondeclare
+/BND_848	hospitium	biennondeclare
+/BND_849	domum	biennondeclare
+/BND_850	hospitium	biennondeclare
+/BND_851	hospitium	biennondeclare
+/BND_852	hospitium	biennondeclare
+/BND_853	hospitium et curtis	biennondeclare
+/BND_854	hospitium	biennondeclare
+/BND_855	hospitium	biennondeclare
+/BND_856	hospitium	biennondeclare
+/BND_857	casale sive domus	biennondeclare
+/BND_858	hospito	biennondeclare
+/BND_859	viridarium et hospitium	biennondeclare
+/BND_860	hospitium et viridarium	biennondeclare
+/BND_861	viridarium	biennondeclare
+/BND_862	hospitium et viridarium	biennondeclare
+/BND_863	viridarium	biennondeclare
+/BND_864	hospitium	biennondeclare
+/BND_865	hospitium	biennondeclare
+/BND_866	hospitium	biennondeclare
+/BND_867	hospitium	biennondeclare
+/BND_868	domus	biennondeclare
+/BND_869	burguetus	biennondeclare
+/BND_870	ortus	biennondeclare
+/BND_871	ortus	biennondeclare
+/BND_872	ortus sive viridarium	biennondeclare
+/BND_873	ortus sive viridarium	biennondeclare
+/BND_874	ortus	biennondeclare
+/BND_875	ortus	biennondeclare
+/BND_876	ortus	biennondeclare
+/BND_877	ortus	biennondeclare
+/BND_878	hospitium	biennondeclare
+/BND_879	hospitium	biennondeclare
+/BND_880	hospitium	biennondeclare
+/BND_881	hospitium	biennondeclare
+/BND_882	hospitium	biennondeclare
+/BND_883	hospitium	biennondeclare
+/BND_884	hospitium	biennondeclare
+/BND_885	hospitium	biennondeclare
+/BND_886	logua	biennondeclare
+/BND_887	hospitium	biennondeclare
+/BD_1012	hospitium	biendeclare
+/BD_1014	hospitium	biendeclare
+/BD_1143	hospitium	biendeclare
+/BD_1144	hospitium	biendeclare
+/R_3	Rue des Grottes	Rue
+/R_5	Rue de la Petite Fusterie	Rue
+/R_7	Rue allant de la Poissonerie	Rue
+/R_8	Rue des Masses	Rue
+/R_9	Rue des Ortolans	Rue
+/R_10	Rue Hugues de Sade ou Vieille Bouquerie	Rue
+/R_11	Rue du Four de la Vieille Bouquerie	Rue
+/R_12	Rue des Retrans ou des Banons	Rue
+/R_13	Rue du Portail Brianson	Rue
+/R_14	Rue Saint-Jean ou Derrière le Temple	Rue
+/R_15	Traverse derriere le Temple	Traverse
+/R_16	Rue Vieille Blanquerie ou de Notre-Dame des Fours	Rue
+/R_17	Rue Bouquerie	Rue
+/R_18	Rue Argenterie ou de la Muse	Rue
+/R_39	Rue au marche au fil	Rue
+/R_54	Rue Vieille Pelleterie	Rue
+/R_55	Rue Pelleterie Neuve	Rue
+/R_62	Rue Principale	Rue
+/R_68	Rue de la Draperie	Rue
+/R_69	Rue du Portail Boquier	Rue
+/R_74	Plan de Lunel	Place
+/R_75	Place des Changes	Place
+/R_76	Place de l eglise Notre-Dame la Principale	Place
+/R_79	Place du Portail Brianson	Place
+/R_80	Place du Portail Boquier	Place
+/R_96	Rue proche du Plan de Lunel et du Portail Brianson	Rue
+/R_97	Rue de l Amelhier	Rue
+/R_99	Rue allant du Portail de l eveque aux nouveaux murs de la ville	Rue
+/R_108	Place de le porte Aiguiere	Place
+/R_109	Rue vers les lices des frere Precheurs	Rue
+/R_110	Rue allant du port des Perriers a l eglise des Miracles	Rue
+/R_111	Rue allant au Port des Periers	Rue
+/R_112	Traverse allant de la rue des masses aux lices	Traverse
+/R_113	Rue allant du Portail Eveque au Portail Boquier	Rue
+/R_114	Place des Periers	Place
+/R_115	Place des Lombards	Place
+/R_116	Rue droite du Portail Eveque	Rue
+/RN_00117	traversia burgus Guillaume Ortolan	Traverse
+/RN_00118	carreria burgus Guillaume Ortolan	Rue
+/RN_00119	traversia non transeunte7	Impasse
+/RN_00120	carreria publica5	Rue
+/RN_00121	traversia public et transeunte3	Traverse
+/RN_00122	traversia8	Traverse
+/RN_00123	transversa publica et traseun2	Traverse
+/RN_00124	traversia non transeunte1	Impasse
+/RN_00125	curtil sive platea communi et publica	Place
+/RN_00126	platea	Place
+/RN_00127	traversia non transeunte	Impasse
+/RN_00128	carreria publica	Rue
+/RN_00129	carreria que est subtus cellarium sive penus monasterii Sancti Ruphi	Rue
+/RN_00130	traversia public et transeunte	Traverse
+/RN_00131	traversia public et transeunte	Traverse
+/RN_00132	traversiola	Traverse
+/RN_00133	transversia transeunte de dicta via de miraculis ad murorum novorum3	Traverse
+/RN_00134	carreria publica	Rue
+/RN_00135	traversia sive itinere	Traverse
+/RN_00136	traversia sive carreria publica per quam homo vadit ad ortos ermenchardis boerie et johanneti alvernhatii	Traverse
+/RN_00137	transversia introitus burgueti Bernardi de Rodesio	Traverse
+/Mur_412	Rempart neuf	Rempart
+/Mur_402	Rempart vieux	Rempart
+/L_206	Livree de Poitiers	Livrée cardinalice
+/L_212	Livree de Naples	Livrée cardinalice
+/L_223	Livree de Mirault	Livrée cardinalice
+/L_224	Livree de Cambrai	Livrée cardinalice
+/H_185	Rhone	Hydrologie
+/H_205	Sorgues	Hydrologie
+/BG_417	Bourg manquant	Bourg
+/BG_419	Bourgs de Jean Boerii	Bourg
+/BG_423	Bourg de Jean de Gigognan puis Guimet Abert	Bourg
+/BG_425	Bourg de Guillaume Ortolan	Bourg
+/BG_432	Bourg de Berenger de Tarascon	Bourg
+/BG_434	Bourg de Bernard de Rodez	Bourg
+/BG_437	Bourg de Guillaume Martin	Bourg
+/BGN_0051	Bourg de rixendis lanse	Bourg
+/E_119	Saint-Jean-de-Jerusalem	Chapelle
+/E_131	Notre-Dame La Principale	Eglise
+/E_132	Saint-Agricol	Eglise
+/E_133	Saint-Didier	Eglise
+/E_146	Petit Hopital	Hopital
+/E_152	Hopital du Saint-Esprit	Hopital
+/E_154	Eglise Saint-Genies	Eglise
+/E_155	Cimetiere de Saint-Genis	Cimetiere
+/E_156	Cimetiere de l eglise de la Principale	Cimetiere
+/E_157	Cimetiere de l eglise Saint-Agricol	Cimetiere
+/E_158	Notre-Dame des Miracles	Eglise
+/E_159	Notre-Dame d Esperance	Chapelle
+/E_160	Port des Periers	Port
+/E_161	Verger d Urbain V	Verger
+/E_163	Notre-Dame des Fours	Monastere
+/E_164	Verger du monastere Notre-Dame des Fours	Verger
+/EN_0049	hospitio furnus bocarie veteris	Four
