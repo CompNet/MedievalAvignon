@@ -12,7 +12,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -20,92 +19,48 @@ import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solution;
 import org.chocosolver.solver.variables.IntVar;
 
+import fr.univavignon.tools.file.FileNames;
 import fr.univavignon.tools.file.FileTools;
 import fr.univavignon.tools.log.HierarchicalLogger;
 import fr.univavignon.tools.log.HierarchicalLoggerManager;
 import fr.univavignon.tools.time.TimeFormatting;
 
-public class Test 
-{	
+/**
+ * Class used to load/write resources related to the models.
+ * 
+ * @author Vincent Labatut
+ */
+public class ChocoCommon 
+{	/** Object used to log the process */
+	private final static HierarchicalLogger LOGGER = HierarchicalLoggerManager.getHierarchicalLogger();
 	
 	/**
-	 * Launches the main program.
-	 * 
-	 * @param args
-	 * 		Not used.
-	 * 
-	 * @throws Exception
-	 * 		Some problem occurred.
-	 */
-	public static void main(String[] args) throws Exception
-	{	logger = HierarchicalLoggerManager.getHierarchicalLogger();
-		logger.log("Starting the process");
-		logger.increaseOffset();
-		
-		Solution solution = null;
-		int cut = 0;
-		logger.log("Looping over various number of objects");
-		logger.increaseOffset();
-		while(solution==null)
-		{	logger.log("Cuttint the last "+cut+" objects");
-			logger.increaseOffset();
-			
-			// load and build the model
-			Model model = loadConstraints(cut);
-			
-			// solve the problem
-			solution = searchSolution(model);
-			
-			if(solution != null)
-			{	// write the solution
-				writeSolution(solution);
-				
-				// display the solution
-			    System.out.println(solution.toString());
-			}
-			else
-				cut++;
-			
-			Thread.sleep(500);
-			logger.decreaseOffset();
-		}
-		logger.decreaseOffset();
-		
-		logger.decreaseOffset();
-		logger.log("Process complete");
-		logger.close();
-	}
-	
-	/** Object used to log the process */
-	private static HierarchicalLogger logger;
-	
-	/**
-	 * Look for a solution for the specified model.
+	 * Looks for a solution for the specified model.
 	 * 
 	 * @param model
 	 * 		Model containing the variables and constraints.
 	 * @return
 	 * 		A solution identified for the specified model. 
 	 */
-	private static Solution searchSolution(Model model)
-	{	logger.log("Searching for a solution");
-		logger.increaseOffset();
+	public static Solution searchSolution(Model model)
+	{	LOGGER.log("Searching for a solution");
+		LOGGER.increaseOffset();
 		
 		long start = System.currentTimeMillis();
 		Solution result = model.getSolver().findSolution();
 		long end = System.currentTimeMillis();
 		long duration = end - start;
-		logger.log("Search over, duration: "+TimeFormatting.formatDuration(duration));
+		LOGGER.log("Search over, duration: "+TimeFormatting.formatDuration(duration));
 		
 		if(result==null)
-			logger.log("No solution could be found");
+			LOGGER.log("No solution could be found");
 
-		logger.decreaseOffset();
+		LOGGER.decreaseOffset();
 		return result;
 	}
 	
 	/**
-	 * Record the solution through serialization, for possible alter use.
+	 * Records the solution through serialization, for possible later use.
 	 * 
 	 * @param solution
 	 * 		The solution to record.
@@ -113,72 +68,28 @@ public class Test
 	 * @throws IOException
 	 * 		Problem while recording the solution.
 	 */
-	private static void writeSolution(Solution solution) throws IOException
-	{	String solutionFile = "out" + File.separator + "solution.txt";
-		logger.log("Recording the solution in file \""+solutionFile+"\"");
-		logger.increaseOffset();
+	public static void writeSolution(Solution solution) throws IOException
+	{	String solutionFile = FileNames.FO_OUTPUT + File.separator + "solution.txt";
+		LOGGER.log("Recording the solution in file \""+solutionFile+"\"");
+		LOGGER.increaseOffset();
 		
 		FileOutputStream fos = new FileOutputStream(solutionFile);
 		ObjectOutputStream oos = new ObjectOutputStream(fos);
 		oos.writeObject(solution);
 		oos.close();
 		
-		logger.log("Recording done");
-		logger.decreaseOffset();
-	}
-	
-	/**
-	 * Method allowing to test one example from the ChocoSolver doc.
-	 */
-	@SuppressWarnings("unused")
-	private static void test()
-	{	Model model = new Model("Positioning test");
-		
-		// init variables
-		int n = 6;
-		IntVar[] x = new IntVar[n];
-		IntVar[] y = new IntVar[n];
-		for(int i=0; i<n; i++)
-		{	x[i] = model.intVar("x"+i, 1, n);
-			y[i] = model.intVar("y"+i, 1, n);
-		}
-		
-		// init x constaints
-		model.arithm(x[1], ">", x[0]).post();
-		model.arithm(x[1], ">", x[3]).post();
-		model.arithm(x[1], ">", x[4]).post();
-		model.arithm(x[5], ">", x[0]).post();
-		model.arithm(x[5], ">", x[3]).post();
-		model.arithm(x[5], ">", x[4]).post();
-		//
-		model.arithm(x[0], ">", x[2]).post();
-		model.arithm(x[3], ">", x[2]).post();
-		model.arithm(x[4], ">", x[2]).post();
-		
-		// init y constraints
-		model.arithm(y[0], ">", y[2]).post();
-		model.arithm(y[0], ">", y[3]).post();
-		model.arithm(y[1], ">", y[2]).post();
-		model.arithm(y[1], ">", y[3]).post();
-		//
-		model.arithm(y[2], ">", y[4]).post();
-		model.arithm(y[2], ">", y[5]).post();
-		model.arithm(y[3], ">", y[4]).post();
-		model.arithm(y[3], ">", y[5]).post();
-		
-		// solve problem
-		Solution solution = model.getSolver().findSolution();
-		if(solution != null){
-		    System.out.println(solution.toString());
-		}
+		LOGGER.log("Recording done");
+		LOGGER.decreaseOffset();
 	}
 	
 	/**
 	 * Loads the text file containing the description of the objects and constraints,
 	 * and builds the corresponding model.
 	 * 
-	 * @parameter cut
+	 * @param objectCut
 	 * 		Number of objects to ignore, in order to simplify the problem (debug).
+	 * @param constCut
+	 * 		Number of constraints to ignore, in order to simplify the problem (debug).
 	 * @return
 	 * 		The model built based on the files content.
 	 * 
@@ -187,9 +98,9 @@ public class Test
 	 * @throws UnsupportedEncodingException
 	 * 		Problem while accessing the files.
 	 */
-	private static Model loadConstraints(int cut) throws FileNotFoundException, UnsupportedEncodingException
-	{	logger.log("Load the data and build the model");
-		logger.increaseOffset();
+	public static Model loadConstraints(int objectCut, int constCut) throws FileNotFoundException, UnsupportedEncodingException
+	{	LOGGER.log("Load the data and build the model");
+		LOGGER.increaseOffset();
 		Model result = new Model("Positioning");
 		
 		// allowed types of objects
@@ -227,17 +138,17 @@ public class Test
 		);
 		
 		// load the file, retrieving only the authorized objects and contraints
-		String constraintFile = "in" + File.separator + "constraints.txt";
-		logger.log("Loading constraint file \""+constraintFile+"\"");
+		String constraintFile = FileNames.FO_INPUT + File.separator + "constraints.txt";
+		LOGGER.log("Loading constraint file \""+constraintFile+"\"");
 		Scanner scanner = FileTools.openTextFileRead(constraintFile, StandardCharsets.UTF_8.name());
 		String line = scanner.nextLine();
 		List<List<String>> data = new ArrayList<List<String>>();
 		TreeSet<String> objectNames = new TreeSet<String>();
-		logger.increaseOffset();
+		LOGGER.increaseOffset();
 		while(scanner.hasNextLine())
 		{	line = scanner.nextLine();
-			logger.log("Considering line "+line);
-			logger.increaseOffset();
+			LOGGER.log("Considering line "+line);
+			LOGGER.increaseOffset();
 			
 			// break down the line
 			String[] splitLine = line.split("\t");
@@ -251,7 +162,7 @@ public class Test
 			
 			// check if authorized
 			if(allowedPrefixes.contains(srcPref) && allowedPrefixes.contains(tgtPref) && allowedConstraints.contains(constraint))
-			{	logger.log("Adding to the list");
+			{	LOGGER.log("Adding to the list");
 				List<String> list = new ArrayList<String>();
 				list.add(source);
 				objectNames.add(source);
@@ -261,28 +172,30 @@ public class Test
 				data.add(list);
 			}
 			
-			logger.decreaseOffset();
+			LOGGER.decreaseOffset();
 		}
 		int n = objectNames.size();
-		logger.log("Kept "+n+" objects and "+data.size()+" constraints");
-		logger.decreaseOffset();
+		LOGGER.log("Kept "+n+" objects and "+data.size()+" constraints");
+		LOGGER.decreaseOffset();
 		
-		logger.log("Removing the last "+cut+" objects");
-		for(int i=0;i<cut;i++)
-//			data.remove(data.size()-1);
+		LOGGER.log("Removing the last "+objectCut+" objects");
+		for(int i=0;i<objectCut;i++)
 			objectNames.remove(objectNames.last());
+		LOGGER.log("Removing the last "+constCut+" constraints");
+		for(int i=0;i<constCut;i++)
+			data.remove(data.size()-1);
 		
-		logger.log("Building the model");
+		LOGGER.log("Building the model");
 		Map<String,IntVar> objectVars = new TreeMap<String,IntVar>();
 		int constNbr = 0;
-		logger.increaseOffset();
+		LOGGER.increaseOffset();
 		for(List<String> list: data)
 		{	String sourceName = list.get(0);
 			String targetName = list.get(1);
 			String constraintName = list.get(2);
 		
 			if(objectNames.contains(sourceName) && objectNames.contains(targetName))
-			{	logger.log("Processed "+sourceName+" ("+constraintName+") "+targetName);
+			{	LOGGER.log("Processed "+sourceName+" ("+constraintName+") "+targetName);
 				// set the source variable
 				IntVar sourceX = objectVars.get("x"+sourceName);
 				IntVar sourceY = objectVars.get("y"+sourceName);
@@ -315,10 +228,10 @@ public class Test
 				constNbr++;
 			}
 		}
-		logger.decreaseOffset();
+		LOGGER.decreaseOffset();
 		
-		logger.log("Model complete: "+objectVars.size()+" variables and "+constNbr+" constraints");
-		logger.decreaseOffset();
+		LOGGER.log("Model complete: "+objectVars.size()+" variables and "+constNbr+" constraints");
+		LOGGER.decreaseOffset();
 		return result;
 	}
 }
