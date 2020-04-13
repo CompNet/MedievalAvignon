@@ -1,4 +1,4 @@
-package fr.univavignon.positioning;
+package fr.univavignon.positioning.vincent;
 
 import java.io.File;
 import java.io.FileNotFoundException;

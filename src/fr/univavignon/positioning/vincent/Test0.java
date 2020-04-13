@@ -1,4 +1,4 @@
-package fr.univavignon.positioning;
+package fr.univavignon.positioning.vincent;
 
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solution;

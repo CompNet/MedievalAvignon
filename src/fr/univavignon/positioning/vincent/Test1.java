@@ -1,4 +1,4 @@
-package fr.univavignon.positioning;
+package fr.univavignon.positioning.vincent;
 
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solution;
@@ -6,13 +6,13 @@ import org.chocosolver.solver.Solution;
 import fr.univavignon.tools.log.HierarchicalLogger;
 import fr.univavignon.tools.log.HierarchicalLoggerManager;
 
-public class Test2 
+public class Test1 
 {	/** Object used to log the process */
 	private final static HierarchicalLogger LOGGER = HierarchicalLoggerManager.getHierarchicalLogger();
 	
 	/**
 	 * Launches the main program.
-	 * Loops over the objects, trying to remove those causing the
+	 * Loops over the constraints, trying to remove those causing the
 	 * exception.
 	 * 
 	 * @param args
@@ -27,14 +27,14 @@ public class Test2
 		
 		Solution solution = null;
 		int cut = 0;
-		LOGGER.log("Looping over various number of objects");
+		LOGGER.log("Looping over various number of constraints");
 		LOGGER.increaseOffset();
 		while(solution==null)
-		{	LOGGER.log("Cutting the last "+cut+" objects");
+		{	LOGGER.log("Cutting the last "+cut+" constraints");
 			LOGGER.increaseOffset();
 			
 			// load and build the model
-			Model model = ChocoCommon.loadConstraints(cut,0);
+			Model model = ChocoCommon.loadConstraints(0,cut);
 			
 			// solve the problem
 			solution = ChocoCommon.searchSolution(model);
