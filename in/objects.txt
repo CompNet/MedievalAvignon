@@ -469,10 +469,10 @@ Id	Label	Type
 /RN_00137	transversia introitus burgueti Bernardi de Rodesio	Traverse
 /Mur_412	Rempart neuf	Rempart
 /Mur_402	Rempart vieux	Rempart
-/L_206	Livree de Poitiers	Livrée cardinalice
-/L_212	Livree de Naples	Livrée cardinalice
-/L_223	Livree de Mirault	Livrée cardinalice
-/L_224	Livree de Cambrai	Livrée cardinalice
+/L_206	Livree de Poitiers	Livree cardinalice
+/L_212	Livree de Naples	Livree cardinalice
+/L_223	Livree de Mirault	Livree cardinalice
+/L_224	Livree de Cambrai	Livree cardinalice
 /H_185	Rhone	Hydrologie
 /H_205	Sorgues	Hydrologie
 /BG_417	Bourg manquant	Bourg

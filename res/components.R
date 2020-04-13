@@ -19,7 +19,7 @@ obj.tab <- read.table(file.path(in.folder,"objects.txt"),sep="\t",header=TRUE,st
 
 # build the graph
 g <- graph_from_edgelist(el=as.matrix(const.tab[,c("Source","Target")]),directed=FALSE)
-V(g)$type[match(V(g)$name,obj.tab[,"Id"])] <- obj.tab[,"Type"]
+V(g)$type <- obj.tab[match(V(g)$name,obj.tab[,"Id"]),"Type"]
 obj.types <- sort(unique(V(g)$type))
 E(g)$type <- const.tab[,"Label"]
 const.types <- sort(unique(E(g)$type))
@@ -46,8 +46,8 @@ for(comp in 1:ncomp)
 	gcomp <- induced_subgraph(graph=g, vids=idx)
 	
 	# setup colors 
-	vcols <- CAT_COLORS[match(V(gcomp)$type, obj.types)]
-	ecols <- CAT_COLORS[match(E(gcomp)$type,const.types)]
+	vcols <- CAT_COLORS_18[match(V(gcomp)$type, obj.types)]
+	ecols <- CAT_COLORS_18[match(E(gcomp)$type,const.types)]
 	V(gcomp)$color <- vcols
 	E(gcomp)$color <- ecols
 	
@@ -55,6 +55,7 @@ for(comp in 1:ncomp)
 	#pdf(file.path(folder,paste0("comp_",comp,".pdf")))
 	png(file.path(out.folder,paste0("comp_",comp,".png")), 
 			width=1024, height=1024)
+	#par(mar=c(5, 4, 4, 2)+0.1)	# B L T R
 	
 	# possibly load positions
 	pos.file <- file.path(in.folder, paste0("positions_CC",comp,".txt"))
@@ -89,12 +90,37 @@ gcomp <- delete_vertices(gcomp, which(is.na(map)))
 			plot(gcomp, 
 				vertex.size=3, vertex.color=vcols,
 				vertex.label=NA,
-				edge.color=ecols)
+				edge.color=ecols,
+#				frame=TRUE
+#				margin=c(0,0,4,4)		# B T L R
+			)
 		else
     		plot(gcomp, 
 				vertex.color=vcols,
 				edge.color=ecols)
 	}
+	
+	# node legend
+	legend(
+		title="Objets",								# title of the legend box
+		x="bottomleft",								# position
+		legend=obj.types,							# text of the legend
+		fill=CAT_COLORS_18[1:length(obj.types)],	# color of the nodes
+		bty="n",									# no box around the legend
+		cex=0.8										# size of the text in the legend
+	)
+	
+	# edge legend
+	legend(
+		title="Contraintes",							# title of the legend box
+		x="bottomright",								# position
+		legend=const.types,								# text of the legend
+		col=CAT_COLORS_18[1:length(const.types)],		# color of the lines
+		lwd=4,											# line thickness
+		bty="n",										# no box around the legend
+		cex=0.8,										# size of the text in the legend
+		seg.len=3										# length of the line in the legend
+	)
 	
 	# close plot output
     dev.off()
