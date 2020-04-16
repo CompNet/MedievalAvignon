@@ -18,19 +18,19 @@ const.tab <- read.table(file.path(in.folder,"constraints.txt"),sep="\t",header=T
 obj.tab <- read.table(file.path(in.folder,"objects.txt"),sep="\t",header=TRUE,stringsAsFactors=FALSE)
 
 # build the graph
-g <- graph_from_edgelist(el=as.matrix(const.tab[,c("Source","Target")]),directed=FALSE)
+g <- graph_from_edgelist(el=as.matrix(const.tab[,c("Source","Target")]),directed=TRUE)
 V(g)$type <- obj.tab[match(V(g)$name,obj.tab[,"Id"]),"Type"]
 obj.types <- sort(unique(V(g)$type))
 E(g)$type <- const.tab[,"Label"]
 const.types <- sort(unique(E(g)$type))
 
 # identify the components
-ncomp <- count_components(g)
-sizes <- components(g)$csize
-membership <- components(g)$membership
+tmp <- components(g, mode="weak")
+ncomp <- tmp$no
+sizes <- tmp$csize
+membership <- tmp$membership
 
 # record results
-sizes <- components(g)$csize
 res.tab <- cbind(1:ncomp, sizes)
 colnames(res.tab) <- c("component","size")
 write.table(res.tab,file.path(out.folder,"components_sizes.txt"),sep="\t",col.names=TRUE,row.names=FALSE,quote=FALSE)
@@ -40,7 +40,8 @@ write.table(res.tab,file.path(out.folder,"components.txt"),sep="\t",col.names=TR
 
 # plotting each component separately
 for(comp in 1:ncomp)
-{	cat("Processing component ",comp,"/",ncomp,"\n",sep="")
+{	#comp <- 2
+	cat("Processing component ",comp,"/",ncomp,"\n",sep="")
 	# get subgraph corresponding to the component
 	idx <- which(membership==comp)
 	gcomp <- induced_subgraph(graph=g, vids=idx)
@@ -51,10 +52,37 @@ for(comp in 1:ncomp)
 	V(gcomp)$color <- vcols
 	E(gcomp)$color <- ecols
 	
+	# compute centralities and record them
+	centr.vals <- matrix(0,nrow=gorder(gcomp),ncol=0)
+		# degree
+		centr <- degree(gcomp,mode="all")
+		V(gcomp)$degree <- centr
+		centr.vals <- cbind(centr.vals,centr)
+		colnames(centr.vals)[ncol(centr.vals)] <- "Degree"
+		# eigencentrality
+		centr <- eigen_centrality(gcomp, directed=FALSE, scale=TRUE)$vector
+		V(gcomp)$spectral <- centr
+		centr.vals <- cbind(centr.vals,centr)
+		colnames(centr.vals)[ncol(centr.vals)] <- "Spectral"
+		# closeness
+		centr <- closeness(gcomp,mode="all", normalized=TRUE)
+		V(gcomp)$closeness <- centr
+		centr.vals <- cbind(centr.vals,centr)
+		colnames(centr.vals)[ncol(centr.vals)] <- "Closeness"
+		# betweenness
+		centr <- betweenness(gcomp, directed=FALSE, normalized=TRUE)
+		V(gcomp)$betweenness <- centr
+		centr.vals <- cbind(centr.vals,centr)
+		colnames(centr.vals)[ncol(centr.vals)] <- "Betweenness"
+	centr.vals <- cbind(V(gcomp)$name, centr.vals)
+	colnames(centr.vals)[1] <- "Node"
+	centr.file <- file.path(out.folder, paste0("comp_",comp,"_centralities.txt"))
+	write.table(centr.vals, file=centr.file, quote=FALSE, sep="\t", row.names=FALSE, col.names=TRUE)
+	
 	# open plot output
 	#pdf(file.path(folder,paste0("comp_",comp,".pdf")))
 	png(file.path(out.folder,paste0("comp_",comp,".png")), 
-			width=1024, height=1024)
+			width=2048, height=2048)
 	#par(mar=c(5, 4, 4, 2)+0.1)	# B L T R
 	
 	# possibly load positions
@@ -71,15 +99,20 @@ gcomp <- delete_vertices(gcomp, which(is.na(map)))
 		# plot component
 		if(vcount(gcomp)>20)
 			plot(gcomp, 
-				vertex.size=3, vertex.color=vcols,
+				vertex.size=3, 
+				vertex.color=vcols,
 				vertex.label.cex=0.7, #vertex.label=NA, 
 				edge.color=ecols,
-				layout=lay)
+				edge.arrow.size=0.2,
+				layout=lay
+			)
 		else
 			plot(gcomp, 
 				vertex.color=vcols,
 				edge.color=ecols,
-				layout=lay)
+				edge.arrow.size=0.8,
+				layout=lay
+			)
 		# add position to graph
 		V(gcomp)$x <- lay[,1]
 		V(gcomp)$y <- lay[,2]
@@ -87,17 +120,30 @@ gcomp <- delete_vertices(gcomp, which(is.na(map)))
 	
 	else
 	{	if(vcount(gcomp)>20)
+		{	labels <- V(g)$name
+			labels[c.deg<20] <- NA
+			lay <- layout_with_graphopt(gcomp, charge=0.010)
+			lay <- layout_with_fr(gcomp)
+			lay <- layout_with_kk(gcomp)
 			plot(gcomp, 
-				vertex.size=3, vertex.color=vcols,
-				vertex.label=NA,
+				vertex.size=1+5*centr/max(centr), 
+				vertex.color=vcols,
+				vertex.label=labels,
 				edge.color=ecols,
+				edge.arrow.size=0.2,
+				layout=lay,
 #				frame=TRUE
 #				margin=c(0,0,4,4)		# B T L R
 			)
+			V(gcomp)$x <- lay[,1]
+			V(gcomp)$y <- lay[,2]
+		}
 		else
     		plot(gcomp, 
 				vertex.color=vcols,
-				edge.color=ecols)
+				edge.color=ecols,
+				edge.arrow.size=0.8,
+			)
 	}
 	
 	# node legend
