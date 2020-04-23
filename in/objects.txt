@@ -1,4 +1,4 @@
-idNoeud	Type	Detail	Qualif	InfoSup	Mesure	materiaux	idQuartier	idRue	idBourg	idSeigneurie	idRedevance	TypeRedevance	Nature	echellemontant	Montant	Montant2	nbProprio	idproprio1	identite1	profession1	profession1bis	titre1	titre1bis	chargeecclesiastique1	statut1	idproprio2	identite2	profession2	profession2bis	titre2	titre2bis	chargeecclesiastique2	statut2	idproprio3	identite3	profession3	profession3bis	titre3	titre3bis	chargeecclesiastique3	statut3	idproprio4	identite4	profession4	profession4bis	titre4	titre4bis	chargeecclesiastique4	statut4
+Id	Type	Detail	Qualif	InfoSup	Mesure	materiaux	idQuartier	idRue	idBourg	idSeigneurie	idRedevance	TypeRedevance	Nature	echellemontant	Montant	Montant2	nbProprio	idproprio1	identite1	profession1	profession1bis	titre1	titre1bis	chargeecclesiastique1	statut1	idproprio2	identite2	profession2	profession2bis	titre2	titre2bis	chargeecclesiastique2	statut2	idproprio3	identite3	profession3	profession3bis	titre3	titre3bis	chargeecclesiastique3	statut3	idproprio4	identite4	profession4	profession4bis	titre4	titre4bis	chargeecclesiastique4	statut4
 /BD_1	biendeclare	hospitium					1	108		1	1	cens		5	2 sol. bon. tur. parv.		1	1	micheletus granerii	cursor																													
 /BD_2	biendeclare	hospitium					1	108		1	2	cens		5	3 sol. bon. tur. parv.		1	2	johannes vierni	cursor																													
 /BD_3	biendeclare	operatorium			de profundo ad intra versus parietem interiorem octo bonos passus hominis vel circa		5	75		1	3	cens		3	17 den. et 1 pict. bon. tur. parv.		1	3	alamandus gueti	mercator pannorum																													
@@ -344,7 +344,7 @@ idNoeud	Type	Detail	Qualif	InfoSup	Mesure	materiaux	idQuartier	idRue	idBourg	idS
 /BND_824	biennondeclare	hospitium																1089	heredes guillelmus laurenti																														
 /BND_825	biennondeclare	hospitium																1091	heredes guillelmus descauti																														
 /BND_826	biennondeclare	hospitium																1092	guillelmus oliverii																														
-/BND_827	biennondeclare	hospitium																707	bartholomeus de locoÊ	mercator																													
+/BND_827	biennondeclare	hospitium																707	bartholomeus de locoï¿½	mercator																													
 /BND_828	biennondeclare	hospitium																80	hugoninus de givriaco	fusterius																													
 /BND_829	biennondeclare	hospitium																917	guillelmus joye	mercator																													
 /BND_830	biennondeclare	hospitium sive curtis sive viridariumum																99	helis guigonis																														

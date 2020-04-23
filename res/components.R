@@ -14,12 +14,15 @@ in.folder <- "in"
 out.folder <- "out"
 
 # retrieve the tables
-const.tab <- read.table(file.path(in.folder,"constraints.txt"),sep="\t",header=TRUE,stringsAsFactors=FALSE)
-obj.tab <- read.table(file.path(in.folder,"objects.txt"),sep="\t",header=TRUE,stringsAsFactors=FALSE)
+const.tab <- read.table(file.path(in.folder,"constraints.txt"),sep="\t",header=TRUE,stringsAsFactors=FALSE,quote="")
+obj.tab <- read.table(file.path(in.folder,"objects.txt"),sep="\t",header=TRUE,stringsAsFactors=FALSE,quote="")
 
 # build the graph
 g <- graph_from_edgelist(el=as.matrix(const.tab[,c("Source","Target")]),directed=TRUE)
-V(g)$type <- obj.tab[match(V(g)$name,obj.tab[,"Id"]),"Type"]
+idx <- match(V(g)$name,obj.tab[,"Id"])
+V(g)$type <- obj.tab[idx,"Type"]
+V(g)$qualif <- obj.tab[idx,"Qualif"]
+V(g)$detail <- obj.tab[idx,"Detail"]
 obj.types <- sort(unique(V(g)$type))
 E(g)$type <- const.tab[,"Label"]
 const.types <- sort(unique(E(g)$type))
@@ -45,6 +48,12 @@ for(comp in 1:ncomp)
 	# get subgraph corresponding to the component
 	idx <- which(membership==comp)
 	gcomp <- induced_subgraph(graph=g, vids=idx)
+	
+	# record as plain edgelist
+	tab <- cbind(as_edgelist(gcomp,names=TRUE),E(gcomp)$type)
+	colnames(tab) <- c("Source","Target","Label")
+	el.file <- file.path(out.folder, paste0("comp_",comp,"_edgelist.txt"))
+	write.table(tab, el.file, quote=FALSE, sep="\t", row.names=FALSE, col.names=TRUE)
 	
 	# setup colors 
 	vcols <- CAT_COLORS_18[match(V(gcomp)$type, obj.types)]
@@ -120,11 +129,12 @@ gcomp <- delete_vertices(gcomp, which(is.na(map)))
 	
 	else
 	{	if(vcount(gcomp)>20)
-		{	labels <- V(g)$name
-			labels[c.deg<20] <- NA
+		{	labels <- V(gcomp)$name
+			labels[V(gcomp)$degree<20] <- NA
 			lay <- layout_with_graphopt(gcomp, charge=0.010)
 			lay <- layout_with_fr(gcomp)
 			lay <- layout_with_kk(gcomp)
+			centr <- V(gcomp)$degree
 			plot(gcomp, 
 				vertex.size=1+5*centr/max(centr), 
 				vertex.color=vcols,
