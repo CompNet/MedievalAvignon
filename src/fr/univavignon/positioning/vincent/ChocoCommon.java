@@ -141,7 +141,13 @@ public class ChocoCommon
 		String constraintFile = FileNames.FO_INPUT + File.separator + "constraints.txt";
 		LOGGER.log("Loading constraint file \""+constraintFile+"\"");
 		Scanner scanner = FileTools.openTextFileRead(constraintFile, StandardCharsets.UTF_8.name());
+		// first line
 		String line = scanner.nextLine();
+		List<String> splitCols = Arrays.asList(line.split("\t"));
+		int colSrc = splitCols.indexOf("Source");
+		int colTgt = splitCols.indexOf("Target");
+		int colConst = splitCols.indexOf("Label");
+		// rest of the file
 		List<List<String>> data = new ArrayList<List<String>>();
 		TreeSet<String> objectNames = new TreeSet<String>();
 		LOGGER.increaseOffset();
@@ -152,9 +158,9 @@ public class ChocoCommon
 			
 			// break down the line
 			String[] splitLine = line.split("\t");
-			String source = splitLine[0].trim();
-			String target = splitLine[1].trim();
-			String constraint = splitLine[2].trim();
+			String source = splitLine[colSrc].trim();
+			String target = splitLine[colTgt].trim();
+			String constraint = splitLine[colConst].trim();
 
 			// get the object prefixes
 			String srcPref = source.split("_")[0] + "_";

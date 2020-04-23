@@ -1,502 +1,503 @@
-Id	Label	Type
-/BD_1	hospitium	biendeclare
-/BD_2	hospitium	biendeclare
-/BD_3	operatorium	biendeclare
-/BD_4	hospitium cum operatorium	biendeclare
-/BD_5	hospitium	biendeclare
-/BD_6	hospitium	biendeclare
-/BD_7	2 operatoria	biendeclare
-/BD_8	operatorium	biendeclare
-/BD_9	hospitium	biendeclare
-/BD_10	hospitium	biendeclare
-/BD_11	hospitium	biendeclare
-/BD_12	hospitium cum crota	biendeclare
-/BD_13	2 hospitia contigua	biendeclare
-/BD_14	hospitium	biendeclare
-/BD_15	hospitium	biendeclare
-/BD_16	hospitium	biendeclare
-/BD_17	hospitium	biendeclare
-/BD_18	hospitium	biendeclare
-/BD_19	hospitium	biendeclare
-/BD_20	hospitium	biendeclare
-/BD_21	hospitium	biendeclare
-/BD_22	hospitium	biendeclare
-/BD_23	2 hospitia contigua et unita et in unus hospitium reductus	biendeclare
-/BD_24	2 hospitia contigua et sese tenentia	biendeclare
-/BD_25	hospitium	biendeclare
-/BD_26	hospitium	biendeclare
-/BD_27	hospitium	biendeclare
-/BD_28	hospitium	biendeclare
-/BD_29	hospitium	biendeclare
-/BD_30	hospitium	biendeclare
-/BD_31	hospitium	biendeclare
-/BD_32	hospitium	biendeclare
-/BD_33	hospitium	biendeclare
-/BD_34	hospitium	biendeclare
-/BD_35	hospitium	biendeclare
-/BD_36	hospitium	biendeclare
-/BD_37	operatoria	biendeclare
-/BD_38	hospitium	biendeclare
-/BD_39	hospitium	biendeclare
-/BD_40	hospitium	biendeclare
-/BD_41	hospitium	biendeclare
-/BD_42	hospitium	biendeclare
-/BD_43	operatorium	biendeclare
-/BD_44	hospitium	biendeclare
-/BD_45	hospitium	biendeclare
-/BD_46	hospitium in quo est furnus pasticerii	biendeclare
-/BD_47	hospitium	biendeclare
-/BD_48	hospitium	biendeclare
-/BD_49	hospitium	biendeclare
-/BD_50	hospitium	biendeclare
-/BD_51	hospitium	biendeclare
-/BD_52	hospitium	biendeclare
-/BD_53	hospitium	biendeclare
-/BD_54	hospitium	biendeclare
-/BD_55	hospitium	biendeclare
-/BD_56	hospitium	biendeclare
-/BD_57	hospitium	biendeclare
-/BD_58	hospitium	biendeclare
-/BD_59	hospitium	biendeclare
-/BD_60	hospitium	biendeclare
-/BD_61	hospitium	biendeclare
-/BD_62	2 hospitia contigua et sese tenentia	biendeclare
-/BD_63	partes pro indiviso hospitium	biendeclare
-/BD_64	partes pro indiviso hospitium	biendeclare
-/BD_65	partes pro indiviso hospitium	biendeclare
-/BD_66	hospitium	biendeclare
-/BD_67	hospitium	biendeclare
-/BD_68	hospitium	biendeclare
-/BD_69	hospitium	biendeclare
-/BD_70	2 partes hospitium cum puteo	biendeclare
-/BD_71	3 partes hospitium	biendeclare
-/BD_72	hospitium	biendeclare
-/BD_73	hospitium	biendeclare
-/BD_74	2 hospitia contigua et unita et in unus hospitium reductus	biendeclare
-/BD_75	hospitium	biendeclare
-/BD_76	hospitium	biendeclare
-/BD_77	hospitium	biendeclare
-/BD_78	hospitium	biendeclare
-/BD_79	hospitium	biendeclare
-/BD_80	hospitium	biendeclare
-/BD_81	hospitium	biendeclare
-/BD_82	hospitium	biendeclare
-/BD_83	hospitium	biendeclare
-/BD_84	hospitium in quo est furnus	biendeclare
-/BD_85	hospitium	biendeclare
-/BD_86	2 hospitia contigua et unita et in unus hospitium reductus in quo est puteo	biendeclare
-/BD_87	hospitium	biendeclare
-/BD_88	2 hospitia contigua et unita et in unus hospitium reductus	biendeclare
-/BD_89	hospitium	biendeclare
-/BD_90	hospitium cum puteo et platea	biendeclare
-/BD_91	hospitium	biendeclare
-/BD_92	hospitium	biendeclare
-/BD_93	hospitium	biendeclare
-/BD_94	hospitium	biendeclare
-/BD_95	hospitium	biendeclare
-/BD_96	hospitium	biendeclare
-/BD_97	hospitium	biendeclare
-/BD_98	hospitium	biendeclare
-/BD_99	hospitium	biendeclare
-/BD_100	hospitium	biendeclare
-/BD_101	hospitium	biendeclare
-/BD_102	hospitium	biendeclare
-/BD_103	2 hospitia contigua et unita et in unus hospitium reductus	biendeclare
-/BD_104	2 hospitia contigua et sese tenentia	biendeclare
-/BD_105	partes hospitium	biendeclare
-/BD_106	hospitium	biendeclare
-/BD_107	hospitium cum crota seu cum cellari profundus cum arcu volto de lapidus	biendeclare
-/BD_108	hospitium	biendeclare
-/BD_109	hospitium	biendeclare
-/BD_110	hospitium	biendeclare
-/BD_111	domus	biendeclare
-/BD_112	curtilus et domus	biendeclare
-/BD_113	domus cum curte	biendeclare
-/BD_114	localis et curtis contiguus	biendeclare
-/BD_115	hospitium	biendeclare
-/BD_116	hospitium cum solarium	biendeclare
-/BD_117	hospitium et curtis contiguus et sese tenere et unitis	biendeclare
-/BD_118	hospitium contiguus et sese tenere	biendeclare
-/BD_119	hospitium	biendeclare
-/BD_120	hospitium	biendeclare
-/BD_121	hospitium	biendeclare
-/BD_122	hospitium	biendeclare
-/BD_123	hospitium	biendeclare
-/BD_124	hospitium	biendeclare
-/BD_125	parietum seu fundamentum hospitium et domus cum patuis et solo terra	biendeclare
-/BD_126	hospitium	biendeclare
-/BD_127	hospitium	biendeclare
-/BD_128	hospitium	biendeclare
-/BD_129	hospitium	biendeclare
-/BD_130	hospitium cum curte	biendeclare
-/BD_131	partes pro indiviso hospitium cum magnum platea cum puteuo et viridarium	biendeclare
-/BD_132	hospitium cum curtis	biendeclare
-/BD_133	hospitium	biendeclare
-/BD_134	hospitium	biendeclare
-/BD_135	hospitium	biendeclare
-/BD_136	hospitium	biendeclare
-/BD_137	hospitium	biendeclare
-/BD_138	hospitium	biendeclare
-/BD_139	hospitium	biendeclare
-/BD_140	hospitium	biendeclare
-/BD_141	hospitium	biendeclare
-/BD_142	hospitium	biendeclare
-/BD_143	hospitium	biendeclare
-/BD_144	hospitium	biendeclare
-/BD_145	hospitium	biendeclare
-/BD_146	hospitium	biendeclare
-/BD_147	hospitium	biendeclare
-/BD_148	hospitium	biendeclare
-/BD_149	hospitium indivisi	biendeclare
-/BD_150	hospitium	biendeclare
-/BD_151	hospitium in quo est puteo	biendeclare
-/BD_152	hospitium	biendeclare
-/BD_153	hospitium	biendeclare
-/BD_154	cellarium cum solarium seu camera de super	biendeclare
-/BD_155	hospitium	biendeclare
-/BD_156	hospitium in quo est puteo	biendeclare
-/BD_157	hospitium	biendeclare
-/BD_158	hospitium	biendeclare
-/BD_159	2 hospitia contigua et sese tenentia	biendeclare
-/BD_160	hospitium	biendeclare
-/BD_161	hospitium	biendeclare
-/BD_162	transcurtis	biendeclare
-/BD_163	hospitium	biendeclare
-/BD_164	hospitium	biendeclare
-/BD_165	hospitium	biendeclare
-/BD_166	viridarium	biendeclare
-/BD_167	hospitium	biendeclare
-/BD_168	hospitium	biendeclare
-/BD_169	hospitium	biendeclare
-/BD_170	hospitium	biendeclare
-/BD_171	2 hospitia contigua et unita et in unus hospitium reductus	biendeclare
-/BD_172	hospitium	biendeclare
-/BD_173	hospitium	biendeclare
-/BD_174	hospitium	biendeclare
-/BD_175	hospitium	biendeclare
-/BD_176	hospitium	biendeclare
-/BD_177	hospitium	biendeclare
-/BD_178	hospitium	biendeclare
-/BD_179	viridarium	biendeclare
-/BD_180	hospitium et viridarium contigua et unitis	biendeclare
-/BD_181	hospitium	biendeclare
-/BD_182	hospitium	biendeclare
-/BD_183	hospitium cum curtis	biendeclare
-/BD_184	hospitium	biendeclare
-/BD_185	hospitium	biendeclare
-/BD_186	hospitium	biendeclare
-/BD_187	hospitium	biendeclare
-/BD_188	hospitium et curtis in quo ipse construxit et fecit fieri unum bonum puteum de novo	biendeclare
-/BD_189	burguetus	biendeclare
-/BD_190	hospitium et viridarium contigua et unitis	biendeclare
-/BD_191	hospitium	biendeclare
-/BD_192	hospitium	biendeclare
-/BD_193	hospitium	biendeclare
-/BD_194	hospitium et curtis	biendeclare
-/BD_195	hospitium et viridarium contigua et unitis	biendeclare
-/BD_196	hospitium et viridarium contigua et unitis	biendeclare
-/BD_197	2 hospitia cum magnum platea	biendeclare
-/BD_198	hospitium	biendeclare
-/BD_199	2 hospitia contigua et sese tenentia	biendeclare
-/BD_200	hospitium	biendeclare
-/BD_201	burguetus	biendeclare
-/BD_202	hospitium	biendeclare
-/BD_203	hospitium	biendeclare
-/BD_204	hospitium cum puteo et viridarium	biendeclare
-/BD_205	2 hospitia contigua et unita et in unus hospitium reductus cum puteo	biendeclare
-/BD_206	hospitium	biendeclare
-/BD_207	hospitium	biendeclare
-/BD_208	hospitium	biendeclare
-/BD_209	hospitium cum magna platea sive curtis cum puteo	biendeclare
-/BD_210	hospitium	biendeclare
-/BD_211	hospitia contigua et unita et ad unus et idem hospitium reductus	biendeclare
-/BD_212	hospitium	biendeclare
-/BD_213	hospitium	biendeclare
-/BD_214	hospitium	biendeclare
-/BD_215	hospitium	biendeclare
-/BD_216	hospitium	biendeclare
-/BD_217	hospitium	biendeclare
-/BD_218	soli seu terreni cum edificio suo desuper facto quod quidem terrenum vulgariter dicitur pozaca	biendeclare
-/BD_219	burguetus	biendeclare
-/BD_220	ortus	biendeclare
-/BD_221	ortus	biendeclare
-/BD_222	ortulus	biendeclare
-/BD_223	domus et palherie	biendeclare
-/BD_224	logue	biendeclare
-/BD_225	domus et curtis contigua	biendeclare
-/BD_226	hospitium et logue contiguorum	biendeclare
-/BD_227	hospitium	biendeclare
-/BD_228	hospitium	biendeclare
-/BD_229	domus et logua contigua et sese tenentia unita	biendeclare
-/BD_230	hospitia et magazina et logua contigua et unita	biendeclare
-/BD_231	hospitia et magazina contigua et unita	biendeclare
-/BD_232	grangia cum logis et curtibus	biendeclare
-/BD_233	domus et logis contigua et unita	biendeclare
-/BD_234	grangia cum domibus et logis sive curtibus et sese tenentibus	biendeclare
-/BD_235	hospitia et viridaria	biendeclare
-/BD_236	hospitia et viridaria ac curtis	biendeclare
-/BD_237	hospitia et magazina ac logua sive curtis et magne platee terre cum viridario et puteo	biendeclare
-/BD_238	domus et orti	biendeclare
-/BD_239	ortum sive viridarium cum domo in introitu ipsius	biendeclare
-/BD_240	ortolum	biendeclare
-/BD_241	ortus	biendeclare
-/BD_242	ortus	biendeclare
-/BD_243	hospitium et viridarium contiguorum et sese tenentium	biendeclare
-/BD_244	terre	biendeclare
-/BD_245	hospitium et viridarium contiguorum et sese tenentium	biendeclare
-/BD_246	2 hospitia contigua et unita et viridarium cum bono puteo	biendeclare
-/BD_247	hospitium	biendeclare
-/BD_248	burguetus	biendeclare
-/BD_249	hospitium	biendeclare
-/BD_250	hospitium et aliarum septem botigiarum	biendeclare
-/BD_251	hospitium cum magazinis contiguis	biendeclare
-/BD_252	hospitium	biendeclare
-/BD_253	domus	biendeclare
-/BD_254	domus	biendeclare
-/BD_255	domus et magazinus contigua et sese tenentia	biendeclare
-/BD_256	loge et grangie contiguarum et sese tenentium	biendeclare
-/BD_257	hospitium et viridarium	biendeclare
-/BD_443	hospitium in quo est furnus panis	biendeclare
-/BD_444	2 hospitia contigua et sese tenentia	biendeclare
-/BD_445	2 hospitia contigua et sese tenentia	biendeclare
-/BD_446	hospitium	biendeclare
-/BD_447	domuncula sive stabulum cum solerio	biendeclare
-/BD_448	hospitium	biendeclare
-/BD_449	hospitium cum platea magna et lata	biendeclare
-/BD_450	hospitium	biendeclare
-/BD_451	hospitium	biendeclare
-/BD_452	hospitium	biendeclare
-/BD_453	hospitium	biendeclare
-/BD_454	hospitium	biendeclare
-/BD_455	hospitium	biendeclare
-/BD_456	hospitia et viridaria et orti contigua et sese tenentia	biendeclare
-/BD_457	2 hospitia contigua et unita cum platea et puteo aque	biendeclare
-/BD_458	hospitium	biendeclare
-/BD_459	hospitium	biendeclare
-/BD_460	hospitium	biendeclare
-/BD_461	hospitium	biendeclare
-/BD_462	hospitium	biendeclare
-/BD_463	hospitium	biendeclare
-/BD_464	2 hospitia	biendeclare
-/BD_465	hospitium	biendeclare
-/BD_466	curtis sive logua	biendeclare
-/BD_467	logua et curtis	biendeclare
-/BD_468	logua sive curte	biendeclare
-/BD_469	logua	biendeclare
-/BD_470	logua sive curtis	biendeclare
-/BD_471	hospitium	biendeclare
-/BD_472	hospitium	biendeclare
-/BD_473	logua sive curtis	biendeclare
-/BD_474	hospitiolum sive domus parva	biendeclare
-/BD_475	hospitium	biendeclare
-/BD_476	hospitiolum	biendeclare
-/BD_477	hospitium	biendeclare
-/BD_478	hospitium	biendeclare
-/BD_479	2 hospitia contigua et sese tenentia	biendeclare
-/BD_480	hospitium	biendeclare
-/BD_481	hospitium	biendeclare
-/BD_482	2 hospitia contigua et sese tenentia	biendeclare
-/BD_483	hospitium	biendeclare
-/BD_484	hospitium	biendeclare
-/BD_485	hospitium	biendeclare
-/BD_486	hospitium	biendeclare
-/BD_487	hospitium	biendeclare
-/BD_488	hospitium	biendeclare
-/BD_489	hospitium	biendeclare
-/BD_490	hospitium	biendeclare
-/BD_491	hospitium	biendeclare
-/BD_492	hospitium	biendeclare
-/BD_493	3 hospitia contigua et sese tenentia	biendeclare
-/BD_494	2 hospitia et viridarium contigua et sese tenentia	biendeclare
-/BD_495	logua sive viridarium	biendeclare
-/BD_496	domus cum curte	biendeclare
-/BD_497	domus	biendeclare
-/BD_498	hospitium et viridarium	biendeclare
-/BD_499	hospitium	biendeclare
-/BD_500	hospitium	biendeclare
-/BD_501	logua	biendeclare
-/BD_502	logua	biendeclare
-/BD_503	domus	biendeclare
-/BD_504	hospitium et retrocurtis	biendeclare
-/BND_801	hospitium	biennondeclare
-/BND_802	hospitium sive operatorium	biennondeclare
-/BND_803	hospitium	biennondeclare
-/BND_804	hospitium	biennondeclare
-/BND_805	hospitium	biennondeclare
-/BND_806	hospitium	biennondeclare
-/BND_807	hospitium	biennondeclare
-/BND_808	hospitium	biennondeclare
-/BND_809	hospitium	biennondeclare
-/BND_810	hospitium	biennondeclare
-/BND_811	hospitium	biennondeclare
-/BND_812	hospitium	biennondeclare
-/BND_813	hospitium	biennondeclare
-/BND_814	hospitium	biennondeclare
-/BND_815	hospitium	biennondeclare
-/BND_816	hospitium	biennondeclare
-/BND_817	hospitium	biennondeclare
-/BND_818	hospitium	biennondeclare
-/BND_819	hospitium	biennondeclare
-/BND_820	curtis et hospitium	biennondeclare
-/BND_821	hospitium	biennondeclare
-/BND_822	hospitium	biennondeclare
-/BND_823	hospitium	biennondeclare
-/BND_824	hospitium	biennondeclare
-/BND_825	hospitium	biennondeclare
-/BND_826	hospitium	biennondeclare
-/BND_827	hospitium	biennondeclare
-/BND_828	hospitium	biennondeclare
-/BND_829	hospitium	biennondeclare
-/BND_830	hospitium sive curtis sive viridariumum	biennondeclare
-/BND_831	hospitium	biennondeclare
-/BND_832	hospitium	biennondeclare
-/BND_833	hospitium	biennondeclare
-/BND_834	hospitium	biennondeclare
-/BND_835	hospitium	biennondeclare
-/BND_836	hospitium	biennondeclare
-/BND_837	hospitium et curtis	biennondeclare
-/BND_838	viridarium	biennondeclare
-/BND_839	curtis	biennondeclare
-/BND_840	hospitium	biennondeclare
-/BND_841	hospitium	biennondeclare
-/BND_842	logua	biennondeclare
-/BND_843	hospitiumum et viridarium sive curtis	biennondeclare
-/BND_844	viridarium	biennondeclare
-/BND_845	hospitium	biennondeclare
-/BND_846	hospitium	biennondeclare
-/BND_847	hospitium	biennondeclare
-/BND_848	hospitium	biennondeclare
-/BND_849	domum	biennondeclare
-/BND_850	hospitium	biennondeclare
-/BND_851	hospitium	biennondeclare
-/BND_852	hospitium	biennondeclare
-/BND_853	hospitium et curtis	biennondeclare
-/BND_854	hospitium	biennondeclare
-/BND_855	hospitium	biennondeclare
-/BND_856	hospitium	biennondeclare
-/BND_857	casale sive domus	biennondeclare
-/BND_858	hospito	biennondeclare
-/BND_859	viridarium et hospitium	biennondeclare
-/BND_860	hospitium et viridarium	biennondeclare
-/BND_861	viridarium	biennondeclare
-/BND_862	hospitium et viridarium	biennondeclare
-/BND_863	viridarium	biennondeclare
-/BND_864	hospitium	biennondeclare
-/BND_865	hospitium	biennondeclare
-/BND_866	hospitium	biennondeclare
-/BND_867	hospitium	biennondeclare
-/BND_868	domus	biennondeclare
-/BND_869	burguetus	biennondeclare
-/BND_870	ortus	biennondeclare
-/BND_871	ortus	biennondeclare
-/BND_872	ortus sive viridarium	biennondeclare
-/BND_873	ortus sive viridarium	biennondeclare
-/BND_874	ortus	biennondeclare
-/BND_875	ortus	biennondeclare
-/BND_876	ortus	biennondeclare
-/BND_877	ortus	biennondeclare
-/BND_878	hospitium	biennondeclare
-/BND_879	hospitium	biennondeclare
-/BND_880	hospitium	biennondeclare
-/BND_881	hospitium	biennondeclare
-/BND_882	hospitium	biennondeclare
-/BND_883	hospitium	biennondeclare
-/BND_884	hospitium	biennondeclare
-/BND_885	hospitium	biennondeclare
-/BND_886	logua	biennondeclare
-/BND_887	hospitium	biennondeclare
-/BD_1012	hospitium	biendeclare
-/BD_1014	hospitium	biendeclare
-/BD_1143	hospitium	biendeclare
-/BD_1144	hospitium	biendeclare
-/R_3	Rue des Grottes	Rue
-/R_5	Rue de la Petite Fusterie	Rue
-/R_7	Rue allant de la Poissonerie	Rue
-/R_8	Rue des Masses	Rue
-/R_9	Rue des Ortolans	Rue
-/R_10	Rue Hugues de Sade ou Vieille Bouquerie	Rue
-/R_11	Rue du Four de la Vieille Bouquerie	Rue
-/R_12	Rue des Retrans ou des Banons	Rue
-/R_13	Rue du Portail Brianson	Rue
-/R_14	Rue Saint-Jean ou Derri√®re le Temple	Rue
-/R_15	Traverse derriere le Temple	Traverse
-/R_16	Rue Vieille Blanquerie ou de Notre-Dame des Fours	Rue
-/R_17	Rue Bouquerie	Rue
-/R_18	Rue Argenterie ou de la Muse	Rue
-/R_39	Rue au marche au fil	Rue
-/R_54	Rue Vieille Pelleterie	Rue
-/R_55	Rue Pelleterie Neuve	Rue
-/R_62	Rue Principale	Rue
-/R_68	Rue de la Draperie	Rue
-/R_69	Rue du Portail Boquier	Rue
-/R_74	Plan de Lunel	Place
-/R_75	Place des Changes	Place
-/R_76	Place de l eglise Notre-Dame la Principale	Place
-/R_79	Place du Portail Brianson	Place
-/R_80	Place du Portail Boquier	Place
-/R_96	Rue proche du Plan de Lunel et du Portail Brianson	Rue
-/R_97	Rue de l Amelhier	Rue
-/R_99	Rue allant du Portail de l eveque aux nouveaux murs de la ville	Rue
-/R_108	Place de le porte Aiguiere	Place
-/R_109	Rue vers les lices des frere Precheurs	Rue
-/R_110	Rue allant du port des Perriers a l eglise des Miracles	Rue
-/R_111	Rue allant au Port des Periers	Rue
-/R_112	Traverse allant de la rue des masses aux lices	Traverse
-/R_113	Rue allant du Portail Eveque au Portail Boquier	Rue
-/R_114	Place des Periers	Place
-/R_115	Place des Lombards	Place
-/R_116	Rue droite du Portail Eveque	Rue
-/RN_00117	traversia burgus Guillaume Ortolan	Traverse
-/RN_00118	carreria burgus Guillaume Ortolan	Rue
-/RN_00119	traversia non transeunte7	Impasse
-/RN_00120	carreria publica5	Rue
-/RN_00121	traversia public et transeunte3	Traverse
-/RN_00122	traversia8	Traverse
-/RN_00123	transversa publica et traseun2	Traverse
-/RN_00124	traversia non transeunte1	Impasse
-/RN_00125	curtil sive platea communi et publica	Place
-/RN_00126	platea	Place
-/RN_00127	traversia non transeunte	Impasse
-/RN_00128	carreria publica	Rue
-/RN_00129	carreria que est subtus cellarium sive penus monasterii Sancti Ruphi	Rue
-/RN_00130	traversia public et transeunte	Traverse
-/RN_00131	traversia public et transeunte	Traverse
-/RN_00132	traversiola	Traverse
-/RN_00133	transversia transeunte de dicta via de miraculis ad murorum novorum3	Traverse
-/RN_00134	carreria publica	Rue
-/RN_00135	traversia sive itinere	Traverse
-/RN_00136	traversia sive carreria publica per quam homo vadit ad ortos ermenchardis boerie et johanneti alvernhatii	Traverse
-/RN_00137	transversia introitus burgueti Bernardi de Rodesio	Traverse
-/Mur_412	Rempart neuf	Rempart
-/Mur_402	Rempart vieux	Rempart
-/L_206	Livree de Poitiers	Livree cardinalice
-/L_212	Livree de Naples	Livree cardinalice
-/L_223	Livree de Mirault	Livree cardinalice
-/L_224	Livree de Cambrai	Livree cardinalice
-/H_185	Rhone	Hydrologie
-/H_205	Sorgues	Hydrologie
-/BG_417	Bourg manquant	Bourg
-/BG_419	Bourgs de Jean Boerii	Bourg
-/BG_423	Bourg de Jean de Gigognan puis Guimet Abert	Bourg
-/BG_425	Bourg de Guillaume Ortolan	Bourg
-/BG_432	Bourg de Berenger de Tarascon	Bourg
-/BG_434	Bourg de Bernard de Rodez	Bourg
-/BG_437	Bourg de Guillaume Martin	Bourg
-/BGN_0051	Bourg de rixendis lanse	Bourg
-/E_119	Saint-Jean-de-Jerusalem	Chapelle
-/E_131	Notre-Dame La Principale	Eglise
-/E_132	Saint-Agricol	Eglise
-/E_133	Saint-Didier	Eglise
-/E_146	Petit Hopital	Hopital
-/E_152	Hopital du Saint-Esprit	Hopital
-/E_154	Eglise Saint-Genies	Eglise
-/E_155	Cimetiere de Saint-Genis	Cimetiere
-/E_156	Cimetiere de l eglise de la Principale	Cimetiere
-/E_157	Cimetiere de l eglise Saint-Agricol	Cimetiere
-/E_158	Notre-Dame des Miracles	Eglise
-/E_159	Notre-Dame d Esperance	Chapelle
-/E_160	Port des Periers	Port
-/E_161	Verger d Urbain V	Verger
-/E_163	Notre-Dame des Fours	Monastere
-/E_164	Verger du monastere Notre-Dame des Fours	Verger
-/EN_0049	hospitio furnus bocarie veteris	Four
+idNoeud	Type	Detail	Qualif	InfoSup	Mesure	materiaux	idQuartier	idRue	idBourg	idSeigneurie	idRedevance	TypeRedevance	Nature	echellemontant	Montant	Montant2	nbProprio	idproprio1	identite1	profession1	profession1bis	titre1	titre1bis	chargeecclesiastique1	statut1	idproprio2	identite2	profession2	profession2bis	titre2	titre2bis	chargeecclesiastique2	statut2	idproprio3	identite3	profession3	profession3bis	titre3	titre3bis	chargeecclesiastique3	statut3	idproprio4	identite4	profession4	profession4bis	titre4	titre4bis	chargeecclesiastique4	statut4
+/BD_1	biendeclare	hospitium					1	108		1	1	cens		5	2 sol. bon. tur. parv.		1	1	micheletus granerii	cursor																													
+/BD_2	biendeclare	hospitium					1	108		1	2	cens		5	3 sol. bon. tur. parv.		1	2	johannes vierni	cursor																													
+/BD_3	biendeclare	operatorium			de profundo ad intra versus parietem interiorem octo bonos passus hominis vel circa		5	75		1	3	cens		3	17 den. et 1 pict. bon. tur. parv.		1	3	alamandus gueti	mercator pannorum																													
+/BD_4	biendeclare	hospitium cum operatorium			de profundo ad intra versus parietem interiorem citra novem bonos passus hominis		5	75		1	4	cens		6	6 sol. 3 den. et ob. et 1 pict. bon. tur. parv.		2	5	johannes blanchi	campsor					civis avinionensis	4	ludovicus blanchi 	campsor					civis avinionensis																
+/BD_5	biendeclare	hospitium			de profundo ad intra versus parietem interiorem octo bonos passus hominis vel circa		5	75		1	5	cens		5	4 sol. 11 den. bon. tur. parv.		2	6	roza teulerie							7	agnesia teulerie																						
+/BD_6	biendeclare	hospitium					4	55		1	6	cens		3	18 den. bon. tur. parv.	10 sol. bon. tur.	1	8	philippa arlaya																														
+/BD_7	biendeclare	2 operatoria					4	55		1	7	cens		5	2 sol. 1 ob. bon. tur. parv.		1	9	franciscus chabaudi	mercator sive bladerius																													
+/BD_8	biendeclare	operatorium	magnum				4	55		1	8	cens		5	3 sol. bon. tur. parv.		1	9	franciscus chabaudi	mercator sive bladerius																													
+/BD_9	biendeclare	hospitium					4	54		1	9	cens		3	18 den. bon. tur. parv.		1	10	francisquetus de campanino																														
+/BD_10	biendeclare	hospitium					4	54		1	10	cens		3	18 den. bon. tur. parv.		1	11	aymericus de sancto michaele			nobilis 	domicellus																										
+/BD_11	biendeclare	hospitium					4	54		1	11	cens		2	6 den. bon. tur. parv.		1	12	bertrana porcelli																														
+/BD_12	biendeclare	hospitium cum crota					4	54		1	12	cens		3	20 den. bon. tur. parv.	20 sol. bon. tur. parv.	1	13	robertus giliberti	magister fossatorum et vallatorum		magister			habitator avinionis																								
+/BD_13	biendeclare	2 hospitia contigua	parva				4	54		1	13	cens		5	2 sol. bon. tur. parv.		1	14	ramundus magistri			burgensis																											
+/BD_14	biendeclare	hospitium					4	54		1	14	cens		2	9 den. bon. tur. parv.		1	15	johanna michaelis																														
+/BD_15	biendeclare	hospitium					4	54		1	15	cens		2	10 den. bon. tur. parv.		1	16	robertus  																														
+/BD_16	biendeclare	hospitium					4	54		1	16	cens		3	18 den. bon. tur. parv.		1	17	margarita de tornay																														
+/BD_17	biendeclare	hospitium					4	54		1	17	cens		3	19 den. bon. tur. parv.		1	18	johannes ramundi 			domicellus																											
+/BD_18	biendeclare	hospitium					5	55		1	18	cens		5	3 sol. 8 den. bon. tur. parv.		1	19	ludovicus de moreriis			domicellus 																											
+/BD_19	biendeclare	hospitium					5	55		1	19	cens		3	12 den. bon. tur. parv.	11 sol. bon. tur. parv.	2	20	jacota paicella							21	veranetus paicela																						
+/BD_20	biendeclare	hospitium					5	55		1	20	cens		2	6 den. bon. tur. parv.	5 sol. bon. tur. parv.	2	20	jacota paicella							21	veranetus paicela																						
+/BD_21	biendeclare	hospitium					5	55		1	21	cens		3	12 den. bon. tur. parv.	2 sol. bon. tur. parv.	1	22	catherina de sancto laurentio																														
+/BD_22	biendeclare	hospitium					5	55		1	22	cens		2	6 den. bon. tur. parv.		1	22	catherina de sancto laurentio																														
+/BD_23	biendeclare	2 hospitia contigua et unita et in unus hospitium reductus					5	55		1	23	cens		5	3 sol. bon. tur. parv.	20 sol. et 6 den. bon. tur. parv.	1	23	bertrandus audiberti	pellicerius					civis avinionensis																								
+/BD_24	biendeclare	2 hospitia contigua et sese tenentia					5	55		1	24	cens		5	2 sol. bon. tur. parv.	4 sol. bon. tur. parv.	1	24	heredes johannis chautardi																														
+/BD_25	biendeclare	hospitium					5	54		1	25	cens		3	18 den. bon. tur. parv.		1	25	laura de curthedone																														
+/BD_26	biendeclare	hospitium					5	54		1	26	cens		3	12 den. bon. tur. parv.		1	26	rixendis lansa																														
+/BD_27	biendeclare	hospitium					5	54		1	27	cens		3	18 den. bon. tur. parv.		1	26	rixendis lansa																														
+/BD_28	biendeclare	hospitium					5	54		1	28	cens		5	3 sol. bon. tur. parv.		1	27	bernardus de vinea	licenciatus in legibus		dominus																											
+/BD_29	biendeclare	hospitium	pulcrum				5	54		1	29	cens		5	3 sol. bon. tur. parv.		3	28	bertranetus velherii							29	johannetus velherii							30	guimonetus velherii														
+/BD_30	biendeclare	hospitium	pulcrum				5	54		1	30	cens		5	3 sol. bon. tur. parv.		1	31	johanna sabaterii																														
+/BD_31	biendeclare	hospitium					5	54		1	31	cens		5	3 sol. bon. tur. parv.		1	32	catherine rascate																														
+/BD_32	biendeclare	hospitium					5	54		1	32	cens		3	18 den. bon. tur. parv.		4	32	catherine rascate							33	johannes de mazano	fusterius						34	johannetus peissonerii	campsor						35	hugueta ruffe						
+/BD_33	biendeclare	hospitium					5	54		1	33	cens		3	18 den. bon. tur. parv.		3	33	johannes de mazano	fusterius						34	johannetus peissonerii	campsor						35	hugueta ruffe														
+/BD_34	biendeclare	hospitium					5	54		1	34	cens		3	18 den. bon. tur. parv.		1	36	perrina de campanino																														
+/BD_35	biendeclare	hospitium					5	54		1	35	cens		3	18 den. bon. tur. parv.		1	37	bartholomeus perrugueti	curaterius	mercator coriorum (sive)																												
+/BD_36	biendeclare	hospitium					5	54		1	36	cens		3	18 den. bon. tur. parv.		1	38	nicolaus grimaudi	campsor					habitator avinionis																								
+/BD_37	biendeclare	operatoria					5	54		1	37	cens		5	3 sol. 9 den. bon. tur. parv.		1	32	catherine rascate																														
+/BD_38	biendeclare	hospitium					5	54		1	38	cens		2	6 den. et 1 ob. bon. tur. parv.	10 sol. bon. tur. parv.	1	39	helizabeth de pabia																														
+/BD_39	biendeclare	hospitium					5	54		1	39	cens		3	16 den. et 1 ob. tur. parv.		1	40	johannes grassati	buticularius		dominus		canonicus lingonensis																									
+/BD_40	biendeclare	hospitium					5	76		1	40	cens		2	6 den. bon. tur. parv.		1	41	moninus guioti de fov ans	frucherius																													
+/BD_41	biendeclare	hospitium					5	76		1	41	cens		2	6 den. bon. tur. parv.		1	42	dulcelina draconis																														
+/BD_42	biendeclare	hospitium					5	76		1	42	cens		3	18 den. bon. tur. parv.		1	43	bertrandus chaputii	speciarius																													
+/BD_43	biendeclare	operatorium					5	76		1	43	cens		3	18 den. bon. tur. parv.		1	43	bertrandus chaputii	speciarius																													
+/BD_44	biendeclare	hospitium					5	76		1	44	cens		3	18 den. bon. tur. parv.		3	28	bertranetus velherii							29	johannetus velherii							30	guimonetus velherii														
+/BD_45	biendeclare	hospitium	magnum et pulcrum				5	76		1	45	cens		5	2 sol 13 den. bon. tur. parv.		2	44	folconus de pontaves							45	isnardus de pontaves																						
+/BD_46	biendeclare	hospitium in quo est furnus pasticerii	magnum				5	54		1	46	cens		3	18 den. bon. tur. parv.		1	46	massiotus de marcho de montefalcone	serviens armorum																													
+/BD_47	biendeclare	hospitium					5	54		1	47	cens		2	9 den. bon. tur. parv.		1	47	faraldus gerii de passis			domicellus 			italicus																								
+/BD_48	biendeclare	hospitium					5	54		1	48	cens		2	9 den. bon. tur. parv.		2	48	monetus arnaldi							49	guimetus broche					clericus																	
+/BD_49	biendeclare	hospitium					5	54		1	49	cens		3	18 den. bon. tur. parv.		1	50	johannes de cario	legum doctor		dominus																											
+/BD_50	biendeclare	hospitium					5	54		1	50	cens		3	18 den. bon. tur. parv.		1	34	johannetus peissonerii	campsor																													
+/BD_51	biendeclare	hospitium					5	54		1	51	cens		3	18 den. bon. tur. parv.		1	51	mona laurentie																														
+/BD_52	biendeclare	hospitium					5	54		1	52	cens		3	18 den. bon. tur. parv.		1	52	johannes de rome	serviens armorum																													
+/BD_53	biendeclare	hospitium					5	54		1	53	cens		3	18 den. bon. tur. parv.		3	52	johannes de rome	serviens armorum						53	benedicta de rome							54	catherina de rome														
+/BD_54	biendeclare	hospitium					5	54		1	54	cens		3	12 den. bon. tur. parv.		1	55	huguetus rasaudi	draperius																													
+/BD_55	biendeclare	hospitium					5	54		1	55	cens		3	18 den. bon. tur. parv.		1	56	johannis francisci de eugubio	sellerius																													
+/BD_56	biendeclare	hospitium		in quo dominus Nicolaus de Capucia, cardinalis Urgellensis, fecit stabulam et feneriam sive palriam et latrines communes			6	17		1	56	cens		1	1 bon. pict. tur. parv.		2	57	johannes motonerii			domicellus				58	sanxia motonerie			domina																			
+/BD_57	biendeclare	hospitium					6	17		1	57	cens		1	1 bon. pict. tur. parv.		2	59	franciscus de porta aqueria							60	nicolaus de porta aurosa																						
+/BD_58	biendeclare	hospitium				novus de quadris	6	17		1	58	cens		2	1 bon. den. tur. parv.		1	61	guillermus belheti			burgensis																											
+/BD_59	biendeclare	hospitium					6	17		1	59	cens		1	1 ob. tur. parv.		2	62	jacobus de vacairatio	notarius		magister				63	petrus de vacairatio 	canabasserius																					
+/BD_60	biendeclare	hospitium					6	17		1	60	cens		1	1 bon. pict. tur. parv.		1	51	mona laurentie																														
+/BD_61	biendeclare	hospitium					6	17		1	61	cens		1	1 bon. pict. tur. parv.		1	63	petrus de vacairatio 	canabasserius																													
+/BD_62	biendeclare	2 hospitia contigua et sese tenentia					6	17		1	62	cens		3	12 den. et ob. tur. parv.		1	64	johannes rich de amanatis	mercator					habitator avinionis																								
+/BD_63	biendeclare	partes pro indiviso hospitium					6	17		1	63	cens		5	3 sol. 1 pict. bon. tur. parv.		1	65	raynaldus de perusio																														
+/BD_64	biendeclare	partes pro indiviso hospitium		in quo inhabitat			6	17		1	64	cens		3	12 den. et 1 pict. bon. tur. parv.	4 sol. bon. tur. parv.	1	66	geraldus aymonis	sartor		magister																											
+/BD_65	biendeclare	partes pro indiviso hospitium					6	17		1	65	cens		2	6 den. bon. tur. parv. 4 sol. bon. tur. parv.	4 sol. 6 den. bon. tur. parv.	1	67	rostagnus sabrani	pergamanerius																													
+/BD_66	biendeclare	hospitium					6		20	1	66	cens		8	20 sol. bon. tur. parv.		1	68	petrus textoris	blanquerius																													
+/BD_67	biendeclare	hospitium					6		20	1	67	cens		8	20 sol. bon. tur. parv.		1	69	petrus garrigie	porterius																													
+/BD_68	biendeclare	hospitium					6		20	1	68	cens		8	20 sol. bon. tur. parv.		1	70	dolsalina bossa																														
+/BD_69	biendeclare	hospitium					6		20	1	69	cens		8	20 sol. bon. tur. parv.		1	71	petrus furnerii			burgensis		clericus																									
+/BD_70	biendeclare	2 partes hospitium cum puteo	magnum et profundu				6		20	1	70	cens		3	13 den. et 2 partes 1 ob. bon. tur. parv.	20 sol. bon. tur. parv.	1	72	anthonius luche de abbatibus	campsor	serviens armorum pape																												
+/BD_71	biendeclare	3 partes hospitium					6		20	1	71	cens		2	6 den. et 1 ob. et tertia pars alter ob. bon. tur. parv.		1	73	heredes amalrici urtice			nobilis																											
+/BD_72	biendeclare	hospitium	parvum				6		20	1	72	cens		2	3 den. et tertia partes 1 den. bon. tur. parv.		1	73	heredes amalrici urtice			nobilis																											
+/BD_73	biendeclare	hospitium					6		20	1	73	cens		2	6 den. et 2 partes 1 den. bon. tur. parv.	8 sol. bon. tur. parv.	1	74	johannes lene	barbitonsor		magister																											
+/BD_74	biendeclare	2 hospitia contigua et unita et in unus hospitium reductus					6		20	1	74	cens		2	10 den. et 1 ob. bon. tur. parv.		1	75	bernardus de rodesio	mercator		scutifer			familiaris et scutifer cardinalis bellifortis																								
+/BD_75	biendeclare	hospitium					6		20	1	75	cens		3	12 den. bon. tur. parv.		1	403	anglic grimoard			dominus		episcopus avinionis																									
+/BD_76	biendeclare	hospitium					6		20	1	76	cens			10 tur. gross. singulos pro 2 sol. et 4 den. monete hodie in avinione		1	76	anthonius de agenno	mercerius  																													
+/BD_77	biendeclare	hospitium					6	16	20	1	77	cens		5	2 sol. bon. tur. parv.		1	77	johanneta de piscariis																														
+/BD_78	biendeclare	hospitium					6	80		1	78	cens		5	2 sol. bon. tur. parv.		1	78	peiretus pontii																														
+/BD_79	biendeclare	hospitium					6	80		1	79	cens		3	12 den. bon. tur. parv.		1	79	jacobus descautii			domicellus																											
+/BD_80	biendeclare	hospitium					6	17		1	80	cens		2	6 den. bon. tur. parv.		1	80	hugoninus de givriaco	fusterius					habitator avinionis																								
+/BD_81	biendeclare	hospitium					2			1	81	cens		2	6 den. bon. tur. parv.		1	81	johannes de forgia	hostiarius porte ferri palatii domini nostri pape																													
+/BD_82	biendeclare	hospitium					2			1	82	cens		5	5 sol. bon. tur. parv.		1	82	dominicus de aymetia	palefrenarius pape					laicus																								
+/BD_83	biendeclare	hospitium					7	14		1	83	cens		10	1 alauda et 12 sophia et 1 pict. bon. tur. parv.		1	83	heredes domini jacobi de abbatisvilla																														
+/BD_84	biendeclare	hospitium in quo est furnus					7	14		1	84	cens		10	1 alauda et 12 sophia et 1 ob. tur. parv.		1	84	guillermus judicis	mercator 		scutifer																											
+/BD_85	biendeclare	hospitium					7	14		1	85	cens		10	2 alauda et 24 sophia et 1 den. bon. tur. parv.		1	84	guillermus judicis	mercator 		scutifer																											
+/BD_86	biendeclare	2 hospitia contigua et unita et in unus hospitium reductus in quo est puteo					7	14		1	86	cens		10	2 alauda et 24 sophia et l den. bon. tur. parv.		1	85	raimundus fabri					clericus loci de berriaco uticensis diocesis																									
+/BD_87	biendeclare	hospitium					7	14		1	87	cens		10	1 alauda et 12 sophia et 1 ob. bon. tur. parv.		1	86	anthonetus clementis	fusterius				clericus  																									
+/BD_88	biendeclare	2 hospitia contigua et unita et in unus hospitium reductus					7	14		1	88	cens		10	2 alauda et 24 sophia bona et sufficiens et 1 den. bon. tur. parv.		1	87	heredes raynaldi chatarini																														
+/BD_89	biendeclare	hospitium					7	96		1	89	cens		10	1 alauda et 12 sophia et 1 ob. tur. parv.		1	88	johannes florentini	pistor																													
+/BD_90	biendeclare	hospitium cum puteo et platea	magnum et longo				7	96		1	90	cens		10	3 alauda et 36 sophia et 1 ob. tur. parv.		1	89	nicolaus laurentii			dominus		capellanus																									
+/BD_91	biendeclare	hospitium					7	96		1	91	cens		10	1 alauda et 12 sophia et 1 ob. tur. parv.		1	90	johannes tribolandi 	porterius																													
+/BD_92	biendeclare	hospitium	magnum et pulcrum				7	96		1	92	cens		10	1 alauda et 12 sophia et 1 ob. tur. parv.		1	91	timburgis vayrane																														
+/BD_93	biendeclare	hospitium					7	13		1	93	cens		3	12 den. bon. tur. parv.		2	4	ludovicus blanchi 	campsor					civis avinionensis	5	johannes blanchi	campsor					civis avinionensis																
+/BD_94	biendeclare	hospitium					7	13		1	94	cens		10	3 partes 1 alauda et 4 sophia et 1 ob. tur. parv.		2	4	ludovicus blanchi 	campsor					civis avinionensis	5	johannes blanchi	campsor					civis avinionensis																
+/BD_95	biendeclare	hospitium					7	13		1	95	cens		10	1 alauda et 4 sophia et 1 ob. bon. tur. parv.	tertia pars unus alauda et 4 sophia et 1 bon. ob. tur. pro casalagio 4 sol. bon. tur. parv.	1	92	minchonas chatarini																														
+/BD_96	biendeclare	hospitium					7	13		1	96	cens		10	1 alauda et 12 sophia et 1 ob. bon. tur. parv.		1	93	dulcia helie																														
+/BD_97	biendeclare	hospitium					7	13		1	97	cens		10	3 pars unus alauda 1 ob. tur. parv.	tertia pars unus alauda et 4 sophia et 1 ob. bon. tur. parv. pro casalagio 4 sol. bon. tur. parv.	2	94	petrus baloti	sabaterius						95	peironeta johanne																						
+/BD_98	biendeclare	hospitium					7	12		1	98	cens		10	2 alauda et media et 30 sophia et 1 ob. tur. parv.		1	96	jacoba johannis																														
+/BD_99	biendeclare	hospitium					7	12		1	99	cens		10	2 alauda et media et 30 sophia et 1 ob. bon. tur. parv.	2 alauda et media et 30 sophia et 1 ob. bon. tur. parv. pro casalagio 3 sol. bon. tur. parv.	1	97	guillerma de fabrica																														
+/BD_100	biendeclare	hospitium					7	12		1	100	cens		10	media alauda et 6 sophia et 1 ob. bon. tur. parv.	media alauda et 6 sophias et 1 ob. tur. parv. pro casalgio	1	97	guillerma de fabrica																														
+/BD_101	biendeclare	hospitium					7	12		1	101	cens		10	media alauda et 6 sophia et i ob. tur. parv. media alauda et 6 sophia et 1 ob. bon. tur. parv. 18 den. bon. tur. parv.		1	91	timburgis vayrane																														
+/BD_102	biendeclare	hospitium	parvum				7	8		1	102	cens		10	media alauda et 6 sophia et 1 ob. bon. tur. parv.		1	98	heredes fratris johannis pascalis																														
+/BD_103	biendeclare	2 hospitia contigua et unita et in unus hospitium reductus					7	14		1	103	cens		10	2 alauda et 24 sophia et 1 ob. tur. parv.		1	99	helis guigonis																														
+/BD_104	biendeclare	2 hospitia contigua et sese tenentia					7	14		1	104	cens		10	1 alauda et 12 sophia et 1 ob. tur. parv.		1	86	anthonetus clementis	fusterius				clericus  																									
+/BD_105	biendeclare	partes hospitium					7	5		1	105	cens		2	6 den. bon. tur. parv.		1	100	johannes artaudi	scutifer		domicellus																											
+/BD_106	biendeclare	hospitium	pulcrum			noviter de bonis quadris lapidum constructi	7	5		1	106	cens		6	7 sol. 7 den. bon. tur. parv.	11 sol. et 4 den.	1	101	heredes guillelmi de caussina																														
+/BD_107	biendeclare	hospitium cum crota seu cum cellari profundus cum arcu volto de lapidus					7	7		1	107	cens		5	2 sol. 6 den. bon. tur. parv.	24 sol. bon. tur. parv.	1	102	margarita sperandei																														
+/BD_108	biendeclare	hospitium	pulcrum				7	7		1	108	cens		2	6 den. bon. tur. parv.		1	103	johannes jandre			burgensis 																											
+/BD_109	biendeclare	hospitium					7	7		1	109	cens		2	9 den. bon. tur. parv.		1	103	johannes jandre			burgensis 																											
+/BD_110	biendeclare	hospitium					7	7		1	110	cens		5	2 sol 9 den. bon. tur. parv.		1	104	bernardus de vinhali	jurisperitus	advocatus (sive)	magister																											
+/BD_111	biendeclare	domus	parvum				7	15	1	1	111	cens		2	4 den. et ob. bon. tur. parv.		1	105	hugoninus de sadone	mercator		burgensis																											
+/BD_112	biendeclare	curtilus et domus		latrina communes gentium domini cardinalis Guillelmi			7	15		1	112	cens		2	4 den. et ob. bon. tur. parv.		1	106	dolsalina davina																														
+/BD_113	biendeclare	domus cum curte	dirutum				7	15		1	113	cens		5	2 sol. bon. tur. parv.	3 sol. bon. tur. parv.	1	107	guido de podiovallis			nobilis	domicellus																										
+/BD_114	biendeclare	localis et curtis contiguus	quasi dirutum				7	15		1	114	cens		20	1 emina ordei bonus et pulcrum et 1 bonus caponum et pinguem		2	108	heredes bartholomei guidonis amoniti	mercator						109	franciscus guidonis amoniti																						
+/BD_115	biendeclare	hospitium	pulcrum			noviter de bonis quadris lapidum constructi	7	15		1	115	cens		20	1 emina ordei bonus et pulcrum et 1 bonus caponum et pinguem et 1 panis duo den. tur. et 1 den. bon. tur. parv.		1	110	heredes nobilis domine dalphine de castronovo																														
+/BD_116	biendeclare	hospitium cum solarium	parvum, quasi totaliter dirutum et destructi				7	15		1	116	cens		1	1 ob. bon. tur. parv.	4 den. bon. tur. parv.	1	111	guillermus barralis	camerarius		dominus		archidiaconus de capreriis																									
+/BD_117	biendeclare	hospitium et curtis contiguus et sese tenere et unitis					7	15		1	117	cens		2	6 den. bon. tur. parv.		1	112	guimetus abberti 	campsor																													
+/BD_118	biendeclare	hospitium contiguus et sese tenere					7	74		1	118	cens		6	10 sol. bon. tur. parv.		1	84	guillermus judicis	mercator 		scutifer																											
+/BD_119	biendeclare	hospitium					7	74		1	119	cens		6	7 sol. bon. tur. parv.		1	88	johannes florentini	pistor																													
+/BD_120	biendeclare	hospitium					7	74		1	120	cens		3	24 sol. monetus 13 sol. bon. tur. parv.		1	113	guillelmus judicis			reverendissimus in christo pater et dominus		divina providentia tituli sancte marie in cosmedin sacrosancte romane ecclesie diaconus cardinalis																									
+/BD_121	biendeclare	hospitium					7	74		1	121	cens		2	3 den. et 1 ob. tur. parv.		1	112	guimetus abberti 	campsor																													
+/BD_122	biendeclare	hospitium					7	74		1	122	cens		2	3 den. et 1 ob. parv. tur	5 sol. bon. tur. parv. 	1	114	alaizeta salvatoris																														
+/BD_123	biendeclare	hospitium					7	96		1	123	cens		1	3 ob. bon. tur. parv.		1	115	rostagnetus calvalherii																														
+/BD_124	biendeclare	hospitium					7	96		1	124	cens		1	3 ob. bon. tur. parv.		1	116	ricardis castrinovi																														
+/BD_125	biendeclare	parietum seu fundamentum hospitium et domus cum patuis et solo terra					7	14		1	125	cens		2	4 den. et 1 ob. bon. tur. parv.3 ob.6 den. bon. tur. parv.		2	118	nicolaus judicis			miles	dominus de lavineria Narbonensis diocesis			117	heredes domini jacobi judicis																						
+/BD_126	biendeclare	hospitium					7	14		1	126	cens		5	2 sol. bon. tur. parv.	12 sol. bon. tur. parv.	1	119	guillermeta boerie																														
+/BD_127	biendeclare	hospitium					7	12		1	127	cens		5	2 sol. 6 den. bon. tur. parv.		1	120	catherina fabri																														
+/BD_128	biendeclare	hospitium					7	12		1	128	cens		2	3 den. bon. tur. parv.		1	121	matheus de arva	peirerius	lapicida (sive)	magister			habitator avinionis																								
+/BD_129	biendeclare	hospitium		in quo est quodam archus sive introitus ad quoddam curtile vel plateam ibidem a parte meridiei positam cum arcu lapidum			7	12		1	129	cens		2	1 den. bon. tur. parv.		2	122	stephanus de banono	cultor						123	heredes salvatoris de banono																						
+/BD_130	biendeclare	hospitium cum curte					7	12		1	130	cens		2	1 alium den. bon. tur. parv.		3	124	petrus ymberti							125	bertrandus ymberti			burgensis				126	guillelmus ymberti														
+/BD_131	biendeclare	partes pro indiviso hospitium cum magnum platea cum puteuo et viridarium	pulcrum et magnum				7	12		1	131	cens		2	2 den. et 1 ob. bon. tur. parv.		2	127	giraudeta raynalde							91	timburgis vayrane																						
+/BD_132	biendeclare	hospitium cum curtis					7	8		1	132	cens					1	91	timburgis vayrane																														
+/BD_133	biendeclare	hospitium					7	8		1	133	cens		2	1 den. bon. tur. parv.		2	128	heredes petri arnaldi							129	heredes guillelmi arnaldi																						
+/BD_134	biendeclare	hospitium					7	8		1	134	cens		2	1 den. bon. tur. parv.		1	130	heredes domini petri del royre																														
+/BD_135	biendeclare	hospitium					7	8		1	135	cens		1	1 ob. bon. tur. parv.		1	131	petrus ratonchini	capellanus commensalis pape		dominus																											
+/BD_136	biendeclare	hospitium					7	12		1	136	cens		8	20 sol. bon. tur. parv.		1	132	heredes guillelmi roberti																														
+/BD_137	biendeclare	hospitium					7	12		1	137	cens		8	20 sol. bon. tur. parv.		1	133	heredes pontii de villariis 																														
+/BD_138	biendeclare	hospitium					7	12		1	138	cens		2	1 den. bon. tur. parv.		2	686	vesiana merindol							134	heredes domini petri malivicini militis																						
+/BD_139	biendeclare	hospitium					7	12		1	139	cens		5	3 sol. bon. tur. parv.		1	131	petrus ratonchini	capellanus commensalis pape		dominus																											
+/BD_140	biendeclare	hospitium					7	12		1	140	cens		3	18 den. bon. tur. parv.		1	78	peiretus pontii																														
+/BD_141	biendeclare	hospitium					7	12		1	141	cens		3	18 den. bon. tur. parv.		1	135	heredes johannis de brugeria alias de noyer																														
+/BD_142	biendeclare	hospitium					7	12		1	142	cens		5	2 sol. bon. tur. parv.	15 sol. bon. tur. parv.	1	136	petrus geraldi 	macellarius porcorum																													
+/BD_143	biendeclare	hospitium					7	12		1	143	cens		5	3 sol. bon. tur. parv.	10 sol. bon. tur. parv.	1	136	petrus geraldi 	macellarius porcorum																													
+/BD_144	biendeclare	hospitium	magnum et longo				7	12		1	144	cens			50 sol. bon. tur. parv.		1	136	petrus geraldi 	macellarius porcorum																													
+/BD_145	biendeclare	hospitium	magnum et pulcrum			noviter de bonis quadris lapidum constructi	7	8		1	145	cens		5	5 sol. 10 den. bon. tur. parv.		1	137	heredes domini bernardi de gardia																														
+/BD_146	biendeclare	hospitium					7	8		1	146	cens		5	2 sol. 6 den. bon. tur. parv.		1	137	heredes domini bernardi de gardia																														
+/BD_147	biendeclare	hospitium					7	8		1	147	cens		3	20 den. bon. tur. parv.		1	138	ludovica de gravis																														
+/BD_148	biendeclare	hospitium					7	8		1	148	cens		3	16 den. bon. tur. parv.	9 sol. bon. tur. parv.	1	139	jacobus fontayne	sartor					habitator avinionis																								
+/BD_149	biendeclare	hospitium indivisi					7	10		1	149	cens		5	2 sol. 6 den. bon. tur. parv.	10 sol. bon. tur. parv.	1	140	heredes peireti ysarn																														
+/BD_150	biendeclare	hospitium					7	10		1	150	cens		5	3 sol. bon. tur. parv.	12 sol. 6 den. bon. tur. parv.	1	141	jacobus de pusterla			domicellus			habitator avinionis																								
+/BD_151	biendeclare	hospitium in quo est puteo					7	10		1	151	cens		5	3 sol. bon. tur. parv.	20 sol. bon. tur. parv	1	142	johannes de sancto cassiano 	jurisperitus		magister			habitator avinionis																								
+/BD_152	biendeclare	hospitium					7	10		1	152	cens		3	12 den. bon. tur. parv.	20 sol. bon. tur. parv	1	142	johannes de sancto cassiano 	jurisperitus		magister			habitator avinionis																								
+/BD_153	biendeclare	hospitium					7	10		1	153	cens		5	4 sol. bon. tur. parv.	10 sol. bon. tur. parv.	1	143	johannes rabasse			domicellus																											
+/BD_154	biendeclare	cellarium cum solarium seu camera de super					7	10		1	154	cens		2	8 den. et 1 ob. bon. tur. parv.		1	143	johannes rabasse			domicellus																											
+/BD_155	biendeclare	hospitium		in quo inhabitat			7	10		1	155	cens		3	12 den. bon. tur. parv.	8 sol. bon. tur. parv.	1	144	catherine avenerie																														
+/BD_156	biendeclare	hospitium in quo est puteo					7	10		1	156	cens		5	3 sol. bon. tur. parv.		1	144	catherine avenerie																														
+/BD_157	biendeclare	hospitium					7	10		1	157	cens		5	3 sol. 3 den. bon. tur. parv.		1	145	hugo blanchi	licenciatus in legibus	advocatus	dominus																											
+/BD_158	biendeclare	hospitium					7	9		1	158	cens		2	2 den. bon. tur. parv.		1	146	garnerius de sadone			burgensis																											
+/BD_159	biendeclare	2 hospitia contigua et sese tenentia					7	9		1	159	cens		1	1 ob. tur. bon. parv.		1	147	bernardus de la fita	jurisperitus	"procurator"""	magister																											
+/BD_160	biendeclare	hospitium					7	9		1	160	cens		1	1 ob. bon. tur. parv.		1	148	heredes peireti ortolani																														
+/BD_161	biendeclare	hospitium					7	9		1	161	cens		2	6 den. bon. tur. parv.		1	149	johanna laura	brunitrix vasorum argenti																													
+/BD_162	biendeclare	transcurtis					7	9		1	162	cens		2	6 den. bon. tur. parv.		1	91	timburgis vayrane																														
+/BD_163	biendeclare	hospitium					7	9		1	163	cens		2	6 den. bon. tur. parv.		1	150	alzatia firman																														
+/BD_164	biendeclare	hospitium					7	9		1	164	cens		5	2 sol. bon. tur. parv.	7 sol. bon. tur. parv.	1	151	arnaldus de portis						familiaris episcopi avinionis																								
+/BD_165	biendeclare	hospitium					7	9		1	165	cens		3	18 den. bon. tur. parv.	10 sol. bon. tur. parv.	1	152	girardus guidaloti 	campsor  					habitator avinionis																								
+/BD_166	biendeclare	viridarium					7	9		1	166	cens		1	1 ob. tur. parv.		1	153	johannes de penna			domicellus																											
+/BD_167	biendeclare	hospitium					7	9		1	167	cens		5	2 sol. 9 den. bon. tur. parv.		1	148	heredes peireti ortolani																														
+/BD_168	biendeclare	hospitium					7	9		1	168	cens		3	12 den. bon. tur. parv.		1	154	margarita massana																														
+/BD_169	biendeclare	hospitium					7	9		1	169	cens		5	3 sol. 10 den. bon. tur. parv.		1	155	cecilia radulfe			domina																											
+/BD_170	biendeclare	hospitium					7	9		1	170	cens		2	6 den. bon. tur. parv.		1	155	cecilia radulfe			domina																											
+/BD_171	biendeclare	2 hospitia contigua et unita et in unus hospitium reductus					7	97		1	171	cens		3	14 den. et 1 ob. bon. tur. parv.	10 sol. bon. tur. parv.	1	152	girardus guidaloti 	campsor  					habitator avinionis																								
+/BD_172	biendeclare	hospitium					7	97		1	172	cens		2	6 den. bon. tur. parv.		1	156	heredes durandi isnardi																														
+/BD_173	biendeclare	hospitium					7	97		1	173	cens		2	9 den. bon. tur. parv.	7 sol. bon. tur. parv.	1	154	margarita massana																														
+/BD_174	biendeclare	hospitium					7	97		1	174	cens		3	12 den. bon. tur. parv.	7 sol. bon. tur. parv.	2	158	johanna uzole							157	florentius de sabulo	notarius		magister			habitator avinionis																
+/BD_175	biendeclare	hospitium					7	97		1	175	cens		1	1 ob. tur. parv.		1	159	guillelmus furnerii	hostiarius porte ferri palatii domini nostri pape																													
+/BD_176	biendeclare	hospitium					7	8		1	176	cens		2	1 den. bon. tur. parv.	20 sol. bon. tur. parv.	1	160	raimundus de salguis			reverendissimus in christo pater dominus		patriarcha antiochenus et episcopus agennensis																									
+/BD_177	biendeclare	hospitium					7	8		1	177	cens		1	1 ob. bon. tur. parv.	6 sol. bon. tur. parv. 	1	160	raimundus de salguis			reverendissimus in christo pater dominus		patriarcha antiochenus et episcopus agennensis																									
+/BD_178	biendeclare	hospitium					7	11		1	178	cens		2	1 den. bon. tur. parv.		1	32	catherine rascate																														
+/BD_179	biendeclare	viridarium					7	11		1	179	cens		3	14 den. et 1 ob. bon. tur. parv.		1	161	johannes guiberti	mercator																													
+/BD_180	biendeclare	hospitium et viridarium contigua et unitis					7	11		1	180	cens		2	4 den. bon. tur. parv.		1	162	heredes hugonis de sadone																														
+/BD_181	biendeclare	hospitium					7	11		1	181	cens		1	1 ob. bon. tur. parv.		1	163	heredes rostagni nicolai																														
+/BD_182	biendeclare	hospitium					7	9		1	182	cens		2	6 den. bon. tur. parv.		2	60	nicolaus de porta aurosa							59	franciscus de porta aqueria																						
+/BD_183	biendeclare	hospitium cum curtis					7	9		1	183	cens		5	4 sol. bon. tur. parv.		1	164	agnes la cleda																														
+/BD_184	biendeclare	hospitium					7	9		1	184	cens		2	9 den. et 1 ob. bon. tur. parv.		1	153	johannes de penna			domicellus																											
+/BD_185	biendeclare	hospitium					7	9		1	185	cens		5	3 sol. bon. tur. parv.		1	165	amalricus urtice junior			domicellus																											
+/BD_186	biendeclare	hospitium					7	9		1	186	cens		3	18 den. bon. tur. parv.		1	165	amalricus urtice junior			domicellus																											
+/BD_187	biendeclare	hospitium	pulcrum			noviter de bonis quadris lapidum constructi	7	9		1	187	cens		5	4 sol. 6 den. bon. tur. parv.		1	91	timburgis vayrane																														
+/BD_188	biendeclare	hospitium et curtis in quo ipse construxit et fecit fieri unum bonum puteum de novo					7	9		1	188	cens		3	16 den. et ob. bon. tur. parv.	4 sol. bon. tur. parv. 	1	152	girardus guidaloti 	campsor  					habitator avinionis																								
+/BD_189	biendeclare	burguetus					7	97	22	1	189	cens		8	18 sol. 6 den. bon. tur. parv.	36 sol. bon. tur. parv. et antiquus	3	75	bernardus de rodesio	mercator		scutifer			familiaris et scutifer cardinalis bellifortis	75	bernardus de rodesio	mercator		scutifer			familiaris et scutifer cardinalis bellifortis	75	bernardus de rodesio	mercator		scutifer			familiaris et scutifer cardinalis bellifortis								
+/BD_190	biendeclare	hospitium et viridarium contigua et unitis					7	97		1	190	cens		2	3 den. bon. tur. parv.		2	167	balthazar nuchi boni	mercator						166	gaspar nuchi boni 	mercator																					
+/BD_191	biendeclare	hospitium					7	97		1	191	cens		5	3 sol. bon. tur. parv.	7 sol. bon. tur. parv. 	1	143	johannes rabasse			domicellus																											
+/BD_192	biendeclare	hospitium					7	97		1	192	cens		4	21 den. bon. tur. parv.	10 sol. bon. tur. parv. 	1	98	heredes fratris johannis pascalis																														
+/BD_193	biendeclare	hospitium	parvum				7	97		1	193	cens		2	6 den. bon. tur. parv.	2 sol. 25 sol. bon. tur. parv. 	1	98	heredes fratris johannis pascalis																														
+/BD_194	biendeclare	hospitium et curtis	parvum				7	97		1	194	cens		5	2 sol. 11 den. et 1 ob. bon. tur. parv.		1	168	berengaria boerie																														
+/BD_195	biendeclare	hospitium et viridarium contigua et unitis					7	97		1	195	cens		5	2 sol. bon. tur. parv.		1	169	petrus radulphi de segureto	licenciatus in legibus		dominus			civis avinionensis																								
+/BD_196	biendeclare	hospitium et viridarium contigua et unitis					7	16		1	196	cens		5	3 sol7 den. tur. parv.		1	170	testa cresci de castello	notarius		magister																											
+/BD_197	biendeclare	2 hospitia cum magnum platea	magnum et pulcrum				7	16		1	197	cens		6	6 sol. bon. tur. parv.	2 sol. 25 sol. bon. tur. parv. 	1	171	agnes de belloforti 																														
+/BD_198	biendeclare	hospitium					7	16		1	198	cens		2	9 den. bon. tur. parv.		1	75	bernardus de rodesio	mercator		scutifer			familiaris et scutifer cardinalis bellifortis																								
+/BD_199	biendeclare	2 hospitia contigua et sese tenentia					7	16		1	199	cens		5	4 sol. bon. tur. parv.	15 sol. bon. tur. parv. 	1	172	margarita de mairossio																														
+/BD_200	biendeclare	hospitium					7	16		1	200	cens		3	18 den. bon. tur. parv.		1	173	leoneta milonis																														
+/BD_201	biendeclare	burguetus					7	16		1	201	cens		6	8 sol. 4 den. et 1 picta bon. tur. parv.	24 sol. bon. tur. parv. 	1	174	ludovicus malivicini			domicellus																											
+/BD_202	biendeclare	hospitium					7	16		1	202	cens		2	10 den. bon. tur. parv.		1	175	heredes mag. guidonis de mutina																														
+/BD_203	biendeclare	hospitium					7	16		1	203	cens		5	2 sol. 8 den. bon. tur. parv.		1	168	berengaria boerie																														
+/BD_204	biendeclare	hospitium cum puteo et viridarium					7	16		1	204	cens		3	18 den. bon. tur. parv.		1	176	heredes domini johannis dauronis																														
+/BD_205	biendeclare	2 hospitia contigua et unita et in unus hospitium reductus cum puteo					7	16		1	205	cens		5	3 sol6 den. bon. tur. parv.		1	162	heredes hugonis de sadone																														
+/BD_206	biendeclare	hospitium					7	16		1	206	cens		5	3 sol. bon. tur. parv.		3	177	matheus francisci							178	francisquetus francisci							179	anthonetus francisci														
+/BD_207	biendeclare	hospitium					7	16		1	207	cens		5	3 sol. bon. tur. parv.	13 sol. bon. tur. parv. 	3	182	mirabella johannis							180	guillelmus johannis							181	johannes johannis filius marchi johannis														
+/BD_208	biendeclare	hospitium	magnum et pulcrum				7	16		1	208	cens		5	2 sol. bon. tur. parv.		1	91	timburgis vayrane																														
+/BD_209	biendeclare	hospitium cum magna platea sive curtis cum puteo					7	16		1	209	cens		2	10 den. bon. tur. parv.		1	183	lippa de viamager																														
+/BD_210	biendeclare	hospitium	pulcrum				7	16		1	210	cens		3	15 den bon. tur. parv.		3	148	heredes peireti ortolani							184	catherina raynerii							226	heredes guillelmi ortolani														
+/BD_211	biendeclare	hospitia contigua et unita et ad unus et idem hospitium reductus				noviter de bonis quadris lapidum constructi	7	16		1	211	cens		2	7 den. bon. tur. parv.		1	75	bernardus de rodesio	mercator		scutifer			familiaris et scutifer cardinalis bellifortis																								
+/BD_212	biendeclare	hospitium					7	16		1	212	cens		2	3 den. bon. tur. parv.		1	185	johannes de sassono	sabaterius					habitator avinionis																								
+/BD_213	biendeclare	hospitium					7	69		1	213	cens		2	3 den. bon. tur. parv.		1	186	jacobus albi																														
+/BD_214	biendeclare	hospitium					7	69		1	214	cens		5	3 sol. bon. tur. parv.	12 sol. bon. tur. parv. 	2	187	mononus garnerii 	blanquerius						188	jacobus garnerii	blanquerius																					
+/BD_215	biendeclare	hospitium					7	69		1	215	cens		3	15 den. bon. tur. parv.		1	189	bartholomea olivarie																														
+/BD_216	biendeclare	hospitium	magnum et pulcrum				7	69		1	216	cens		3	20 den. bon. tur. parv.		1	32	catherine rascate																														
+/BD_217	biendeclare	hospitium					7	18		1	217	cens			unus quartonus unus libr bona cere novus ponderis civium avinionensium	4 sol. bon. tur. parv. 	1	190	guillelmus bernardi	barbitonsor		magister																											
+/BD_218	biendeclare	soli seu terreni cum edificio suo desuper facto quod quidem terrenum vulgariter dicitur pozaca					7		5	1	218	cens		1	3 ob. bon. tur. parv. de turonis		2	4	ludovicus blanchi 	campsor					civis avinionensis	5	johannes blanchi	campsor					civis avinionensis																
+/BD_219	biendeclare	burguetus		plures domos et curtes seu viridaria continentis			7			1	219	cens		7	21 sol. et 4 den. et 1 ob. tur. parv.		1	112	guimetus abberti 	campsor																													
+/BD_220	biendeclare	ortus			duas eminatas et sextam partem alterius eminate terre parum plus vel minus continentis		7			1	220	cens		2	4 den. bon. tur. parv.	6 sol. bon. tur. parv. 	1	191	arnaldus atti	ortolanus					habitator avinionis																								
+/BD_221	biendeclare	ortus			duas eminatas et quartam partem alterius eminate terre parum plus vel minus continentis		7			1	221	cens		2	9 den. et ob. bon. tur. parv.		1	191	arnaldus atti	ortolanus					habitator avinionis																								
+/BD_222	biendeclare	ortulus			mediam eminatam et decem dextros terre parum plus vel minus continentis		7			1	222	cens		3	12 den. bon. tur. parv.	2 sol. bon. tur. parv. 	1	191	arnaldus atti	ortolanus					habitator avinionis																								
+/BD_223	biendeclare	domus et palherie	magne				7			1	223	cens		2	6 den. bon. tur. parv.		1	192	heredes domini audoyni episcopi ostiensis sacrosancte romane ecclesie cardinalis																														
+/BD_224	biendeclare	logue	magne				7			1	224	cens		2	9 den. bon. tur. parv.		1	193	stephanus alberti			reverendissimus in christo pater et dominus		divina providentia tituli sancte marie in aquiro sacrosancte romane ecclesie diaconus cardinalis																									
+/BD_225	biendeclare	domus et curtis contigua					7			1	225	cens		2	1 den. bon. tur. parv.		1	84	guillermus judicis	mercator 		scutifer																											
+/BD_226	biendeclare	hospitium et logue contiguorum	pulcrum et magnum				7			1	226	cens		2	4 den. et 1 ob. tur. parv.		1	194	ramundis arnaldi de pratis			nobilis	dominus locorum de montepesato et de podio rupis caturcensis diocesis																										
+/BD_227	biendeclare	hospitium	magnum			noviter de bonis quadris lapidum constructi	7			1	227	cens		1	1 ob. tur. parv.		1	195	stephanus de gruoys	lapicida		magister			habitator avinionis																								
+/BD_228	biendeclare	hospitium					7			1	228	cens		2	7 den. et 1 ob. tur.parv.		1	196	nicolaus beti 	notarius		magister																											
+/BD_229	biendeclare	domus et logua contigua et sese tenentia unita					7			1	229	cens		3	17 den. et 1 ob. tur. parv.		1	197	albertus rozii	jurisperitus	procurator	magister																											
+/BD_230	biendeclare	hospitia et magazina et logua contigua et unita					7			1	230	cens		5	4 sol. et 4 den. bon. tur. parv.	12 sol. bon. tur. parv. 	1	196	nicolaus beti 	notarius		magister																											
+/BD_231	biendeclare	hospitia et magazina contigua et unita					7			1	231	cens		5	3 sol. et 8 den. bon. tur. parv.		1	198	cardinalis ser neri	mercator vinorum					habitator avinionis																								
+/BD_232	biendeclare	grangia cum logis et curtibus					7			1	232	cens		5	5 sol. bon. tur. parv.	20 sol. bon. tur. parv. 	1	113	guillelmus judicis			reverendissimus in christo pater et dominus		divina providentia tituli sancte marie in cosmedin sacrosancte romane ecclesie diaconus cardinalis																									
+/BD_233	biendeclare	domus et logis contigua et unita					7			1	233	cens		5	5 sol. bon. tur. parv.		1	199	heredes bertrandi folcaudi alias capelherii																														
+/BD_234	biendeclare	grangia cum domibus et logis sive curtibus et sese tenentibus					7			1	234	cens		5	2 sol. et 6 den. bon. tur. parv.		1	403	anglic grimoard			dominus		episcopus avinionis																									
+/BD_235	biendeclare	hospitia et viridaria					7			1	235	cens		5	2 sol. et 9 den. bon. tur. parv.		1	200	jotus jacobi	speciarius 	apothecarius (sive)				habitator avinionis																								
+/BD_236	biendeclare	hospitia et viridaria ac curtis					7			1	236	cens		5	3 sol. et 6 den. bon. tur. parv. et 1 eminam annone bone et receptibilis portatam		2	202	johannes meliorini	speciarius	apothecarius (sive)					201	agabitus meliorini	speciarius sive apothecarius	apothecarius (sive)																				
+/BD_237	biendeclare	hospitia et magazina ac logua sive curtis et magne platee terre cum viridario et puteo					7			1	237	cens		20	1 eminam et partem alterius emine annone bone et receptibilis portandas ad granerium dicti domini episcopi et 10 den. bon. tur. parv.		1	203	heredes johannis nuci de campis florentini																														
+/BD_238	biendeclare	domus et orti					7			1	238	cens		5	2 sol. et 6 den. bon. tur. parv.		1	204	heredes gilete durandi																														
+/BD_239	biendeclare	ortum sive viridarium cum domo in introitu ipsius	magnum et pulcrum		sex eminatas et quartam partem alterius eminate terre parum plus vel minus continentem		7			1	239	cens					1	403	anglic grimoard			dominus		episcopus avinionis																									
+/BD_240	biendeclare	ortolum					7			1	240	cens					1	403	anglic grimoard			dominus		episcopus avinionis																									
+/BD_241	biendeclare	ortus	magnus et pulcherimus		11 eminatas terre parum plus vel minus continentis		7			1	241	cens		8	68 sol. bon.tur.parv. et 4 eminas annone bone et receptibilis ad mensuram et valorem sestarii avinionis et 2 capones bonos et pingues ac sufficientes	4 libras et 8 sol. bon.tur.parv. et 4 eminas annone bone et receptibilis ad men- suram et valorem predictos et 2 bonos capones pingues et sufficentes	1	119	guillermeta boerie																														
+/BD_242	biendeclare	ortus	pulcrum		3 eminatas terre et octo dextros parum plus vel minus continentis cum domibus cum soleriis sibi contiguis et in dicto orto constructis		7			1	242	cens		20	8 eminas annone bone et receptiblis ad mensuram et valorem sestarii avinionis		1	205	johannes alvernhatii	corderius																													
+/BD_243	biendeclare	hospitium et viridarium contiguorum et sese tenentium					7			1	243	cens		3	20 den. bon. tur. parv.		1	206	johannes de blauzaco			domicellus	condominus loci de blauzaco uticensis diocesis 																										
+/BD_244	biendeclare	terre			5 eminate terre parum plus vel minus continentis, in qua terra sunt quedam domus sive hospitia cum multis et diversis logis et viridariis sive ortis contiguis et sese tenentibus		7			1	244	cens		7	14 sol. bon. tur. parv.		1	84	guillermus judicis	mercator 		scutifer																											
+/BD_245	biendeclare	hospitium et viridarium contiguorum et sese tenentium					7			1	245	cens		6	7 sol. bon. tur. parv.		1	207	heredes mone bresse																														
+/BD_246	biendeclare	2 hospitia contigua et unita et viridarium cum bono puteo					7			1	246	cens		5	3 sol. bon. tur. parv.		1	208	maragda brotoni																														
+/BD_247	biendeclare	hospitium					7			1	247	cens		2	4 den.bon. tur. parv.	10 sol. bon. tur. parv.	1	209	guimeta guimonis																														
+/BD_248	biendeclare	burguetus		multas et diversas domos et hospitia cum logis et viridariis contigua et sese tenentia continentis			7			1	248	cens		6	6 sol. et 7 den. bon. tur. parv.		0																																
+/BD_249	biendeclare	hospitium					7			1	249	cens		3	12 den. bon. tur. parv.		2	5	johannes blanchi	campsor					civis avinionensis	4	ludovicus blanchi 	campsor					civis avinionensis																
+/BD_250	biendeclare	hospitium et aliarum septem botigiarum, domorum sive hospitiorum et magazinorum	magnum			noviter de bonis quadris lapidum constructi	7			1	250	cens		5	2 sol. 6 den. et 1 ob. bon. tur. parv.		1	32	catherine rascate																														
+/BD_251	biendeclare	hospitium cum magazinis contiguis					7			1	251	cens		3	12 den. bon. tur. parv.		1	211	jacobus martini	mercator	"alberguerius"""																												
+/BD_252	biendeclare	hospitium					7			1	252	cens		2	8 den. bon tur parv.	12 sol. bon. tur. parv.	2	212	bertrandus bertreti 	tabernarius						213	dulcia furnerie																						
+/BD_253	biendeclare	domus					7			1	253	cens		2	2 den. bon. tur parv.		2	4	ludovicus blanchi 	campsor					civis avinionensis	5	johannes blanchi	campsor					civis avinionensis																
+/BD_254	biendeclare	domus					7			1	254	cens		2	2 den. bon. tur parv.		2	214	ludovicus amorachi							403	anglic grimoard			dominus		episcopus avinionis																	
+/BD_255	biendeclare	domus et magazinus contigua et sese tenentia					7			1	255	cens		2	7 den. et 1 ob. tur. paev.		2	199	heredes bertrandi folcaudi alias capelherii							215	angelonus amorachi																						
+/BD_256	biendeclare	loge et grangie contiguarum et sese tenentium					7			1	256	cens		3	15 den. ob. tur. parv.		1	216	egidius aycelini			reverendissimus in christo pater dominus		cardinalis tituli sancti martini in montibus sancte romane ecclesie presbyter 																									
+/BD_257	biendeclare	hospitium et viridarium	pulcrum et magnum			noviter de bonis quadris lapidum constructi	7			1	257	cens		4	22 den. bon. tur. parv.		1	217	heredes benedicti andree																														
+/BD_443	biendeclare	hospitium in quo est furnus panis					7	74		2	443	accensement		5	2 sol. bon. tur. 		1	26	rixendis lansa																														
+/BD_444	biendeclare	2 hospitia contigua et sese tenentia					7	74		3	444	accensement			60 tur. grossos argenti de turonis cum o rotundo domini francie regis		1	684	gabrielus pelaprati	canabasserius																													
+/BD_445	biendeclare	2 hospitia contigua et sese tenentia					7	74		4	445	accensement		8	17 sol. bon.tur.parv. 		2	351	heres andree de solo							154	margarita massana																						
+/BD_446	biendeclare	hospitium					7	74		5	446	accensement		6	8 sol. bon.tur.parv. 		1	114	alaizeta salvatoris																														
+/BD_447	biendeclare	domuncula sive stabulum cum solerio					7	8		6	447	accensement		2	2 den. bon. tur.parv. 		1	136	petrus geraldi 	macellarius porcorum																													
+/BD_448	biendeclare	hospitium	magnum et pulcrum				7	13		6	448	accensement					1	262	petrus de serris	macellarius																													
+/BD_449	biendeclare	hospitium cum platea magna et lata		in quoquidem hospitio facie- bat tinellum dominus cardinalis Morinensis sive de Toroana' qui in ipso inhabitabat dum Curia romana erat hic moram trahens in Avinione			7	12		7	449	accensement					1	353	sclarmonda pelaprate																														
+/BD_450	biendeclare	hospitium					7	74		8	450	accensement		5	5 sol. tur. 		1	685	rostagnus nicolay	macellarius																													
+/BD_451	biendeclare	hospitium					7	9		8	451	accensement		2	6 den. tur. 		1	153	johannes de penna			domicellus																											
+/BD_452	biendeclare	hospitium	magnum et altum			noviter de bonis quadris lapidum constructi	7	9		8	452	accensement		2	4 den. et ob. et pictam tur.		1	153	johannes de penna			domicellus																											
+/BD_453	biendeclare	hospitium					7	9		8	453	accensement		1	3 ob. tur.		1	260	jacobus reboli	canabasserius	mercator telarum																												
+/BD_454	biendeclare	hospitium					7	8		9	454	accensement		5	3 sol. bon. tur. parv. antiq.		1	356	johannete de sadone																														
+/BD_455	biendeclare	hospitium					7	8		9	455	accensement		3	12 den. bon.tur.parv. et antiq. 		1	357	girardete la cleda																														
+/BD_456	biendeclare	hospitia et viridaria et orti contigua et sese tenentia			duas eminatas et mediam eminatam terre continentes		7			9	456	accensement					1	355	rostagnetus de mories			nobilis	domicellus																										
+/BD_457	biendeclare	2 hospitia contigua et unita cum platea et puteo aque	magna et pulcra				7	10		11	457	accensement					2	59	franciscus de porta aqueria							60	nicolaus de porta aurosa																						
+/BD_458	biendeclare	hospitium					7	11		11	458	accensement					1	358	heredes raimundi suffredi																														
+/BD_459	biendeclare	hospitium	pulcrum et magnum			noviter de bonis quadris lapidum constructi	7	11		11	459	accensement					1	358	heredes raimundi suffredi																														
+/BD_460	biendeclare	hospitium	magnum et pulcrum				7	11		12	460	accensement					1	161	johannes guiberti	mercator																													
+/BD_461	biendeclare	hospitium	parvum			noviter de bonis quadris lapidum constructi	7	11		13	461	accensement					1	359	marita de cavallione																														
+/BD_462	biendeclare	hospitium	bonum et pulcrum			noviter de bonis quadris lapidum constructi	7	10		14	462	accensement					1	360	marita brige			domina																											
+/BD_463	biendeclare	hospitium					7	10		14	463	accensement					1	360	marita brige			domina																											
+/BD_464	biendeclare	2 hospitia					7			15	464	accensement					1	361	raimundus dauronis			miles	condominus loci de Ronhonassio																										
+/BD_465	biendeclare	hospitium	pulcrum et magnum				7			16	465	accensement					1	362	peiretus de sancto martiale																														
+/BD_466	biendeclare	curtis sive logua					7		11	17	466	accensement		6	6 sol. et 9 den.tur. 		1	363	johannes guauterii																														
+/BD_467	biendeclare	logua et curtis					7		11	17	467	accensement		6	6 sol. et 9 den. tur. 		1	364	petrus viventii	fozenerius																													
+/BD_468	biendeclare	logua sive curte					7		11	17	468	accensement		6	9 sol. tur. 		1	365	johannes vitalis	fozenerius 	argentierius (sive)																												
+/BD_469	biendeclare	logua					7		11	17	469	accensement		7	14 sol. et 6 den. tur. 		1	366	heredes antonii lebre																														
+/BD_470	biendeclare	logua sive curtis					7		11	17	470	accensement		7	14 sol. tur. 		1	241	johannes boterii	cultor																													
+/BD_471	biendeclare	hospitium					7		11	17	471	accensement		6	10 sol. tur. 		1	367	johannes textoris alias pascalis	tabernarius																													
+/BD_472	biendeclare	hospitium					7		11	17	472	accensement		6	10 sol. tur. 		1	241	johannes boterii	cultor																													
+/BD_473	biendeclare	logua sive curtis					7		11	17	473	accensement		7	12 sol. tur. 		1	368	petrus barnerii	affanator																													
+/BD_474	biendeclare	hospitiolum sive domus parva					7		11	17	474	accensement					1	368	petrus barnerii	affanator																													
+/BD_475	biendeclare	hospitium					7		11	17	475	accensement		6	6 sol. tur.		1	369	jacobus juliani	affanator 	molendinarius (sive)																												
+/BD_476	biendeclare	hospitiolum					7		11	17	476	accensement		6	9 sol. tur. 		1	370	symoneta lo sartre																														
+/BD_477	biendeclare	hospitium					7		11	17	477	accensement		5	4 sol. tur. 		1	371	johannes de savoya	ribayrerius																													
+/BD_478	biendeclare	hospitium					7		11	17	478	accensement		6	6 sol. tur. 		1	372	guillermeta sabrana																														
+/BD_479	biendeclare	2 hospitia contigua et sese tenentia					7		11	17	479	accensement		7	15 sol. tur. 		1	373	johannes petiti	macellarius porcorum																													
+/BD_480	biendeclare	hospitium					7		11	17	480	accensement		7	15 sol. tur. 		1	374	stephaneta de laz fayssas	ortolana																													
+/BD_481	biendeclare	hospitium					7		11	17	481	accensement		7	15 sol. tur. 		2	250	guillelmus catalani	palefrenarius						249	beatrix bermonde																						
+/BD_482	biendeclare	2 hospitia contigua et sese tenentia					7		11	17	482	accensement		8	34 sol. tur. 		1	367	johannes textoris alias pascalis	tabernarius																													
+/BD_483	biendeclare	hospitium					7		11	17	483	accensement		6	9 sol. tur. 		1	376	mingeta de narbona	mulier communis et publica																													
+/BD_484	biendeclare	hospitium					7		11	17	484	accensement		6	10 sol. tur. 		1	377	johanneta de mers	mulier communis et publica																													
+/BD_485	biendeclare	hospitium					7		11	17	485	accensement		5	5 sol. tur. 		1	378	colinetus sive nicolaus ramundi 	palefrenarius cardinalis guillelmi judicis																													
+/BD_486	biendeclare	hospitium					7		11	17	486	accensement		5	5 sol. tur. 		1	379	johannes carbonelli	tabernarius	"mercator"""																												
+/BD_487	biendeclare	hospitium					7		11	17	487	accensement		6	9 sol. tur. 		1	380	margarita la porceluda	mulier communis et publica																													
+/BD_488	biendeclare	hospitium					7		11	17	488	accensement		7	12 sol. tur. 		1	381	huguetus lo bergonho 	furnerius																													
+/BD_489	biendeclare	hospitium	amplum		a parte meridiei seu dicte transversie publice et transeuntis unum dextrum et medium seu duas cannas simplices		7		11	17	489	accensement					1	112	guimetus abberti 	campsor																													
+/BD_490	biendeclare	hospitium					7		13	18	490	accensement					1	226	heredes guillelmi ortolani																														
+/BD_491	biendeclare	hospitium					7		13	18	491	accensement		8	1 flor. auri de 24 sol. monete nunc in Avinione currentis 		2	382	mondonus de solerio	porterius 						383	anthoneta de solerio																						
+/BD_492	biendeclare	hospitium	satis bonum			noviter de bonis quadris lapidum constructi	7		13	18	492	accensement		8	30 sol. tur. sive 2 flor. cum dimidio auri		1	384	bernardus de cobonibus	mercator 																													
+/BD_493	biendeclare	3 hospitia contigua et sese tenentia					7		13	18	493	accensement		8	24 sol. tur. sive 2 flor. 		1	385	heredes mathee de rupemaura																														
+/BD_494	biendeclare	2 hospitia et viridarium contigua et sese tenentia					7		13	18	494	accensement		8	1 flor. et medium auri		1	209	guimeta guimonis																														
+/BD_495	biendeclare	logua sive viridarium					7		13	18	495	accensement		8	1 flor. auri		1	386	dominicus opinelli	tabernarius sive estivator botarum	estivator botarum (sive)																												
+/BD_496	biendeclare	domus cum curte					7		13	18	496	accensement		8	16 sol. et 6 den. tur. 	15 sol. et 10 den. tur. 	2	212	bertrandus bertreti 	tabernarius						213	dulcia furnerie																						
+/BD_497	biendeclare	domus					7		13	18	497	accensement		8	17 sol. tur. 		1	387	saurina radulphe 																														
+/BD_498	biendeclare	hospitium et viridarium					7		13	18	498	accensement		8	17 sol. tur. 		1	388	micheal vergerii	estivator botarum					habitator avinionis																								
+/BD_499	biendeclare	hospitium					7		13	18	499	accensement		8	18 sol. tur. 		1	388	micheal vergerii	estivator botarum					habitator avinionis																								
+/BD_500	biendeclare	hospitium					7		13	18	500	accensement		8	20 sol. tur. 		1	389	catherina talonis																														
+/BD_501	biendeclare	logua					7		13	18	501	accensement		8	1 flor. et medium auri		1	240	cathochius lori	speciarius					habitator avinionis																								
+/BD_502	biendeclare	logua					7		13	18	502	accensement		8	18 sol. bon.tur. 		2	383	anthoneta de solerio							382	mondonus de solerio	porterius 																					
+/BD_503	biendeclare	domus	magna	in qua reverendus pater dominus Gaufridus, nunc archiepiscopus Tholosanus, dum Curia romana in civitate Avinionensi residebat, tenebat paleas et fena pro animalibus suis			7		13	18	503	accensement		8	1 flor. auri 		1	390	filii et heredes domini gaucelmi de vayrolis																														
+/BD_504	biendeclare	hospitium et retrocurtis					7		13	18	504	accensement		8	3 flor. auri 		2	4	ludovicus blanchi 	campsor					civis avinionensis	5	johannes blanchi	campsor					civis avinionensis																
+/BND_801	biennondeclare	hospitium																26	rixendis lansa																														
+/BND_802	biennondeclare	hospitium sive operatorium																79	jacobus descautii			domicellus																											
+/BND_803	biennondeclare	hospitium																1024	hugonis vitalis	speciarius sive mercator																													
+/BND_804	biennondeclare	hospitium																816	mabilia soquerie																														
+/BND_805	biennondeclare	hospitium																1081	petrus regis	bladerius																													
+/BND_806	biennondeclare	hospitium																19	ludovicus de moreriis			domicellus 																											
+/BND_807	biennondeclare	hospitium		1326														1082	petrus blanchi	procurator																													
+/BND_808	biennondeclare	hospitium		1327														765	guillelmus sabaterii							923	jacoba pellicerie																						
+/BND_809	biennondeclare	hospitium		1333														1083	petrus de trulassio			burgensis																											
+/BND_810	biennondeclare	hospitium		1328														32	catherine rascate																														
+/BND_811	biennondeclare	hospitium		1329														36	perrina de campanino																														
+/BND_812	biennondeclare	hospitium		1330														37	bartholomeus perrugueti	curaterius																													
+/BND_813	biennondeclare	hospitium		1331														38	nicolaus grimaudi	campsor																													
+/BND_814	biennondeclare	hospitium		1332														39	helizabeth de pabia																														
+/BND_815	biennondeclare	hospitium																1083	petrus de trulassio			burgensis																											
+/BND_816	biennondeclare	hospitium																1084	johannes guillelmi	barbitonsor sive barberius																													
+/BND_817	biennondeclare	hospitium																743	ermescendis pelegrini																														
+/BND_818	biennondeclare	hospitium																1085	heredes pontius terrassone																														
+/BND_819	biennondeclare	hospitium		1346 ou 1347														75	bernardus de rodesio	mercator		scutifer																											
+/BND_820	biennondeclare	curtis et hospitium		2610 ?														78	peiretus pontii																														
+/BND_821	biennondeclare	hospitium																79	jacobus descautii			domicellus																											
+/BND_822	biennondeclare	hospitium																1087	gaufride malbeque			domina																											
+/BND_823	biennondeclare	hospitium																115	rostagnetus calvalherii																														
+/BND_824	biennondeclare	hospitium																1089	heredes guillelmus laurenti																														
+/BND_825	biennondeclare	hospitium																1091	heredes guillelmus descauti																														
+/BND_826	biennondeclare	hospitium																1092	guillelmus oliverii																														
+/BND_827	biennondeclare	hospitium																707	bartholomeus de loco 	mercator																													
+/BND_828	biennondeclare	hospitium																80	hugoninus de givriaco	fusterius																													
+/BND_829	biennondeclare	hospitium																917	guillelmus joye	mercator																													
+/BND_830	biennondeclare	hospitium sive curtis sive viridariumum																99	helis guigonis																														
+/BND_831	biennondeclare	hospitium																262	petrus de serris	macellarius																													
+/BND_832	biennondeclare	hospitium																101	heredes guillelmi de caussina																														
+/BND_833	biennondeclare	hospitium																102	margarita sperandei																														
+/BND_834	biennondeclare	hospitium																103	johannes jandre			burgensis 																											
+/BND_835	biennondeclare	hospitium																1093	pochetus faraudi	canabasserius																													
+/BND_836	biennondeclare	hospitium																698	petrus judicis			dominus		archiepiscopus narbonensis																									
+/BND_837	biennondeclare	hospitium et curtis		1208														1094	guillermus gaufridi			nobilis																											
+/BND_838	biennondeclare	viridarium																119	guillermeta boerie																														
+/BND_839	biennondeclare	curtis																120	catherina fabri																														
+/BND_840	biennondeclare	hospitium																121	matheus de arva	peirerius		magister																											
+/BND_841	biennondeclare	hospitium																140	heredes peireti ysarn																														
+/BND_842	biennondeclare	logua		3207														122	stephanus de banono	cultor																													
+/BND_843	biennondeclare	hospitiumum et viridarium sive curtis		censum dominabus monasterii Sancte Clare														124	petrus ymberti																														
+/BND_844	biennondeclare	viridarium		monasterii sancte clare														127	giraudeta raynalde																														
+/BND_845	biennondeclare	hospitium																224	petrus damiani			domicellus																											
+/BND_846	biennondeclare	hospitium	magnum et pulcrum															91	timburgis vayrane																														
+/BND_847	biennondeclare	hospitium																91	timburgis vayrane																														
+/BND_848	biennondeclare	hospitium																91	timburgis vayrane																														
+/BND_849	biennondeclare	domum																739	guillelmus de gardia					archiepiscopus arelatensis																									
+/BND_850	biennondeclare	hospitium																143	johannes rabasse			domicellus																											
+/BND_851	biennondeclare	hospitium																1095	bartholomeus del cassanh	scriptor pape																													
+/BND_852	biennondeclare	hospitium																454	germanus guasqui					clericus tholosanus																									
+/BND_853	biennondeclare	hospitium et curtis		monasterii Sancte Clare Avinionis														160	raimundus de salguis			reverendissimus in christo pater dominus		patriarcha antiochenus et episcopus agennensis																									
+/BND_854	biennondeclare	hospitium																879	attavianus bernardini			scutifer																											
+/BND_855	biennondeclare	hospitium																426	bertrandus astoaudi			domicellus 																											
+/BND_856	biennondeclare	hospitium																1097	heredes johannes baronis																														
+/BND_857	biennondeclare	casale sive domus																1098	joannes baronis	pistor																													
+/BND_858	biennondeclare	hospito																743	ermescendis pelegrini																														
+/BND_859	biennondeclare	viridarium et hospitium																5	johannes blanchi	campsor					civis avinionensis	4	ludovicus blanchi 	campsor					civis avinionensis																
+/BND_860	biennondeclare	hospitium et viridarium																199	heredes bertrandi folcaudi alias capelherii																														
+/BND_861	biennondeclare	viridarium																179	anthonetus francisci							178								177															
+/BND_862	biennondeclare	hospitium et viridarium																91	timburgis vayrane																														
+/BND_863	biennondeclare	viridarium																184	catherina raynerii																														
+/BND_864	biennondeclare	hospitium																32	catherine rascate																														
+/BND_865	biennondeclare	hospitium																869	stephanus barralli			burgensis																											
+/BND_866	biennondeclare	hospitium																869	stephanus barralli			burgensis																											
+/BND_867	biennondeclare	hospitium																1099	guimonis nini de senis	argentarius																													
+/BND_868	biennondeclare	domus																5	johannes blanchi	campsor					civis avinionensis	4	ludovicus blanchi 	campsor					civis avinionensis																
+/BND_869	biennondeclare	burguetus																112	guimetus abberti 	campsor																													
+/BND_870	biennondeclare	ortus																900	ferraria martina																														
+/BND_871	biennondeclare	ortus	magnus															1250	hospital sancti benedicti																														
+/BND_872	biennondeclare	ortus sive viridarium																393	petrocho porci	pistor 																													
+/BND_873	biennondeclare	ortus sive viridarium																859	ranulphus de lugato					laicus																									
+/BND_874	biennondeclare	ortus																1077	johanne guigonis																														
+/BND_875	biennondeclare	ortus																783	huguitio sive gocho de peroza	cursor pape																													
+/BND_876	biennondeclare	ortus																1100	pontius alzoni	frucherius sive ortolanus																													
+/BND_877	biennondeclare	ortus		directe des miracles														1101	raymundus marquesii					clericus	familiaris guillelmi de guillelmia																								
+/BND_878	biennondeclare	hospitium																115	rostagnetus calvalherii																														
+/BND_879	biennondeclare	hospitium																224	petrus damiani			domicellus sive burgensis																											
+/BND_880	biennondeclare	hospitium																1104	heredes guillelmus magroni																														
+/BND_881	biennondeclare	hospitium		directe du monastere de sainte claire														282	sanxia roberte			domina																											
+/BND_882	biennondeclare	hospitium																358	heredes raimundi suffredi																														
+/BND_883	biennondeclare	hospitium																1105	petrus de sancto martiale	magister hostiarium pape																													
+/BND_884	biennondeclare	hospitium																1106	johannes mercerii	abreviator pape																													
+/BND_885	biennondeclare	hospitium																989	catherine colini																														
+/BND_886	biennondeclare	logua																241	johannes boterii	cultor																													
+/BND_887	biennondeclare	hospitium																1107	johannes marescalli	fozonerius																													
+/BND_888	biennondeclare	hospitium sive stabulum																																															
+/BD_1012	biendeclare	hospitium					2	32		19	1012	cens		8	20 sol. tur. parv. antiq.		1	547	raymundus ays	scriptor 																													
+/BD_1014	biendeclare	hospitium					2			19	1014	cens		2	7 den. cum ob.tur.parv. antiq.		1	560	robertus lauloys	scriptor		dominus																											
+/BD_1143	biendeclare	hospitium					7	8		19	1143	cens		2	8 den. tur. parv. antiq.		1	454	germanus guasqui					clericus tholosanus	habitator avinionis																								
+/BD_1144	biendeclare	hospitium					7	8		19	1144	cens		5	4 sol. 10 den. tur. parv.		1	417	bernardus de serramontesio junior	notarius					habitator avinionis																								
+/R_3	Rue	Rue des Grottes																																															
+/R_5	Rue	Rue de la Petite Fusterie																																															
+/R_7	Rue	Rue allant de la Poissonerie																																															
+/R_8	Rue	Rue des Masses																																															
+/R_9	Rue	Rue des Ortolans																																															
+/R_10	Rue	Rue Hugues de Sade ou Vieille Bouquerie																																															
+/R_11	Rue	Rue du Four de la Vieille Bouquerie																																															
+/R_12	Rue	Rue des Retrans ou des Banons																																															
+/R_13	Rue	Rue du Portail Brianson																																															
+/R_14	Rue	Rue Saint-Jean ou Derriere le Temple																																															
+/R_15	Traverse	Traverse derriere le Temple																																															
+/R_16	Rue	Rue Vieille Blanquerie ou de Notre-Dame des Fours																																															
+/R_17	Rue	Rue Bouquerie																																															
+/R_18	Rue	Rue Argenterie ou de la Muse																																															
+/R_39	Rue	Rue au marche au fil																																															
+/R_54	Rue	Rue Vieille Pelleterie																																															
+/R_55	Rue	Rue Pelleterie Neuve																																															
+/R_62	Rue	Rue Principale																																															
+/R_68	Rue	Rue de la Draperie																																															
+/R_69	Rue	Rue du Portail Boquier																																															
+/R_74	Place	Plan de Lunel																																															
+/R_75	Place	Place des Changes																																															
+/R_76	Place	Place de l'eglise Notre-Dame La Principale																																															
+/R_79	Place	Place du Portail Brianson																																															
+/R_80	Place	Place du Portail Boquier																																															
+/R_96	Rue	Rue proche du Plan de Lunel et du Portail Brianson																																															
+/R_97	Rue	Rue de l'Amelhier																																															
+/R_99	Rue	Rue allant du Portail de l'eveque aux nouveaux murs de la ville																																															
+/R_108	Place	Place de le porte Aiguiere																																															
+/R_109	Rue	Rue vers les lices des freres Precheurs																																															
+/R_110	Rue	Rue allant du port des Perriers a l'eglise des Miracles																																															
+/R_111	Rue	Rue allant au Port des Periers																																															
+/R_112	Traverse	Traverse allant de la rue des masses aux lices																																															
+/R_113	Rue	Rue allant du Portail Eveque au Portail Boquier																																															
+/R_114	Place	Place des Periers																																															
+/R_115	Place	Place des Lombards																																															
+/R_116	Rue	Rue droite du Portail Eveque																																															
+/RN_00117	Traverse	traversia burgus Guillaume Ortolan																																															
+/RN_00118	Rue	carreria burgus Guillaume Ortolan																																															
+/RN_00119	Impasse	traversia non transeunte7																																															
+/RN_00120	Rue	carreria publica5																																															
+/RN_00121	Traverse	traversia public et transeunte3																																															
+/RN_00122	Traverse	traversia8																																															
+/RN_00123	Traverse	transversa publica et traseun2																																															
+/RN_00124	Impasse	traversia non transeunte1																																															
+/RN_00125	Place	curtil sive platea communi et publica																																															
+/RN_00126	Place	platea /BG																																															
+/RN_00127	Impasse	traversia non transeunte																																															
+/RN_00128	Rue	carreria publica																																															
+/RN_00129	Rue	carreria que est subtus cellarium sive penus monasterii Sancti Ruphi																																															
+/RN_00130	Traverse	traversia public et transeunte																																															
+/RN_00131	Traverse	traversia public et transeunte																																															
+/RN_00132	Traverse	traversiola																																															
+/RN_00133	Traverse	transversia transeunte de dicta via de miraculis ad murorum novorum3																																															
+/RN_00134	Rue	carreria publica																																															
+/RN_00135	Traverse	traversia sive itinere																																															
+/RN_00136	Traverse	traversia sive carreria publica per quam homo vadit ad ortos ermenchardis boerie et johanneti alvernhatii																																															
+/RN_00137	Traverse	transversia introitus burgueti Bernardi de Rodesio																																															
+/Mur_412	Rempart	Rempart neuf																																															
+/Mur_402	Rempart	Rempart vieux																																															
+/L_206	Livree cardinalice	Livree de Poitiers																																															
+/L_212	Livree cardinalice	Livree de Naples																																															
+/L_223	Livree cardinalice	Livree de Mirault																																															
+/L_224	Livree cardinalice	Livree de Cambrai																																															
+/H_185	Hydrologie	Sorgues																																															
+/H_205	Hydrologie	Rhone																																															
+/BG_417	Bourg	Bourgs des Milasses																																															
+/BG_419	Bourg	Bourgs de Jean Boerii																																															
+/BG_423	Bourg	Bourg de Jean de Gigognan puis Guimet Abert																																															
+/BG_425	Bourg	Bourg de Guillaume Ortolan																																															
+/BG_432	Bourg	Bourg de Berenger de Tarascon																																															
+/BG_434	Bourg	Bourg de Bernard de Rodez																																															
+/BG_437	Bourg	Bourg de Guillaume Martin																																															
+/BGN_0051	Bourg	Bourg de rixendis lanse																																															
+/E_119	Chapelle	Saint-Jean-de-Jerusalem																																															
+/E_131	Eglise	Notre-Dame La Principale																																															
+/E_132	Eglise	Saint-Agricol																																															
+/E_133	Eglise	Saint-Didier																																															
+/E_146	Hopital	Petit Hopital																																															
+/E_152	Hopital	Hopital du Saint-Esprit																																															
+/E_154	Eglise	eglise Saint-Genies																																															
+/E_155	Cimetiere	Cimetiere de Saint-Genies																																															
+/E_156	Cimetiere	Cimetiere de l'eglise de la Principale																																															
+/E_157	Cimetiere	Cimetiere de l'eglise Saint-Agricol																																															
+/E_158	Eglise	Notre-Dame des Miracles																																															
+/E_159	Chapelle	Notre-Dame d'Esperance																																															
+/E_160	Port	Port des Periers																																															
+/E_161	Verger	Verger d'Urbain V																																															
+/E_163	Monastere	Notre-Dame des Fours																																															
+/E_164	Verger	Verger du monastere Notre-Dame des Fours																																															
+/EN_0049	Four	hospitio furnus bocarie veteris																																															
