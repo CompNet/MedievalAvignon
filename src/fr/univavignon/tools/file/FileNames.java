@@ -33,11 +33,11 @@ public class FileNames
 	// FOLDERS		/////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////
 	/** Input folder */
-	public final static String FO_INPUT = "in";
+	public final static String FO_INPUT = "in" + File.separator + "positioning";
 	/** Log folder */
 	public final static String FO_LOG = "log";
 	/** Output folder */
-	public static String FO_OUTPUT = "out";
+	public static String FO_OUTPUT = "out" + File.separator + "positioning";
 	/** Resources folder */
 	public final static String FO_RESOURCES = "res";
 		/** Folder used to store various data */

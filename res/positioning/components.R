@@ -10,11 +10,11 @@
 source("res/common/include.R")
 
 # possibly create folder
-dir.create(path=FOLDER_POS, showWarnings=FALSE, recursive=TRUE)
+dir.create(path=FOLDER_OUT_POS, showWarnings=FALSE, recursive=TRUE)
 
 # retrieve the tables
-const.tab <- read.table(file.path(FOLDER_IN,"constraints.txt"),sep="\t",header=TRUE,stringsAsFactors=FALSE,quote="")
-obj.tab <- read.table(file.path(FOLDER_IN,"objects.txt"),sep="\t",header=TRUE,stringsAsFactors=FALSE,quote="")
+const.tab <- read.table(file.path(FOLDER_IN_POS,"constraints.txt"),sep="\t",header=TRUE,stringsAsFactors=FALSE,quote="")
+obj.tab <- read.table(file.path(FOLDER_IN_POS,"objects.txt"),sep="\t",header=TRUE,stringsAsFactors=FALSE,quote="")
 
 # build the graph
 g <- graph_from_edgelist(el=as.matrix(const.tab[,c("Source","Target")]),directed=TRUE)
@@ -35,10 +35,10 @@ membership <- tmp$membership
 # record results
 res.tab <- cbind(1:ncomp, sizes)
 colnames(res.tab) <- c("component","size")
-write.table(res.tab,file.path(FOLDER_POS,"components_sizes.txt"),sep="\t",col.names=TRUE,row.names=FALSE,quote=FALSE)
+write.table(res.tab,file.path(FOLDER_OUT_POS,"components_sizes.txt"),sep="\t",col.names=TRUE,row.names=FALSE,quote=FALSE)
 res.tab <- cbind(V(g)$name,membership)
 colnames(res.tab) <- c("node","component")
-write.table(res.tab,file.path(FOLDER_POS,"components.txt"),sep="\t",col.names=TRUE,row.names=FALSE,quote=FALSE)
+write.table(res.tab,file.path(FOLDER_OUT_POS,"components.txt"),sep="\t",col.names=TRUE,row.names=FALSE,quote=FALSE)
 
 # plotting each component separately
 for(comp in 1:ncomp)
@@ -51,7 +51,7 @@ for(comp in 1:ncomp)
 	# record as plain edgelist
 	tab <- cbind(as_edgelist(gcomp,names=TRUE),E(gcomp)$type)
 	colnames(tab) <- c("Source","Target","Label")
-	el.file <- file.path(FOLDER_POS, paste0("comp_",comp,"_edgelist.txt"))
+	el.file <- file.path(FOLDER_OUT_POS, paste0("comp_",comp,"_edgelist.txt"))
 	write.table(tab, el.file, quote=FALSE, sep="\t", row.names=FALSE, col.names=TRUE)
 	
 	# setup colors 
@@ -84,17 +84,17 @@ for(comp in 1:ncomp)
 		colnames(centr.vals)[ncol(centr.vals)] <- "Betweenness"
 	centr.vals <- cbind(V(gcomp)$name, centr.vals)
 	colnames(centr.vals)[1] <- "Node"
-	centr.file <- file.path(FOLDER_POS, paste0("comp_",comp,"_centralities.txt"))
+	centr.file <- file.path(FOLDER_OUT_POS, paste0("comp_",comp,"_centralities.txt"))
 	write.table(centr.vals, file=centr.file, quote=FALSE, sep="\t", row.names=FALSE, col.names=TRUE)
 	
 	# open plot output
 	#pdf(file.path(folder,paste0("comp_",comp,".pdf")))
-	png(file.path(FOLDER_POS,paste0("comp_",comp,".png")), 
+	png(file.path(FOLDER_OUT_POS,paste0("comp_",comp,".png")), 
 			width=2048, height=2048)
 	#par(mar=c(5, 4, 4, 2)+0.1)	# B L T R
 	
 	# possibly load positions
-	pos.file <- file.path(FOLDER_IN, paste0("positions_CC",comp,".txt"))
+	pos.file <- file.path(FOLDER_IN_POS, paste0("positions_CC",comp,".txt"))
 	if(file.exists(pos.file))
 	{	# retrieve positions
 		pos <- read.table(pos.file, header=TRUE, stringsAsFactors=FALSE)
@@ -181,6 +181,6 @@ gcomp <- delete_vertices(gcomp, which(is.na(map)))
     dev.off()
 	
 	# export as graphml
-	graph.file <- file.path(FOLDER_POS,paste0("comp_",comp,".graphml"))
+	graph.file <- file.path(FOLDER_OUT_POS,paste0("comp_",comp,".graphml"))
 	write.graph(graph=gcomp, file=graph.file, format="graphml")
 }

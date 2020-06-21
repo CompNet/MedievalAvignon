@@ -20,7 +20,9 @@ PLOT_FORMATS <- c("pdf","png")
 #############################################################################################
 # folders and files
 FOLDER_IN <- "in"
+	FOLDER_IN_POS <- file.path(FOLDER_IN,"positioning")
+	FOLDER_IN_ANAL <- file.path(FOLDER_IN,"analysis")
 FOLDER_OUT <- "out"
-	FOLDER_POS <- file.path(FOLDER_OUT,"positioning")
-	FOLDER_ANAL <- file.path(FOLDER_OUT,"analysis")
+	FOLDER_OUT_POS <- file.path(FOLDER_OUT,"positioning")
+	FOLDER_OUT_ANAL <- file.path(FOLDER_OUT,"analysis")
 FOLDER_LOG <- "log"

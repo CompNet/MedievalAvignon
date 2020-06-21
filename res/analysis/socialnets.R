@@ -10,6 +10,6 @@
 source("res/common/include.R")
 
 # possibly create folder
-dir.create(path=FOLDER_ANAL, showWarnings=FALSE, recursive=TRUE)
+dir.create(path=FOLDER_OUT_ANAL, showWarnings=FALSE, recursive=TRUE)
 
 # load data
