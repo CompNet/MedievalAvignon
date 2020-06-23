@@ -28,10 +28,10 @@ library("igraph")			# graphs
 
 #############################################################################################
 # source code
-source("src/common/constants.R")
-source("src/common/colors.R")
-source("src/common/dates.R")
-source("src/common/logging.R")
+source("res/common/constants.R")
+source("res/common/colors.R")
+source("res/common/dates.R")
+source("res/common/logging.R")
 
 
 
