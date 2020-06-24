@@ -32,6 +32,7 @@ source("res/common/constants.R")
 source("res/common/colors.R")
 source("res/common/dates.R")
 source("res/common/logging.R")
+source("res/common/plot.R")
 
 
 

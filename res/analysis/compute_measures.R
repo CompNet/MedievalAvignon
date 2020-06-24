@@ -3,25 +3,10 @@
 # 
 # 09/2019 Vincent Labatut
 #
-# setwd("C:/users/Vincent/Eclipse/workspaces/Networks/TrajanNet")
-# setwd("~/eclipse/workspaces/Networks/TrajanNet")
-# source("src/analysis.R")
+# setwd("C:/users/Vincent/Eclipse/workspaces/Extraction/MedievalAvignon")
+# setwd("~/eclipse/workspaces/Extraction/MedievalAvignon")
+# source("res/analysis/compute_measures.R")
 #############################################################################################
-
-
-
-
-#############################################################
-# Records the graph as a graphml file, including the layout.
-#
-# g: graph to record.
-# file: file path.
-#############################################################
-record.graph <- function(graph, file)
-{	V(graph)$x <- LAYOUT[,1]
-	V(graph)$y <- LAYOUT[,2]
-	write.graph(graph=graph, file=file, format="graphml")
-}
 
 
 
@@ -37,9 +22,9 @@ record.graph <- function(graph, file)
 analyze.net.eccentricity <- function(g)
 {	###########################
 	# compute diameter
-	cat("  Computing diameter & radius\n")
+	tlog(2,"Computing diameter & radius")
 	diam <- diameter(g)					# get the network diameter
-	cat("    Diameter=",diam,"\n",sep="")
+	tlog(4,"Diameter=",diam)
 	dd <- distances(graph=g)				# compute all inter-node distances
 	idx <- which(dd==diam, arr.ind=TRUE)	# retrieve pairs of nodes matching the diameter
 	idx <- idx[idx[,1]<idx[,2],,drop=FALSE]	# filter (each pair appears twice due to symmetric matrix)
@@ -51,12 +36,12 @@ analyze.net.eccentricity <- function(g)
 	# plot diameter
 	diam.paths <- lapply(1:nrow(idx), function(r) all_shortest_paths(graph=g, from=idx[r,1], to=idx[r,2])$res)
 	for(pp in 1:length(diam.paths))
-	{	cat("      Plotting diameter ",pp,"/",length(diam.paths),"\n",sep="")
+	{	tlog(6,"Plotting diameter ",pp,"/",length(diam.paths))
 		custom.gplot(g, paths=diam.paths[[pp]], file=file.path(diameter.folder,paste0("diam_graph_",pp)))
 		
 		q <- 1
 		for(p in 1:length(diam.paths[[pp]]))
-		{	cat("        Plotting diameter ",p,"/",length(diam.paths[[pp]]),"\n",sep="")
+		{	tlog(8,"Plotting diameter ",p,"/",length(diam.paths[[pp]]))
 			if(p==1 || !all(diam.paths[[pp]][[p]]==diam.paths[[pp]][[p-1]]))
 			{	custom.gplot(g, paths=diam.paths[[pp]][[p]], file=file.path(diameter.folder,paste0("diam_graph_",pp,"_",q)))
 				q <- q + 1
@@ -66,7 +51,7 @@ analyze.net.eccentricity <- function(g)
 		
 	###########################
 	# compute eccentricity
-	cat("  Computing eccentricity\n")
+	tlog(2,"Computing eccentricity")
 	vals <- eccentricity(g)
 	
 	# possibly create folder
@@ -95,7 +80,7 @@ analyze.net.eccentricity <- function(g)
 	# add radius and diameter to the graph (as attributes) and record
 	g$diameter <- diam
 	g$radius <- rad
-	cat("    Radius=",rad,"\n",sep="")
+	tlog(4,"Radius=",rad)
 	
 	# export CSV with radius and diameter
 	stat.file <- file.path(NET_FOLDER,g$name,"stats.csv")
@@ -113,7 +98,8 @@ analyze.net.eccentricity <- function(g)
 	
 	###########################
 	# record graph and return it
-	record.graph(g, file.path(NET_FOLDER,g$name,"graph.graphml"))
+	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
+	write.graph(graph=g, file=graph.file, format="graphml")
 	
 	return(g)
 }
@@ -129,7 +115,7 @@ analyze.net.eccentricity <- function(g)
 # returns: same graph, updated with the results.
 #############################################################
 analyze.net.degree <- function(g)
-{	cat("  Computing degree\n")
+{	tlog(2,"Computing degree")
 	# possibly create folder
 	degree.folder <- file.path(NET_FOLDER,g$name,"degree")
 	dir.create(path=degree.folder, showWarnings=FALSE, recursive=TRUE)
@@ -147,7 +133,8 @@ analyze.net.degree <- function(g)
 	V(g)$Degree <- vals
 	g$DegreeAvg <- mean(vals)
 	g$DegreeStdv <- sd(vals)
-	record.graph(graph=g, file=file.path(NET_FOLDER,g$name,paste0("graph.graphml")))
+	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
+	write.graph(graph=g, file=graph.file, format="graphml")
 	
 	# plot graph using color for degree
 	custom.gplot(g,col.att=MEAS_DEGREE,file=file.path(degree.folder,"degree_graph"))
@@ -179,7 +166,7 @@ analyze.net.degree <- function(g)
 # returns: same graph, updated with the results.
 #############################################################
 analyze.net.eigencentrality <- function(g)
-{	cat("  Computing Eigencentrality\n")
+{	tlog(2,"Computing Eigencentrality")
 	# possibly create folder
 	eigen.folder <- file.path(NET_FOLDER,g$name,"eigencentrality")
 	dir.create(path=eigen.folder, showWarnings=FALSE, recursive=TRUE)
@@ -197,7 +184,8 @@ analyze.net.eigencentrality <- function(g)
 	V(g)$Eigencentrality <- vals
 	g$EigencentralityAvg <- mean(vals)
 	g$EigencentralityStdv <- sd(vals)
-	record.graph(graph=g, file=file.path(NET_FOLDER,g$name,paste0("graph.graphml")))
+	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
+	write.graph(graph=g, file=graph.file, format="graphml")
 	
 	# plot graph using color for Eigencentrality
 	custom.gplot(g,col.att=MEAS_EIGEN,file=file.path(eigen.folder,"eigencentrality_graph"))
@@ -229,7 +217,7 @@ analyze.net.eigencentrality <- function(g)
 # returns: same graph, updated with the results.
 #############################################################
 analyze.net.betweenness <- function(g)
-{	cat("  Computing betweenness\n")
+{	tlog(2,"Computing betweenness")
 	# possibly create folder
 	betweenness.folder <- file.path(NET_FOLDER,g$name,"betweenness")
 	dir.create(path=betweenness.folder, showWarnings=FALSE, recursive=TRUE)
@@ -247,7 +235,8 @@ analyze.net.betweenness <- function(g)
 	V(g)$Betweenness <- vals
 	g$BetweennessAvg <- mean(vals)
 	g$BetweennessStdv <- sd(vals)
-	record.graph(graph=g, file=file.path(NET_FOLDER,g$name,paste0("graph.graphml")))
+	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
+	write.graph(graph=g, file=graph.file, format="graphml")
 	
 	# plot graph using color for betweenness
 	custom.gplot(g,col.att=MEAS_BETWEENNESS,file=file.path(betweenness.folder,"betweenness_graph"))
@@ -279,7 +268,7 @@ analyze.net.betweenness <- function(g)
 # returns: same graph, updated with the results.
 #############################################################
 analyze.net.closeness <- function(g)
-{	cat("  Computing closeness\n")
+{	tlog(2,"Computing closeness")
 	# possibly create folder
 	closeness.folder <- file.path(NET_FOLDER,g$name,"closeness")
 	dir.create(path=closeness.folder, showWarnings=FALSE, recursive=TRUE)
@@ -307,7 +296,8 @@ analyze.net.closeness <- function(g)
 	V(g)$Closeness <- vals
 	g$ClosenessAvg <- mean(vals,na.rm=TRUE)
 	g$ClosenessStdv <- sd(vals,na.rm=TRUE)
-	record.graph(graph=g, file=file.path(NET_FOLDER,g$name,paste0("graph.graphml")))
+	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
+	write.graph(graph=g, file=graph.file, format="graphml")
 	
 	# plot graph using color for closeness
 	custom.gplot(g,col.att=MEAS_CLOSENESS,file=file.path(closeness.folder,"closeness_graph"))
@@ -339,7 +329,7 @@ analyze.net.closeness <- function(g)
 # returns: same graph, updated with the results.
 #############################################################
 analyze.net.transitivity <- function(g)
-{	cat("  Computing transitivity\n")
+{	tlog(2,"Computing transitivity")
 	# possibly create folder
 	transitivity.folder <- file.path(NET_FOLDER,g$name,"transitivity")
 	dir.create(path=transitivity.folder, showWarnings=FALSE, recursive=TRUE)
@@ -358,7 +348,8 @@ analyze.net.transitivity <- function(g)
 	g$Transitivity <- transitivity(graph=g, type="globalundirected", isolates="zero")
 	g$TransitivityAvg <- mean(vals)
 	g$TransitivityStdv <- sd(vals)
-	record.graph(graph=g, file=file.path(NET_FOLDER,g$name,paste0("graph.graphml")))
+	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
+	write.graph(graph=g, file=graph.file, format="graphml")
 	
 	# plot graph using color for transitivity
 	custom.gplot(g,col.att=MEAS_TRANSITIVITY,file=file.path(transitivity.folder,"transitivity_graph"))
@@ -390,12 +381,12 @@ analyze.net.transitivity <- function(g)
 # returns: same graph, updated with the results.
 #############################################################
 analyze.net.comstruct <- function(g)
-{	cat("  Detecting community structure\n")
+{	tlog(2,"Detecting community structure")
 	# possibly create folder
 	communities.folder <- file.path(NET_FOLDER,g$name,"communities")
 	dir.create(path=communities.folder, showWarnings=FALSE, recursive=TRUE)
 	
-	cat("    Processing graph ",i,"/",length(lst),"\n",sep="")
+	tlog(4,"Processing graph ",i,"/",length(lst))
 	op <- delete_edges(graph=g, edges=which(is.na(E(g)$Polarite) | E(g)$Polarite==ATT_VAL_NEGATIVE))	# TODO à adapter
 	nn <- delete_edges(graph=g, edges=which(E(g)$Polarite==ATT_VAL_NEGATIVE))
 	idx.op <- which(igraph::degree(op)>0)
@@ -429,18 +420,19 @@ analyze.net.comstruct <- function(g)
 	mod.op <- modularity(coms.op)
 	op <- set_vertex_attr(graph=op,name=MEAS_COMMUNITY_ONLYPOS,value=mbrs.op)
 	op <- set_graph_attr(graph=op,name=MEAS_MODULARITY_ONLYPOS,value=mod.op)
-	cat("    Modularity when including NAs as positive links: ",mod.op,"\n",sep="")
+	tlog(4,"Modularity when including NAs as positive links: ",mod.op)
 	#
 	mod.nn <- modularity(coms.nn)
 	nn <- set_vertex_attr(graph=nn,name=MEAS_COMMUNITY_NONEG,value=mbrs.nn)
 	nn <- set_graph_attr(graph=nn,name=MEAS_MODULARITY_NONEG,value=mod.nn)
-	cat("    Modularity when ignoring NAs: ",mod.nn,"\n",sep="")
+	tlog(4,"Modularity when ignoring NAs: ",mod.nn)
 	#
 	g <- set_vertex_attr(graph=g,name=MEAS_COMMUNITY_ONLYPOS,value=mbrs.op)
 	g <- set_graph_attr(graph=g,name=MEAS_MODULARITY_ONLYPOS,value=mod.op)
 	g <- set_vertex_attr(graph=g,name=MEAS_COMMUNITY_NONEG,value=mbrs.nn)
 	g <- set_graph_attr(graph=g,name=MEAS_MODULARITY_NONEG,value=mod.nn)
-	record.graph(graph=g, file=file.path(NET_FOLDER,g$name,paste0("graph.graphml")))
+	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
+	write.graph(graph=g, file=graph.file, format="graphml")
 	
 	# plot graph using color for communities
 	custom.gplot(op,col.att=MEAS_COMMUNITY_ONLYPOS,cat.att=TRUE,file=file.path(communities.folder,"na-as-positive_communities_graph"))
@@ -475,7 +467,7 @@ analyze.net.comstruct <- function(g)
 # returns: same graph, updated with the results.
 #############################################################
 analyze.net.assortativity <- function(g)
-{	cat("  Computing the assortativity\n")
+{	tlog(2,"Computing the assortativity")
 	
 	# retrieve the list of vertex attributes
 	att.list <- list.vertex.attributes(g)
@@ -525,7 +517,7 @@ analyze.net.assortativity <- function(g)
 			cd <- cat.data[,i]
 			cd[is.na(cd)] <- max(cd,na.rm=TRUE) + 1
 			ass <- assortativity_nominal(graph=g, types=cd)
-			cat("    Assortativity for attribute \"",attr,"\" when representing NAs by 0: ",ass,"\n",sep="")
+			tlog(4,"Assortativity for attribute \"",attr,"\" when representing NAs by 0: ",ass)
 			vals <- c(vals, ass)
 			names(vals)[length(vals)] <- paste(attr,"_explicitNA",sep="")
 			# ignore them
@@ -537,7 +529,7 @@ analyze.net.assortativity <- function(g)
 			}
 			else
 				ass <- NA
-			cat("    Assortativity for attribute \"",attr,"\" when ignoring NAs: ",ass,"\n",sep="")
+			tlog(4,"Assortativity for attribute \"",attr,"\" when ignoring NAs: ",ass)
 			vals <- c(vals, ass)
 			names(vals)[length(vals)] <- paste(attr,"_noNA",sep="")
 		}
@@ -545,7 +537,7 @@ analyze.net.assortativity <- function(g)
 		# no NA at all
 		else
 		{	ass <- assortativity_nominal(graph=g, types=cat.data[,i])
-			cat("    Assortativity for attribute \"",attr,"\": ",ass,"\n",sep="")
+			tlog(4,"Assortativity for attribute \"",attr,"\": ",ass)
 			vals <- c(vals, ass)
 			names(vals)[length(vals)] <- attr
 		}
@@ -577,7 +569,7 @@ analyze.net.assortativity <- function(g)
 			cd <- num.data[,i]
 			cd[is.na(cd)] <- 0
 			ass <- assortativity(graph=g, types1=cd)
-			cat("    Assortativity for attribute \"",attr,"\" when replacing NAs by 0: ",ass,"\n",sep="")
+			tlog(4,"Assortativity for attribute \"",attr,"\" when replacing NAs by 0: ",ass)
 			vals <- c(vals, ass)
 			names(vals)[length(vals)] <- paste(attr,"_explicitNA",sep="")
 			# ignore them
@@ -589,14 +581,14 @@ analyze.net.assortativity <- function(g)
 			}
 			else
 				ass <- NA
-			cat("    Assortativity for attribute \"",attr,"\" when ignoring NAs: ",ass,"\n",sep="")
+			tlog(4,"Assortativity for attribute \"",attr,"\" when ignoring NAs: ",ass)
 			vals <- c(vals, ass)
 			names(vals)[length(vals)] <- paste(attr,"_noNA",sep="")
 		}
 		# no NA at all
 		else
 		{	ass <- assortativity(graph=g, types1=num.data[,i])
-			cat("    Assortativity for attribute \"",attr,"\": ",ass,"\n",sep="")
+			tlog(4,"Assortativity for attribute \"",attr,"\": ",ass)
 			vals <- c(vals, ass)
 			names(vals)[length(vals)] <- attr
 		}
@@ -610,7 +602,8 @@ analyze.net.assortativity <- function(g)
 	{	attr <- names(vals)[i]
 		g <- set_vertex_attr(graph=g, name=attr, value=vals[i])
 	}
-	record.graph(graph=g, file=file.path(NET_FOLDER,g$name,"graph.graphml"))
+	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
+	write.graph(graph=g, file=graph.file, format="graphml")
 	
 	# add assortativity to main CSV
 	stat.file <- file.path(NET_FOLDER,g$name,"stats.csv")
@@ -648,7 +641,7 @@ analyze.net.assortativity <- function(g)
 # returns: same graph, updated with the results.
 #############################################################
 analyze.net.attributes <- function(g)
-{	cat("  Computing nodal attribute stats\n")
+{	tlog(2,"Computing nodal attribute stats")
 	# possibly create folders
 	graph.folder <- file.path(NET_FOLDER,g$name,"attributes")
 	dir.create(path=graph.folder, showWarnings=FALSE, recursive=TRUE)
@@ -669,15 +662,15 @@ analyze.net.attributes <- function(g)
 		tmp <- vertex_attr(g, attr)
 		
 		# plot the attribute distribution as a barplot
-		cat("    Bar-plotting attribute \"",attr,"\"\n",sep="")
+		tlog(4,"Bar-plotting attribute \"",attr,"\"")
 		tt <- table(tmp, useNA="ifany")
 		plot.folder <- file.path(ATT_FOLDER,attr)
 		dir.create(path=plot.folder, showWarnings=FALSE, recursive=TRUE)
 		plot.file <- file.path(plot.folder,paste0(attr,"_bars"))
 		custom.barplot(tt, 
-				text=names(tt), 
-				xlab=LONG_NAME[attr], ylab="Frequence",
-				file=plot.file)
+			text=names(tt), 
+			xlab=LONG_NAME[attr], ylab="Frequence",
+			file=plot.file)
 		# record as a table
 		tt <- as.data.frame(tt)
 		colnames(tt) <- c("Value","Frequency")
@@ -685,7 +678,7 @@ analyze.net.attributes <- function(g)
 		write.csv(tt, file=table.file, row.names=FALSE)
 		
 		# add to matrix
-		cat("    Adding attribute \"",attr,"\" to data matrix\n",sep="")
+		tlog(4,"Adding attribute \"",attr,"\" to data matrix")
 		if(all(is.na(cat.data)))
 			cat.data <- matrix(tmp,ncol=1)
 		else
@@ -718,7 +711,7 @@ analyze.net.attributes <- function(g)
 		# identify least frequent values
 		unfrequent <- names(tt)[which(tt<=2)]
 		# plot tag distribution as barplot
-		cat("    Bar-plotting attributes containing \"",attr,"\"\n",sep="")
+		tlog(4,"Bar-plotting attributes containing \"",attr,"\"")
 		plot.folder <- file.path(ATT_FOLDER,attr)
 		dir.create(path=plot.folder, showWarnings=FALSE, recursive=TRUE)
 		plot.file <- file.path(plot.folder,paste0(attr,"_bars"))
@@ -745,7 +738,7 @@ analyze.net.attributes <- function(g)
 			g <- gg
 			
 		# add to matrix
-		cat("    Adding attribute \"",attr,"\" to data matrix\n",sep="")
+		tlog(4,"Adding attribute \"",attr,"\" to data matrix")
 		uvals <- sort(unique(c(m)))
 		for(uval in uvals)
 		{	# binarize tags
@@ -803,7 +796,7 @@ analyze.net.attributes <- function(g)
 		}
 		
 		# plot the graph using colors for attribute values
-		cat("    Graph-plotting attribute \"",attr,"\"\n",sep="")
+		tlog(4,"Graph-plotting attribute \"",attr,"\"")
 		gg <- set_vertex_attr(graph=g, name=attr, value=cat.data[,i])
 		custom.gplot(gg,col.att=attr,cat.att=TRUE,color.isolates=TRUE,file=file.path(graph.folder,paste0(attr,"_graph")))
 #		custom.gplot(gg,col.att=attr,cat.att=TRUE,color.isolates=TRUE)
@@ -821,7 +814,7 @@ analyze.net.attributes <- function(g)
 		
 		# plot the attribute distribution as a histogram 
 		# (actually a barplot, for now, as the only numeric attribute is an integer)
-		cat("    Bar-plotting attribute \"",attr,"\"\n",sep="")
+		tlog(4,"Bar-plotting attribute \"",attr,"\"")
 		tt <- table(tmp, useNA="ifany")
 		plot.folder <- file.path(ATT_FOLDER,attr)
 		dir.create(path=plot.folder, showWarnings=FALSE, recursive=TRUE)
@@ -850,7 +843,7 @@ analyze.net.attributes <- function(g)
 	# plot the graph using colors for attribute values
 	for(i in 1:ncol(num.data))
 	{	attr <- colnames(num.data)[i]
-		cat("    Plotting attribute \"",attr,"\"\n",sep="")
+		tlog(4,"Plotting attribute \"",attr,"\"")
 		gg <- set_vertex_attr(graph=g, name=attr, value=num.data[,i])
 		custom.gplot(gg,col.att=attr,cat.att=FALSE,color.isolates=TRUE,file=file.path(graph.folder,paste0(attr,"_graph")))
 #		custom.gplot(gg,col.att=attr,cat.att=FALSE,color.isolates=TRUE)
@@ -873,14 +866,14 @@ analyze.net.attributes <- function(g)
 #############################################################
 analyze.net.articulation <- function(g)
 {	# init 
-	cat("  Computing articulation points\n")
+	tlog(2,"Computing articulation points")
 	g1 <- g
 	level <- 1
 	art <- articulation_points(g1)
 	
 	# repeat until no more articulation point
 	while(length(art)>0)
-	{	cat("    Level ",level,"\n",sep="")
+	{	tlog(4,"Level ",level)
 		# disconnect the articulation nodes
 		g1 <- disconnect.nodes(g1, nodes=art)
 		# mark them
@@ -909,7 +902,8 @@ analyze.net.articulation <- function(g)
 	V(g)$Articulation <- vals
 	g$ArticulationAvg <- mean(vals)
 	g$ArticulationAvg <- mean(vals)
-	record.graph(graph=g, file=file.path(NET_FOLDER,g$name,"graph.graphml"))
+	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
+	write.graph(graph=g, file=graph.file, format="graphml")
 	
 	# plot graph using color for articulation
 	custom.gplot(g,col.att=MEAS_ARTICULATION,file=file.path(articulation.folder,"articulation_graph"))
@@ -941,7 +935,7 @@ analyze.net.articulation <- function(g)
 # returns: same graph, updated with the results.
 #############################################################
 analyze.net.distance <- function(g)
-{	cat("  Computing average distances\n")
+{	tlog(2,"Computing average distances")
 	# possibly create folder
 	distance.folder <- file.path(NET_FOLDER,g$name,"distance")
 	dir.create(path=distance.folder, showWarnings=FALSE, recursive=TRUE)
@@ -963,16 +957,17 @@ analyze.net.distance <- function(g)
 	V(g)$AverageDistance <- avg.vals
 	g$DistanceAvg <- mean(flat.vals)
 	g$DistanceStdv <- sd(flat.vals)
-	record.graph(graph=g, file=file.path(NET_FOLDER,g$name,"graph.graphml"))
+	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
+	write.graph(graph=g, file=graph.file, format="graphml")
 	
 	# for each node, plot graph using color for distance
 	for(n in 1:gorder(g))
 	{	nname <- V(g)$name[n]
 		V(g)$Distance <- vals[n,]
 		if(all(is.infinite(vals[n,-n])))
-			cat("    NOT plotting graph for node #",nname,", as all values are infinite\n",sep="")
+			tlog(4,"NOT plotting graph for node #",nname,", as all values are infinite")
 		else
-		{	cat("    Plotting graph for node #",nname,"\n",sep="")
+		{	tlog(4,"Plotting graph for node #",nname)
 			custom.gplot(g,col.att=MEAS_DISTANCE,v.hl=n,file=file.path(distance.folder,paste0("distance_graph_",nname)))
 		}
 		g <- delete_vertex_attr(graph=g, name=MEAS_DISTANCE)
@@ -1004,7 +999,7 @@ analyze.net.distance <- function(g)
 # returns: same graph, updated with the results.
 #############################################################
 analyze.net.connectivity <- function(g)
-{	cat("  Computing vertex connectivity\n")
+{	tlog(2,"Computing vertex connectivity")
 	# possibly create folder
 	connectivity.folder <- file.path(NET_FOLDER,g$name,"connectivity")
 	dir.create(path=connectivity.folder, showWarnings=FALSE, recursive=TRUE)
@@ -1039,16 +1034,17 @@ analyze.net.connectivity <- function(g)
 	V(g)$AverageConnectivity <- avg.vals
 	g$ConnectivityAvg <- mean(flat.vals)
 	g$ConnectivityStdv <- sd(flat.vals)
-	record.graph(graph=g, file=file.path(NET_FOLDER,g$name,"graph.graphml"))
+	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
+	write.graph(graph=g, file=graph.file, format="graphml")
 	
 	# for each node, plot graph using color for connectivity
 	for(n in 1:gorder(g))
 	{	nname <- V(g)$name[n]
 		V(g)$Connectivity <- vals[n,]
 		if(all(vals[n,]==0))
-			cat("    NOT plotting graph for node #",nname,", as all values are zero\n",sep="")
+			tlog(4,"NOT plotting graph for node #",nname,", as all values are zero")
 		else
-		{	cat("    Plotting graph for node #",nname,"\n",sep="")
+		{	tlog(4,"Plotting graph for node #",nname)
 			custom.gplot(g,col.att=MEAS_CONNECTIVITY,v.hl=n,file=file.path(connectivity.folder,paste0("connectivity_graph_",nname)))
 		}
 		g <- delete_vertex_attr(graph=g, name="Connectivity")
@@ -1073,160 +1069,56 @@ analyze.net.connectivity <- function(g)
 
 
 #############################################################
-# Main method for the graph analysis. Uses a predefined layout.
-# Generates a bunch of plots and CSV files.
+# Main method for the graph analysis. Generates a bunch of plots 
+# and CSV files to store the results. Also updates the graphml
+# file with the results whenever possible, for later external
+# use.
 #
-# og: graph to process.
+# folder.path: path of the folder containing the graph file.
+#
+# returns: the graph with updated attributes.
 #############################################################
-analyze.network <- function(og)	# TODO à adapter
-{	# set up list of graphs
-	g.lst <- list()
+analyze.network <- function(folder.path)
+{	# load graph
+	file.path <- file.path(folder.path, FILE_GRAPH)
+	g <- read.graph(file=file.path, format="graphml")
 	
-	# extract various graphs depending on link types
-	{	g.lst[[GRAPH_TYPE_ALL]] <- clean.links(og, link.types=c(paste0(ATT_EDGE_NAT,"_",ATT_VAL_FAMILY), paste0(ATT_EDGE_NAT,"_",ATT_VAL_FRIEND), paste0(ATT_EDGE_NAT,"_",ATT_VAL_PRO),NA))
-		g.lst[[GRAPH_TYPE_ALL]]$name <- GRAPH_TYPE_ALL
-		g.lst[[GRAPH_TYPE_FAMILY]] <- clean.links(og, link.types=paste0(ATT_EDGE_NAT,"_",ATT_VAL_FAMILY))
-		g.lst[[GRAPH_TYPE_FAMILY]]$name <- GRAPH_TYPE_FAMILY
-		g.lst[[GRAPH_TYPE_FRIEND]] <- clean.links(og, link.types=paste0(ATT_EDGE_NAT,"_",ATT_VAL_FRIEND))
-		g.lst[[GRAPH_TYPE_FRIEND]]$name <- GRAPH_TYPE_FRIEND
-		g.lst[[GRAPH_TYPE_PRO]] <- clean.links(og, link.types=paste0(ATT_EDGE_NAT,"_",ATT_VAL_PRO))
-		g.lst[[GRAPH_TYPE_PRO]]$name <- GRAPH_TYPE_PRO
-		g.lst[[GRAPH_TYPE_UNK]] <- clean.links(og, link.types=NA)
-		g.lst[[GRAPH_TYPE_UNK]]$name <- GRAPH_TYPE_UNK
-	}
+	# compute attribute stats 
+	# (must be done first, before other results are added as attributes)
+	g <- analyze.net.attributes(g)
+		
+	# compute diameters, eccentricity, radius
+	g <- analyze.net.eccentricity(g)
+		
+	# compute degree
+	g <- analyze.net.degree(g)
+		
+	# compute eigencentrality
+	g <- analyze.net.eigencentrality(g)
 	
-	# process each graph
-	for(g in g.lst)
-	{	# g <- g.lst[[1]]
-		cat("Processing graph '",g$name,"'\n",sep="")
-		# create graph-specific folder
-		tmp.folder <- file.path(NET_FOLDER, g$name)
-		dir.create(path=tmp.folder, showWarnings=FALSE, recursive=TRUE)
-		
-		# record graph as a graphml file
-		record.graph(graph=g, file=file.path(tmp.folder,"graph.graphml"))
-		
-		# plot full graph
-		custom.gplot(g, file=file.path(tmp.folder,"graph"))
-		#custom.gplot(g)
-		
-		# delete trajan's links for better visibility
-		# TODO maybe better to just draw them using a light color?
-		g0 <- disconnect.nodes(g, nodes=1)
-		custom.gplot(g0, file=file.path(tmp.folder,"graph0"))
-		#custom.gplot(g0)
-		record.graph(graph=g0, file=file.path(tmp.folder,"graph0.graphml"))
-		
-		# compute attribute stats 
-		# (must be done first, before other results are added as attributes)
-		tmp <- analyze.net.attributes(g, g0)
-		g <- tmp[[1]]
-		g0 <- tmp[[2]]
-		
-		# compute diameters, eccentricity, radius
-		tmp <- analyze.net.eccentricity(g, g0)
-		g <- tmp[[1]]
-		g0 <- tmp[[2]]
-		
-		# compute degree
-		tmp <- analyze.net.degree(g, g0)
-		g <- tmp[[1]]
-		g0 <- tmp[[2]]
-		
-		# compute eigencentrality
-		tmp <- analyze.net.eigencentrality(g, g0)
-		g <- tmp[[1]]
-		g0 <- tmp[[2]]
-		
-		# compute betweenness
-		tmp <- analyze.net.betweenness(g, g0)
-		g <- tmp[[1]]
-		g0 <- tmp[[2]]
-		
-		# compute closeness
-		tmp <- analyze.net.closeness(g, g0)
-		g <- tmp[[1]]
-		g0 <- tmp[[2]]
-		
-		# compute distances
-		tmp <- analyze.net.distance(g, g0)
-		g <- tmp[[1]]
-		g0 <- tmp[[2]]
-		
-		# compute articulation points
-		tmp <- analyze.net.articulation(g, g0)
-		g <- tmp[[1]]
-		g0 <- tmp[[2]]
-		
-		# detect communities
-		tmp <- analyze.net.comstruct(g, g0)
-		g <- tmp[[1]]
-		g0 <- tmp[[2]]
-		
-		# compute transitivity
-		tmp <- analyze.net.transitivity(g, g0)
-		g <- tmp[[1]]
-		g0 <- tmp[[2]]
-		
-		# compute vertex connectivity
-		tmp <- analyze.net.connectivity(g, g0)
-		g <- tmp[[1]]
-		g0 <- tmp[[2]]
-		
-		# compute assortativity
-		tmp <- analyze.net.assortativity(g, g0)
-		g <- tmp[[1]]
-		g0 <- tmp[[2]]
-	}
+	# compute betweenness
+	g <- analyze.net.betweenness(g)
 	
-	# extract and process the signed graphs
-	sg.lst <- flatten.signed.graph(og)
-	for(sg in sg.lst)
-	{	#sg <- sg.lst[[1]]
-		
-		# create graph-specific folder
-		tmp.folder <- file.path(SIGNED_FOLDER, sg$name)
-		dir.create(path=tmp.folder, showWarnings=FALSE, recursive=TRUE)
-		
-		# plot the signed graph
-		custom.gplot(sg, file=file.path(tmp.folder,"graph"))
-		#custom.gplot(sg)
-		# record graph as a graphml file
-		record.graph(graph=sg, file=file.path(tmp.folder,"graph.graphml"))
-		
-		# get the version without Trajan
-		sg0 <- disconnect.nodes(sg, nodes=1)
-		custom.gplot(sg0, file=file.path(tmp.folder,"graph0"))
-		#custom.gplot(sg0)
-		record.graph(graph=sg0, file=file.path(tmp.folder,"graph0.graphml"))
-		
-		# compute signed degree
-		tmp <- analyze.net.signed.degree(sg, sg0)
-		sg <- tmp[[1]]
-		sg0 <- tmp[[2]]
-		
-		# compute signed triangles
-		tmp <- analyze.net.signed.triangles(sg, sg0)
-		sg <- tmp[[1]]
-		sg0 <- tmp[[2]]
-		
-		# compute signed centrality
-		tmp <- analyze.net.signed.centrality(sg, sg0)
-		sg <- tmp[[1]]
-		sg0 <- tmp[[2]]
-		
-		# compute correlation clustering (CC)
-		tmp <- analyze.net.corclust(sg, sg0)
-		sg <- tmp[[1]]
-		sg0 <- tmp[[2]]
-		
-		# compute CC on communicability graph
-		tmp <- analyze.net.communicability(sg, sg0)
-		sg <- tmp[[1]]
-		sg0 <- tmp[[2]]
-		
-		# compute the closure of the network
-		tmp <- compute.net.signed.closure(sg, sg0, poly=FALSE)
-		tmp <- compute.net.signed.closure(sg, sg0, poly=TRUE)
-	}
+	# compute closeness
+	g <- analyze.net.closeness(g)
+	
+	# compute distances
+	g <- analyze.net.distance(g)
+	
+	# compute articulation points
+	g <- analyze.net.articulation(g)
+	
+	# detect communities
+	g <- analyze.net.comstruct(g)
+	
+	# compute transitivity
+	g <- analyze.net.transitivity(g)
+	
+	# compute vertex connectivity
+	g <- analyze.net.connectivity(g)
+	
+	# compute assortativity
+	g <- analyze.net.assortativity(g)
+	
+	return(g)
 }

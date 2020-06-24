@@ -14,45 +14,6 @@
 #############################################################
 # constants
 FORMAT <- c("png","pdf")	# plot file format: pdf png
-LAYOUT <- NA				# predefined graph layout
-
-
-
-
-#############################################################
-# Displays the specified graph in an appropriate way, taking
-# into account the previously set link and node attributes.
-#
-# g: graph to plot.
-# paths: (optional) paths to highlight while plotting. This parameter
-# 		 is either a list of integer vectors (node sequences), or
-# 		 an integer vector if there is only one path to plot.
-# vvals: (optional) vertex values, used to determine node color.
-# file: (optional) file name, to record the plot.
-#############################################################
-setup.graph.layout <- function(g)
-{	# try to read the layout if the file exists
-	lay.file <- file.path(NET_FOLDER,"all_layout.txt")
-	if(file.exists(lay.file))
-	{	cat("Loading layout file \"",lay.file,"\"\n",sep="")
-		LAYOUT <<- as.matrix(read.table(file=lay.file))
-	}
-	
-	# otherwise, compute the layout
-	else
-	{	cat("Layout file \"",lay.file,"\" not found: computing and recording it\n",sep="")
-		
-		# use a  predefined layout
-#		LAYOUT <<- layout_with_fr(g)
-		LAYOUT <<- layout_with_fr(g, kkconst=0)
-		
-		# old code used to manually refine the layout
-#		tkplot(g, layout=LAYOUT)
-#		LAYOUT <<- tk_coords(3)
-		
-		write.table(x=LAYOUT,file=lay.file)
-	}
-}
 
 
 
@@ -80,10 +41,6 @@ custom.gplot <- function(g, paths, col.att, cat.att=FALSE, v.hl, e.hl, color.iso
 {	pie.values <- NA
 	lgd.col <- NA
 	
-	# layout
-	if(is.na(LAYOUT))
-		setup.graph.layout(g)
-	
 	# vertex shapes
 	vshapes <- rep("circle",gorder(g))
 	if(hasArg(v.hl))
@@ -92,31 +49,20 @@ custom.gplot <- function(g, paths, col.att, cat.att=FALSE, v.hl, e.hl, color.iso
 	outline.cols <- rep("BLACK",gorder(g))
 	
 	# set edge colors
-	nature <- edge_attr(g,ATT_EDGE_NAT)
-	only.signed <- length(nature)==0
-	if(!only.signed)
-	{	ecols <- rep("BLACK", gsize(g))
-		ecols[nature==ATT_VAL_FRIEND] <- "#1A8F39"		# green
-		ecols[nature==ATT_VAL_FAMILY] <- "#9C1699"		# purple
-		ecols[nature==ATT_VAL_PRO] <- "#C27604"			# orange
-		ecols[nature==ATT_VAL_UNK] <- "#222222"			# dark grey
-		# set edge style
-		polarity <- edge_attr(g,ATT_EDGE_POL)
-		elty <- rep(1,gsize(g))							# positive=solid
-		elty[!is.na(polarity) 
-				& polarity==ATT_VAL_NEGATIVE] <- 3		# negative=dotted
-		elty[is.na(polarity)] <- 5						# unknown=long-dashed
-	}
-	else
-	{	signs <- edge_attr(g,ATT_EDGE_SIGN)
-		ecols <- rep("#1A8F39", gsize(g))				# positive=green
-		ecols[signs<0] <- "#E41A1C"						# negative=red
-		elty <- rep(1,gsize(g))							# only solid line
+	ecols <- rep("BLACK", gsize(g))						# default color
+	nature <- edge_attr(g,LK_TYPE)
+	if(length(nature)>0)
+	{	ecols[nature==LK_TYPE_PRO] <- "#1A8F39"			# green
+		ecols[nature==LK_TYPE_FAM] <- "#9C1699"			# purple
+#		ecols[nature==LK_TYPE_XXX] <- "#C27604"			# orange
+#		ecols[nature==LK_TYPE_UNK] <- "#222222"			# dark grey
 	}
 	# set edge width
 	if(is.null(E(g)$weight))							# if no weight:
 		E(g)$weight <- rep(1,gsize(g))					# same edge width
 	ewidth <- E(g)$weight
+	# set edge line type
+	elty <- rep(1,gsize(g))								# solid
 	
 	# possibly change the color of the highlighted path
 	if(hasArg(paths))
@@ -227,8 +173,8 @@ custom.gplot <- function(g, paths, col.att, cat.att=FALSE, v.hl, e.hl, color.iso
 		}
 		plot(g,										# graph to plot
 			#axes=TRUE,								# whether to draw axes or not
-			layout=LAYOUT,							# layout
-			vertex.size=5, 							# node size
+			layout=cbind(V(g)$x,V(g)$y),			# predefined layout
+			vertex.size=2, 							# node size
 			vertex.color=vcols,						# node color
 			vertex.pie=pie.values,					# node pie proportions
 			vertex.pie.color=list(lgd.col),			# node pie colors
@@ -245,44 +191,16 @@ custom.gplot <- function(g, paths, col.att, cat.att=FALSE, v.hl, e.hl, color.iso
 			edge.lty=elty,							# link type
 			edge.width=ewidth						# link thickness
 		)
-		if(!only.signed)
-		{	legend(
-				title="Nature de la relation",					# title of the legend box
-				x="topright",									# position
-				legend=c(ATT_VAL_FRIEND,ATT_VAL_FAMILY,			# text of the legend
-						ATT_VAL_PRO,ATT_VAL_UNK),
-				col=c("#1A8F39","#9C1699","#C27604","#222222"),	# color of the lines
-				lty=1,											# type of lines
-				lwd=4,											# line thickness
-				bty="n",										# no box around the legend
-				cex=0.8
-			)
-			legend(
-				title="Polarite de la relation",				# title of the legend box
-				x="bottomright",								# position
-				legend=c(ATT_VAL_POSITIVE,ATT_VAL_NEGATIVE,		# text of the legend
-						ATT_VAL_UNK),
-				col="BLACK",									# color of the lines
-				lty=c(1,3,5),									# type of lines
-				lwd=2,											# line thickness
-				bty="n",										# no box around the legend
-				cex=0.8,										# size of the text in the legend
-				seg.len=3										# length of the line in the legend
-			)
-		}
-		else
-		{	legend(
-				title="Polarite de la relation",				# title of the legend box
-				x="bottomright",								# position
-				legend=c(ATT_VAL_POSITIVE,ATT_VAL_NEGATIVE),	# text of the legend
-				col=c("#1A8F39","#E41A1C"),						# color of the lines
-				lty=c(1,1),										# type of lines
-				lwd=4,											# line thickness
-				bty="n",										# no box around the legend
-				cex=0.8,										# size of the text in the legend
-				seg.len=3										# length of the line in the legend
-			)
-		}
+		legend(
+			title="Link type",								# title of the legend box
+			x="topright",									# position
+			legend=c(LK_TYPE_FAM, LK_TYPE_PRO),				# text of the legend
+			col=c("#1A8F39","#9C1699"),						# color of the lines
+			lty=1,											# type of lines
+			lwd=4,											# line thickness
+			bty="n",										# no box around the legend
+			cex=0.8
+		)
 		if(hasArg(col.att))
 		{	if(!all(!connected))
 			{	# categorical attributes
@@ -306,12 +224,12 @@ custom.gplot <- function(g, paths, col.att, cat.att=FALSE, v.hl, e.hl, color.iso
 					y1 <- y2 + height
 					leg.loc <- cbind(x=c(x1, x2, x2, x1), y=c(y1, y1, y2, y2))
 					legend.gradient(
-							pnts=leg.loc,
-							cols=pal(25),
-							#limits=format(range(vvals[connected],na.rm=TRUE), digits=2, nsmall=2),	# pb: uses scientific notation when numbers too small
-							limits=sprintf("%.2f", range(vvals[connected & finite],na.rm=TRUE)),
-							title=LONG_NAME[col.att], 
-							cex=0.8
+						pnts=leg.loc,
+						cols=pal(25),
+						#limits=format(range(vvals[connected],na.rm=TRUE), digits=2, nsmall=2),	# pb: uses scientific notation when numbers too small
+						limits=sprintf("%.2f", range(vvals[connected & finite],na.rm=TRUE)),
+						title=LONG_NAME[col.att], 
+						cex=0.8
 					)
 				}
 			}
