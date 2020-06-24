@@ -10,14 +10,6 @@
 
 
 #############################################################################################
-PLOT_FORMATS <- c("pdf","png")
-#PLOT_FORMATS <- "pdf"
-#PLOT_FORMATS <- "png"
-
-
-
-
-#############################################################################################
 # folders and files
 FOLDER_IN <- "in"
 	FOLDER_IN_POS <- file.path(FOLDER_IN,"positioning")

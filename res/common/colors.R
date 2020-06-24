@@ -12,7 +12,7 @@
 ###############################################################################
 # Colors used in the plots.
 ###############################################################################
-COLORS_8 <- c(								# basic color brewer palette, see http://colorbrewer2.org/#type=qualitative&scheme=Set1&n=9
+CAT_COLORS_8 <- c(								# basic color brewer palette, see http://colorbrewer2.org/#type=qualitative&scheme=Set1&n=9
 	rgb(228,26,28,maxColorValue=255),		# red
 	rgb(55,126,184,maxColorValue=255),		# blue
 	rgb(77,175,74,maxColorValue=255),		# green
@@ -24,7 +24,7 @@ COLORS_8 <- c(								# basic color brewer palette, see http://colorbrewer2.org/
 )
 
 # variant with more colors
-COLORS_12 <- c(								# manually extended color brewer palette
+CAT_COLORS_12 <- c(								# manually extended color brewer palette
 	rgb(228,26,28,maxColorValue=255),		# red
 	rgb(55,126,184,maxColorValue=255),		# light blue
 	rgb(113,219,110,maxColorValue=255),		# light green

@@ -8,6 +8,7 @@
 ########################################################################
 # load other scripts
 source("res/common/include.R")
+source("res/analysis/measures.R")
 
 # possibly create folder
 dir.create(path=FOLDER_OUT_ANAL, showWarnings=FALSE, recursive=TRUE)
