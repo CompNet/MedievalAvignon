@@ -50,7 +50,7 @@ custom.gplot <- function(g, paths, col.att, cat.att=FALSE, v.hl, e.hl, color.iso
 	
 	# set edge colors
 	ecols <- rep("BLACK", gsize(g))						# default color
-	nature <- edge_attr(g,LK_TYPE)
+	nature <- edge_attr(g, LK_TYPE)
 	if(length(nature)>0)
 	{	ecols[nature==LK_TYPE_PRO] <- "#1A8F39"			# green
 		ecols[nature==LK_TYPE_FAM] <- "#9C1699"			# purple

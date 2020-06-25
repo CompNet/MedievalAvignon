@@ -37,7 +37,7 @@ gnames <- extract.networks()
 tlog.start.loop(0,length(gnames), "Processing the measures for each extracted graph")
 for(i in 1:length(gnames))
 {	tlog.loop(2, i, "Processing the measures for graph ",gnames[i]," (",i,"/",length(gnames),")")
-	g <- analyze.network(folder.path==file.path(FOLDER_OUT_ANAL,gnames[i]))
+	g <- analyze.network(gname=gnames[i])
 }
 tlog.end.loop("Measure computation over")
 
