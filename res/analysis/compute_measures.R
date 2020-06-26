@@ -643,9 +643,11 @@ analyze.net.assortativity <- function(g)
 analyze.net.attributes <- function(g)
 {	tlog(2,"Computing nodal attribute stats")
 	# possibly create folders
-	graph.folder <- file.path(FOLDER_OUT_ANAL, g$name, "attributes")
-	dir.create(path=graph.folder, showWarnings=FALSE, recursive=TRUE)
-	dir.create(path=COMP_FOLDER, showWarnings=FALSE, recursive=TRUE)
+	graph.folder <- file.path(FOLDER_OUT_ANAL, g$name)
+	attr.folder <- file.path(graph.folder, "attributes")
+	dir.create(path=attr.folder, showWarnings=FALSE, recursive=TRUE)
+	comp.folder <- file.path(attr.folder, "_comparison")
+	dir.create(path=comp.folder, showWarnings=FALSE, recursive=TRUE)
 	
 	# retrieve the list of vertex attributes
 	att.list <- list.vertex.attributes(g)
@@ -664,9 +666,9 @@ analyze.net.attributes <- function(g)
 		# plot the attribute distribution as a barplot
 		tlog(4,"Bar-plotting attribute \"",attr,"\"")
 		tt <- table(tmp, useNA="ifany")
-		plot.folder <- file.path(ATT_FOLDER,attr)
+		plot.folder <- file.path(attr.folder, attr)
 		dir.create(path=plot.folder, showWarnings=FALSE, recursive=TRUE)
-		plot.file <- file.path(plot.folder,paste0(attr,"_bars"))
+		plot.file <- file.path(plot.folder, paste0(attr,"_bars"))
 		custom.barplot(tt, 
 			text=names(tt), 
 			xlab=LONG_NAME[attr], ylab="Frequence",
@@ -674,7 +676,7 @@ analyze.net.attributes <- function(g)
 		# record as a table
 		tt <- as.data.frame(tt)
 		colnames(tt) <- c("Value","Frequency")
-		table.file <- file.path(plot.folder,paste0(attr,"_vals.csv"))
+		table.file <- file.path(plot.folder, paste0(attr,"_vals.csv"))
 		write.csv(tt, file=table.file, row.names=FALSE)
 		
 		# add to matrix
@@ -709,7 +711,7 @@ analyze.net.attributes <- function(g)
 		unfrequent <- names(tt)[which(tt<=2)]
 		# plot tag distribution as barplot
 		tlog(4,"Bar-plotting attributes containing \"",attr,"\"")
-		plot.folder <- file.path(ATT_FOLDER,attr)
+		plot.folder <- file.path(attr.folder, attr)
 		dir.create(path=plot.folder, showWarnings=FALSE, recursive=TRUE)
 		plot.file <- file.path(plot.folder,paste0(attr,"_bars"))
 		custom.barplot(tt, 
@@ -719,19 +721,19 @@ analyze.net.attributes <- function(g)
 		# record tag distribution as table
 		tt <- as.data.frame(tt)
 		colnames(tt) <- c("Value","Frequency")
-		table.file <- file.path(plot.folder,paste0(attr,"_vals.csv"))
+		table.file <- file.path(plot.folder, paste0(attr,"_vals.csv"))
 		write.csv(tt, file=table.file, row.names=FALSE)
 		# plot tags on a graph
-		if(attr==ATT_NODE_TRAV_DEST)
+#		if(attr==ATT_NODE_TRAV_DEST)
 		{	gg <- g
 			for(a in colnames(m))
 			{	vals <- vertex_attr(g,a)
-				vals[which(!is.na(match(vals,unfrequent)))] <- paste0(" ",ATT_VAL_OTHER)
+				vals[which(!is.na(match(vals,unfrequent)))] <- paste0(" ",VAL_OTHER)
 				g <- set_vertex_attr(g, a, value=vals)
 			}
 		}
-		custom.gplot(g=g, col.att=attr, cat.att=TRUE, color.isolates=TRUE, file=file.path(graph.folder,paste0(attr,"_graph")))
-		if(attr==ATT_NODE_TRAV_DEST)
+		custom.gplot(g=g, col.att=attr, cat.att=TRUE, color.isolates=TRUE, file=file.path(plot.folder,paste0(attr,"_1graph")))
+#		if(attr==ATT_NODE_TRAV_DEST)
 			g <- gg
 			
 		# add to matrix
@@ -742,8 +744,8 @@ analyze.net.attributes <- function(g)
 			vals <- apply(m, 1, function(v) uval %in% v[!is.na(v)])
 			idxt <- which(vals)
 			idxf <- which(!vals)
-			vals[idxt] <- ATT_VAL_TRUE
-			vals[idxf] <- ATT_VAL_FALSE
+			vals[idxt] <- VAL_TRUE
+			vals[idxf] <- VAL_FALSE
 			vals[idx.nas] <- NA
 			cat.data <- cbind(cat.data, vals)
 			att_name <- paste(attr,uval,sep="_")
@@ -751,12 +753,12 @@ analyze.net.attributes <- function(g)
 			
 			# produce TRUE/FALSE barplots
 			tt <- table(vals, useNA="ifany")
-			plot.file <- file.path(plot.folder,paste0(att_name,"_bars"))
+			plot.file <- file.path(plot.folder, paste0(att_name,"_bars"))
 			custom.barplot(tt, 
-					text=names(tt), 
-					xlab=LONG_NAME[att_name], ylab="Frequence", 
-					file=plot.file,
-					ylim=c(0,ymax))
+				text=names(tt), 
+				xlab=LONG_NAME[att_name], ylab="Frequence", 
+				file=plot.file,
+				ylim=c(0,ymax))
 			# record values as table
 			tt <- as.data.frame(tt)
 			colnames(tt) <- c("Value","Frequency")
@@ -766,7 +768,7 @@ analyze.net.attributes <- function(g)
 	}
 	
 	# replace NAs by "Unknown" tags
-#	cat.data[which(is.na(cat.data))] <- ATT_VAL_UNK
+#	cat.data[which(is.na(cat.data))] <- VAL_UNK
 	
 	for(i in 1:ncol(cat.data))
 	{	attr <- colnames(cat.data)[i]
@@ -779,15 +781,17 @@ analyze.net.attributes <- function(g)
 				vals2 <- cat.data[,j]
 				tt <- table(vals1, vals2, useNA="ifany")
 				names(dimnames(tt)) <- c(LONG_NAME[attr],LONG_NAME[attr2])
+				shrt.attr1 <- substr(attr,1,30)		# to avoid long file names
+				shrt.attr2 <- substr(attr2,1,30)	# same
 				# plot file
-				plot.file <- file.path(COMP_FOLDER,paste0(attr,"_vs_",attr2,"_bars"))
+				plot.file <- file.path(comp.folder, paste0(shrt.attr1,"_vs_",shrt.attr2,"_bars"))
 				custom.barplot(vals=tt, 
 						text=colnames(tt), 
 						xlab=LONG_NAME[attr2], ylab="Frequence",
 						file=plot.file)
 				# record tag distribution as table
 				tt <- as.data.frame(tt)
-				table.file <- file.path(COMP_FOLDER,paste0(attr,"_vs_",attr2,"_vals.csv"))
+				table.file <- file.path(comp.folder, paste0(shrt.attr1,"_vs_",shrt.attr2,"_vals.csv"))
 				write.csv(tt, file=table.file, row.names=FALSE)
 			}
 		}
@@ -795,7 +799,7 @@ analyze.net.attributes <- function(g)
 		# plot the graph using colors for attribute values
 		tlog(4,"Graph-plotting attribute \"",attr,"\"")
 		gg <- set_vertex_attr(graph=g, name=attr, value=cat.data[,i])
-		custom.gplot(gg,col.att=attr,cat.att=TRUE,color.isolates=TRUE,file=file.path(graph.folder,paste0(attr,"_graph")))
+		custom.gplot(gg,col.att=attr,cat.att=TRUE,color.isolates=TRUE,file=file.path(attr.folder,paste0(attr,"_2graph")))
 #		custom.gplot(gg,col.att=attr,cat.att=TRUE,color.isolates=TRUE)
 	}
 	
@@ -813,9 +817,9 @@ analyze.net.attributes <- function(g)
 #		# (actually a barplot, for now, as the only numeric attribute is an integer)
 #		tlog(4,"Bar-plotting attribute \"",attr,"\"")
 #		tt <- table(tmp, useNA="ifany")
-#		plot.folder <- file.path(ATT_FOLDER,attr)
+#		plot.folder <- file.path(attr.folder, attr)
 #		dir.create(path=plot.folder, showWarnings=FALSE, recursive=TRUE)
-#		plot.file <- file.path(plot.folder,paste0(attr,"_bars"))
+#		plot.file <- file.path(plot.folder, paste0(attr,"_bars"))
 #		custom.barplot(tt, 
 #				text=names(tt), 
 #				xlab=LONG_NAME[attr], ylab="Frequence", 
@@ -823,7 +827,7 @@ analyze.net.attributes <- function(g)
 #		# record as a table
 #		tt <- as.data.frame(tt)
 #		colnames(tt) <- c("Value","Frequency")
-#		table.file <- file.path(plot.folder,paste0(attr,"_vals.csv"))
+#		table.file <- file.path(plot.folder, paste0(attr,"_vals.csv"))
 #		write.csv(tt, file=table.file, row.names=FALSE)
 #		
 #		# add to matrix
@@ -835,14 +839,14 @@ analyze.net.attributes <- function(g)
 #	}
 #	
 #	# replace NAs by "Unknown" tags
-##	num.data[which(is.na(num.data))] <- ATT_VAL_UNK
+##	num.data[which(is.na(num.data))] <- VAL_UNK
 #	
 #	# plot the graph using colors for attribute values
 #	for(i in 1:ncol(num.data))
 #	{	attr <- colnames(num.data)[i]
 #		tlog(4,"Plotting attribute \"",attr,"\"")
 #		gg <- set_vertex_attr(graph=g, name=attr, value=num.data[,i])
-#		custom.gplot(gg,col.att=attr,cat.att=FALSE,color.isolates=TRUE,file=file.path(graph.folder,paste0(attr,"_graph")))
+#		custom.gplot(gg,col.att=attr,cat.att=FALSE,color.isolates=TRUE,file=file.path(attr.folder,paste0(attr,"_graph")))
 ##		custom.gplot(gg,col.att=attr,cat.att=FALSE,color.isolates=TRUE)
 #	}
 	
@@ -1084,38 +1088,38 @@ analyze.network <- function(gname)
 	# (must be done first, before other results are added as attributes)
 	g <- analyze.net.attributes(g)
 		
-	# compute diameters, eccentricity, radius
-	g <- analyze.net.eccentricity(g)
-		
-	# compute degree
-	g <- analyze.net.degree(g)
-		
-	# compute eigencentrality
-	g <- analyze.net.eigencentrality(g)
-	
-	# compute betweenness
-	g <- analyze.net.betweenness(g)
-	
-	# compute closeness
-	g <- analyze.net.closeness(g)
-	
-	# compute distances
-	g <- analyze.net.distance(g)
-	
-	# compute articulation points
-	g <- analyze.net.articulation(g)
-	
-	# detect communities
-	g <- analyze.net.comstruct(g)
-	
-	# compute transitivity
-	g <- analyze.net.transitivity(g)
-	
-	# compute vertex connectivity
-	g <- analyze.net.connectivity(g)
-	
-	# compute assortativity
-	g <- analyze.net.assortativity(g)
+#	# compute diameters, eccentricity, radius
+#	g <- analyze.net.eccentricity(g)
+#		
+#	# compute degree
+#	g <- analyze.net.degree(g)
+#		
+#	# compute eigencentrality
+#	g <- analyze.net.eigencentrality(g)
+#	
+#	# compute betweenness
+#	g <- analyze.net.betweenness(g)
+#	
+#	# compute closeness
+#	g <- analyze.net.closeness(g)
+#	
+#	# compute distances
+#	g <- analyze.net.distance(g)
+#	
+#	# compute articulation points
+#	g <- analyze.net.articulation(g)
+#	
+#	# detect communities
+#	g <- analyze.net.comstruct(g)
+#	
+#	# compute transitivity
+#	g <- analyze.net.transitivity(g)
+#	
+#	# compute vertex connectivity
+#	g <- analyze.net.connectivity(g)
+#	
+#	# compute assortativity
+#	g <- analyze.net.assortativity(g)
 	
 	return(g)
 }

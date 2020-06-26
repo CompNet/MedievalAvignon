@@ -161,7 +161,7 @@ custom.gplot <- function(g, paths, col.att, cat.att=FALSE, v.hl, e.hl, color.iso
 		}
 	}
 	else
-		vcols <- rep("GREY",gorder(g))
+		vcols <- rep("GREY", gorder(g))
 	
 	# main plot
 	for(fformat in FORMAT)
