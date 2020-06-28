@@ -135,9 +135,7 @@ extract.networks <- function()
 		}
 		
 		# keep the labels of only top hubs 
-		bottom.nbr <- gorder(g1)-5 #round(gorder(g1)*0.95)
-		bottom.idx <- order(degree(g1))
-		V(g1)$label[bottom.idx[1:bottom.nbr]] <- NA
+		g1 <- update.node.labels(g1, vals=degree(g1))
 		
 		# plot full graph
 		plot.file <- file.path(graph.folder, "graph")

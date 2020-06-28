@@ -1,5 +1,5 @@
 #############################################################################################
-# Loads all the script of this project, in the appropriate order.
+# Loads all the scripts of this project, in the appropriate order.
 # 
 # 06/2020 Vincent Labatut
 #
@@ -22,6 +22,7 @@ options(warn=2)				# as errors
 #############################################################################################
 # packages
 library("igraph")			# graphs
+library("SDMTools")			# colors
 
 
 
@@ -33,6 +34,7 @@ source("res/common/colors.R")
 source("res/common/dates.R")
 source("res/common/logging.R")
 source("res/common/plot.R")
+source("res/common/graphs.R")
 
 
 

@@ -20,87 +20,108 @@
 # returns: same graph, updated with the results.
 #############################################################
 analyze.net.eccentricity <- function(g)
-{	###########################
+{	# read or init the stats data frame
+	stat.file <- file.path(FOLDER_OUT_ANAL, g$name, "stats.csv")
+	if(file.exists(stat.file))
+		stats <- read.csv(file=stat.file, header=TRUE, row.names=1)
+	else
+		stats <- data.frame(Value=as.numeric(),Mean=as.numeric(),Stdv=as.numeric())
+	
 	# compute diameter
-	tlog(2,"Computing diameter & radius")
-	diam <- diameter(g)					# get the network diameter
-	tlog(4,"Diameter=",diam)
-	dd <- distances(graph=g)				# compute all inter-node distances
-	idx <- which(dd==diam, arr.ind=TRUE)	# retrieve pairs of nodes matching the diameter
-	idx <- idx[idx[,1]<idx[,2],,drop=FALSE]	# filter (each pair appears twice due to symmetric matrix)
-	
-	# possibly create folder
-	diameter.folder <- file.path(FOLDER_OUT_ANAL,g$name,"diameter")
-	dir.create(path=diameter.folder, showWarnings=FALSE, recursive=TRUE)
-	
-	# plot diameter
-	diam.paths <- lapply(1:nrow(idx), function(r) all_shortest_paths(graph=g, from=idx[r,1], to=idx[r,2])$res)
-	for(pp in 1:length(diam.paths))
-	{	tlog(6,"Plotting diameter ",pp,"/",length(diam.paths))
-		custom.gplot(g, paths=diam.paths[[pp]], file=file.path(diameter.folder,paste0("diam_graph_",pp)))
+	modes <- c("undirected", "directed")
+	for(mode in modes)
+	{	tlog(2,"Computing diameter: mode=",mode)
+		diam <- diameter(g, directed=mode=="directed")						# get the network diameter
+		tlog(4,"Diameter=",diam)
+		dd <- distances(graph=g, mode=if(mode=="directed") "in" else "all")	# compute all inter-node distances
+		idx <- which(dd==diam, arr.ind=TRUE)								# retrieve pairs of nodes matching the diameter
+		if(mode=="undirected")
+			idx <- idx[idx[,1]<idx[,2],,drop=FALSE]							# filter (each pair appears twice due to symmetric matrix)
 		
-		q <- 1
-		for(p in 1:length(diam.paths[[pp]]))
-		{	tlog(8,"Plotting diameter ",p,"/",length(diam.paths[[pp]]))
-			if(p==1 || !all(diam.paths[[pp]][[p]]==diam.paths[[pp]][[p-1]]))
-			{	custom.gplot(g, paths=diam.paths[[pp]][[p]], file=file.path(diameter.folder,paste0("diam_graph_",pp,"_",q)))
-				q <- q + 1
+		# possibly create folder
+		fname <- paste0("diameter_",mode)
+		diameter.folder <- file.path(FOLDER_OUT_ANAL, g$name, fname)
+		dir.create(path=diameter.folder, showWarnings=FALSE, recursive=TRUE)
+		
+		# plot diameter
+		diam.paths <- lapply(1:nrow(idx), function(r) 
+			all_shortest_paths(graph=g, from=idx[r,1], to=idx[r,2], mode=if(mode=="directed") "in" else "all")$res)
+		for(pp in 1:length(diam.paths))
+		{	tlog(6,"Plotting diameter path ",pp,"/",length(diam.paths))
+			V(g)$label <- rep(NA, gorder(g))
+			custom.gplot(g, paths=diam.paths[[pp]], file=file.path(diameter.folder,paste0("diam_graph_",pp)))
+			#custom.gplot(g, paths=diam.paths[[pp]])
+			
+			q <- 1
+			for(p in 1:length(diam.paths[[pp]]))
+			{	tlog(8,"Plotting variant ",p,"/",length(diam.paths[[pp]]))
+				if(p==1 || !all(diam.paths[[pp]][[p]]==diam.paths[[pp]][[p-1]]))
+				{	V(g)$label <- rep(NA,gorder(g))
+					vstart <- diam.paths[[pp]][[p]][1]
+					V(g)[vstart]$label <- vertex_attr(g, ND_NAME_FULL, vstart) 
+					vend <- diam.paths[[pp]][[p]][length(diam.paths[[pp]][[p]])]
+					V(g)[vend]$label <- vertex_attr(g, ND_NAME_FULL, vend) 
+					custom.gplot(g, paths=diam.paths[[pp]][[p]], file=file.path(diameter.folder,paste0("diam_graph_",pp,"_",q)))
+					q <- q + 1
+				}
 			}
 		}
-	}
 		
-	###########################
-	# compute eccentricity
-	tlog(2,"Computing eccentricity")
-	vals <- eccentricity(g)
+		# add value to graph and table
+		g <- set_graph_attr(graph=g, name=fname, value=diam)
+		stats[fname, ] <- list(Value=diam, Mean=NA, Stdv=NA)
+	}
 	
-	# possibly create folder
-	eccentricity.folder <- file.path(FOLDER_OUT_ANAL,g$name,"eccentricity")
-	dir.create(path=eccentricity.folder, showWarnings=FALSE, recursive=TRUE)
-	
-	# plot distribution
-	custom.hist(vals, name=LONG_NAME[MEAS_ECCENTRICITY], file=file.path(eccentricity.folder,"eccentricity_histo"))
-	
-	# export CSV with eccentricity
-	df <- data.frame(V(g)$name,V(g)$label,vals)
-	colnames(df) <- c("Name","Label",MEAS_ECCENTRICITY) 
-	write.csv(df, file=file.path(eccentricity.folder,"eccentricity_values.csv"), row.names=FALSE)
-	
-	# add eccentricity (as node attributes) to the graph
-	V(g)$Eccentricity <- vals
+	# compute eccentricity and radius
+	modes <- c("undirected","in","out")
+	long.names <- c("Undirected","Incoming","Outgoing")
+	for(i in 1:length(modes))
+	{	mode <- modes[i]
+		
+		# compute eccentricity
+		tlog(2,"Computing eccentricity: mode=",mode)
+		vals <- eccentricity(g, mode=if(mode=="undirected") "all" else mode)
+		
+		# possibly create folder
+		fname <- paste0("eccentricity_",mode)
+		eccentricity.folder <- file.path(FOLDER_OUT_ANAL, g$name, fname)
+		dir.create(path=eccentricity.folder, showWarnings=FALSE, recursive=TRUE)
+		
+		# plot distribution
+		custom.hist(vals, name=paste(long.names[i],"Eccentricity"), file=file.path(eccentricity.folder,"eccentricity_histo"))
+		
+		# export CSV with eccentricity
+		df <- data.frame(V(g)$name,V(g)$label,vals)
+		colnames(df) <- c("Name","Label",fname) 
+		write.csv(df, file=file.path(eccentricity.folder,"eccentricity_values.csv"), row.names=FALSE)
+		
+		# add eccentricity (as node attributes) to the graph and stats table
+		g <- set_vertex_attr(graph=g, name=fname, value=vals)
+		stats[fname, ] <- list(Value=NA, Mean=mean(vals), Stdv=sd(vals))
+		
+		# plot graph using color for eccentricity
+		g <- update.node.labels(g, vals)
+		custom.gplot(g,col.att=fname,file=file.path(eccentricity.folder,"eccentricity_graph"))
+		#custom.gplot(g,col.att=fname)
+		
+		# compute radius
+		tlog(2,"Computing radius: mode=",mode)
+		rad <- radius(g, mode=if(mode=="undirected") "all" else mode)
+		#rad <- min(vals[vals>0])
+		tlog(4,"Radius=",rad)
+		
+		# add radius to the graph (as attributes) and stats table
+		fname <- paste0("radius_",mode)
+		g <- set_graph_attr(graph=g, name=fname, value=rad)
+		stats[fname, ] <- list(Value=rad, Mean=NA, Stdv=NA)
+	}
 
-	# plot graph using color for eccentricity
-	custom.gplot(g,col.att=MEAS_ECCENTRICITY,file=file.path(eccentricity.folder,"eccentricity_graph"))
-#	custom.gplot(g,col.att=MEAS_ECCENTRICITY)
+	# export CSV with results
+	write.csv(stats, file=stat.file, row.names=TRUE)
 	
-	###########################
-	# compute radius
-	rad <- min(vals[vals>0])
-	
-	# add radius and diameter to the graph (as attributes) and record
-	g$diameter <- diam
-	g$radius <- rad
-	tlog(4,"Radius=",rad)
-	
-	# export CSV with radius and diameter
-	stat.file <- file.path(FOLDER_OUT_ANAL,g$name,"stats.csv")
-	if(file.exists(stat.file))
-	{	df <- read.csv(file=stat.file,header=TRUE,row.names=1)
-		df[MEAS_DIAMETER, ] <- list(Value=diam, Mean=NA, Stdv=NA)
-		df[MEAS_RADIUS, ] <- list(Value=rad, Mean=NA, Stdv=NA)
-		df[MEAS_ECCENTRICITY, ] <- list(Value=NA, Mean=mean(vals), Stdv=sd(vals))
-	}
-	else
-	{	df <- data.frame(Value=c(diam,rad,NA),Mean=c(NA,NA,mean(vals)),Stdv=c(NA,NA,sd(vals)))
-		row.names(df) <- c(MEAS_DIAMETER,MEAS_RADIUS,MEAS_ECCENTRICITY)
-	}
-	write.csv(df, file=stat.file, row.names=TRUE)
-	
-	###########################
 	# record graph and return it
 	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
 	write.graph(graph=g, file=graph.file, format="graphml")
-	
 	return(g)
 }
 
@@ -1082,14 +1103,14 @@ analyze.net.connectivity <- function(g)
 analyze.network <- function(gname)
 {	# load graph
 	file.path <- file.path(FOLDER_OUT_ANAL, gnames[i], FILE_GRAPH)
-	g <- read.graph(file=file.path, format="graphml")
+	g <- load.graphml.file(file=file.path)
 	
 	# compute attribute stats 
 	# (must be done first, before other results are added as attributes)
-	g <- analyze.net.attributes(g)
+#	g <- analyze.net.attributes(g)
 		
-#	# compute diameters, eccentricity, radius
-#	g <- analyze.net.eccentricity(g)
+	# compute diameters, eccentricity, radius
+	g <- analyze.net.eccentricity(g)
 #		
 #	# compute degree
 #	g <- analyze.net.degree(g)
