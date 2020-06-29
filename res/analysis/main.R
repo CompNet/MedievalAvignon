@@ -27,7 +27,7 @@ dir.create(path=FOLDER_OUT_ANAL, showWarnings=FALSE, recursive=TRUE)
 
 ########################################################################
 # load the data and create various versions of the graph
-gnames <- extract.networks()
+#gnames <- extract.networks()
 
 
 

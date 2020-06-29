@@ -12,6 +12,24 @@
 
 
 #############################################################
+# Reads or inititalizes the statistic file, then returns the
+# corresponding table.
+#
+# stat.file: file containing the statistics.
+#
+# returns: loaded or initialized table.
+#############################################################
+retrieve.stats <- function(stat.file)
+{	if(file.exists(stat.file))
+		stats <- read.csv(file=stat.file, header=TRUE, row.names=1)
+	else
+		stats <- data.frame(Value=as.numeric(),Mean=as.numeric(),Stdv=as.numeric())
+	return(stats)
+}
+
+
+
+#############################################################
 # Computes the diameter, the corresponding paths, and plots them.
 # Same thing for radius and eccentricity.
 #
@@ -20,12 +38,9 @@
 # returns: same graph, updated with the results.
 #############################################################
 analyze.net.eccentricity <- function(g)
-{	# read or init the stats data frame
+{	# get the stat table
 	stat.file <- file.path(FOLDER_OUT_ANAL, g$name, "stats.csv")
-	if(file.exists(stat.file))
-		stats <- read.csv(file=stat.file, header=TRUE, row.names=1)
-	else
-		stats <- data.frame(Value=as.numeric(),Mean=as.numeric(),Stdv=as.numeric())
+	stats <- retrieve.stats(stat.file)
 	
 	# compute diameter
 	modes <- c("undirected", "directed")
@@ -40,7 +55,7 @@ analyze.net.eccentricity <- function(g)
 		
 		# possibly create folder
 		fname <- paste0("diameter_",mode)
-		diameter.folder <- file.path(FOLDER_OUT_ANAL, g$name, fname)
+		diameter.folder <- file.path(FOLDER_OUT_ANAL, g$name, "diameter", mode)
 		dir.create(path=diameter.folder, showWarnings=FALSE, recursive=TRUE)
 		
 		# plot diameter
@@ -49,7 +64,7 @@ analyze.net.eccentricity <- function(g)
 		for(pp in 1:length(diam.paths))
 		{	tlog(6,"Plotting diameter path ",pp,"/",length(diam.paths))
 			V(g)$label <- rep(NA, gorder(g))
-			custom.gplot(g, paths=diam.paths[[pp]], file=file.path(diameter.folder,paste0("diam_graph_",pp)))
+			custom.gplot(g, paths=diam.paths[[pp]], file=file.path(diameter.folder,paste0("diam_",mode,"_graph_",pp)))
 			#custom.gplot(g, paths=diam.paths[[pp]])
 			
 			q <- 1
@@ -61,7 +76,7 @@ analyze.net.eccentricity <- function(g)
 					V(g)[vstart]$label <- vertex_attr(g, ND_NAME_FULL, vstart) 
 					vend <- diam.paths[[pp]][[p]][length(diam.paths[[pp]][[p]])]
 					V(g)[vend]$label <- vertex_attr(g, ND_NAME_FULL, vend) 
-					custom.gplot(g, paths=diam.paths[[pp]][[p]], file=file.path(diameter.folder,paste0("diam_graph_",pp,"_",q)))
+					custom.gplot(g, paths=diam.paths[[pp]][[p]], file=file.path(diameter.folder,paste0("diam_",mode,"_graph_",pp,"_",q)))
 					q <- q + 1
 				}
 			}
@@ -84,24 +99,26 @@ analyze.net.eccentricity <- function(g)
 		
 		# possibly create folder
 		fname <- paste0("eccentricity_",mode)
-		eccentricity.folder <- file.path(FOLDER_OUT_ANAL, g$name, fname)
+		eccentricity.folder <- file.path(FOLDER_OUT_ANAL, g$name, "eccentricity")
 		dir.create(path=eccentricity.folder, showWarnings=FALSE, recursive=TRUE)
 		
 		# plot distribution
-		custom.hist(vals, name=paste(long.names[i],"Eccentricity"), file=file.path(eccentricity.folder,"eccentricity_histo"))
+		custom.hist(vals, name=paste(long.names[i],"Eccentricity"), file=file.path(eccentricity.folder,paste0(fname,"_histo")))
 		
 		# export CSV with eccentricity
 		df <- data.frame(V(g)$name,V(g)$label,vals)
 		colnames(df) <- c("Name","Label",fname) 
-		write.csv(df, file=file.path(eccentricity.folder,"eccentricity_values.csv"), row.names=FALSE)
+		write.csv(df, file=file.path(eccentricity.folder,paste0(fname,"_values.csv")), row.names=FALSE)
 		
 		# add eccentricity (as node attributes) to the graph and stats table
 		g <- set_vertex_attr(graph=g, name=fname, value=vals)
+		g <- set_graph_attr(graph=g, name=paste0(fname,"_mean"), value=mean(vals))
+		g <- set_graph_attr(graph=g, name=paste0(fname,"_stdev"), value=sd(vals))
 		stats[fname, ] <- list(Value=NA, Mean=mean(vals), Stdv=sd(vals))
 		
 		# plot graph using color for eccentricity
 		g <- update.node.labels(g, vals)
-		custom.gplot(g,col.att=fname,file=file.path(eccentricity.folder,"eccentricity_graph"))
+		custom.gplot(g,col.att=fname,file=file.path(eccentricity.folder,paste0(fname,"_graph")))
 		#custom.gplot(g,col.att=fname)
 		
 		# compute radius
@@ -136,43 +153,48 @@ analyze.net.eccentricity <- function(g)
 # returns: same graph, updated with the results.
 #############################################################
 analyze.net.degree <- function(g)
-{	tlog(2,"Computing degree")
-	# possibly create folder
-	degree.folder <- file.path(FOLDER_OUT_ANAL,g$name,"degree")
-	dir.create(path=degree.folder, showWarnings=FALSE, recursive=TRUE)
+{	# get the stat table
+	stat.file <- file.path(FOLDER_OUT_ANAL, g$name, "stats.csv")
+	stats <- retrieve.stats(stat.file)
 	
-	# degree distribution
-	vals <- igraph::degree(g)
-	custom.hist(vals, name=LONG_NAME[MEAS_DEGREE], file=file.path(degree.folder,"degree_histo"))
+	modes <- c("undirected","in","out")
+	long.names <- c("Undirected","Incoming","Outgoing")
+	for(i in 1:length(modes))
+	{	mode <- modes[i]
+		tlog(2,"Computing degree: mode=",mode)
 		
-	# export CSV with degree
-	df <- data.frame(V(g)$name,V(g)$label,vals)
-	colnames(df) <- c("Name","Label",MEAS_DEGREE) 
-	write.csv(df, file=file.path(degree.folder,paste0("degree_values.csv")), row.names=FALSE)
-	
-	# add results to the graph (as attributes) and record
-	V(g)$Degree <- vals
-	g$DegreeAvg <- mean(vals)
-	g$DegreeStdv <- sd(vals)
-	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
-	write.graph(graph=g, file=graph.file, format="graphml")
-	
-	# plot graph using color for degree
-	custom.gplot(g,col.att=MEAS_DEGREE,file=file.path(degree.folder,"degree_graph"))
-#	custom.gplot(g,col.att=MEAS_DEGREE)
+		# possibly create folder
+		fname <- paste0("degree_",mode)
+		degree.folder <- file.path(FOLDER_OUT_ANAL, g$name, "degree")
+		dir.create(path=degree.folder, showWarnings=FALSE, recursive=TRUE)
+		
+		# degree distribution
+		vals <- igraph::degree(g, mode=if(mode=="undirected") "all" else mode)
+		custom.hist(vals, name=paste(long.names[i],"Degree"), file=file.path(degree.folder,paste0(fname,"_histo")))
+			
+		# export CSV with degree
+		df <- data.frame(V(g)$name, V(g)$label, vals)
+		colnames(df) <- c("Name","Label",fname) 
+		write.csv(df, file=file.path(degree.folder,paste0(fname,"_values.csv")), row.names=FALSE)
+		
+		# add degree (as node attributes) to the graph and stats table
+		g <- set_vertex_attr(graph=g, name=fname, value=vals)
+		g <- set_graph_attr(graph=g, name=paste0(fname,"_mean"), value=mean(vals))
+		g <- set_graph_attr(graph=g, name=paste0(fname,"_stdev"), value=sd(vals))
+		stats[fname, ] <- list(Value=NA, Mean=mean(vals), Stdv=sd(vals))
+		
+		# plot graph using color for degree
+		g <- update.node.labels(g, vals)
+		custom.gplot(g,col.att=fname,file=file.path(degree.folder,paste0(fname,"_graph")))
+		#custom.gplot(g,col.att=fname)
+	}
 	
 	# export CSV with average degree
-	stat.file <- file.path(FOLDER_OUT_ANAL,g$name,"stats.csv")
-	if(file.exists(stat.file))
-	{	df <- read.csv(file=stat.file,header=TRUE,row.names=1)
-		df[MEAS_DEGREE, ] <- list(Value=NA, Mean=mean(vals), Stdv=sd(vals))
-	}
-	else
-	{	df <- data.frame(Value=c(NA),Mean=c(mean(vals)),Stdv=c(sd(vals)))
-		row.names(df) <- c(MEAS_DEGREE)
-	}
-	write.csv(df, file=stat.file, row.names=TRUE)
+	write.csv(stats, file=stat.file, row.names=TRUE)
 	
+	# record graph and return it
+	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
+	write.graph(graph=g, file=graph.file, format="graphml")
 	return(g)
 }
 
@@ -187,43 +209,47 @@ analyze.net.degree <- function(g)
 # returns: same graph, updated with the results.
 #############################################################
 analyze.net.eigencentrality <- function(g)
-{	tlog(2,"Computing Eigencentrality")
-	# possibly create folder
-	eigen.folder <- file.path(FOLDER_OUT_ANAL,g$name,"eigencentrality")
-	dir.create(path=eigen.folder, showWarnings=FALSE, recursive=TRUE)
+{	# get the stat table
+	stat.file <- file.path(FOLDER_OUT_ANAL, g$name, "stats.csv")
+	stats <- retrieve.stats(stat.file)
 	
-	# Eigencentrality distribution
-	vals <- eigen_centrality(graph=g, scale=FALSE)$vector
-	custom.hist(vals, name=LONG_NAME[MEAS_EIGEN], file=file.path(eigen.folder,"eigencentrality_histo"))
+	modes <- c("undirected","in","out")
+	long.names <- c("Undirected","Incoming","Outgoing")
+	for(i in 1:length(modes))
+	{	mode <- modes[i]
+		tlog(2,"Computing Eigencentrality: mode=",mode)
+		
+		# possibly create folder
+		fname <- paste0("eigencentrality_",mode)
+		eigen.folder <- file.path(FOLDER_OUT_ANAL, g$name, "eigencentrality")
+		dir.create(path=eigen.folder, showWarnings=FALSE, recursive=TRUE)
+		
+		# Eigencentrality distribution
+		vals <- eigen_centrality(graph=g, scale=FALSE)$vector
+		custom.hist(vals, name=paste(long.names[i],"Eigencentrality"), file=file.path(eigen.folder,"eigencentrality_histo"))
+		
+		# export CSV with Eigencentrality
+		df <- data.frame(V(g)$name,V(g)$label,vals)
+		colnames(df) <- c("Name","Label",fname) 
+		write.csv(df, file=file.path(eigen.folder,paste0(fname,"_values.csv")), row.names=FALSE)
+		
+		# add results to the graph (as attributes) and record
+		g <- set_vertex_attr(graph=g, name=fname, value=vals)
+		g <- set_graph_attr(graph=g, name=paste0(fname,"_mean"), value=mean(vals))
+		g <- set_graph_attr(graph=g, name=paste0(fname,"_stdev"), value=sd(vals))
+		stats[fname, ] <- list(Value=NA, Mean=mean(vals), Stdv=sd(vals))
+		
+		# plot graph using color for Eigencentrality
+		custom.gplot(g,col.att=fname,file=file.path(eigen.folder,paste0(fname,"_graph")))
+		#custom.gplot(g,col.att=fname)
+	}
 	
-	# export CSV with Eigencentrality
-	df <- data.frame(V(g)$name,V(g)$label,vals)
-	colnames(df) <- c("Name","Label",MEAS_EIGEN) 
-	write.csv(df, file=file.path(eigen.folder,paste0("eigencentrality_values.csv")), row.names=FALSE)
+	# export CSV with results
+	write.csv(stats, file=stat.file, row.names=TRUE)
 	
-	# add results to the graph (as attributes) and record
-	V(g)$Eigencentrality <- vals
-	g$EigencentralityAvg <- mean(vals)
-	g$EigencentralityStdv <- sd(vals)
+	# record graph and return it
 	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
 	write.graph(graph=g, file=graph.file, format="graphml")
-	
-	# plot graph using color for Eigencentrality
-	custom.gplot(g,col.att=MEAS_EIGEN,file=file.path(eigen.folder,"eigencentrality_graph"))
-#	custom.gplot(g,col.att=MEAS_EIGEN)
-	
-	# export CSV with average Eigencentrality
-	stat.file <- file.path(FOLDER_OUT_ANAL,g$name,"stats.csv")
-	if(file.exists(stat.file))
-	{	df <- read.csv(file=stat.file,header=TRUE,row.names=1)
-		df[MEAS_EIGEN, ] <- list(Value=NA, Mean=mean(vals), Stdv=sd(vals))
-	}
-	else
-	{	df <- data.frame(Value=c(NA),Mean=c(mean(vals)),Stdv=c(sd(vals)))
-		row.names(df) <- c(MEAS_EIGEN)
-	}
-	write.csv(df, file=stat.file, row.names=TRUE)
-	
 	return(g)
 }
 
@@ -1110,14 +1136,14 @@ analyze.network <- function(gname)
 #	g <- analyze.net.attributes(g)
 		
 	# compute diameters, eccentricity, radius
-	g <- analyze.net.eccentricity(g)
-#		
-#	# compute degree
+#	g <- analyze.net.eccentricity(g)
+		
+	# compute degree
 #	g <- analyze.net.degree(g)
-#		
-#	# compute eigencentrality
-#	g <- analyze.net.eigencentrality(g)
-#	
+		
+	# compute eigencentrality
+	g <- analyze.net.eigencentrality(g)
+	
 #	# compute betweenness
 #	g <- analyze.net.betweenness(g)
 #	
