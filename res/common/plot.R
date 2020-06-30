@@ -111,21 +111,24 @@ custom.gplot <- function(g, paths, col.att, cat.att=FALSE, v.hl, e.hl, color.iso
 			
 			# just one attribute
 			if(length(vvals)>0)
-			{	# categorical attribute
-				if(cat.att)
-				{	tmp <- factor(vvals[connected])
-					vcols[connected] <- CAT_COLORS_8[(as.integer(tmp)-1) %% length(CAT_COLORS_8) + 1]
-					lgd.txt <- levels(tmp)
-					lgd.col <- CAT_COLORS_8[(1:length(lgd.txt)-1) %% length(CAT_COLORS_8) + 1]
-				}
-				# numerical attribute
-				else
-				{	fine = 500 									# granularity of the color gradient
-					pal = colorRampPalette(c("yellow",'red'))	# extreme colors of the gradient
-					finite <- !is.infinite(vvals)
-					vcols[connected & finite] <- pal(fine)[as.numeric(cut(vvals[connected & finite],breaks=fine))]
-					vcols[connected & !finite] <- "#575757"		# infinite values are grey
-					# see https://stackoverflow.com/questions/27004167/coloring-vertexes-according-to-their-centrality
+			{	# check if all the attribute values are not NA
+				if(!all(is.na(vvals)))
+				{	# categorical attribute
+					if(cat.att)
+					{	tmp <- factor(vvals[connected])
+						vcols[connected] <- CAT_COLORS_8[(as.integer(tmp)-1) %% length(CAT_COLORS_8) + 1]
+						lgd.txt <- levels(tmp)
+						lgd.col <- CAT_COLORS_8[(1:length(lgd.txt)-1) %% length(CAT_COLORS_8) + 1]
+					}
+					# numerical attribute
+					else
+					{	fine = 500 									# granularity of the color gradient
+						pal = colorRampPalette(c("yellow",'red'))	# extreme colors of the gradient
+						finite <- !is.infinite(vvals)
+						vcols[connected & finite] <- pal(fine)[as.numeric(cut(vvals[connected & finite],breaks=fine))]
+						vcols[connected & !finite] <- "#575757"		# infinite values are grey
+						# see https://stackoverflow.com/questions/27004167/coloring-vertexes-according-to-their-centrality
+					}
 				}
 			}
 			# several attributes, supposedly binary ones
@@ -202,7 +205,7 @@ custom.gplot <- function(g, paths, col.att, cat.att=FALSE, v.hl, e.hl, color.iso
 			cex=0.8
 		)
 		if(hasArg(col.att))
-		{	if(!all(!connected))
+		{	if(!all(!connected) && !all(is.na(vvals)))
 			{	# categorical attributes
 				if(cat.att)
 				{	legend(

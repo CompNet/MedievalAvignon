@@ -327,7 +327,7 @@ analyze.net.closeness <- function(g)
 	long.names <- c("Undirected","Incoming","Outgoing")
 	for(i in 1:length(modes))
 	{	mode <- modes[i]
-		tlog(2,"Computing closeness")
+		tlog(2,"Computing closeness: mode=",mode)
 		
 		# possibly create folder
 		fname <- paste0("closeness_",mode)
@@ -335,7 +335,7 @@ analyze.net.closeness <- function(g)
 		dir.create(path=closeness.folder, showWarnings=FALSE, recursive=TRUE)
 		
 		# retrieve giant component, do not compute measure for the rest of the graph
-		components <- clusters(graph=g)
+		components <- components(graph=g, mode=if(mode=="undirected") "weak" else "strong")
 		giant.comp.id <- which.max(components$csize)
 		giant.comp.nodes <- which(components$membership==giant.comp.id)
 		g.comp <- induced_subgraph(graph=g, giant.comp.nodes)
@@ -343,6 +343,7 @@ analyze.net.closeness <- function(g)
 		# closeness distribution: only giant component
 		vals <- rep(NA, vcount(g))
 		vals[giant.comp.nodes] <- closeness(graph=g.comp, normalized=TRUE, mode=if(mode=="undirected") "all" else mode)
+		vals[is.nan(vals)] <- NA
 		custom.hist(vals, name=paste(long.names[i],"Closeness"), file=file.path(closeness.folder,paste0(fname,"_histo")))
 		
 		# export CSV with closeness
@@ -360,6 +361,8 @@ analyze.net.closeness <- function(g)
 		g <- update.node.labels(g, vals)
 		custom.gplot(g,col.att=fname,file=file.path(closeness.folder,paste0(fname,"_graph")))
 		#custom.gplot(g,col.att=fname)
+		if(all(is.na(vals)))
+			tlog(4,"WARNING: all values are NA, so no color in the plot")
 	}
 	
 	# export CSV with average degree
@@ -989,56 +992,63 @@ analyze.net.articulation <- function(g)
 # returns: same graph, updated with the results.
 #############################################################
 analyze.net.distance <- function(g)
-{	tlog(2,"Computing average distances")
-	# possibly create folder
-	distance.folder <- file.path(FOLDER_OUT_ANAL,g$name,"distance")
-	dir.create(path=distance.folder, showWarnings=FALSE, recursive=TRUE)
+{	# get the stat table
+	stat.file <- file.path(FOLDER_OUT_ANAL, g$name, "stats.csv")
+	stats <- retrieve.stats(stat.file)
 	
-	# distance distribution
-	vals <- distances(graph=g)
-	flat.vals <- vals[upper.tri(vals)]
-	custom.hist(vals=flat.vals, name=LONG_NAME[MEAS_DISTANCE], file=file.path(distance.folder,"distance_histo"))
-	# average distance distribution
-	avg.vals <- apply(X=vals,MARGIN=1,FUN=function(v) mean(v[!is.infinite(v)]))
-	custom.hist(vals=avg.vals, name=LONG_NAME[MEAS_DISTANCE_AVG], file=file.path(distance.folder,"distance_avg_histo"))
+	modes <- c("undirected","in","out")
+	long.names <- c("Undirected","Incoming","Outgoing")
+	for(i in 1:length(modes))
+	{	mode <- modes[i]
+		tlog(2,"Computing distances: mode=",mode)
+		
+		# possibly create folder
+		fname <- paste0("distance_",mode)
+		distance.folder <- file.path(FOLDER_OUT_ANAL,g$name,"distance")
+		dir.create(path=distance.folder, showWarnings=FALSE, recursive=TRUE)
+		
+		# distance distribution
+		vals <- distances(graph=g, mode=if(mode=="undirected") "all" else mode)
+		flat.vals <- vals[upper.tri(vals)]
+		custom.hist(vals=flat.vals, paste(long.names[i],"Distance"), file=file.path(distance.folder,paste0(fname,"_histo")))
+		# average distance distribution
+		avg.vals <- apply(X=vals,MARGIN=1,FUN=function(v) mean(v[!is.infinite(v)]))
+		custom.hist(vals=avg.vals, name=paste("Average",long.names[i],"Distance"), file=file.path(distance.folder,paste0(fname,"_avg_histo")))
+		
+		# export CSV with average distance
+		df <- data.frame(V(g)$name, V(g)$label, avg.vals)
+		colnames(df) <- c("Name","Label",paste0(fname,"_avg")) 
+		write.csv(df, file=file.path(distance.folder,paste0(fname,"_avg_values.csv")), row.names=FALSE)
+		
+		# add results to the graph (as attributes) and stats table
+		g <- set_vertex_attr(graph=g, name=paste0(fname,"_avg"), value=avg.vals)
+		g <- set_graph_attr(graph=g, name=paste0(fname,"_mean"), value=mean(flat.vals))
+		g <- set_graph_attr(graph=g, name=paste0(fname,"_stdev"), value=sd(flat.vals))
+		stats[fname, ] <- list(Value=NA, Mean=mean(vals), Stdv=sd(vals))
+		
+		# for each node, plot graph using color for distance
+		mode.folder <- file.path(distance.folder,mode)
+		dir.create(path=mode.folder, showWarnings=FALSE, recursive=TRUE)
+		for(n in 1:gorder(g))
+		{	nname <- vertex_attr(g, ND_NAME_FULL, n)
+			g <- set_vertex_attr(graph=g, name=fname, value=vals[n,])
+			if(all(is.infinite(vals[n,-n])))
+				tlog(4,"NOT plotting graph for node #",n,"(",nname,"), as all values are infinite")
+			else
+			{	tlog(4,"Plotting graph for node #",n,": ",nname)
+				g <- update.node.labels(g, vals[n,])
+				custom.gplot(g,col.att=fname,v.hl=n,file=file.path(mode.folder,paste0("n",n,"_",nname)))
+			}
+			g <- delete_vertex_attr(graph=g, name=fname)
+		}
+	}
 	
-	# export CSV with average distance
-	df <- data.frame(V(g)$name,V(g)$label,avg.vals)
-	colnames(df) <- c("Name","Label",MEAS_DISTANCE_AVG) 
-	write.csv(df, file=file.path(distance.folder,"distance_avg_values.csv"), row.names=FALSE)
+	# export CSV with average degree
+	write.csv(stats, file=stat.file, row.names=TRUE)
 	
-	# add results to the graph (as attributes) and record
-	V(g)$AverageDistance <- avg.vals
-	g$DistanceAvg <- mean(flat.vals)
-	g$DistanceStdv <- sd(flat.vals)
+	# record graph and return it
 	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
 	write.graph(graph=g, file=graph.file, format="graphml")
-	
-	# for each node, plot graph using color for distance
-	for(n in 1:gorder(g))
-	{	nname <- V(g)$name[n]
-		V(g)$Distance <- vals[n,]
-		if(all(is.infinite(vals[n,-n])))
-			tlog(4,"NOT plotting graph for node #",nname,", as all values are infinite")
-		else
-		{	tlog(4,"Plotting graph for node #",nname)
-			custom.gplot(g,col.att=MEAS_DISTANCE,v.hl=n,file=file.path(distance.folder,paste0("distance_graph_",nname)))
-		}
-		g <- delete_vertex_attr(graph=g, name=MEAS_DISTANCE)
-	}
-	
-	# export CSV with average distance
-	stat.file <- file.path(FOLDER_OUT_ANAL,g$name,"stats.csv")
-	if(file.exists(stat.file))
-	{	df <- read.csv(file=stat.file,header=TRUE,row.names=1)
-		df[MEAS_DISTANCE, ] <- list(Value=NA, Mean=mean(flat.vals), Stdv=sd(flat.vals))
-	}
-	else
-	{	df <- data.frame(Value=c(NA),Mean=c(mean(flat.vals)),Stdv=c(sd(flat.vals)))
-		row.names(df) <- c(MEAS_DISTANCE)
-	}
-	write.csv(df, file=stat.file, row.names=TRUE)
-	
 	return(g)
 }
 
@@ -1154,11 +1164,11 @@ analyze.network <- function(gname)
 #	g <- analyze.net.betweenness(g)
 	
 	# compute closeness
-	g <- analyze.net.closeness(g)
+#	g <- analyze.net.closeness(g)
 	
-#	# compute distances
-#	g <- analyze.net.distance(g)
-#	
+	# compute distances
+	g <- analyze.net.distance(g)
+	
 #	# compute articulation points
 #	g <- analyze.net.articulation(g)
 #	

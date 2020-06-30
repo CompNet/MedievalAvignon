@@ -54,10 +54,16 @@ update.node.labels <- function(g, vals)
 {	if(!hasArg(vals))
 		vals <- degree(g)
 	
-	V(g)$label <- vertex_attr(g, ND_NAME_FULL)
-	bottom.nbr <- gorder(g)-5 #round(gorder(g1)*0.95)
-	bottom.idx <- order(vals)
-	V(g)$label[bottom.idx[1:bottom.nbr]] <- NA
+	V(g)$label <- rep(NA, gorder(g))
+	vals[is.nan(vals)] <- NA
+	vals[is.infinite(vals)] <- NA
+	na.nbr <- length(which(is.na(vals)))
+	lim <- min(5, length(which(!is.na(vals))))
+	if(lim==0)
+		bottom.idx <- 1:gorder(g)
+	else
+		bottom.idx <- order(vals, decreasing=TRUE)[1:lim]
+	V(g)$label[bottom.idx] <- vertex_attr(g, ND_NAME_FULL, bottom.idx)
 	
 	return(g)
 }
