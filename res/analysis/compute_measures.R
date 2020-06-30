@@ -213,8 +213,8 @@ analyze.net.eigencentrality <- function(g)
 	stat.file <- file.path(FOLDER_OUT_ANAL, g$name, "stats.csv")
 	stats <- retrieve.stats(stat.file)
 	
-	modes <- c("undirected","in","out")
-	long.names <- c("Undirected","Incoming","Outgoing")
+	modes <- c("undirected","directed")
+	long.names <- c("Undirected","Directed")
 	for(i in 1:length(modes))
 	{	mode <- modes[i]
 		tlog(2,"Computing Eigencentrality: mode=",mode)
@@ -225,8 +225,8 @@ analyze.net.eigencentrality <- function(g)
 		dir.create(path=eigen.folder, showWarnings=FALSE, recursive=TRUE)
 		
 		# Eigencentrality distribution
-		vals <- eigen_centrality(graph=g, scale=FALSE)$vector
-		custom.hist(vals, name=paste(long.names[i],"Eigencentrality"), file=file.path(eigen.folder,"eigencentrality_histo"))
+		vals <- eigen_centrality(graph=g, scale=FALSE, directed=mode=="directed")$vector
+		custom.hist(vals, name=paste(long.names[i],"Eigencentrality"), file=file.path(eigen.folder,paste0(fname,"_histo")))
 		
 		# export CSV with Eigencentrality
 		df <- data.frame(V(g)$name,V(g)$label,vals)
@@ -264,43 +264,47 @@ analyze.net.eigencentrality <- function(g)
 # returns: same graph, updated with the results.
 #############################################################
 analyze.net.betweenness <- function(g)
-{	tlog(2,"Computing betweenness")
-	# possibly create folder
-	betweenness.folder <- file.path(FOLDER_OUT_ANAL,g$name,"betweenness")
-	dir.create(path=betweenness.folder, showWarnings=FALSE, recursive=TRUE)
+{	# get the stat table
+	stat.file <- file.path(FOLDER_OUT_ANAL, g$name, "stats.csv")
+	stats <- retrieve.stats(stat.file)
 	
-	# betweenness distribution
-	vals <- betweenness(graph=g, normalized=FALSE)
-	custom.hist(vals, name=LONG_NAME[MEAS_BETWEENNESS], file=file.path(betweenness.folder,"betweenness_histo"))
+	modes <- c("undirected", "directed")
+	long.names <- c("Undirected","Directed")
+	for(i in 1:length(modes))
+	{	mode <- modes[i]
+		tlog(2,"Computing betweenness: mode=",mode)
+		
+		# possibly create folder
+		fname <- paste0("betweenness_",mode)
+		betweenness.folder <- file.path(FOLDER_OUT_ANAL,g$name,"betweenness")
+		dir.create(path=betweenness.folder, showWarnings=FALSE, recursive=TRUE)
+		
+		# betweenness distribution
+		vals <- betweenness(graph=g, normalized=FALSE, directed=mode=="directed")
+		custom.hist(vals, name=paste(long.names[i],"Betweenness"), file=file.path(betweenness.folder,paste0(fname,"_histo")))
+		
+		# export CSV with betweenness
+		df <- data.frame(V(g)$name,V(g)$label,vals)
+		colnames(df) <- c("Name","Label",fname) 
+		write.csv(df, file=file.path(betweenness.folder,paste0(fname,"_values.csv")), row.names=FALSE)
+		
+		# add results to the graph (as attributes) and record
+		g <- set_vertex_attr(graph=g, name=fname, value=vals)
+		g <- set_graph_attr(graph=g, name=paste0(fname,"_mean"), value=mean(vals))
+		g <- set_graph_attr(graph=g, name=paste0(fname,"_stdev"), value=sd(vals))
+		stats[fname, ] <- list(Value=NA, Mean=mean(vals), Stdv=sd(vals))
+		
+		# plot graph using color for betweenness
+		custom.gplot(g,col.att=fname,file=file.path(betweenness.folder,paste0(fname,"_graph")))
+		#custom.gplot(g,col.att=fname)
+	}
 	
-	# export CSV with betweenness
-	df <- data.frame(V(g)$name,V(g)$label,vals)
-	colnames(df) <- c("Name","Label",MEAS_BETWEENNESS) 
-	write.csv(df, file=file.path(betweenness.folder,paste0("betweenness_values.csv")), row.names=FALSE)
+	# export CSV with results
+	write.csv(stats, file=stat.file, row.names=TRUE)
 	
-	# add results to the graph (as attributes) and record
-	V(g)$Betweenness <- vals
-	g$BetweennessAvg <- mean(vals)
-	g$BetweennessStdv <- sd(vals)
+	# record graph and return it
 	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
 	write.graph(graph=g, file=graph.file, format="graphml")
-	
-	# plot graph using color for betweenness
-	custom.gplot(g,col.att=MEAS_BETWEENNESS,file=file.path(betweenness.folder,"betweenness_graph"))
-#	custom.gplot(g,col.att=MEAS_BETWEENNESS)
-	
-	# export CSV with average betweenness
-	stat.file <- file.path(FOLDER_OUT_ANAL,g$name,"stats.csv")
-	if(file.exists(stat.file))
-	{	df <- read.csv(file=stat.file,header=TRUE,row.names=1)
-		df[MEAS_BETWEENNESS, ] <- list(Value=NA, Mean=mean(vals), Stdv=sd(vals))
-	}
-	else
-	{	df <- data.frame(Value=c(NA),Mean=c(mean(vals)),Stdv=c(sd(vals)))
-		row.names(df) <- c(MEAS_BETWEENNESS)
-	}
-	write.csv(df, file=stat.file, row.names=TRUE)
-	
 	return(g)
 }
 
@@ -315,53 +319,55 @@ analyze.net.betweenness <- function(g)
 # returns: same graph, updated with the results.
 #############################################################
 analyze.net.closeness <- function(g)
-{	tlog(2,"Computing closeness")
-	# possibly create folder
-	closeness.folder <- file.path(FOLDER_OUT_ANAL,g$name,"closeness")
-	dir.create(path=closeness.folder, showWarnings=FALSE, recursive=TRUE)
+{	# get the stat table
+	stat.file <- file.path(FOLDER_OUT_ANAL, g$name, "stats.csv")
+	stats <- retrieve.stats(stat.file)
 	
-	# retrieve giant component, do not compute measure for the rest of the graph
-	components <- clusters(graph=g)
-	giant.comp.id <- which.max(components$csize)
-	giant.comp.nodes <- which(components$membership==giant.comp.id)
-	g.comp <- induced_subgraph(graph=g, giant.comp.nodes)
-	
-	# closeness distribution
-		# old version (with all nodes)
-		#vals <- suppressWarnings(closeness(graph=g, normalized=TRUE))	# avoid warnings due to certain graphs being disconnected
-		# new version: only giant component
+	modes <- c("undirected","in","out")
+	long.names <- c("Undirected","Incoming","Outgoing")
+	for(i in 1:length(modes))
+	{	mode <- modes[i]
+		tlog(2,"Computing closeness")
+		
+		# possibly create folder
+		fname <- paste0("closeness_",mode)
+		closeness.folder <- file.path(FOLDER_OUT_ANAL,g$name,"closeness")
+		dir.create(path=closeness.folder, showWarnings=FALSE, recursive=TRUE)
+		
+		# retrieve giant component, do not compute measure for the rest of the graph
+		components <- clusters(graph=g)
+		giant.comp.id <- which.max(components$csize)
+		giant.comp.nodes <- which(components$membership==giant.comp.id)
+		g.comp <- induced_subgraph(graph=g, giant.comp.nodes)
+		
+		# closeness distribution: only giant component
 		vals <- rep(NA, vcount(g))
-		vals[giant.comp.nodes] <- closeness(graph=g.comp, normalized=TRUE)
-	custom.hist(vals, name=LONG_NAME[MEAS_CLOSENESS], file=file.path(closeness.folder,"closeness_histo"))
+		vals[giant.comp.nodes] <- closeness(graph=g.comp, normalized=TRUE, mode=if(mode=="undirected") "all" else mode)
+		custom.hist(vals, name=paste(long.names[i],"Closeness"), file=file.path(closeness.folder,paste0(fname,"_histo")))
+		
+		# export CSV with closeness
+		df <- data.frame(V(g)$name,V(g)$label,vals)
+		colnames(df) <- c("Name","Label",fname) 
+		write.csv(df, file=file.path(closeness.folder,paste0(fname,"_values.csv")), row.names=FALSE)
+		
+		# add degree (as node attributes) to the graph and stats table
+		g <- set_vertex_attr(graph=g, name=fname, value=vals)
+		g <- set_graph_attr(graph=g, name=paste0(fname,"_mean"), value=mean(vals,na.rm=TRUE))
+		g <- set_graph_attr(graph=g, name=paste0(fname,"_stdev"), value=sd(vals,na.rm=TRUE))
+		stats[fname, ] <- list(Value=NA, Mean=mean(vals,na.rm=TRUE), Stdv=sd(vals,na.rm=TRUE))
+		
+		# plot graph using color for closeness
+		g <- update.node.labels(g, vals)
+		custom.gplot(g,col.att=fname,file=file.path(closeness.folder,paste0(fname,"_graph")))
+		#custom.gplot(g,col.att=fname)
+	}
 	
-	# export CSV with closeness
-	df <- data.frame(V(g)$name,V(g)$label,vals)
-	colnames(df) <- c("Name","Label",MEAS_CLOSENESS) 
-	write.csv(df, file=file.path(closeness.folder,paste0("closeness_values.csv")), row.names=FALSE)
+	# export CSV with average degree
+	write.csv(stats, file=stat.file, row.names=TRUE)
 	
-	# add results to the graph (as attributes) and record
-	V(g)$Closeness <- vals
-	g$ClosenessAvg <- mean(vals,na.rm=TRUE)
-	g$ClosenessStdv <- sd(vals,na.rm=TRUE)
+	# record graph and return it
 	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
 	write.graph(graph=g, file=graph.file, format="graphml")
-	
-	# plot graph using color for closeness
-	custom.gplot(g,col.att=MEAS_CLOSENESS,file=file.path(closeness.folder,"closeness_graph"))
-#	custom.gplot(g,col.att=MEAS_CLOSENESS)
-	
-	# export CSV with average closeness
-	stat.file <- file.path(FOLDER_OUT_ANAL,g$name,"stats.csv")
-	if(file.exists(stat.file))
-	{	df <- read.csv(file=stat.file,header=TRUE,row.names=1)
-		df[MEAS_CLOSENESS, ] <- list(Value=NA, Mean=mean(vals), Stdv=sd(vals))
-	}
-	else
-	{	df <- data.frame(Value=c(NA),Mean=c(mean(vals)),Stdv=c(sd(vals)))
-		row.names(df) <- c(MEAS_CLOSENESS)
-	}
-	write.csv(df, file=stat.file, row.names=TRUE)
-	
 	return(g)
 }
 
@@ -1142,14 +1148,14 @@ analyze.network <- function(gname)
 #	g <- analyze.net.degree(g)
 		
 	# compute eigencentrality
-	g <- analyze.net.eigencentrality(g)
+#	g <- analyze.net.eigencentrality(g)
 	
-#	# compute betweenness
+	# compute betweenness
 #	g <- analyze.net.betweenness(g)
-#	
-#	# compute closeness
-#	g <- analyze.net.closeness(g)
-#	
+	
+	# compute closeness
+	g <- analyze.net.closeness(g)
+	
 #	# compute distances
 #	g <- analyze.net.distance(g)
 #	
