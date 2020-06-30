@@ -922,11 +922,16 @@ analyze.net.attributes <- function(g)
 # returns: same graph, updated with the results.
 #############################################################
 analyze.net.articulation <- function(g)
-{	# init 
+{	# get the stat table
+	stat.file <- file.path(FOLDER_OUT_ANAL, g$name, "stats.csv")
+	stats <- retrieve.stats(stat.file)
+	
+	# init 
 	tlog(2,"Computing articulation points")
 	g1 <- g
 	level <- 1
-	art <- articulation_points(g1)
+	art0 <- articulation_points(g1)
+	art <- art0
 	
 	# repeat until no more articulation point
 	while(length(art)>0)
@@ -948,36 +953,29 @@ analyze.net.articulation <- function(g)
 	dir.create(path=articulation.folder, showWarnings=FALSE, recursive=TRUE)
 	
 	# plot distribution
-	custom.hist(vals, name=LONG_NAME[MEAS_ARTICULATION], file=file.path(articulation.folder,"articulation_histo"))
+	custom.hist(vals, name="Articulation Points", file=file.path(articulation.folder,"articulation_histo"))
 	
 	# export CSV with articulation
 	df <- data.frame(V(g)$name,V(g)$label,vals)
-	colnames(df) <- c("Name","Label",MEAS_ARTICULATION) 
+	colnames(df) <- c("Name","Label","articulation") 
 	write.csv(df, file=file.path(articulation.folder,"articulation_values.csv"), row.names=FALSE)
 	
 	# add results to the graph (as attributes) and record
-	V(g)$Articulation <- vals
-	g$ArticulationAvg <- mean(vals)
-	g$ArticulationAvg <- mean(vals)
-	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
-	write.graph(graph=g, file=graph.file, format="graphml")
+	g <- set_vertex_attr(graph=g, name="articulation", value=vals)
+	g <- set_graph_attr(graph=g, name="articulation", value=art0)
+	stats[fname, ] <- list(Value=art0, Mean=NA, Stdv=NA)
 	
 	# plot graph using color for articulation
-	custom.gplot(g,col.att=MEAS_ARTICULATION,file=file.path(articulation.folder,"articulation_graph"))
-#	custom.gplot(g,col.att=MEAS_ARTICULATION)
+	g <- update.node.labels(g, vals)
+	custom.gplot(g,col.att="articulation",file=file.path(articulation.folder,"articulation_graph"))
+	#custom.gplot(g,col.att="articulation")
 	
-	# export CSV with average articulation
-	stat.file <- file.path(FOLDER_OUT_ANAL,g$name,"stats.csv")
-	if(file.exists(stat.file))
-	{	df <- read.csv(file=stat.file,header=TRUE,row.names=1)
-		df[MEAS_ARTICULATION, ] <- list(Value=NA, Mean=mean(vals), Stdv=sd(vals))
-	}
-	else
-	{	df <- data.frame(Value=c(NA),Mean=c(mean(vals)),Stdv=c(sd(vals)))
-		row.names(df) <- c(MEAS_ARTICULATION)
-	}
-	write.csv(df, file=stat.file, row.names=TRUE)
-	
+	# export CSV with number of articulation points
+	write.csv(stats, file=stat.file, row.names=TRUE)
+
+	# record graph and return it
+	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
+	write.graph(graph=g, file=graph.file, format="graphml")
 	return(g)
 }
 
@@ -1031,6 +1029,7 @@ analyze.net.distance <- function(g)
 		dir.create(path=mode.folder, showWarnings=FALSE, recursive=TRUE)
 		for(n in 1:gorder(g))
 		{	nname <- vertex_attr(g, ND_NAME_FULL, n)
+			nname <- gsub("?", "", nname)
 			g <- set_vertex_attr(graph=g, name=fname, value=vals[n,])
 			if(all(is.infinite(vals[n,-n])))
 				tlog(4,"NOT plotting graph for node #",n,"(",nname,"), as all values are infinite")
@@ -1167,11 +1166,11 @@ analyze.network <- function(gname)
 #	g <- analyze.net.closeness(g)
 	
 	# compute distances
-	g <- analyze.net.distance(g)
+#	g <- analyze.net.distance(g)
 	
-#	# compute articulation points
-#	g <- analyze.net.articulation(g)
-#	
+	# compute articulation points
+	g <- analyze.net.articulation(g)
+	
 #	# detect communities
 #	g <- analyze.net.comstruct(g)
 #	
