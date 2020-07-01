@@ -1,9 +1,9 @@
 ###############################################################################
-# Loads all the script of this project, in the appropriate order.
+# Various functions related to graphs.
 # 
 # 06/2020 Vincent Labatut
 #
-# source("res/common/include.R")
+# source("res/common/graphs.R")
 ###############################################################################
 
 
@@ -47,11 +47,14 @@ load.graphml.file <- function(file)
 #
 # g: graph to update.
 # vals: values used to rank the nodes. 
+# best.low: whether the low vals values are better (TRUE) or worse (FALSE). 
 #
 # returns: updated graph.
 ###############################################################################
-update.node.labels <- function(g, vals)
-{	if(!hasArg(vals))
+update.node.labels <- function(g, vals, best.low=FALSE)
+{	if(best.low)
+		vals <- -vals
+	if(!hasArg(vals))
 		vals <- degree(g)
 	
 	V(g)$label <- rep(NA, gorder(g))
@@ -64,6 +67,30 @@ update.node.labels <- function(g, vals)
 	else
 		bottom.idx <- order(vals, decreasing=TRUE)[1:lim]
 	V(g)$label[bottom.idx] <- vertex_attr(g, ND_NAME_FULL, bottom.idx)
+	
+	return(g)
+}
+
+
+
+
+#############################################################
+# Removes the links of the targeted nodes, in order to isolate them.
+#
+# g: graph to process.
+# nodes: nodes to isolate.
+#
+# returns: the modified graph.
+#############################################################
+disconnect.nodes <- function(g, nodes)
+{	# process each node one by one
+	for(n in nodes)
+	{	# old version: not good, plot-wise
+#		g <- delete_vertices(g,1)
+		
+		es <- incident(graph=g, v=n, mode="all")
+		g <- delete.edges(g,es)
+	}
 	
 	return(g)
 }

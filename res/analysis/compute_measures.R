@@ -437,78 +437,53 @@ analyze.net.transitivity <- function(g)
 # returns: same graph, updated with the results.
 #############################################################
 analyze.net.comstruct <- function(g)
-{	tlog(2,"Detecting community structure")
-	# possibly create folder
-	communities.folder <- file.path(FOLDER_OUT_ANAL,g$name,"communities")
-	dir.create(path=communities.folder, showWarnings=FALSE, recursive=TRUE)
+{	# get the stat table
+	stat.file <- file.path(FOLDER_OUT_ANAL, g$name, "stats.csv")
+	stats <- retrieve.stats(stat.file)
 	
-	tlog(4,"Processing graph ",i,"/",length(lst))
-	op <- delete_edges(graph=g, edges=which(is.na(E(g)$Polarite) | E(g)$Polarite==ATT_VAL_NEGATIVE))	# TODO à adapter
-	nn <- delete_edges(graph=g, edges=which(E(g)$Polarite==ATT_VAL_NEGATIVE))
-	idx.op <- which(igraph::degree(op)>0)
-	idx.nn <- which(igraph::degree(nn)>0)
+	modes <- c("undirected","directed")
+	long.names <- c("Undirected","Directed")
+	for(i in 1:length(modes))
+	{	mode <- modes[i]
+		tlog(2,"Detecting community structure: mode=",mode)
+		
+		# possibly create folder
+		fname <- paste0("community_",mode)
+		communities.folder <- file.path(FOLDER_OUT_ANAL,g$name,"communities")
+		dir.create(path=communities.folder, showWarnings=FALSE, recursive=TRUE)
+		
+		# community size distribution
+		#coms <- cluster_optimal(graph=simplify(g))		# much slower, obviously
+		#coms <- cluster_spinglass(graph=simplify(g))
+		#coms <- cluster_infomap(graph=simplify(g))
+		coms <- cluster_edge_betweenness(graph=simplify(g), directed=mode)
+		mod <- modularity(coms)
+		tlog(4,"Modularity: ",mod)
+		mbrs <- as.integer(membership(coms))
+		sizes <- table(mbrs,useNA="ifany")
+		custom.barplot(sizes, text=names(sizes), xlab="Community", ylab="Size", file=file.path(communities.folder,paste0(fname,"size_bars")))
+		
+		# export CSV with community membership
+		df <- data.frame(V(g)$name,V(g)$label,mbrs)
+		colnames(df) <- c("Name","Label","Community") 
+		write.csv(df, file=file.path(communities.folder,paste0(fname,"membership.csv")), row.names=FALSE)
+		
+		# add results to the graph (as attributes) and stats table
+		g <- set_vertex_attr(graph=g, name=fname, value=mbrs)
+		g <- set_graph_attr(graph=g, name=paste0(fname,"_mod"), value=mod)
+		stats[paste0(fname,"_mod"), ] <- list(Value=mod, Mean=NA, Stdv=NA)
+		
+		# plot graph using color for communities
+		custom.gplot(g,col.att=fname,cat.att=TRUE,file=file.path(communities.folder,paste0(fname,"_graph")))
+		#custom.gplot(g,col.att=fname,cat.att=TRUE)
+	}
 	
-	# community size distribution
-#	coms.op <- cluster_optimal(graph=simplify(op))	# much slower, obviously
-#	coms.op <- cluster_spinglass(graph=simplify(op))
-	coms.op <- cluster_infomap(graph=simplify(op))
-	mbrs.op <- as.integer(membership(coms.op))
-	mbrs.op[-idx.op] <- NA
-	sizes.op <- table(mbrs.op,useNA="ifany")
-	custom.barplot(sizes.op, text=names(sizes.op), xlab=LONG_NAME[MEAS_COMMUNITY_ONLYPOS], ylab="Taille", file=file.path(communities.folder,"na-as-positive_community_size_bars"))
-	#
-	coms.nn <- cluster_infomap(graph=simplify(nn))
-	mbrs.nn <- as.integer(membership(coms.nn))
-	mbrs.nn[-idx.nn] <- NA
-	sizes.nn <- table(mbrs.nn,useNA="ifany")
-	custom.barplot(sizes.nn, text=names(sizes.nn), xlab=LONG_NAME[MEAS_COMMUNITY_NONEG], ylab="Taille", file=file.path(communities.folder,"na-ignored_community_size_bars"))
+	# export CSV with average degree
+	write.csv(stats, file=stat.file, row.names=TRUE)
 	
-	# export CSV with community membership
-	df <- data.frame(V(op)$name,V(op)$label,mbrs.op)
-	colnames(df) <- c("Name","Label",MEAS_COMMUNITY_ONLYPOS) 
-	write.csv(df, file=file.path(communities.folder,paste0("na-as-positive_community_membership.csv")), row.names=FALSE)
-	#
-	df <- data.frame(V(nn)$name,V(nn)$label,mbrs.nn)
-	colnames(df) <- c("Name","Label",MEAS_COMMUNITY_NONEG) 
-	write.csv(df, file=file.path(communities.folder,paste0("na-ignored_community_membership.csv")), row.names=FALSE)
-	
-	# add results to the graph (as attributes) and record
-	mod.op <- modularity(coms.op)
-	op <- set_vertex_attr(graph=op,name=MEAS_COMMUNITY_ONLYPOS,value=mbrs.op)
-	op <- set_graph_attr(graph=op,name=MEAS_MODULARITY_ONLYPOS,value=mod.op)
-	tlog(4,"Modularity when including NAs as positive links: ",mod.op)
-	#
-	mod.nn <- modularity(coms.nn)
-	nn <- set_vertex_attr(graph=nn,name=MEAS_COMMUNITY_NONEG,value=mbrs.nn)
-	nn <- set_graph_attr(graph=nn,name=MEAS_MODULARITY_NONEG,value=mod.nn)
-	tlog(4,"Modularity when ignoring NAs: ",mod.nn)
-	#
-	g <- set_vertex_attr(graph=g,name=MEAS_COMMUNITY_ONLYPOS,value=mbrs.op)
-	g <- set_graph_attr(graph=g,name=MEAS_MODULARITY_ONLYPOS,value=mod.op)
-	g <- set_vertex_attr(graph=g,name=MEAS_COMMUNITY_NONEG,value=mbrs.nn)
-	g <- set_graph_attr(graph=g,name=MEAS_MODULARITY_NONEG,value=mod.nn)
+	# record graph and return it
 	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
 	write.graph(graph=g, file=graph.file, format="graphml")
-	
-	# plot graph using color for communities
-	custom.gplot(op,col.att=MEAS_COMMUNITY_ONLYPOS,cat.att=TRUE,file=file.path(communities.folder,"na-as-positive_communities_graph"))
-#	custom.gplot(op,col.att=MEAS_COMMUNITY_ONLYPOS,cat.att=TRUE)
-	custom.gplot(nn,col.att=MEAS_COMMUNITY_NONEG,cat.att=TRUE,file=file.path(communities.folder,"na-ignored_communities_graph"))
-#	custom.gplot(nn,col.att=MEAS_COMMUNITY_NONEG,cat.att=TRUE)
-	
-	# export CSV with modularity
-	stat.file <- file.path(FOLDER_OUT_ANAL,g$name,"stats.csv")
-	if(file.exists(stat.file))
-	{	df <- read.csv(file=stat.file,header=TRUE,row.names=1)
-		df[MEAS_MODULARITY_ONLYPOS, ] <- list(Value=mod.op, Mean=NA, Stdv=NA)
-	}
-	else
-	{	df <- data.frame(Value=c(mod.op),Mean=c(NA),Stdv=c(NA))
-		row.names(df) <- c(MEAS_MODULARITY_ONLYPOS)
-	}
-	df[MEAS_MODULARITY_NONEG, ] <- list(Value=mod.nn, Mean=NA, Stdv=NA)
-	write.csv(df, file=stat.file, row.names=TRUE)
-	
 	return(g)
 }
 
@@ -953,7 +928,7 @@ analyze.net.articulation <- function(g)
 	dir.create(path=articulation.folder, showWarnings=FALSE, recursive=TRUE)
 	
 	# plot distribution
-	custom.hist(vals, name="Articulation Points", file=file.path(articulation.folder,"articulation_histo"))
+	custom.hist(vals, name="Articulation Point Levels", file=file.path(articulation.folder,"articulation_histo"))
 	
 	# export CSV with articulation
 	df <- data.frame(V(g)$name,V(g)$label,vals)
@@ -965,8 +940,8 @@ analyze.net.articulation <- function(g)
 	g <- set_graph_attr(graph=g, name="articulation", value=art0)
 	stats[fname, ] <- list(Value=art0, Mean=NA, Stdv=NA)
 	
-	# plot graph using color for articulation
-	g <- update.node.labels(g, vals)
+	# plot graph using color for articulation level
+	g <- update.node.labels(g, vals, best.low=TRUE)
 	custom.gplot(g,col.att="articulation",file=file.path(articulation.folder,"articulation_graph"))
 	#custom.gplot(g,col.att="articulation")
 	
@@ -1171,9 +1146,9 @@ analyze.network <- function(gname)
 	# compute articulation points
 	g <- analyze.net.articulation(g)
 	
-#	# detect communities
-#	g <- analyze.net.comstruct(g)
-#	
+	# detect communities
+	g <- analyze.net.comstruct(g)
+	
 #	# compute transitivity
 #	g <- analyze.net.transitivity(g)
 #	
