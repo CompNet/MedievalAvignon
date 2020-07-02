@@ -385,44 +385,44 @@ analyze.net.closeness <- function(g)
 # returns: same graph, updated with the results.
 #############################################################
 analyze.net.transitivity <- function(g)
-{	tlog(2,"Computing transitivity")
+{	# get the stat table
+	stat.file <- file.path(FOLDER_OUT_ANAL, g$name, "stats.csv")
+	stats <- retrieve.stats(stat.file)
+	
+	tlog(2,"Computing transitivity")
 	# possibly create folder
+	fname <- "transitivity"
 	transitivity.folder <- file.path(FOLDER_OUT_ANAL,g$name,"transitivity")
 	dir.create(path=transitivity.folder, showWarnings=FALSE, recursive=TRUE)
 	
 	# transitivity distribution
 	vals <- transitivity(graph=g, type="localundirected", isolates="zero")
-	custom.hist(vals, name=LONG_NAME[MEAS_TRANSITIVITY], file=file.path(transitivity.folder,"transitivity_histo"))
+	custom.hist(vals, name="Local Transitivity", file=file.path(transitivity.folder,paste0(fname,"_histo")))
+	global <- transitivity(graph=g, type="globalundirected", isolates="zero")
 	
 	# export CSV with transitivity
 	df <- data.frame(V(g)$name,V(g)$label,vals)
-	colnames(df) <- c("Name","Label",MEAS_TRANSITIVITY) 
-	write.csv(df, file=file.path(transitivity.folder,paste0("transitivity_values.csv")), row.names=FALSE)
+	colnames(df) <- c("Name","Label",fname) 
+	write.csv(df, file=file.path(transitivity.folder,paste0(fname,"_values.csv")), row.names=FALSE)
 	
-	# add results to the graph (as attributes) and record
-	V(g)$Transitivity <- vals
-	g$Transitivity <- transitivity(graph=g, type="globalundirected", isolates="zero")
-	g$TransitivityAvg <- mean(vals)
-	g$TransitivityStdv <- sd(vals)
-	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
-	write.graph(graph=g, file=graph.file, format="graphml")
+	# add results to the graph (as attributes) and stats table
+	g <- set_vertex_attr(graph=g, name=fname, value=vals)
+	g <- set_graph_attr(graph=g, name=paste0(fname,"_mean"), value=mean(vals))
+	g <- set_graph_attr(graph=g, name=paste0(fname,"_stdev"), value=sd(vals))
+	g <- set_graph_attr(graph=g, name=paste0(fname,"_global"), value=global)
+	stats[paste0(fname,"_local"), ] <- list(Value=NA, Mean=mean(vals), Stdv=sd(vals))
+	stats[paste0(fname,"global"), ] <- list(Value=global, Mean=NA, Stdv=NA)
 	
 	# plot graph using color for transitivity
-	custom.gplot(g,col.att=MEAS_TRANSITIVITY,file=file.path(transitivity.folder,"transitivity_graph"))
-#	custom.gplot(g,col.att=MEAS_TRANSITIVITY)
+	custom.gplot(g,col.att=fname,file=file.path(transitivity.folder,paste0(fname,"_graph")))
+	#custom.gplot(g,col.att=fname)
 	
-	# export CSV with average transitivity
-	stat.file <- file.path(FOLDER_OUT_ANAL,g$name,"stats.csv")
-	if(file.exists(stat.file))
-	{	df <- read.csv(file=stat.file,header=TRUE,row.names=1)
-		df[MEAS_TRANSITIVITY, ] <- list(Value=g$Transitivity, Mean=mean(vals), Stdv=sd(vals))
-	}
-	else
-	{	df <- data.frame(Value=c(g$Transitivity),Mean=c(mean(vals)),Stdv=c(sd(vals)))
-		row.names(df) <- c(MEAS_TRANSITIVITY)
-	}
-	write.csv(df, file=stat.file, row.names=TRUE)
+	# export CSV with average degree
+	write.csv(stats, file=stat.file, row.names=TRUE)
 	
+	# record graph and return it
+	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
+	write.graph(graph=g, file=graph.file, format="graphml")
 	return(g)
 }
 
@@ -1151,11 +1151,11 @@ analyze.network <- function(gname)
 #	g <- analyze.net.articulation(g)
 	
 	# detect communities
-	g <- analyze.net.comstruct(g)
+#	g <- analyze.net.comstruct(g)
 	
-#	# compute transitivity
-#	g <- analyze.net.transitivity(g)
-#	
+	# compute transitivity
+	g <- analyze.net.transitivity(g)
+	
 #	# compute vertex connectivity
 #	g <- analyze.net.connectivity(g)
 #	
