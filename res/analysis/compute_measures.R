@@ -458,8 +458,10 @@ analyze.net.comstruct <- function(g)
 		#coms <- cluster_infomap(graph=simplify(g))
 		coms <- cluster_edge_betweenness(graph=simplify(g), directed=mode)
 		mod <- modularity(coms)
-		tlog(4,"Modularity: ",mod)
 		mbrs <- as.integer(membership(coms))
+		com.nbr <- length(unique(mbrs))
+		tlog(4,"Number of communities: ",com.nbr)
+		tlog(4,"Modularity: ",mod)
 		sizes <- table(mbrs,useNA="ifany")
 		custom.barplot(sizes, text=names(sizes), xlab="Community", ylab="Size", file=file.path(communities.folder,paste0(fname,"size_bars")))
 		
@@ -470,7 +472,9 @@ analyze.net.comstruct <- function(g)
 		
 		# add results to the graph (as attributes) and stats table
 		g <- set_vertex_attr(graph=g, name=fname, value=mbrs)
+		g <- set_graph_attr(graph=g, name=paste0(fname,"_nbr"), value=com.nbr)
 		g <- set_graph_attr(graph=g, name=paste0(fname,"_mod"), value=mod)
+		stats[paste0(fname,"_nbr"), ] <- list(Value=com.nbr, Mean=NA, Stdv=NA)
 		stats[paste0(fname,"_mod"), ] <- list(Value=mod, Mean=NA, Stdv=NA)
 		
 		# plot graph using color for communities
@@ -905,8 +909,8 @@ analyze.net.articulation <- function(g)
 	tlog(2,"Computing articulation points")
 	g1 <- g
 	level <- 1
-	art0 <- articulation_points(g1)
-	art <- art0
+	art <- articulation_points(g1)
+	art0 <- length(art)
 	
 	# repeat until no more articulation point
 	while(length(art)>0)
@@ -938,7 +942,7 @@ analyze.net.articulation <- function(g)
 	# add results to the graph (as attributes) and record
 	g <- set_vertex_attr(graph=g, name="articulation", value=vals)
 	g <- set_graph_attr(graph=g, name="articulation", value=art0)
-	stats[fname, ] <- list(Value=art0, Mean=NA, Stdv=NA)
+	stats["articulation", ] <- list(Value=art0, Mean=NA, Stdv=NA)
 	
 	# plot graph using color for articulation level
 	g <- update.node.labels(g, vals, best.low=TRUE)
@@ -1004,7 +1008,7 @@ analyze.net.distance <- function(g)
 		dir.create(path=mode.folder, showWarnings=FALSE, recursive=TRUE)
 		for(n in 1:gorder(g))
 		{	nname <- vertex_attr(g, ND_NAME_FULL, n)
-			nname <- gsub("?", "", nname)
+			nname <- trimws(gsub("?", "", nname, fixed=TRUE))
 			g <- set_vertex_attr(graph=g, name=fname, value=vals[n,])
 			if(all(is.infinite(vals[n,-n])))
 				tlog(4,"NOT plotting graph for node #",n,"(",nname,"), as all values are infinite")
@@ -1144,7 +1148,7 @@ analyze.network <- function(gname)
 #	g <- analyze.net.distance(g)
 	
 	# compute articulation points
-	g <- analyze.net.articulation(g)
+#	g <- analyze.net.articulation(g)
 	
 	# detect communities
 	g <- analyze.net.comstruct(g)
