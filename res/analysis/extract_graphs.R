@@ -43,10 +43,11 @@ extract.networks <- function()
 	tlog(2,"Loading individual information")
 	info <- read.table(
 		file=FILE_IN_ANAL_NODES,
-		sep=",",
+		sep=";",
 		header=TRUE,
 		stringsAsFactors=FALSE,
-		na.strings="NULL"
+		na.strings="NULL",
+		quote='"'
 	)
 	# remove empty values
 	for(i in 1:ncol(info))
@@ -60,8 +61,15 @@ extract.networks <- function()
 	if(length(which(is.na(idx)))>0)
 		stop("Problem while matching the tables: NA values", paste(which(is.na(idx)), collapse=", "))
 	atts <- setdiff(colnames(info), MF_ND_ID)
-	for(att in atts)
-		g <- set_vertex_attr(graph=g, name=MAP_MF2ND[att], value=info[idx,att])
+	for(i in 1:length(atts))
+	{	att <- atts[i]
+		tlog(4,"Processing attribute ",att," (",i,"/",length(atts),")")
+		norm.name <- MAP_MF2ND[att]
+		if(is.na(norm.name))
+			tlog(6,"WARNING: could not find attribute \"",att,"\" in the normalized list")
+		else
+			g <- set_vertex_attr(graph=g, name=MAP_MF2ND[att], value=info[idx,att])
+	}
 	V(g)$label <- vertex_attr(g, ND_NAME_FULL)
 	
 	# init layout

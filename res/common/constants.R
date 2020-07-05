@@ -36,14 +36,14 @@ MF_LK_TYPE_FAM <- "LienFamille"
 MF_LK_TYPE_PRO <- "LienProfessionel"
 
 # personal info
-MF_ND_ECCL <- "chargeEccl"
-MF_ND_HEALTH <- "sante"
-MF_ND_HOMETOWN <- "provVille"
-MF_ND_HOMEDIOC <- "provDioc"
+MF_ND_ECCL <- "chargeEcclTN"
+MF_ND_HEALTH <- "santeT"
+MF_ND_HOMETOWN <- "provVilleT"
+MF_ND_HOMEDIOC <- "provDiocT"
 MF_ND_GENDER <- "genre"
-MF_ND_ID <- "idIndividu"
-MF_ND_JOB1 <- "profession"
-MF_ND_JOB2 <- "profession2"
+MF_ND_ID <- "idindividu"
+MF_ND_JOB1 <- "professionTN"
+MF_ND_JOB2 <- "profession2TN"
 MF_ND_NAME_FULL <- "identite"
 MF_ND_NAME_NORM <- "identiteNorm"
 MF_ND_NAME_FIRST <- "prenom"
@@ -52,9 +52,9 @@ MF_ND_NAME_NICK <- "surnom"
 MF_ND_RESIDENCE <- "residence"
 MF_ND_SOURCE <- "Source"
 MF_ND_TARGET <- "Target"
-MF_ND_STATUS <- "statut"
-MF_ND_TITLE1 <- "titre"
-MF_ND_TITLE2 <- "titre2"
+MF_ND_STATUS <- "statutTN"
+MF_ND_TITLE1 <- "titreTN"
+MF_ND_TITLE2 <- "titre2TN"
 
 
 
@@ -133,7 +133,7 @@ LONG_NAME[ND_RESIDENCE] <- "Residence"
 LONG_NAME[ND_STATUS] <- "Status"
 LONG_NAME[ND_TITLE] <- "Title"
 
-# valies
+# values
 VAL_OTHER <- "Other"
 VAL_TRUE <- "True"
 VAL_FALSE <- "False"

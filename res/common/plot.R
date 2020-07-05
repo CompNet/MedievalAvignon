@@ -311,7 +311,7 @@ custom.hist <- function(vals, name, file)
 custom.barplot <- function(vals, text, xlab, ylab, file, ...)
 {	idx <- which(is.na(text))
 	if(length(idx)>0)
-		text[idx] <- ATT_VAL_UNK0
+		text[idx] <- VAL_UNKNOWN
 	wide <- length(text) > 8
 	for(fformat in FORMAT)
 	{	if(hasArg(file))
@@ -353,7 +353,7 @@ custom.barplot <- function(vals, text, xlab, ylab, file, ...)
 			text2 <- rownames(vals)
 			idx <- which(is.na(text2))
 			if(length(idx)>0)
-				text2[idx] <- ATT_VAL_UNK0
+				text2[idx] <- VAL_UNKNOWN
 			legend(
 				x="topleft",
 				fill=barcols,

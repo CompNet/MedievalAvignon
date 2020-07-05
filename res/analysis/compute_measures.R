@@ -225,7 +225,10 @@ analyze.net.eigencentrality <- function(g)
 		dir.create(path=eigen.folder, showWarnings=FALSE, recursive=TRUE)
 		
 		# Eigencentrality distribution
-		vals <- eigen_centrality(graph=g, scale=FALSE, directed=mode=="directed")$vector
+		if(mode=="directed" && is_dag(g))
+			vals <- rep(0, gorder(g))
+		else
+			vals <- eigen_centrality(graph=g, scale=FALSE, directed=mode=="directed")$vector
 		custom.hist(vals, name=paste(long.names[i],"Eigencentrality"), file=file.path(eigen.folder,paste0(fname,"_histo")))
 		
 		# export CSV with Eigencentrality
@@ -514,8 +517,9 @@ analyze.net.assortativity <- function(g)
 	cat.data <- NA
 	
 	# gather regular categorical attributes 
-	attrs <- c(ND_ECCL, ND_HEALTH, ND_HOMETOWN, ND_HOMEDIOC, ND_GENDER, 
-			ND_NAME_FIRST, ND_NAME_LAST, ND_NAME_NICK, ND_RESIDENCE, ND_STATUS)
+	attrs <- intersect(c(ND_ECCL, ND_HEALTH, ND_HOMETOWN, ND_HOMEDIOC, ND_GENDER, 
+			ND_NAME_FIRST, ND_NAME_LAST, ND_NAME_NICK, ND_RESIDENCE, ND_STATUS),
+		vertex_attr_names(g))
 	for(attr in attrs)
 	{	tmp <- vertex_attr(g, attr)
 		if(all(is.na(cat.data)))
@@ -526,7 +530,8 @@ analyze.net.assortativity <- function(g)
 	}
 	
 	# convert tag-type attributes
-	attrs <- c(ND_JOB, ND_TITLE)
+	attrs <- intersect(c(ND_JOB, ND_TITLE),
+			vertex_attr_names(g))
 	for(attr in attrs)
 	{	tmp <- att.list[grepl(att.list,pattern=attr)]
 		m <- sapply(tmp, function(att) vertex_attr(g, att))
@@ -583,7 +588,8 @@ analyze.net.assortativity <- function(g)
 #	num.data <- NA
 #	
 #	# gather regular numerical attributes
-#	attrs <- c(ATT_NODE_TRAV_NBR)					# number of travels
+#	attrs <- intersect(c(ATT_NODE_TRAV_NBR),
+#		vertex_attr_names(g))
 #	for(attr in attrs)
 #	{	tmp <- vertex_attr(g, attr)
 #		if(all(is.na(num.data)))
@@ -683,8 +689,9 @@ analyze.net.attributes <- function(g)
 	cat.data <- NA
 	
 	# gather regular categorical attributes
-	attrs <- c(ND_ECCL, ND_HEALTH, ND_HOMETOWN, ND_HOMEDIOC, ND_GENDER, 
-		ND_NAME_FIRST, ND_NAME_LAST, ND_NAME_NICK, ND_RESIDENCE, ND_STATUS)
+	attrs <- intersect(c(ND_ECCL, ND_HEALTH, ND_HOMETOWN, ND_HOMEDIOC, ND_GENDER, 
+			ND_NAME_FIRST, ND_NAME_LAST, ND_NAME_NICK, ND_RESIDENCE, ND_STATUS),
+			vertex_attr_names(g))
 	for(attr in attrs)
 	{	# get values
 		tmp <- vertex_attr(g, attr)
@@ -715,7 +722,8 @@ analyze.net.attributes <- function(g)
 	}
 	
 	# convert tag-type attributes
-	attrs <- c(ND_JOB, ND_TITLE)
+	attrs <- intersect(c(ND_JOB, ND_TITLE),
+			vertex_attr_names(g))
 	for(attr in attrs)
 	{	tmp <- att.list[grepl(att.list,pattern=attr)]
 		m <- sapply(tmp, function(att) vertex_attr(g, att))
@@ -834,7 +842,8 @@ analyze.net.attributes <- function(g)
 #	num.data <- NA
 #	
 #	# gather regular numerical attributes
-#	attrs <- c(ATT_NODE_TRAV_NBR)
+#	attrs <- intersect(c(ATT_NODE_TRAV_NBR),
+#				vertex_attr_names(g))
 #	for(attr in attrs)
 #	{	# get values
 #		tmp <- vertex_attr(g, attr)
@@ -1117,40 +1126,40 @@ analyze.network <- function(gname)
 	
 	# compute attribute stats 
 	# (must be done first, before other results are added as attributes)
-	g <- analyze.net.attributes(g)
-		
-	# compute diameters, eccentricity, radius
-	g <- analyze.net.eccentricity(g)
-		
-	# compute degree
-	g <- analyze.net.degree(g)
-		
-	# compute eigencentrality
+#	g <- analyze.net.attributes(g)
+#		
+#	# compute diameters, eccentricity, radius
+#	g <- analyze.net.eccentricity(g)
+#		
+#	# compute degree
+#	g <- analyze.net.degree(g)
+#		
+#	# compute eigencentrality
 	g <- analyze.net.eigencentrality(g)
-	
-	# compute betweenness
-	g <- analyze.net.betweenness(g)
-	
-	# compute closeness
-	g <- analyze.net.closeness(g)
-	
-	# compute distances
-	g <- analyze.net.distance(g)
-	
-	# compute articulation points
-	g <- analyze.net.articulation(g)
-	
-	# detect communities
-	g <- analyze.net.comstruct(g)
-	
-	# compute transitivity
-	g <- analyze.net.transitivity(g)
-	
-	# compute vertex connectivity
-	g <- analyze.net.connectivity(g)
-	
-	# compute assortativity
-	g <- analyze.net.assortativity(g)
+#	
+#	# compute betweenness
+#	g <- analyze.net.betweenness(g)
+#	
+#	# compute closeness
+#	g <- analyze.net.closeness(g)
+#	
+#	# compute distances
+#	g <- analyze.net.distance(g)
+#	
+#	# compute articulation points
+#	g <- analyze.net.articulation(g)
+#	
+#	# detect communities
+#	g <- analyze.net.comstruct(g)
+#	
+#	# compute transitivity
+#	g <- analyze.net.transitivity(g)
+#	
+#	# compute vertex connectivity
+#	g <- analyze.net.connectivity(g)
+#	
+#	# compute assortativity
+#	g <- analyze.net.assortativity(g)
 	
 	return(g)
 }
