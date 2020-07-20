@@ -25,7 +25,7 @@ extract.networks <- function()
 	# load relationships
 	tlog(2,"Loading relational information")
 	data <- read.table(
-		file=FILE_IN_ANAL_LINKS,
+		file=FILE_IN_ANAL_SOCIAL_LINKS,
 		sep=";",
 		header=TRUE,
 		stringsAsFactors=FALSE,
@@ -42,7 +42,7 @@ extract.networks <- function()
 	# load personal information
 	tlog(2,"Loading individual information")
 	info <- read.table(
-		file=FILE_IN_ANAL_NODES,
+		file=FILE_IN_ANAL_PERSON_NODES,
 		sep=";",
 		header=TRUE,
 		stringsAsFactors=FALSE,
