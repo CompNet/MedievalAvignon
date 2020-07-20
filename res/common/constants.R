@@ -14,8 +14,8 @@
 FOLDER_IN <- "in"
 	FOLDER_IN_POS <- file.path(FOLDER_IN,"positioning")
 	FOLDER_IN_ANAL <- file.path(FOLDER_IN,"analysis")
-		FILE_IN_ANAL_LINKS <- file.path(FOLDER_IN_ANAL,"LienEntreIndividu.csv")
-		FILE_IN_ANAL_NODES <- file.path(FOLDER_IN_ANAL,"DetailsIndividu.csv")
+		FILE_IN_ANAL_LINKS <- file.path(FOLDER_IN_ANAL,"person_links.csv")
+		FILE_IN_ANAL_NODES <- file.path(FOLDER_IN_ANAL,"person_info.csv")
 FOLDER_OUT <- "out"
 	FOLDER_OUT_POS <- file.path(FOLDER_OUT,"positioning")
 	FOLDER_OUT_ANAL <- file.path(FOLDER_OUT,"analysis")
