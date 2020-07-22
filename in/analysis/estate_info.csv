@@ -1720,3 +1720,440 @@ BND_884;bienNondeclare;maison3;1;maison; null; null; null; null;null;null;null;n
 BND_885;bienNondeclare;maison3;1;maison; null; null; null; null;null;null;null;null;null;null;null;null;null;null;null
 BND_886;bienNondeclare;loge;1;loge; null; null; null; null;null;null;null;null;null;null;null;null;null;null;null
 BND_887;bienNondeclare;maison3;1;maison; null; null; null; null;null;null;null;null;null;null;null;null;null;null;null
+BG_413;bourg;bourg de sainte-catherine;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_414;bourg;bourg martinenc;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_415;bourg;bourg de catherine rascas;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_416;bourg;bourg de bertrand beranger;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_417;bourg;bourgs des milasses;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_418;bourg;bourg de louis mauvoisin;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_419;bourg;bourg de jean boerii;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_420;bourg;bourg des augustins;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_421;bourg;bourg de pons auger;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_422;bourg;bourg de raymond milon;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_423;bourg;bourg de jean de gigognan puis guimet abert;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_424;bourg;bourg des oulliers;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_425;bourg;bourg de guillaume ortolan;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_426;bourg;bourg des ortolans;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_427;bourg;bourg d'aymar martin;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_428;bourg;bourg du limas;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_429;bourg;courtil de la chevre;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_430;bourg;courtil saint-jean;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_431;bourg;bourg de melgraniers;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_432;bourg;bourg de berenger de tarascon;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_433;bourg;bourg de monet  pinsonnier;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_434;bourg;bourg de bernard de rodez;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_435;bourg;bourg de trouillas;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_436;bourg;bourg de milgreniers;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_437;bourg;bourg de guillaume martin;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_438;bourg;bourg de la prevote;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_439;bourg;bourg de jean peyssonnier;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_440;bourg;bourg des miracles;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_441;bourg;bourg de pons de monteux puis de baudet de sade;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_442;bourg;bourg de pierre de morieres ou des pasquiers;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_443;bourg;bourg de la ferrage de sainte-catherine;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_444;bourg;bourg d'ortigue ortigue;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_445;bourg;bourg de jean de cario;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_446;bourg;bourg de l'hopital saint-jean de jerusalem;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_447;bourg;bourg de francois barral;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_448;bourg;bourg d'elzear du castel;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_449;bourg;bourg de durand et francois aureille;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_450;bourg;bourg de bertrand raynaud;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_451;bourg;bourg de milone robert;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_452;bourg;bourg de pierre esteve puis de saint-veran;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_453;bourg;bourg du doyen du prevot;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_454;bourg;bourg de laurette rancurel;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_455;bourg;bourg de guillaume hugues de colombier puis des carmes;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_456;bourg;bourg de francois barral;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_457;bourg;bourg de l'hopital bernard rascas;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_458;bourg;bourg de jean de graynol puis de saint-pierre;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_459;bourg;bourg de philippe de balmes puis de saint-pierre;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_460;bourg;bourg des cabassoles;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_461;bourg;bourg saint-lazare puis du chapitre saint-agricol;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+BG_462;bourg;bourg de saint-laurent;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_117;edifice;notre-dame des doms;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_118;edifice;oeuvre du pont;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_119;edifice;saint-jean-de-jerusalem;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_120;edifice;sainte-croix;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_121;edifice;sainte-croix;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_122;edifice;sainte-eutrope;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_123;edifice;sainte-perpetue;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_124;edifice;augustins;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_125;edifice;carmes;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_126;edifice;dominicains;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_127;edifice;franciscains;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_128;edifice;saint-laurent;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_129;edifice;sainte-catherine;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_130;edifice;sainte-claire;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_131;edifice;notre-dame la principale;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_132;edifice;saint-agricol;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_133;edifice;saint-didier;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_134;edifice;saint-etienne;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_135;edifice;saint-pierre;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_136;edifice;saint-symphorien;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_137;edifice;sainte-madeleine;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_138;edifice;hopital saint-jacques;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_139;edifice;hopital de saint-antoine;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_140;edifice;hopital de saint-jean;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_141;edifice;hopital des femmes du portail matheron;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_142;edifice;hopital des hommes du portail matheron;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_143;edifice;hopital des pelerins de la major;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_144;edifice;hopital n.-d de nazareth alias rancurel;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_145;edifice;hopital n.-d de nazareth alias rancurel;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_146;edifice;petit hopital;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_147;edifice;prieure de fenolhet;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_148;edifice;pignotte;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_149;edifice;officialite;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_150;edifice;moulin de pertuis;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_151;edifice;grande boucherie;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_152;edifice;hopital du saint-esprit;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_153;edifice;hopital du cardinal d'ugrel;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_154;edifice;eglise saint-genies;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_155;edifice;cimetiere de saint-genies;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_156;edifice;cimetiere de l'eglise de la principale;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_157;edifice;cimetiere de l'eglise saint-agricol;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_158;edifice;notre-dame des miracles;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_159;edifice;notre-dame d'esperance;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_160;edifice;port des periers;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_161;edifice;verger d'urbain v;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_162;edifice;eglise du monastere notre-dame des fours;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_163;edifice;notre-dame des fours;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_164;edifice;verger du monastere notre-dame des fours;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_463;edifice;maison de trouillas;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_464;edifice;escalier sainte-anne;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_465;edifice;bucher du pape;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_466;edifice;pont de serre;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_469;edifice;pont des freres mineurs;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_470;edifice;sextier;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_472;edifice;taverne des carels;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_474;edifice;pont sur la sorgue;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_475;edifice;moulin de brianson;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_476;edifice;moulin de brianson;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_477;edifice;pont fract des freres precheurs;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_478;edifice;cimetiere de l'eglise notre-dame des doms;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_482;edifice;hopital saint-benezet;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_486;edifice;cloitre de l'eglise notre-dame des doms;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_490;edifice;palais de la commune puis maison du viguier;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_491;edifice;maison du marechal;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_492;edifice;palais des papes;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_534;edifice;carmes;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_539;edifice;sacristie;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_540;edifice;eglise saint-pierre;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_541;edifice;cloitre de l'eglise saint-pierre;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_542;edifice;cimetiere de saint-pierre;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_545;edifice;cimetiere saint-symphorien;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_546;edifice;saint-agricol;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_547;edifice;dominicains;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_548;edifice;notre-dame-des-miracles;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_549;edifice;sainte-praxede;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_550;edifice;saint-laurent;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_551;edifice;saint-antoine;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_552;edifice;saint-didier;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_553;edifice;cimetiere saint-didier;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_554;edifice;franciscains;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_555;edifice;augustins;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_556;edifice;notre-dame-la-principale;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_557;edifice;saint-genies;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_558;edifice;trinite;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_559;edifice;bernard rasacas;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_560;edifice;sainte-madeleine;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_607;edifice;eglise saint-jean;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_608;edifice;cimetiere de l'eglise saint-jean;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_609;edifice;sainte-catherine;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_610;edifice;saint symphorien;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_611;edifice;moulin vers le portail matheron;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_612;edifice;moulin vers la porte aurose;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_613;edifice;sainte-claire;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_614;edifice;sainte-claire;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_616;edifice;hopital du pont-fract;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_617;edifice;puit des boeufs;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_620;edifice;chapelle de l'aumone des notaires;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_623;edifice;cancel de la juiverie;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_624;edifice;puit du plan de saule;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_625;edifice;four de la terre;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_646;edifice;hospitium de la musa;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_673;edifice;jardin de l'hopital bernard rascas;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_693;edifice;chapelle saint-michel;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_694;edifice;chapelle de tous les saints;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_695;edifice;cimetiere de saint-michel;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_699;edifice;poissonerie;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_700;edifice;cimetiere des precheurs;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_707;edifice;costel de saint-pierre;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_708;edifice;taverne de la campane;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_709;edifice;boucherie de saint-pierre;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_720;edifice;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_721;edifice;alberguaria del capun vermelh;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_722;edifice;tour de l'auditeur;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_726;edifice;cimetiere de sainte-perpetue;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_729;edifice;four des bertrands;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_739;edifice;taverne de baudon;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_770;edifice;notre-dame la belle;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+E_771;edifice;cimetiere des augustins;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+H_184;reperegeologique;rhone1200;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+H_185;reperegeologique;rhone1400;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+H_194;reperegeologique;durancole1230;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+H_195;reperegeologique;durancole1400;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+H_204;reperegeologique;canal de vaucluse1200;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+H_205;reperegeologique;canal de vaucluse1400;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+H_665;reperegeologique;douve;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+H_670;reperegeologique;canal de vauclusejusqua1350;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+L_206;livree;livree de poitiers;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+L_207;livree;livree de saluce;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+L_208;livree;livree de la porte aurose;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+L_209;livree;livree de dax;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+L_210;livree;livree de la saunerie;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+L_211;livree;livree de la vergne ou ceccano;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+L_212;livree;livree de naples;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+L_213;livree;livree de giffons puis de cabassole;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+L_214;livree;livree de venise;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+L_215;livree;livree de viviers;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+L_216;livree;livree de petramale;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+L_217;livree;livree de saint-genies;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+L_218;livree;livree du puy;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+L_219;livree;livree d'auch;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+L_220;livree;livree d'amiens;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+L_221;livree;livree d'albano;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+L_222;livree;livree saint ange;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+L_223;livree;livree de mirault;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+L_224;livree;livree de cambrai;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+L_225;livree;petit-palais;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+L_226;livree;livree de thury;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+L_227;livree;livree de florence;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+L_228;livree;livree d'auxerre;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+L_229;livree;livree de saint-martial;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+L_615;livree;livree de pampelune;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+M_392;rempart;rempart interieur;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+M_402;rempart;rempart exterieur;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+M_412;rempart;rempart papaute;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+M_487;rempart;lices;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+M_488;rempart;lices neuves;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+M_666;rempart;fosse;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+M_667;rempart;fosse neuf;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_230;porteportail;portail aurose;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_231;porteportail;portail des infirmieres interieur;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_232;porteportail;portail matheron interieur;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_233;porteportail;portail imbert;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_234;porteportail;portail magnanen interieur;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_235;porteportail;portail du pont-fract interieur;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_236;porteportail;portail boquier interieur;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_237;porteportail;portail de l'eveque interieur;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_238;porteportail;portail briancon interieur;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_239;porteportail;portail saint-agricol interieur;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_240;porteportail;portail pertuis interieur;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_241;porteportail;portail ayguiere;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_242;porteportail;portail pertuis;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_243;porteportail;porte ayguiere;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_244;porteportail;portail saint-agricol;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_245;porteportail;portail briancon;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_246;porteportail;portail de l'eveque;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_247;porteportail;portail boquier;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_248;porteportail;portail du pont-fract;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_249;porteportail;portail magnanen;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_250;porteportail;porte imbert;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_251;porteportail;portail matheron;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_252;porteportail;portail des infirmieres;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_253;porteportail;porte aurose;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_266;porteportail;porte ayguiere neuve;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_267;porteportail;porte saint-jacques;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_268;porteportail;porte des precheurs;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_269;porteportail;portail du port des periers;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_270;porteportail;portes des miracles;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_271;porteportail;porte saint-antoine;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_272;porteportail;porte imbert neuve;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_273;porteportail;porte saint-lazare;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_274;porteportail;portail des salins;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_275;porteportail;porte de la palapharnerie;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_276;porteportail;porte aurose neuve;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_311;porteportail;porte du limas;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_312;porteportail;chatelet;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_561;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_562;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_563;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_564;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_565;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_566;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_567;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_568;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_569;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_570;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_571;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_572;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_573;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_574;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_575;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_576;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_577;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_578;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_579;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_580;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_581;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_582;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_583;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_584;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_585;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_586;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_587;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_588;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_589;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_590;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_591;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_592;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_593;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_594;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_595;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_596;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_597;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_598;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_599;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_600;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_601;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_602;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_603;porteportail;tour langlade;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_604;porteportail;tour du mail;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_605;porteportail;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+P_606;porteportail;tour dite des chiens;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_1;rue;rue du limas;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_10;rue;rue hugues de sade ou vieille bouquerie;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_100;rue;traverse de la porte aurose;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_101;rue;rue des trois pilats;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_102;rue;rue de la bulle;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_103;rue;rue petite meuse;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_104;rue;place de l'orme;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_105;rue;rue sous le grand marche;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_106;rue;rue de la pignotte;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_107;rue;rue du four des chanoines;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_108;rue;place de le porte aiguiere;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_109;rue;rue vers les lices des freres precheurs;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_11;rue;rue du four de la vieille bouquerie;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_110;rue;rue allant du port des perriers a l'eglise des miracles;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_111;rue;rue allant au port des periers;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_112;rue;traverse allant de la rue des masses aux lices;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_113;rue;rue allant du portail eveque au portail boquier;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_114;rue;place des periers;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_115;rue;place des lombards;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_116;rue;rue droite du portail eveque;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_12;rue;rue des retrans ou des banons;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_13;rue;rue du portail brianson;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_14;rue;rue saint-jean ou derriere le temple;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_15;rue;traverse derriere le temple;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_16;rue;rue vieille blanquerie ou de notre-dame des fours;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_17;rue;rue bouquerie;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_18;rue;rue argenterie ou de la muse;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_19;rue;rue vieille triperie;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_2;rue;rue grande fusterie;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_20;rue;rue saint antoine;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_21;rue;rue garlanderie;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_22;rue;rue miraillerie;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_23;rue;rue du marechal;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_24;rue;rue peyrolerie;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_25;rue;rue corderie;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_26;rue;rue de l'epicerie;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_27;rue;rue saunerie;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_28;rue;rue du portail matheron;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_29;rue;rue four de la terre ou de na bressa;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_3;rue;rue des grottes;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_30;rue;rue cros de caval;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_31;rue;rue moyenne fusterie;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_32;rue;rue trouillas;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_33;rue;rue malgrenier;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_34;rue;rue de la porte aurose;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_35;rue;rue polasserieb ou devant saint-symphorien;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_36;rue;rue de l'hopital petit;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_37;rue;rue grolerie;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_38;rue;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_39;rue;rue au marche au fil;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_4;rue;rue de la porte aiguiere;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_40;rue;rue saint catherine;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_41;rue;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_42;rue;rue sainte-croix;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_43;rue;rue vieneuve;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_44;rue;rue four des bertrands;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_45;rue;rue albine;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_46;rue;;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_467;rue;traverse de la milhete;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_468;rue;chemin public de la durance;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_47;rue;rue de la fromagie;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_471;rue;rue allant vers le sextier;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_473;rue;rue allant a la taverne des carels;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_479;rue;traverse allant au palais episcopal;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_48;rue;rue allant de la pignotte au portail matheron;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_480;rue;rue allant du palais apostolique a la maison de l'eveque;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_481;rue;rue allant du palais apostolique a l'eglise notre-dame des doms;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_485;rue;place bulle;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_489;rue;place du costel;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_49;rue;rue saint jean le vieux ?;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_5;rue;rue de la petite fusterie;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_50;rue;rue saint jean;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_51;rue;rue ferraterie;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_52;rue;rue grande meuse;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_53;rue;rue sainte claire;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_54;rue;rue vieille pelleterie;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_543;rue;place de la saunerie;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_544;rue;plan du saul;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_55;rue;rue pelleterie neuve;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_56;rue;rue courraterie;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_57;rue;rue du cardinal de nimes;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_58;rue;rue de la livree de pampelune;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_59;rue;grande-rue;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_6;rue;rue lancerie;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_60;rue;rue des laboureurs;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_618;rue;rue allant de l'eglise sainte-madeleine au puit des boeufs;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_619;rue;rue allant de la rue peyrolerie a la place du costel;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_62;rue;rue principale;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_621;rue;traverse allant a la livree de thury;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_622;rue;rue allant de la saunerie a la rue sainte-croix;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_63;rue;rue frenerie;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_64;rue;rue sabaterie;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_65;rue;rue brocarie;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_659;rue;rue des corroyeurs;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_66;rue;rue du change;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_660;rue;place du colombier;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_67;rue;rue carreterie;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_68;rue;rue de la draperie;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_69;rue;rue du portail boquier;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_690;rue;chemin allant d'avignon a l'abbaye saint-ruf;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_691;rue;chemin allant d'avignon au port de chateaurenard;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_692;rue;rue devant les celestins ;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_7;rue;rue allant a la poissonerie;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_70;rue;rue allant vers l'hopital bernard rascas;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_701;rue;rue allant de la livree a la fusterie;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_71;rue;rue des infirmieres;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_710;rue;rue qui va a la saunerie;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_711;rue;rue close de l'eglise saint-pierre;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_712;rue;place devant saint-pierre;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_713;rue;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_72;rue;rue des agustins;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_727;rue;rue sainte-perpetue;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_73;rue;rue du plan du saule;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_736;rue;place des cavaliers;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_737;rue;traverse a cote de la poissonnerie;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_74;rue;plan de lunel;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_749;rue;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_75;rue;place des changes;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_76;rue;place de l'eglise notre-dame la principale;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_77;rue;place de l'eglise sainte-catherine;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_774;rue;rue publique;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_78;rue;place du limas;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_79;rue;place du portail brianson;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_8;rue;rue des masses;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_80;rue;place du portail boquier;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_81;rue;place du puit des boeufs;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_82;rue;rue calade;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_83;rue;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_84;rue;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_85;rue;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_86;rue;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_87;rue;null;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_88;rue;rue couraterie des chevaux;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_89;rue;place de la pignotte;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_9;rue;rue des ortolans;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_90;rue;rue allant aux escaliers de notre-dame des doms;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_91;rue;impasse ;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_92;rue;traverse trouillas;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_93;rue;traverse de sainte-catherine;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_94;rue;traverse qui va vers la livree de vabrensis;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_95;rue;traverse qui mene vers la maison de philippe cabassole;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_96;rue;rue proche du plan de lunel et du portail brianson;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_97;rue;rue de l'amelhier;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_98;rue;rue du portail brianson aux frere precheurs;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+R_99;rue;rue allant du portail de l'eveque aux nouveaux murs de la ville;;;;;;;null;null;null;null;null;null;null;null;null;null;null
+RG_483;reperegeologique;rocher des doms;;;;;;;null;null;null;null;null;null;null;null;null;null;null
