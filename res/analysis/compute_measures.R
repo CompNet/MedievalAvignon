@@ -73,9 +73,9 @@ analyze.net.eccentricity <- function(g)
 				if(p==1 || !all(diam.paths[[pp]][[p]]==diam.paths[[pp]][[p-1]]))
 				{	V(g)$label <- rep(NA,gorder(g))
 					vstart <- diam.paths[[pp]][[p]][1]
-					V(g)[vstart]$label <- vertex_attr(g, ND_NAME_FULL, vstart) 
+					V(g)[vstart]$label <- vertex_attr(g, COL_PERS_NAME_FULL_NORM, vstart) 
 					vend <- diam.paths[[pp]][[p]][length(diam.paths[[pp]][[p]])]
-					V(g)[vend]$label <- vertex_attr(g, ND_NAME_FULL, vend) 
+					V(g)[vend]$label <- vertex_attr(g, COL_PERS_NAME_FULL_NORM, vend) 
 					custom.gplot(g, paths=diam.paths[[pp]][[p]], file=file.path(diameter.folder,paste0("diam_",mode,"_graph_",pp,"_",q)))
 					q <- q + 1
 				}
@@ -517,9 +517,14 @@ analyze.net.assortativity <- function(g)
 	cat.data <- NA
 	
 	# gather regular categorical attributes 
-	attrs <- intersect(c(ND_ECCL, ND_HEALTH, ND_HOMETOWN, ND_HOMEDIOC, ND_GENDER, 
-			ND_NAME_FIRST, ND_NAME_LAST, ND_NAME_NICK, ND_RESIDENCE, ND_STATUS),
-		vertex_attr_names(g))
+	attrs <- intersect(c(COL_PERS_NAME_LAST, COL_PERS_NAME_NICK, 
+				COL_PERS_GENDER, COL_PERS_RESIDENCE,
+				COL_PERS_ECCL_LAT, COL_PERS_ECCL_FRE, COL_PERS_ECCL_NORM,
+				COL_PERS_HEALTH_LAT, COL_PERS_HEALTH_FRE,
+				COL_PERS_CITY_LAT, COL_PERS_CITY_FRE,
+				COL_PERS_DIOC_LAT, COL_PERS_DIOC_FRE,
+				COL_PERS_STATUS_LAT, COL_PERS_STATUS_FRE, COL_PERS_STATUS_NORM), 
+			vertex_attr_names(g))
 	for(attr in attrs)
 	{	tmp <- vertex_attr(g, attr)
 		if(all(is.na(cat.data)))
@@ -530,10 +535,17 @@ analyze.net.assortativity <- function(g)
 	}
 	
 	# convert tag-type attributes
-	attrs <- intersect(c(ND_JOB, ND_TITLE),
+	attrs.lst <- list()
+	attrs.lst[[COL_PERS_TITLE_LAT1]] <- c(COL_PERS_TITLE_LAT1, COL_PERS_TITLE_LAT2)
+	attrs.lst[[COL_PERS_TITLE_FRE1]] <- c(COL_PERS_TITLE_FRE1, COL_PERS_TITLE_FRE2)
+	attrs.lst[[COL_PERS_TITLE_NORM1]] <- c(COL_PERS_TITLE_NORM1, COL_PERS_TITLE_NORM2)
+	attrs.lst[[COL_PERS_OCC_LAT1]] <- c(COL_PERS_OCC_LAT1, COL_PERS_OCC_LAT2)
+	attrs.lst[[COL_PERS_OCC_FRE1]] <- c(COL_PERS_OCC_FRE1, COL_PERS_OCC_FRE2)
+	attrs.lst[[COL_PERS_OCC_NORM1]] <- c(COL_PERS_OCC_NORM1, COL_PERS_OCC_NORM2)
+	attrs <- intersect(names(attrs.lst),
 			vertex_attr_names(g))
 	for(attr in attrs)
-	{	tmp <- att.list[grepl(att.list,pattern=attr)]
+	{	tmp <- attrs.lst[[attr]]
 		m <- sapply(tmp, function(att) vertex_attr(g, att))
 		uvals <- sort(unique(c(m)))
 		for(uval in uvals)
@@ -689,8 +701,13 @@ analyze.net.attributes <- function(g)
 	cat.data <- NA
 	
 	# gather regular categorical attributes
-	attrs <- intersect(c(ND_ECCL, ND_HEALTH, ND_HOMETOWN, ND_HOMEDIOC, ND_GENDER, 
-			ND_NAME_FIRST, ND_NAME_LAST, ND_NAME_NICK, ND_RESIDENCE, ND_STATUS),
+	attrs <- intersect(c(COL_PERS_NAME_LAST, COL_PERS_NAME_NICK, 
+				COL_PERS_GENDER, COL_PERS_RESIDENCE,
+				COL_PERS_ECCL_LAT, COL_PERS_ECCL_FRE, COL_PERS_ECCL_NORM,
+				COL_PERS_HEALTH_LAT, COL_PERS_HEALTH_FRE,
+				COL_PERS_CITY_LAT, COL_PERS_CITY_FRE,
+				COL_PERS_DIOC_LAT, COL_PERS_DIOC_FRE,
+				COL_PERS_STATUS_LAT, COL_PERS_STATUS_FRE, COL_PERS_STATUS_NORM), 
 			vertex_attr_names(g))
 	for(attr in attrs)
 	{	# get values
@@ -712,6 +729,12 @@ analyze.net.attributes <- function(g)
 		table.file <- file.path(plot.folder, paste0(attr,"_vals.csv"))
 		write.csv(tt, file=table.file, row.names=FALSE)
 		
+		# plot the graph using colors for attribute values
+		tlog(4,"Graph-plotting attribute \"",attr,"\"")
+		plot.file <- file.path(plot.folder, paste0(attr,"_graph"))
+		custom.gplot(g, col.att=attr, cat.att=TRUE, color.isolates=TRUE, file=plot.file)
+		#custom.gplot(g, col.att=attr, cat.att=TRUE, color.isolates=TRUE)
+		
 		# add to matrix
 		tlog(4,"Adding attribute \"",attr,"\" to data matrix")
 		if(all(is.na(cat.data)))
@@ -722,11 +745,18 @@ analyze.net.attributes <- function(g)
 	}
 	
 	# convert tag-type attributes
-	attrs <- intersect(c(ND_JOB, ND_TITLE),
+	attrs.lst <- list()
+	attrs.lst[[COL_PERS_TITLE_LAT1]] <- c(COL_PERS_TITLE_LAT1, COL_PERS_TITLE_LAT2)
+	attrs.lst[[COL_PERS_TITLE_FRE1]] <- c(COL_PERS_TITLE_FRE1, COL_PERS_TITLE_FRE2)
+	attrs.lst[[COL_PERS_TITLE_NORM1]] <- c(COL_PERS_TITLE_NORM1, COL_PERS_TITLE_NORM2)
+	attrs.lst[[COL_PERS_OCC_LAT1]] <- c(COL_PERS_OCC_LAT1, COL_PERS_OCC_LAT2)
+	attrs.lst[[COL_PERS_OCC_FRE1]] <- c(COL_PERS_OCC_FRE1, COL_PERS_OCC_FRE2)
+	attrs.lst[[COL_PERS_OCC_NORM1]] <- c(COL_PERS_OCC_NORM1, COL_PERS_OCC_NORM2)
+	attrs <- intersect(names(attrs.lst),
 			vertex_attr_names(g))
 	for(attr in attrs)
-	{	tmp <- att.list[grepl(att.list,pattern=attr)]
-		m <- sapply(tmp, function(att) vertex_attr(g, att))
+	{	attrc <- attrs.lst[[attr]]
+		m <- sapply(attrc, function(att) vertex_attr(g, att))
 		
 		# count tag distribution
 		idx.nas <- which(apply(m,1,function(r) all(is.na(r))))	# detect individuals with only NAs
@@ -747,7 +777,7 @@ analyze.net.attributes <- function(g)
 		tlog(4,"Bar-plotting attributes containing \"",attr,"\"")
 		plot.folder <- file.path(attr.folder, attr)
 		dir.create(path=plot.folder, showWarnings=FALSE, recursive=TRUE)
-		plot.file <- file.path(plot.folder,paste0(attr,"_bars"))
+		plot.file <- file.path(plot.folder, paste0(attr,"_bars"))
 		custom.barplot(tt, 
 				text=names(tt), 
 				xlab=LONG_NAME[attr], ylab="Frequence", 
@@ -762,11 +792,13 @@ analyze.net.attributes <- function(g)
 		{	gg <- g
 			for(a in colnames(m))
 			{	vals <- vertex_attr(g,a)
-				vals[which(!is.na(match(vals,unfrequent)))] <- paste0(" ",VAL_OTHER)
+				vals[which(!is.na(match(vals,unfrequent)))] <- paste0(" ",VAL_OTHER) # represent all unfrequent value under an umbrella name
 				g <- set_vertex_attr(g, a, value=vals)
 			}
 		}
-		custom.gplot(g=g, col.att=attr, cat.att=TRUE, color.isolates=TRUE, file=file.path(plot.folder,paste0(attr,"_1graph")))
+		plot.file <- file.path(plot.folder, paste0(attr,"_graph"))
+		custom.gplot(g=g, col.att=attrc, cat.att=TRUE, color.isolates=TRUE, file=plot.file)
+		#custom.gplot(g=g, col.att=attrc, cat.att=TRUE, color.isolates=TRUE)
 #		if(attr==ATT_NODE_TRAV_DEST)
 			g <- gg
 			
@@ -785,9 +817,15 @@ analyze.net.attributes <- function(g)
 			att_name <- paste(attr,uval,sep="_")
 			colnames(cat.data)[ncol(cat.data)] <- att_name
 			
+			# setup folder
+			short_val <- trimws(substr(uval,1,30))
+			plot.folder2 <- file.path(plot.folder, short_val)
+			dir.create(path=plot.folder2, showWarnings=FALSE, recursive=TRUE)
+			
 			# produce TRUE/FALSE barplots
+			tlog(6,"Producing barplots for attribute \"",att_name,"\"")
 			tt <- table(vals, useNA="ifany")
-			plot.file <- file.path(plot.folder, paste0(att_name,"_bars"))
+			plot.file <- file.path(plot.folder2, "bars")
 			custom.barplot(tt, 
 				text=names(tt), 
 				xlab=LONG_NAME[att_name], ylab="Frequence", 
@@ -796,8 +834,15 @@ analyze.net.attributes <- function(g)
 			# record values as table
 			tt <- as.data.frame(tt)
 			colnames(tt) <- c("Value","Frequency")
-			table.file <- file.path(plot.folder,paste0(att_name,"_vals.csv"))
+			table.file <- file.path(plot.folder2, "vals.csv")
 			write.csv(tt, file=table.file, row.names=FALSE)
+			
+			# plot the graph using colors for attribute values
+			tlog(6,"Graph-plotting attribute \"",att_name,"\"")
+			plot.file <- file.path(plot.folder2, "graphs")
+			gg <- set_vertex_attr(graph=g, name=att_name, value=vals)
+			custom.gplot(gg, col.att=att_name, cat.att=TRUE, color.isolates=TRUE, file=plot.file)
+			#custom.gplot(gg, col.att=att_name, cat.att=TRUE, color.isolates=TRUE)
 		}
 	}
 	
@@ -829,12 +874,6 @@ analyze.net.attributes <- function(g)
 				write.csv(tt, file=table.file, row.names=FALSE)
 			}
 		}
-		
-		# plot the graph using colors for attribute values
-		tlog(4,"Graph-plotting attribute \"",attr,"\"")
-		gg <- set_vertex_attr(graph=g, name=attr, value=cat.data[,i])
-		custom.gplot(gg,col.att=attr,cat.att=TRUE,color.isolates=TRUE,file=file.path(attr.folder,paste0(attr,"_2graph")))
-#		custom.gplot(gg,col.att=attr,cat.att=TRUE,color.isolates=TRUE)
 	}
 	
 #	#############################
@@ -1007,7 +1046,7 @@ analyze.net.distance <- function(g)
 		mode.folder <- file.path(distance.folder,mode)
 		dir.create(path=mode.folder, showWarnings=FALSE, recursive=TRUE)
 		for(n in 1:gorder(g))
-		{	nname <- vertex_attr(g, ND_NAME_FULL, n)
+		{	nname <- vertex_attr(g, COL_PERS_NAME_FULL_NORM, n)
 			nname <- trimws(gsub("?", "", nname, fixed=TRUE))
 			g <- set_vertex_attr(graph=g, name=fname, value=vals[n,])
 			if(all(is.infinite(vals[n,-n])))
@@ -1085,7 +1124,7 @@ analyze.net.connectivity <- function(g)
 	
 	# for each node, plot graph using color for connectivity
 	for(n in 1:gorder(g))
-	{	nname <- vertex_attr(g, ND_NAME_FULL, n)
+	{	nname <- vertex_attr(g, COL_PERS_NAME_FULL_NORM, n)
 		nname <- trimws(gsub("?", "", nname, fixed=TRUE))
 		g <- set_vertex_attr(graph=g, name=fname, value=vals[n,])
 		if(all(vals[n,]==0))
@@ -1121,45 +1160,45 @@ analyze.net.connectivity <- function(g)
 #############################################################
 analyze.network <- function(gname)
 {	# load graph
-	file.path <- file.path(FOLDER_OUT_ANAL, gnames[i], FILE_GRAPH)
+	file.path <- file.path(FOLDER_OUT_ANAL, gname, FILE_GRAPH)
 	g <- load.graphml.file(file=file.path)
 	
 	# compute attribute stats 
 	# (must be done first, before other results are added as attributes)
-#	g <- analyze.net.attributes(g)
-#		
-#	# compute diameters, eccentricity, radius
-#	g <- analyze.net.eccentricity(g)
-#		
-#	# compute degree
-#	g <- analyze.net.degree(g)
-#		
-#	# compute eigencentrality
+	g <- analyze.net.attributes(g)
+		
+	# compute diameters, eccentricity, radius
+	g <- analyze.net.eccentricity(g)
+		
+	# compute degree
+	g <- analyze.net.degree(g)
+		
+	# compute eigencentrality
 	g <- analyze.net.eigencentrality(g)
-#	
-#	# compute betweenness
-#	g <- analyze.net.betweenness(g)
-#	
-#	# compute closeness
-#	g <- analyze.net.closeness(g)
-#	
-#	# compute distances
-#	g <- analyze.net.distance(g)
-#	
-#	# compute articulation points
-#	g <- analyze.net.articulation(g)
-#	
-#	# detect communities
-#	g <- analyze.net.comstruct(g)
-#	
-#	# compute transitivity
-#	g <- analyze.net.transitivity(g)
-#	
-#	# compute vertex connectivity
-#	g <- analyze.net.connectivity(g)
-#	
-#	# compute assortativity
-#	g <- analyze.net.assortativity(g)
+	
+	# compute betweenness
+	g <- analyze.net.betweenness(g)
+	
+	# compute closeness
+	g <- analyze.net.closeness(g)
+	
+	# compute distances
+	g <- analyze.net.distance(g)
+	
+	# compute articulation points
+	g <- analyze.net.articulation(g)
+	
+	# detect communities
+	g <- analyze.net.comstruct(g)
+	
+	# compute transitivity
+	g <- analyze.net.transitivity(g)
+	
+	# compute vertex connectivity
+	g <- analyze.net.connectivity(g)
+	
+	# compute assortativity
+	g <- analyze.net.assortativity(g)
 	
 	return(g)
 }

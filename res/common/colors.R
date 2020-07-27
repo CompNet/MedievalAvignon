@@ -58,7 +58,7 @@ CAT_COLORS_18 <- c(							# manual extension of the color brewer palette
 	rgb(0,0,255,maxColorValue=255),			# straight blue
 	rgb(0,255,0,maxColorValue=255)			# straight green
 )
-CAT_COLOR_22 <- c(	# kelly.colors(22) from package Polychrome
+CAT_COLORS_22 <- c(	# kelly.colors(22) from package Polychrome
 	"#f2f3f4", 		# white 
 	"#222222", 		# black 
 	"#f3c300", 		# yellow 
@@ -116,3 +116,30 @@ CAT_COLORS_32 <- c(	# glasbey.colors(32) from package Polychrome
 	"#FE8F42", "#DD00FF", "#201A01", "#720055", "#766C95", "#02AD24", "#C8FF00", "#886C00", 
 	"#FFB79F", "#858567", "#A10300", "#14F9FF", "#00479E", "#DC5E93", "#93D4FF", "#004CFF"
 )
+
+
+
+
+#############################################################
+# Returns the appropriate number of colors
+# 
+# values: number of distinct values to plot.
+#
+# returns: an appropriate palette, for categorical values.
+#############################################################
+get.palette <- function(values)
+{	if(values<=8)
+		result <- CAT_COLORS_8
+	else if(values<=12)
+		result <- CAT_COLORS_12
+	else if(values<=18)
+		result <- CAT_COLORS_18
+	else if(values<=22)
+		result <- CAT_COLORS_22
+	else #if(values<=26)
+		result <- CAT_COLORS_26
+#	else
+#		result <- CAT_COLORS_32
+	
+	return(result)
+}

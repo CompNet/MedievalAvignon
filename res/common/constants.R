@@ -135,11 +135,31 @@ COL_FEE_AMOUNT_INCR <- "echelonMontant"
 	# social links
 	VAL_SOC_TYPE_FAMILY <- "LIFAM"
 	VAL_SOC_TYPE_WORK <- "LITRA"
-	# misc
-	VAL_OTHER <- "Other"
-	VAL_TRUE <- "True"
-	VAL_FALSE <- "False"
-	VAL_UNKNOWN <- "Unknown"
+
+	
+	
+	
+#############################################################################################
+# graph-related values
+
+# types of links 
+LK_TYPE <- "type"
+	LK_TYPE_ALL <- "Full"
+	LK_TYPE_FAM <- "Familial"
+	LK_TYPE_PRO <- "Professional"
+	LK_TYPE_LST <- c(LK_TYPE_ALL, LK_TYPE_FAM, LK_TYPE_PRO)
+LK_DESCR <- "description"
+	
+# map to convert link attribute names
+MAP_TABLE2GRAPH <- c()
+MAP_TABLE2GRAPH[VAL_SOC_TYPE_FAMILY] <- LK_TYPE_FAM
+MAP_TABLE2GRAPH[VAL_SOC_TYPE_WORK] <- LK_TYPE_PRO
+
+# misc
+VAL_OTHER <- "Other"
+VAL_TRUE <- "True"
+VAL_FALSE <- "False"
+VAL_UNKNOWN <- "Unknown"
 
 
 

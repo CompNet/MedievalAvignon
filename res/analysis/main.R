@@ -27,17 +27,17 @@ dir.create(path=FOLDER_OUT_ANAL, showWarnings=FALSE, recursive=TRUE)
 
 ########################################################################
 # load the data and create various versions of the graph
-gnames <- extract.networks()
+extract.social.networks()
 
 
 
 
 ########################################################################
 # compute topological measures for the extracted networks
-tlog.start.loop(0,length(gnames), "Processing the measures for each extracted graph")
-for(i in 1:length(gnames))
-{	tlog.loop(2, i, "Processing the measures for graph ",gnames[i]," (",i,"/",length(gnames),")")
-	g <- analyze.network(gname=gnames[i])
+tlog.start.loop(0,length(LK_TYPE_LST), "Processing the measures for each extracted graph")
+for(i in 1:length(LK_TYPE_LST))
+{	tlog.loop(2, i, "Processing the measures for graph ",LK_TYPE_LST[i]," (",i,"/",length(LK_TYPE_LST),")")
+	g <- analyze.network(gname=LK_TYPE_LST[i])
 }
 tlog.end.loop("Measure computation over")
 

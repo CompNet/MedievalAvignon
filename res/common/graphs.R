@@ -66,7 +66,7 @@ update.node.labels <- function(g, vals, best.low=FALSE)
 		bottom.idx <- 1:gorder(g)
 	else
 		bottom.idx <- order(vals, decreasing=TRUE)[1:lim]
-	V(g)$label[bottom.idx] <- vertex_attr(g, ND_NAME_FULL, bottom.idx)
+	V(g)$label[bottom.idx] <- vertex_attr(g, COL_PERS_NAME_FULL_NORM, bottom.idx)
 	
 	return(g)
 }

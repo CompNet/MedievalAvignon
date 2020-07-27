@@ -27,9 +27,8 @@ FORMAT <- c("png","pdf")	# plot file format: pdf png
 # 		 is either a list of integer vectors (node sequences), or
 # 		 an integer vector if there is only one path to plot.
 # col.att: (optional) name of a vertex attribute, used to determine node color.
-#          It is also possible to pass just the beginning of the name, common
-#		   to several binary attributes, in which case the plot will use piecharts 
-#		   to represent nodes.
+#          It is also possible to pass several comparable attributes, in which 
+#		   case the plot will use piecharts to represent nodes.
 # cat.att: (optional) if there is a vertex attribute, indicates whether
 #		   it is categorical or not.
 # v.hl: vertices to highlight (these are represented as squares).
@@ -105,20 +104,20 @@ custom.gplot <- function(g, paths, col.att, cat.att=FALSE, v.hl, e.hl, color.iso
 		else
 			connected <- igraph::degree(g)>0
 		
+		# get the attribute values
+		vvals <- get.vertex.attribute(graph=g, name=col.att[1])
 		if(!all(!connected))
-		{	# get the attribute values
-			vvals <- get.vertex.attribute(graph=g, name=col.att)
-			
-			# just one attribute
-			if(length(vvals)>0)
+		{	# just one attribute
+			if(length(col.att)==1)
 			{	# check if all the attribute values are not NA
 				if(!all(is.na(vvals)))
 				{	# categorical attribute
 					if(cat.att)
 					{	tmp <- factor(vvals[connected])
-						vcols[connected] <- CAT_COLORS_8[(as.integer(tmp)-1) %% length(CAT_COLORS_8) + 1]
 						lgd.txt <- levels(tmp)
-						lgd.col <- CAT_COLORS_8[(1:length(lgd.txt)-1) %% length(CAT_COLORS_8) + 1]
+						colcols <- get.palette(length(lgd.txt))
+						vcols[connected] <- colcols[(as.integer(tmp)-1) %% length(colcols) + 1]
+						lgd.col <- colcols[(1:length(lgd.txt)-1) %% length(colcols) + 1]
 					}
 					# numerical attribute
 					else
@@ -134,9 +133,7 @@ custom.gplot <- function(g, paths, col.att, cat.att=FALSE, v.hl, e.hl, color.iso
 			# several attributes, supposedly binary ones
 			else
 			{	cat.att <- TRUE
-				att.list <- list.vertex.attributes(g)							# list of all vertex attributes
-				atts <- att.list[grepl(att.list,pattern=col.att)]				# look for the ones starting appropriately
-				m <- sapply(atts, function(att) vertex_attr(g, att))			# get attribute values as a matrix
+				m <- sapply(col.att, function(att) vertex_attr(g, att))			# get attribute values as a matrix
 				are.nas <- apply(m,1,function(r) all(is.na(r)))					# detect individuals with only NAs
 				are.pie <- apply(m,1,function(r) length(r[!is.na(r)])>1)		# detect individuals with several non-NA values
 				uvals <- sort(unique(c(m)))										# get unique attribute values
@@ -150,10 +147,8 @@ custom.gplot <- function(g, paths, col.att, cat.att=FALSE, v.hl, e.hl, color.iso
 					colnames(pie.matrix)[ncol(pie.matrix)] <- uval
 				}
 				lgd.txt <- colnames(pie.matrix)
-				if(length(lgd.txt)<=length(CAT_COLORS_8))
-					lgd.col <- CAT_COLORS_8[(1:length(lgd.txt)-1) %% length(CAT_COLORS_8) + 1]
-				else
-					lgd.col <- CAT_COLORS_18[(1:length(lgd.txt)-1) %% length(CAT_COLORS_18) + 1]
+				colcols <- get.palette(length(lgd.txt))
+				lgd.col <- colcols[(1:length(lgd.txt)-1) %% length(colcols) + 1]
 				pie.values <- unlist(apply(pie.matrix, 1, function(v) list(v)), recursive=FALSE)
 				pie.values[!are.pie | !connected] <- NA
 				vshapes[are.pie & connected] <- rep("pie",length(which(are.pie)))
@@ -209,7 +204,7 @@ custom.gplot <- function(g, paths, col.att, cat.att=FALSE, v.hl, e.hl, color.iso
 			{	# categorical attributes
 				if(cat.att)
 				{	legend(
-						title=LONG_NAME[col.att],				# title of the legend box
+						title=LONG_NAME[col.att[1]],			# title of the legend box
 						x="bottomleft",							# position
 						legend=lgd.txt,							# text of the legend
 						fill=lgd.col,							# color of the nodes

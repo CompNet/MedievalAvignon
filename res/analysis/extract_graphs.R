@@ -15,10 +15,8 @@
 ########################################################################
 # Loads the raw data, extracts the different types of social networks,
 # records them as graphml files, and plots them.
-#
-# returns: the names of the extracted networks.
 ########################################################################
-extract.networks <- function()
+extract.social.networks <- function()
 {	# load the data and create various versions of the graph
 	tlog(0,"Extracting various versions of the social graph")
 	
@@ -34,10 +32,11 @@ extract.networks <- function()
 	
 	# build graph
 	tlog(2,"Building graph")
-	edge.list <- cbind(as.character(data[,MF_LK_SOURCE]), as.character(data[,MF_LK_TARGET]))
+	edge.list <- cbind(as.character(data[,COL_SOC_SRC]), as.character(data[,COL_SOC_TGT]))
 	g <- graph_from_edgelist(el=edge.list, directed=TRUE)
-	g <- set_edge_attr(graph=g, name=LK_TYPE, value=MAP_MF2LK[data[,MF_LK_TYPE]])
-	g <- set_edge_attr(graph=g, name=LK_SUBTYPE, value=data[,MF_LK_LABEL])
+	g <- set_edge_attr(graph=g, name=LK_TYPE, value=MAP_TABLE2GRAPH[data[,COL_SOC_TYPE]])
+	g <- set_edge_attr(graph=g, name=LK_DESCR, value=data[,COL_SOC_DESCR])
+	tlog(4,"Edge attributes: ",paste(edge_attr_names(g),collapse=", "))
 	
 	# load personal information
 	tlog(2,"Loading individual information")
@@ -57,20 +56,17 @@ extract.networks <- function()
 	
 	# complete graph with personal information
 	tlog(2,"Adding to graph")
-	idx <- match(V(g)$name, as.character(info[,MF_ND_ID]))
+	idx <- match(V(g)$name, as.character(info[,COL_PERS_ID]))
 	if(length(which(is.na(idx)))>0)
 		stop("Problem while matching the tables: NA values", paste(which(is.na(idx)), collapse=", "))
-	atts <- setdiff(colnames(info), MF_ND_ID)
+	atts <- setdiff(colnames(info), COL_PERS_ID)
 	for(i in 1:length(atts))
 	{	att <- atts[i]
 		tlog(4,"Processing attribute ",att," (",i,"/",length(atts),")")
-		norm.name <- MAP_MF2ND[att]
-		if(is.na(norm.name))
-			tlog(6,"WARNING: could not find attribute \"",att,"\" in the normalized list")
-		else
-			g <- set_vertex_attr(graph=g, name=MAP_MF2ND[att], value=info[idx,att])
+		g <- set_vertex_attr(graph=g, name=att, value=info[idx,att])
 	}
-	V(g)$label <- vertex_attr(g, ND_NAME_FULL)
+	V(g)$label <- vertex_attr(g, COL_PERS_NAME_FULL_NORM)
+	tlog(4,"Vertex attributes: ",paste(vertex_attr_names(g),collapse=", "))
 	
 	# init layout
 #	layout <- layout_with_fr(g)
@@ -89,25 +85,24 @@ extract.networks <- function()
 	
 	# extract several versions
 	tlog(2,"Extracting several variants of the graph")
-	etypes <- c(LK_TYPE_ALL, sort(unique(E(g)$type)))
-	for(i in 1:length(etypes))
-	{	tlog(4,"Extracting graph \"",etypes[i],"\" (",i,"/",length(etypes),")")
+	for(i in 1:length(LK_TYPE_LST))
+	{	tlog(4,"Extracting graph \"",LK_TYPE_LST[i],"\" (",i,"/",length(LK_TYPE_LST),")")
 		
 		# keep only the targeted type of links
-		if(etypes[i]==LK_TYPE_ALL)
+		if(LK_TYPE_LST[i]==LK_TYPE_ALL)
 			g1 <- g
 		else
-		{	g1 <- delete_edges(graph=g, edges=which(E(g)$type!=etypes[i]))
+		{	g1 <- delete_edges(graph=g, edges=which(E(g)$type!=LK_TYPE_LST[i]))
 			#g1 <- delete_vertices(graph=g1, v=which(degree(g, mode="all")==0))
 		}
-		g1$name <- etypes[i]
+		g1$name <- LK_TYPE_LST[i]
 		
 		# init folder
 		graph.folder <- file.path(FOLDER_OUT_ANAL, g1$name)
 		dir.create(path=graph.folder, showWarnings=FALSE, recursive=TRUE)
 		
 		# check graph validity
-		if(etypes[i]!=LK_TYPE_ALL && any_multiple(graph=g1))
+		if(LK_TYPE_LST[i]!=LK_TYPE_ALL && any_multiple(graph=g1))
 		{	el <- as_edgelist(graph=g1, names=FALSE)
 			# loops
 			idx.loop <- which(count_multiple(g1)<1)
@@ -155,6 +150,4 @@ extract.networks <- function()
 		graph.file <- file.path(graph.folder, FILE_GRAPH)
 		write.graph(graph=g1, file=graph.file, format="graphml")
 	}
-
-	return(etypes)	
 }
