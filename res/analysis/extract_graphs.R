@@ -34,7 +34,7 @@ extract.networks <- function()
 	
 	# build graph
 	tlog(2,"Building graph")
-	edge.list <- cbind(as.character(data[,MF_ND_SOURCE]), as.character(data[,MF_ND_TARGET]))
+	edge.list <- cbind(as.character(data[,MF_LK_SOURCE]), as.character(data[,MF_LK_TARGET]))
 	g <- graph_from_edgelist(el=edge.list, directed=TRUE)
 	g <- set_edge_attr(graph=g, name=LK_TYPE, value=MAP_MF2LK[data[,MF_LK_TYPE]])
 	g <- set_edge_attr(graph=g, name=LK_SUBTYPE, value=data[,MF_LK_LABEL])

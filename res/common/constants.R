@@ -32,6 +32,8 @@ FILE_GRAPH <- "graph.graphml"
 # table-related constants
 
 # relationships
+MF_LK_SOURCE <- "Source"
+MF_LK_TARGET <- "Target"
 MF_LK_LABEL <- "Label"
 MF_LK_TYPE <- "typeLien"
 MF_LK_TYPE_FAM <- "LienFamille"
@@ -47,13 +49,11 @@ MF_ND_ID <- "idindividu"
 MF_ND_JOB1 <- "professionTN"
 MF_ND_JOB2 <- "profession2TN"
 MF_ND_NAME_FULL <- "identite"
-MF_ND_NAME_NORM <- "identiteNorm"
+	MF_ND_NAME_NORM <- "identiteNorm" # n'apparait plus dans la nouvelle version
 MF_ND_NAME_FIRST <- "prenom"
 MF_ND_NAME_LAST <- "nom"
 MF_ND_NAME_NICK <- "surnom"
-MF_ND_RESIDENCE <- "residence"
-MF_ND_SOURCE <- "Source"
-MF_ND_TARGET <- "Target"
+	MF_ND_RESIDENCE <- "residence" # n'apparait plus dans la nouvelle version
 MF_ND_STATUS <- "statutTN"
 MF_ND_TITLE1 <- "titreTN"
 MF_ND_TITLE2 <- "titre2TN"
@@ -87,11 +87,11 @@ ND_JOB <- "occupation"
 ND_JOB1 <- "occupation1"
 ND_JOB2 <- "occupation2"
 ND_NAME_FULL <- "fullname"
-ND_NAME_NORM <- "normname"
+	ND_NAME_NORM <- "normname" # n'apparait plus dans la nouvelle version
 ND_NAME_FIRST <- "firstname"
 ND_NAME_LAST <- "lastname"
 ND_NAME_NICK <- "nickname"
-ND_RESIDENCE <- "residence"
+	ND_RESIDENCE <- "residence" # n'apparait plus dans la nouvelle version
 ND_STATUS <- "status"
 ND_TITLE <- "title"
 ND_TITLE1 <- "title1"
