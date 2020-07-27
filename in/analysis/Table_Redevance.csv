@@ -1,0 +1,1208 @@
+idRedevance;type;espece;montant;detailRedev;montant2;echelonMontant;montantN
+1;cens;tournois;2 sol. bon. tur. parv.;NULL;NULL;NULL;2 sol.
+2;cens;tournois;3 sol. bon. tur. parv.;NULL;NULL;NULL;3 sol.
+3;cens;tournois;17 den. et 1 pict. bon. tur. parv.;NULL;NULL;NULL;17 den. 1 pict.
+4;cens;tournois;6 sol. 3 den. et ob. et 1 pict. bon. tur. parv.;NULL;NULL;NULL;6 sol. 3 den. 1 ob. 1 pict.
+5;cens;tournois;4 sol. 11 den. bon. tur. parv.;NULL;NULL;NULL;4 sol. 11 den.
+6;cens;tournois;18 den. bon. tur. parv.;affranchi de la vigne episcopale;10 sol. bon. tur.;NULL;10 sol.
+7;cens;tournois;2 sol. 1 ob. bon. tur. parv.;NULL;NULL;NULL;2 sol. 1 ob.
+8;cens;tournois;3 sol. bon. tur. parv.;NULL;NULL;NULL;3 sol.
+9;cens;tournois;18 den. bon. tur. parv.;NULL;NULL;NULL;18 den.
+10;cens;tournois;18 den. bon. tur. parv.;NULL;NULL;NULL;18 den.
+11;cens;tournois;6 den. bon. tur. parv.;NULL;NULL;NULL;6 den.
+12;cens;tournois;20 den. bon. tur. parv.;affranchi de la vigne episcopale;20 sol. bon. tur. parv.;NULL;20 sol.
+13;cens;tournois;2 sol. bon. tur. parv.;NULL;NULL;NULL;2 sol.
+14;cens;tournois;9 den. bon. tur. parv.;NULL;NULL;NULL;9 den.
+15;cens;tournois;10 den. bon. tur. parv.;NULL;NULL;NULL;10 den.
+16;cens;tournois;18 den. bon. tur. parv.;NULL;NULL;NULL;18 den.
+17;cens;tournois;19 den. bon. tur. parv.;NULL;NULL;NULL;19 den.
+18;cens;tournois;3 sol. 8 den. bon. tur. parv.;NULL;NULL;NULL;3 sol. 8 den.
+19;cens;tournois;12 den. bon. tur. parv.;affranchi de la vigne episcopale;11 sol. bon. tur. parv.;NULL;11 sol.
+20;cens;tournois;6 den. bon. tur. parv.;affranchi de la vigne episcopale;5 sol. bon. tur. parv.;NULL;5 sol.
+21;cens;tournois;12 den. bon. tur. parv.;affranchi de la vigne episcopale;2 sol. bon. tur. parv.;NULL;2 sol.
+22;cens;tournois;6 den. bon. tur. parv.;NULL;NULL;NULL;6 den.
+23;cens;tournois;3 sol. bon. tur. parv.;affranchi de la vigne episcopale;20 sol. et 6 den. bon. tur. parv.;NULL;20 sol. 6 den.
+24;cens;tournois;2 sol. bon. tur. parv.;affranchi de la vigne episcopale;4 sol. bon. tur. parv.;NULL;4 sol.
+25;cens;tournois;18 den. bon. tur. parv.;NULL;NULL;NULL;18 den.
+26;cens;tournois;12 den. bon. tur. parv.;NULL;NULL;NULL;12 den.
+27;cens;tournois;18 den. bon. tur. parv.;NULL;NULL;NULL;18 den.
+28;cens;tournois;3 sol. bon. tur. parv.;NULL;NULL;NULL;3 sol.
+29;cens;tournois;3 sol. bon. tur. parv.;NULL;NULL;NULL;3 sol.
+30;cens;tournois;3 sol. bon. tur. parv.;NULL;NULL;NULL;3 sol.
+31;cens;tournois;3 sol. bon. tur. parv.;NULL;NULL;NULL;3 sol.
+32;cens;tournois;18 den. bon. tur. parv.;NULL;NULL;NULL;18 den.
+33;cens;tournois;18 den. bon. tur. parv.;NULL;NULL;NULL;18 den.
+34;cens;tournois;18 den. bon. tur. parv.;NULL;NULL;NULL;18 den.
+35;cens;tournois;18 den. bon. tur. parv.;NULL;NULL;NULL;18 den.
+36;cens;tournois;18 den. bon. tur. parv.;NULL;NULL;NULL;18 den.
+37;cens;tournois;3 sol. 9 den. bon. tur. parv.;NULL;NULL;NULL;3 sol. 9 den.
+38;cens;tournois;6 den. et 1 ob. bon. tur. parv.;affranchi de la vigne episcopale;10 sol. bon. tur. parv.;NULL;10 sol.
+39;cens;tournois;16 den. et 1 ob. tur. parv.;NULL;NULL;NULL;16 den. 1 ob.
+40;cens;tournois;6 den. bon. tur. parv.;NULL;NULL;NULL;6 den.
+41;cens;tournois;6 den. bon. tur. parv.;NULL;NULL;NULL;6 den.
+42;cens;tournois;18 den. bon. tur. parv.;NULL;NULL;NULL;18 den.
+43;cens;tournois;18 den. bon. tur. parv.;NULL;NULL;NULL;18 den.
+44;cens;tournois;18 den. bon. tur. parv.;NULL;NULL;NULL;18 den.
+45;cens;tournois;2 sol 13 den. bon. tur. parv.;NULL;NULL;NULL;2 sol 13 den.
+46;cens;tournois;18 den. bon. tur. parv.;NULL;NULL;NULL;18 den.
+47;cens;tournois;9 den. bon. tur. parv.;NULL;NULL;NULL;9 den.
+48;cens;tournois;9 den. bon. tur. parv.;NULL;NULL;NULL;9 den.
+49;cens;tournois;18 den. bon. tur. parv.;NULL;NULL;NULL;18 den.
+50;cens;tournois;18 den. bon. tur. parv.;NULL;NULL;NULL;18 den.
+51;cens;tournois;18 den. bon. tur. parv.;NULL;NULL;NULL;18 den.
+52;cens;tournois;18 den. bon. tur. parv.;NULL;NULL;NULL;18 den.
+53;cens;tournois;18 den. bon. tur. parv.;NULL;NULL;NULL;18 den.
+54;cens;tournois;12 den. bon. tur. parv.;NULL;NULL;NULL;12 den.
+55;cens;tournois;18 den. bon. tur. parv.;NULL;NULL;NULL;18 den.
+56;cens;tournois;1 bon. pict. tur. parv.;NULL;NULL;NULL;1 pict.
+57;cens;tournois;1 bon. pict. tur. parv.;NULL;NULL;NULL;1 pict.
+58;cens;tournois;1 bon. den. tur. parv.;NULL;NULL;NULL;1 den.
+59;cens;tournois;1 ob. tur. parv.;NULL;NULL;NULL;1 ob.
+60;cens;tournois;1 bon. pict. tur. parv.;NULL;NULL;NULL;1 pict.
+61;cens;tournois;1 bon. pict. tur. parv.;NULL;NULL;NULL;1 pict.
+62;cens;tournois;12 den. et ob. tur. parv.;NULL;NULL;NULL;12 den. 1 ob.
+63;cens;tournois;3 sol. 1 pict. bon. tur. parv.;NULL;NULL;NULL;3 sol. 1 pict.
+64;cens;tournois;12 den. et 1 pict. bon. tur. parv.;affranchi de la vigne episcopale;4 sol. bon. tur. parv.;NULL;4 sol.
+65;cens;tournois;6 den. bon. tur. parv. 4 sol. bon. tur. parv.;affranchi de la vigne episcopale;4 sol. 6 den. bon. tur. parv.;NULL;4 sol. 6 den.
+66;cens;tournois;20 sol. bon. tur. parv.;NULL;NULL;NULL;20 sol.
+67;cens;tournois;20 sol. bon. tur. parv.;NULL;NULL;NULL;20 sol.
+68;cens;tournois;20 sol. bon. tur. parv.;NULL;NULL;NULL;20 sol.
+69;cens;tournois;20 sol. bon. tur. parv.;NULL;NULL;NULL;20 sol.
+70;cens;tournois;13 den. et 2 partes 1 ob. bon. tur. parv.;affranchi de la vigne episcopale;20 sol. bon. tur. parv.;NULL;20 sol.
+71;cens;tournois;6 den. et 1 ob. et tertia pars alter ob. bon. tur. parv.;NULL;NULL;NULL;6 den. 1,75 ob.
+72;cens;tournois;3 den. et tertia partes 1 den. bon. tur. parv.;NULL;NULL;NULL;3,75 den.
+73;cens;tournois;6 den. et 2 partes 1 den. bon. tur. parv.;affranchi de la vigne episcopale;8 sol. bon. tur. parv.;NULL;8 sol.
+74;cens;tournois;10 den. et 1 ob. bon. tur. parv.;NULL;NULL;NULL;10 den. 1 ob.
+75;cens;tournois;12 den. bon. tur. parv.;NULL;NULL;NULL;12 den.
+76;cens;tournois;10 tur. gross. singulos pro 2 sol. et 4 den. monete hodie in avinione;affranchi de la vigne episcopale;20 sol. bon. tur. parv.;NULL;20 sol.
+77;cens;tournois;2 sol. bon. tur. parv.;NULL;NULL;NULL;2 sol.
+78;cens;tournois;2 sol. bon. tur. parv.;NULL;NULL;NULL;2 sol.
+79;cens;tournois;12 den. bon. tur. parv.;NULL;NULL;NULL;12 den.
+80;cens;tournois;6 den. bon. tur. parv.;NULL;NULL;NULL;6 den.
+81;cens;tournois;6 den. bon. tur. parv.;NULL;NULL;NULL;6 den.
+82;cens;tournois;5 sol. bon. tur. parv.;NULL;NULL;NULL;5 sol.
+83;cens;poisson et tournois;1 alauda et 12 sophia et 1 pict. bon. tur. parv.;NULL;NULL;NULL;1 alauda et 12 sophia et 1 pict.
+84;cens;poisson et tournois;1 alauda et 12 sophia et 1 ob. tur. parv.;NULL;NULL;NULL;1 alauda et 12 sophia et 1 ob.
+85;cens;poisson et tournois;2 alauda et 24 sophia et 1 den. bon. tur. parv.;NULL;NULL;NULL;2 alauda et 24 sophia et 1 den.
+86;cens;poisson et tournois;2 alauda et 24 sophia et l den. bon. tur. parv.;NULL;NULL;NULL;2 alauda et 24 sophia et l den.
+87;cens;poisson et tournois;1 alauda et 12 sophia et 1 ob. bon. tur. parv.;NULL;NULL;NULL;1 alauda et 12 sophia et 1 ob.
+88;cens;tournois;2 alauda et 24 sophia bona et sufficiens et 1 den. bon. tur. parv.;affranchi de la vigne episcopale;7 sol. et 6 den. bon. tur. parv.;NULL;7 sol. 6 den.
+89;cens;poisson et tournois;1 alauda et 12 sophia et 1 ob. tur. parv.;NULL;NULL;NULL;1 alauda et 12 sophia et 1 ob.
+90;cens;poisson et tournois;3 alauda et 36 sophia et 1 ob. tur. parv.;NULL;NULL;NULL;3 alauda et 36 sophia et 1 ob.
+91;cens;poisson et tournois;1 alauda et 12 sophia et 1 ob. tur. parv.;NULL;NULL;NULL;1 alauda et 12 sophia et 1 ob.
+92;cens;poisson et tournois;1 alauda et 12 sophia et 1 ob. tur. parv.;NULL;NULL;NULL;1 alauda et 12 sophia et 1 ob.
+93;cens;tournois;12 den. bon. tur. parv.;NULL;NULL;NULL;12 den.
+94;cens;poisson et tournois;3 partes 1 alauda et 4 sophia et 1 ob. tur. parv.;NULL;NULL;NULL;0,75 alauda et 4 sophia et 1 ob.
+95;cens;tournois;1 alauda et 4 sophia et 1 ob. bon. tur. parv.;affranchi de la vigne episcopale;4 sol. bon. tur. parv.;NULL;4 sol.
+96;cens;poisson et tournois;1 alauda et 12 sophia et 1 ob. bon. tur. parv.;NULL;NULL;NULL;1 alauda et 12 sophia et 1 ob.
+97;cens;tournois;3 pars unus alauda 1 ob. tur. parv.;affranchi de la vigne episcopale;4 sol. bon. tur. parv.;NULL;4 sol.
+98;cens;poisson et tournois;2 alauda et media et 30 sophia et 1 ob. tur. parv.;NULL;NULL;NULL;2 alauda et media et 30 sophia et 1 ob.
+99;cens;tournois;2 alauda et media et 30 sophia et 1 ob. bon. tur. parv.;affranchi de la vigne episcopale;3 sol. bon. tur. parv.;NULL;3 sol.
+100;cens;poisson et tournois;media alauda et 6 sophia et 1 ob. bon. tur. parv.;NULL;NULL;NULL;media alauda et 6 sophia et 1 ob.
+101;cens;poisson et tournois;media alauda et 6 sophia et 1 ob. tur. parv. media alauda et 6 sophia et 1 ob. bon. tur. parv. 18 den. bon. tur. parv.;NULL;NULL;NULL;media alauda et 6 sophia et 1 ob. media alauda et 6 sophia et 1 ob. 18 den.
+102;cens;tournois;media alauda et 6 sophia et 1 ob. bon. tur. parv.;affranchi de la vigne episcopale;18 den. bon. tur.;NULL;18 den.
+103;cens;poisson et tournois;2 alauda et 24 sophia et 1 ob. tur. parv.;NULL;NULL;NULL;2 alauda et 24 sophia et 1 ob.
+104;cens;poisson et tournois;1 alauda et 12 sophia et 1 ob. tur. parv.;NULL;NULL;NULL;1 alauda et 12 sophia et 1 ob.
+105;cens;tournois;6 den. bon. tur. parv.;NULL;NULL;NULL;6 den.
+106;cens;tournois;7 sol. 7 den. bon. tur. parv.;affranchi de la vigne episcopale;11 sol. et 4 den.;NULL;11 sol. 4 den.
+107;cens;tournois;2 sol. 6 den. bon. tur. parv.;affranchi de la vigne episcopale;24 sol. bon. tur. parv.;NULL;24 sol.
+108;cens;tournois;6 den. bon. tur. parv.;NULL;NULL;NULL;6 den.
+109;cens;tournois;9 den. bon. tur. parv.;NULL;NULL;NULL;9 den.
+110;cens;tournois;2 sol 9 den. bon. tur. parv.;NULL;NULL;NULL;2 sol 9 den.
+111;cens;tournois;4 den. et ob. bon. tur. parv.;NULL;NULL;NULL;4 den. 1 ob.
+112;cens;tournois;4 den. et ob. bon. tur. parv.;NULL;NULL;NULL;4 den. 1 ob.
+113;cens;tournois;2 sol. bon. tur. parv.;affranchi de la vigne episcopale;3 sol. bon. tur. parv.;NULL;3 sol.
+114;cens;orge et chapon;1 emina ordei bonus et pulcrum et 1 bonus caponum et pinguem;NULL;NULL;NULL;1 emina ordei bonus et pulcrum et 1 bonus caponum et pinguem
+115;cens;tournois;1 emina ordei bonus et pulcrum et 1 bonus caponum et pinguem et 1 panis 2 den. tur. et 1 den. bon. tur. parv.;NULL;NULL;NULL;1 emina ordei bonus et pulcrum et 1 bonus caponum et pinguem et 1 panis 2 den. 1 den.
+116;cens;tournois;1 ob. bon. tur. parv.;affranchi de la vigne episcopale;4 den. bon. tur. parv.;NULL;4 den.
+117;cens;tournois;6 den. bon. tur. parv.;NULL;NULL;NULL;6 den.
+118;cens;tournois;10 sol. bon. tur. parv.;NULL;NULL;NULL;10 sol.
+119;cens;tournois;7 sol. bon. tur. parv.;NULL;NULL;NULL;7 sol.
+120;cens;tournois;13 sol. bon. tur. parv.;NULL;NULL;NULL;13 sol.
+121;cens;tournois;3 den. et 1 ob. tur. parv.;NULL;NULL;NULL;3 den. 1 ob.
+122;cens;tournois;3 den. et 1 ob. parv. tur;affranchi de la vigne episcopale;5 sol. bon. tur. parv.;NULL;5 sol.
+123;cens;tournois;3 ob. bon. tur. parv.;NULL;NULL;NULL;3 ob.
+124;cens;tournois;3 ob. bon. tur. parv.;NULL;NULL;NULL;3 ob.
+125;cens;tournois;6 den. bon. tur. parv.;4 den. et 1 ob. bon. tur. parv .3 ob.6 den. bon. tur. parv.;NULL;NULL;6 den.
+126;cens;tournois;2 sol. bon. tur. parv.;affranchi de la vigne episcopale;12 sol. bon. tur. parv.;NULL;12 sol.
+127;cens;tournois;2 sol. 6 den. bon. tur. parv.;NULL;NULL;NULL;2 sol. 6 den.
+128;cens;tournois;3 den. bon. tur. parv.;NULL;NULL;NULL;3 den.
+129;cens;tournois;1 den. bon. tur. parv.;NULL;NULL;NULL;1 den.
+130;cens;tournois;1 alium den. bon. tur. parv.;NULL;NULL;NULL;1 den.
+131;cens;tournois;2 den. et 1 ob. bon. tur. parv.;NULL;NULL;NULL;2 den. 1 ob.
+132;cens;NULL;NULL;NULL;NULL;NULL;null
+133;cens;tournois;1 den. bon. tur. parv.;NULL;NULL;NULL;1 den.
+134;cens;tournois;1 den. bon. tur. parv.;NULL;NULL;NULL;1 den.
+135;cens;tournois;1 ob. bon. tur. parv.;NULL;NULL;NULL;1 ob.
+136;cens;tournois;20 sol. bon. tur. parv.;NULL;NULL;NULL;20 sol.
+137;cens;tournois;20 sol. bon. tur. parv.;NULL;NULL;NULL;20 sol.
+138;cens;tournois;1 den. bon. tur. parv.;NULL;NULL;NULL;1 den.
+139;cens;tournois;3 sol. bon. tur. parv.;NULL;NULL;NULL;3 sol.
+140;cens;tournois;18 den. bon. tur. parv.;NULL;NULL;NULL;18 den.
+141;cens;tournois;18 den. bon. tur. parv.;NULL;NULL;NULL;18 den.
+142;cens;tournois;2 sol. bon. tur. parv.;affranchi de la vigne episcopale;15 sol. bon. tur. parv.;NULL;15 sol.
+143;cens;tournois;3 sol. bon. tur. parv.;affranchi de la vigne episcopale;10 sol. bon. tur. parv.;NULL;10 sol.
+144;cens;tournois;50 sol. bon. tur. parv.;NULL;NULL;NULL;50 sol.
+145;cens;tournois;5 sol. 10 den. bon. tur. parv.;NULL;NULL;NULL;5 sol. 10 den.
+146;cens;tournois;2 sol. 6 den. bon. tur. parv.;NULL;NULL;NULL;2 sol. 6 den.
+147;cens;tournois;20 den. bon. tur. parv.;NULL;NULL;NULL;20 den.
+148;cens;tournois;16 den. bon. tur. parv.;affranchi de la vigne episcopale;9 sol. bon. tur. parv.;NULL;9 sol.
+149;cens;tournois;2 sol. 6 den. bon. tur. parv.;affranchi de la vigne episcopale;10 sol. bon. tur. parv.;NULL;10 sol.
+150;cens;tournois;3 sol. bon. tur. parv.;affranchi de la vigne episcopale;12 sol. 6 den. bon. tur. parv.;NULL;12 sol. 6 den.
+151;cens;tournois;3 sol. bon. tur. parv.;affranchi de la vigne episcopale;20 sol. bon. tur. parv;NULL;20 sol.
+152;cens;tournois;12 den. bon. tur. parv.;affranchi de la vigne episcopale;20 sol. bon. tur. parv;NULL;20 sol.
+153;cens;tournois;4 sol. bon. tur. parv.;affranchi de la vigne episcopale;10 sol. bon. tur. parv.;NULL;10 sol.
+154;cens;tournois;8 den. et 1 ob. bon. tur. parv.;NULL;NULL;NULL;8 den. 1 ob.
+155;cens;tournois;12 den. bon. tur. parv.;affranchi de la vigne episcopale;8 sol. bon. tur. parv.;NULL;8 sol.
+156;cens;tournois;3 sol. bon. tur. parv.;NULL;NULL;NULL;3 sol.
+157;cens;tournois;3 sol. 3 den. bon. tur. parv.;NULL;NULL;NULL;3 sol. 3 den.
+158;cens;tournois;2 den. bon. tur. parv.;NULL;NULL;NULL;2 den.
+159;cens;tournois;1 ob. tur. bon. parv.;NULL;NULL;NULL;1 ob.
+160;cens;tournois;1 ob. bon. tur. parv.;NULL;NULL;NULL;1 ob.
+161;cens;tournois;6 den. bon. tur. parv.;NULL;NULL;NULL;6 den.
+162;cens;tournois;6 den. bon. tur. parv.;NULL;NULL;NULL;6 den.
+163;cens;tournois;6 den. bon. tur. parv.;NULL;NULL;NULL;6 den.
+164;cens;tournois;2 sol. bon. tur. parv.;affranchi de la vigne episcopale;7 sol. bon. tur. parv.;NULL;7 sol.
+165;cens;tournois;18 den. bon. tur. parv.;affranchi de la vigne episcopale;10 sol. bon. tur. parv.;NULL;10 sol.
+166;cens;tournois;1 ob. tur. parv.;NULL;NULL;NULL;1 ob.
+167;cens;tournois;2 sol. 9 den. bon. tur. parv.;NULL;NULL;NULL;2 sol. 9 den.
+168;cens;tournois;12 den. bon. tur. parv.;NULL;NULL;NULL;12 den.
+169;cens;tournois;3 sol. 10 den. bon. tur. parv.;NULL;NULL;NULL;3 sol. 10 den.
+170;cens;tournois;6 den. bon. tur. parv.;NULL;NULL;NULL;6 den.
+171;cens;tournois;14 den. et 1 ob. bon. tur. parv.;affranchi de la vigne episcopale;10 sol. bon. tur. parv.;NULL;10 sol.
+172;cens;tournois;6 den. bon. tur. parv.;NULL;NULL;NULL;6 den.
+173;cens;tournois;9 den. bon. tur. parv.;affranchi de la vigne episcopale;7 sol. bon. tur. parv.;NULL;7 sol.
+174;cens;tournois;12 den. bon. tur. parv.;affranchi de la vigne episcopale;7 sol. bon. tur. parv.;NULL;7 sol.
+175;cens;tournois;1 ob. tur. parv.;NULL;NULL;NULL;1 ob.
+176;cens;tournois;1 den. bon. tur. parv.;affranchi de la vigne episcopale;20 sol. bon. tur. parv.;NULL;20 sol.
+177;cens;tournois;1 ob. bon. tur. parv.;affranchi de la vigne episcopale;6 sol. bon. tur. parv.;NULL;6 sol.
+178;cens;tournois;1 den. bon. tur. parv.;NULL;NULL;NULL;1 den.
+179;cens;tournois;14 den. et 1 ob. bon. tur. parv.;NULL;NULL;NULL;14 den. 1 ob.
+180;cens;tournois;4 den. bon. tur. parv.;NULL;NULL;NULL;4 den.
+181;cens;tournois;1 ob. bon. tur. parv.;NULL;NULL;NULL;1 ob.
+182;cens;tournois;6 den. bon. tur. parv.;NULL;NULL;NULL;6 den.
+183;cens;tournois;4 sol. bon. tur. parv.;NULL;NULL;NULL;4 sol.
+184;cens;tournois;9 den. et 1 ob. bon. tur. parv.;NULL;NULL;NULL;9 den. 1 ob.
+185;cens;tournois;3 sol. bon. tur. parv.;NULL;NULL;NULL;3 sol.
+186;cens;tournois;18 den. bon. tur. parv.;NULL;NULL;NULL;18 den.
+187;cens;tournois;4 sol. 6 den. bon. tur. parv.;NULL;NULL;NULL;4 sol. 6 den.
+188;cens;tournois;16 den. et ob. bon. tur. parv.;affranchi de la vigne episcopale;4 sol. bon. tur. parv.;NULL;4 sol.
+189;cens;tournois;18 sol. 6 den. bon. tur. parv.;affranchi de la vigne episcopale;36 sol. bon. tur. parv. et antiquus;NULL;36 sol.
+190;cens;tournois;3 den. bon. tur. parv.;NULL;NULL;NULL;3 den.
+191;cens;tournois;3 sol. bon. tur. parv.;affranchi de la vigne episcopale;7 sol. bon. tur. parv.;NULL;7 sol.
+192;cens;tournois;21 den. bon. tur. parv.;affranchi de la vigne episcopale;10 sol. bon. tur. parv.;NULL;10 sol.
+193;cens;tournois;6 den. bon. tur. parv.;affranchi de la vigne episcopale;2 sol. 6 den. bon. tur. parv.;NULL;2 sol. 6 den.
+194;cens;tournois;2 sol. 11 den. et 1 ob. bon. tur. parv.;NULL;NULL;NULL;2 sol. 11 den. 1 ob.
+195;cens;tournois;2 sol. bon. tur. parv.;NULL;NULL;NULL;2 sol.
+196;cens;tournois;3 sol. 7 den. tur. parv.;NULL;NULL;NULL;3 sol. 7 den.
+197;cens;tournois;6 sol. bon. tur. parv.;affranchi de la vigne episcopale;25 sol. bon. tur. parv.;NULL;25 sol.
+198;cens;tournois;9 den. bon. tur. parv.;NULL;NULL;NULL;9 den.
+199;cens;tournois;4 sol. bon. tur. parv.;affranchi de la vigne episcopale;15 sol. bon. tur. parv.;NULL;15 sol.
+200;cens;tournois;18 den. bon. tur. parv.;NULL;NULL;NULL;18 den.
+201;cens;tournois;8 sol. 4 den. et 1 picta bon. tur. parv.;affranchi de la vigne episcopale;24 sol. bon. tur. parv.;NULL;24 sol.
+202;cens;tournois;10 den. bon. tur. parv.;NULL;NULL;NULL;10 den.
+203;cens;tournois;2 sol. 8 den. bon. tur. parv.;NULL;NULL;NULL;2 sol. 8 den.
+204;cens;tournois;18 den. bon. tur. parv.;NULL;NULL;NULL;18 den.
+205;cens;tournois;3 sol. 6 den. bon. tur. parv.;NULL;NULL;NULL;3 sol. 6 den.
+206;cens;tournois;3 sol. bon. tur. parv.;NULL;NULL;NULL;3 sol.
+207;cens;tournois;3 sol. bon. tur. parv.;affranchi de la vigne episcopale;13 sol. bon. tur. parv.;NULL;13 sol.
+208;cens;tournois;2 sol. bon. tur. parv.;NULL;NULL;NULL;2 sol.
+209;cens;tournois;10 den. bon. tur. parv.;NULL;NULL;NULL;10 den.
+210;cens;tournois;15 den bon. tur. parv.;NULL;NULL;NULL;15 den
+211;cens;tournois;7 den. bon. tur. parv.;NULL;NULL;NULL;7 den.
+212;cens;tournois;3 den. bon. tur. parv.;NULL;NULL;NULL;3 den.
+213;cens;tournois;3 den. bon. tur. parv.;NULL;NULL;NULL;3 den.
+214;cens;tournois;3 sol. bon. tur. parv.;affranchi de la vigne episcopale;12 sol. bon. tur. parv.;NULL;12 sol.
+215;cens;tournois;15 den. bon. tur. parv.;NULL;NULL;NULL;15 den.
+216;cens;tournois;20 den. bon. tur. parv.;NULL;NULL;NULL;20 den.
+217;cens;tournois;unus quartonus unus libr bona cere novus ponderis civium avinionensium;affranchi de la vigne episcopale;4 sol. bon. tur. parv.;NULL;4 sol.
+218;cens;tournois;3 ob. bon. tur. parv. de turonis;NULL;NULL;NULL;3 ob.
+219;cens;tournois;21 sol. et 4 den. et 1 ob. tur. parv.;NULL;NULL;NULL;21 sol. 4 den. 1 ob.
+220;cens;tournois;4 den. bon. tur. parv.;affranchi de la vigne episcopale;6 sol. bon. tur. parv.;NULL;6 sol.
+221;cens;tournois;9 den. et ob. bon. tur. parv.;NULL;NULL;NULL;9 den. 1 ob.
+222;cens;tournois;12 den. bon. tur. parv.;affranchi de la vigne episcopale;2 sol. bon. tur. parv.;NULL;2 sol.
+223;cens;tournois;6 den. bon. tur. parv.;NULL;NULL;NULL;6 den.
+224;cens;tournois;9 den. bon. tur. parv.;NULL;NULL;NULL;9 den.
+225;cens;tournois;1 den. bon. tur. parv.;NULL;NULL;NULL;1 den.
+226;cens;tournois;4 den. et 1 ob. tur. parv.;NULL;NULL;NULL;4 den. 1 ob.
+227;cens;tournois;1 ob. tur. parv.;NULL;NULL;NULL;1 ob.
+228;cens;tournois;7 den. et 1 ob. tur.parv.;NULL;NULL;NULL;7 den. 1 ob.
+229;cens;tournois;17 den. et 1 ob. tur. parv.;NULL;NULL;NULL;17 den. 1 ob.
+230;cens;tournois;4 sol. et 4 den. bon. tur. parv.;affranchi de la vigne episcopale;12 sol. bon. tur. parv.;NULL;12 sol.
+231;cens;tournois;3 sol. et 8 den. bon. tur. parv.;NULL;NULL;NULL;3 sol. 8 den.
+232;cens;tournois;5 sol. bon. tur. parv.;affranchi de la vigne episcopale;20 sol. bon. tur. parv.;NULL;20 sol.
+233;cens;tournois;5 sol. bon. tur. parv.;NULL;NULL;NULL;5 sol.
+234;cens;tournois;2 sol. et 6 den. bon. tur. parv.;NULL;NULL;NULL;2 sol. 6 den.
+235;cens;tournois;2 sol. et 9 den. bon. tur. parv.;NULL;NULL;NULL;2 sol. 9 den.
+236;cens;tournois;3 sol. et 6 den. bon. tur. parv. et 1 eminam annone bone et receptibilis portatam;NULL;NULL;NULL;3 sol. 6 den. et 1 eminam annone bone et receptibilis portatam
+237;cens;tournois et annone;1 eminam et partem alterius emine annone bone et receptibilis portandas ad granerium dicti domini episcopi et 10 den. bon. tur. parv.;NULL;NULL;NULL;1 eminam et partem alterius emine annone bone et receptibilis portandas ad granerium dicti domini episcopi et 10 den.
+238;cens;tournois;2 sol. et 6 den. bon. tur. parv.;NULL;NULL;NULL;2 sol. 6 den.
+239;cens;NULL;NULL;NULL;NULL;NULL;null
+240;cens;NULL;NULL;NULL;NULL;NULL;null
+241;cens;tournois, annone, chapon;68 sol. bon. tur. parv. et 4 eminas annone bone et receptibilis ad mensuram et valorem sestarii avinionis et 2 capones bonos et pingues ac sufficientes;affranchi de la vigne episcopale;4 libras et 8 sol. bon.tur.parv. et 4 eminas annone bone et receptibilis ad men- suram et valorem predictos et 2 bonos capones pingues et sufficentes;NULL;4 libras et 8 sol. 4 eminas annone bone et receptibilis ad mensuram et valorem predictos et 2 bonos capones pingues et sufficentes
+242;cens;annone;8 eminas annone bone et receptiblis ad mensuram et valorem sestarii avinionis;NULL;NULL;NULL;8 eminas annone bone et receptiblis ad mensuram et valorem sestarii avinionis
+243;cens;tournois;20 den. bon. tur. parv.;NULL;NULL;NULL;20 den.
+244;cens;tournois;14 sol. bon. tur. parv.;NULL;NULL;NULL;14 sol.
+245;cens;tournois;7 sol. bon. tur. parv.;NULL;NULL;NULL;7 sol.
+246;cens;tournois;3 sol. bon. tur. parv.;NULL;NULL;NULL;3 sol.
+247;cens;tournois;4 den.bon. tur. parv.;affranchi de la vigne episcopale;10 sol. bon. tur. parv.;NULL;10 sol.
+248;cens;tournois;6 sol. et 7 den. bon. tur. parv.;NULL;NULL;NULL;6 sol. 7 den.
+249;cens;tournois;12 den. bon. tur. parv.;NULL;NULL;NULL;12 den.
+250;cens;tournois;2 sol. 6 den. et 1 ob. bon. tur. parv.;NULL;NULL;NULL;2 sol. 6 den. 1 ob.
+251;cens;tournois;12 den. bon. tur. parv.;NULL;NULL;NULL;12 den.
+252;cens;tournois;8 den. bon tur parv.;affranchi de la vigne episcopale;12 sol. bon. tur. parv.;NULL;12 sol.
+253;cens;tournois;2 den. bon. tur parv.;NULL;NULL;NULL;2 den.
+254;cens;tournois;2 den. bon. tur parv.;NULL;NULL;NULL;2 den.
+255;cens;tournois;7 den. et 1 ob. tur. paev.;NULL;NULL;NULL;7 den. 1 ob.
+256;cens;tournois;15 den. ob. tur. parv.;NULL;NULL;NULL;15 den. 1 ob.
+257;cens;tournois;22 den. bon. tur. parv.;NULL;NULL;NULL;22 den.
+443;accensement;tournois;2 sol. bon. tur.;2 sol. bon. tur. censuales sub directo dominio et majori senhoria, consilio et assensu ac jure prelationis et laudationis et trezenationis dicti domini episcopi quotienscumque alienantur et venduntur;NULL;NULL;2 sol.
+444;accensement;tournois;60 tur. grossos argenti de turonis cum o rotundo domini francie regis;¬†60 tur. grossos argenti de Turonis cum o rotundo domini Francie regis censuales sub directe dominio et majori senhoria, consilio et assensu ac jure prelationis, laudationis et trezenationis domini episcopi Avinionensis episcopi supradicti;NULL;NULL;60 gross.
+445;accensement;tournois;17 sol. bon.tur.parv.;17 sol. bon.tur.parv. censuales sub directo dominio et majori senhoria, consilio et assensu ac jure prelationis, laudationis et confirmationis domini episcopi supradicti ;NULL;NULL;17 sol.
+446;accensement;tournois;8 sol. bon.tur.parv.;8 sol. bon.tur.parv. censuales et sub directo dominio et majori senhoria, consilio et assensu ac jure prelationis, laudationis et trezenationis atque confirmationis quotiens alienantur dicti domini episcopi Avinionensis ;NULL;NULL;8 sol.
+447;accensement;tournois;2 den. bon. tur.parv.;2 den. bon. tur.parv., sub directo dominio et majori senhoria, consilio et assensu, laudimio et trezeno ac jure prelationis totiens quotiens ipsos vendi, transferri seu alio quovismodo alienari contigerit sepedicti domini epi- scopi et sue ecclesie Avinionensis ;NULL;NULL;2 den.
+448;accensement;NULL;NULL;NULL;NULL;NULL;null
+449;accensement;NULL;NULL;NULL;NULL;NULL;null
+450;accensement;tournois;5 sol. tur.;5 sol. tur. censuales sub directo dominio et majori senhoria dicti domini Avinionensisepiscopi et cetera ut supra ;NULL;NULL;5 sol.
+451;accensement;tournois;6 den. tur.;6 den. tur. censualessub directo dominio et majori senhoriapredicti domini Avinionensis episcopi et cetera ut supra ;NULL;NULL;6 den.
+452;accensement;tournois;4 den. et 1 ob. 1 pict. tur.;4 den. et ob. et pictam tur., sub directo dominio et majori senhoria prelibati domni Avinionensis episcopi et cetera ut supra ;NULL;NULL;4 den. 1 ob. 1 pict.
+453;accensement;tournois;3 ob. tur.;3 ob. tur. sub directo dominio et majori senhoria prelibati domni Avinionensis episcopi et cetera ut supra ;NULL;NULL;3 ob.
+454;accensement;tournois;3 sol. bon. tur. parv. antiq.;3 sol. bon.tur.parv. antiq. de Turonis eidem nobili Rostagneto de Mories solvendos annuatim per prefatam Johannetam de Sadone in festo sancti Michaelis mensis septembris, sub directo dominio et majori senhoria ante dicti domini episcopi Avinionensis et cetera ut supra ;NULL;NULL;3 sol.
+455;accensement;tournois;12 den. bon.tur.parv. et antiq.;12 den. bon.tur.parv. et antiq. censuales solvendos per dictam Girardetam eidem nobili Rostagneto de Mories anno quolibet in dicto festo, sub directo dominio et majori senhoria sepedicti Avinionensis episcopi et cetera ut supra;NULL;NULL;12 den.
+456;accensement;NULL;NULL;NULL;NULL;NULL;null
+457;accensement;NULL;NULL;NULL;NULL;NULL;null
+458;accensement;NULL;NULL;NULL;NULL;NULL;null
+459;accensement;NULL;NULL;NULL;NULL;NULL;null
+460;accensement;NULL;NULL;NULL;NULL;NULL;null
+461;accensement;NULL;NULL;NULL;NULL;NULL;null
+462;accensement;NULL;NULL;NULL;NULL;NULL;null
+463;accensement;NULL;NULL;NULL;NULL;NULL;null
+464;accensement;NULL;NULL;NULL;NULL;NULL;null
+465;accensement;NULL;NULL;NULL;NULL;NULL;null
+466;accensement;tournois;6 sol. et 9 den.tur.;NULL;NULL;NULL;6 sol. 9 den.
+467;accensement;tournois;6 sol. et 9 den. tur.;NULL;NULL;NULL;6 sol. 9 den.
+468;accensement;tournois;9 sol. tur.;NULL;NULL;NULL;9 sol.
+469;accensement;tournois;14 sol. et 6 den. tur.;NULL;NULL;NULL;14 sol. 6 den.
+470;accensement;tournois;14 sol. tur.;NULL;NULL;NULL;14 sol.
+471;accensement;tournois;10 sol. tur.;NULL;NULL;NULL;10 sol.
+472;accensement;tournois;10 sol. tur.;NULL;NULL;NULL;10 sol.
+473;accensement;tournois;12 sol. tur.;NULL;NULL;NULL;12 sol.
+474;accensement;NULL;NULL;NULL;NULL;NULL;null
+475;accensement;tournois;6 sol. tur.;NULL;NULL;NULL;6 sol.
+476;accensement;tournois;9 sol. tur.;NULL;NULL;NULL;9 sol.
+477;accensement;tournois;4 sol. tur.;NULL;NULL;NULL;4 sol.
+478;accensement;tournois;6 sol. tur.;NULL;NULL;NULL;6 sol.
+479;accensement;tournois;15 sol. tur.;NULL;NULL;NULL;15 sol.
+480;accensement;tournois;15 sol. tur.;NULL;NULL;NULL;15 sol.
+481;accensement;tournois;15 sol. tur.;NULL;NULL;NULL;15 sol.
+482;accensement;tournois;34 sol. tur.;NULL;NULL;NULL;34 sol.
+483;accensement;tournois;9 sol. tur.;NULL;NULL;NULL;9 sol.
+484;accensement;tournois;10 sol. tur.;NULL;NULL;NULL;10 sol.
+485;accensement;tournois;5 sol. tur.;NULL;NULL;NULL;5 sol.
+486;accensement;tournois;5 sol. tur.;NULL;NULL;NULL;5 sol.
+487;accensement;tournois;9 sol. tur.;NULL;NULL;NULL;9 sol.
+488;accensement;tournois;12 sol. tur.;NULL;NULL;NULL;12 sol.
+489;accensement;NULL;NULL;NULL;NULL;NULL;null
+490;accensement;NULL;NULL;NULL;NULL;NULL;null
+491;accensement;florin d or de 24 sol. de monnaie courante d avignon;1 flor. auri de 24 sol. monete nunc in Avinione currentis;NULL;NULL;NULL;1 flor.
+492;accensement;tournois;30 sol. tur. sive 2 flor. cum dimidio auri;NULL;NULL;NULL;30 sol.
+493;accensement;tournois;24 sol. tur. sive 2 flor.;NULL;NULL;NULL;24 sol.
+494;accensement;florin d or;1,5 flor.;NULL;NULL;NULL;1,5 flor.
+495;accensement;florin d or;1 flor. auri;NULL;NULL;NULL;1 flor.
+496;accensement;tournois;16 sol. et 6 den. tur.;NULL;15 sol. et 10 den. tur.;NULL;15 sol. 10 den.
+497;accensement;tournois;17 sol. tur.;NULL;NULL;NULL;17 sol.
+498;accensement;tournois;17 sol. tur.;NULL;NULL;NULL;17 sol.
+499;accensement;tournois;18 sol. tur.;NULL;NULL;NULL;18 sol.
+500;accensement;tournois;20 sol. tur.;NULL;NULL;NULL;20 sol.
+501;accensement;florin d or;1,5 flor.;NULL;NULL;NULL;1,5 flor.
+502;accensement;tournois;18 sol. bon.tur.;NULL;NULL;NULL;18 sol.
+503;accensement;florin d or;1 flor. auri;NULL;NULL;NULL;1 flor.
+504;accensement;florin d or;3 flor. auri;NULL;NULL;NULL;3 flor.
+1001;cens;tournois;20 sol. tur .parv. antiq.;NULL;NULL;NULL;20 sol. tur .parv.
+1002;cens;tournois;8 sol. 9 den. tur. parv. antiq.;NULL;NULL;NULL;8 sol. 9 den.
+1003;cens;tournois;28 sol. tur. parv. antiq.;NULL;NULL;NULL;28 sol.
+1004;cens;nr;21 sol. 3 den.;NULL;NULL;NULL;21 sol. 3 den.
+1005;cens;nr;21 sol. 3 den.;NULL;NULL;NULL;21 sol. 3 den.
+1006;cens;tournois;10 sol. tur. parv. antiq.;NULL;NULL;NULL;10 sol.
+1007;cens;tournois;27 sol. 6 den. tur. parv.;NULL;NULL;NULL;27 sol. 6 den.
+1008;cens;tournois;17 sol. tur. parv. antiq.;NULL;NULL;NULL;17 sol.
+1009;cens;tournois;5 sol. tur. parv. antiq.;NULL;NULL;NULL;5 sol.
+1010;cens;tournois;8 lb. tur. parv. antiq.;NULL;NULL;NULL;8 lb.
+1011;cens;tournois;3 sol. tur. parv. antiq.;NULL;NULL;NULL;3 sol.
+1012;cens;tournois;20 sol. tur. parv. antiq.;NULL;NULL;NULL;20 sol.
+1013;cens;tournois;7 den. cum ob.tur.parv. antiq.;NULL;NULL;NULL;7 den. 1 ob.
+1014;cens;tournois;7 den. cum ob.tur.parv. antiq.;NULL;NULL;NULL;7 den. 1 ob.
+1015;cens;tournois;5 den. tur. parv.;NULL;NULL;NULL;5 den.
+1016;cens;tournois;3 sol. tur. parv. antiq.;NULL;NULL;NULL;3 sol.
+1017;cens;tournois;3 sol. tur. parv. antiq.;NULL;NULL;NULL;3 sol.
+1018;cens;tournois;6 den. tur. parv. antiq.;NULL;NULL;NULL;6 den.
+1019;cens;tournois;9 den. tur. parv. antiq.;NULL;NULL;NULL;9 den.
+1020;cens;tournois;9 den. tur. parv. antiq.;NULL;NULL;NULL;9 den.
+1021;cens;tournois;4 sol. et 6 den. tur. parv. antiq.;NULL;NULL;NULL;4 sol. 6 den.
+1022;cens;tournois;6 den. tur. parv. antiq.;NULL;NULL;NULL;6 den.
+1023;cens;tournois;8 sol. tur. parv. antiq.;NULL;NULL;NULL;8 sol.
+1024;cens;tournois;12 sol. tur. parv. antiq.;NULL;NULL;NULL;12 sol.
+1025;cens;tournois;12 den. tur. parv. antiq.;NULL;NULL;NULL;12 den.
+1026;cens;tournois;3 sol. tur. parv. antiq.;NULL;NULL;NULL;3 sol.
+1027;cens;tournois;4 sol. et 6 den. tur. parv. antiq.;NULL;NULL;NULL;4 sol. 6 den.
+1028;cens;tournois;10 den. tur. parv. antiq.;NULL;NULL;NULL;10 den.
+1029;cens;tournois;2 sol. et 6 den. tur. parv.;NULL;NULL;NULL;2 sol. 6 den.
+1030;cens;tournois;6 den. tur. parv. antiq.;NULL;NULL;NULL;6 den.
+1031;cens;tournois;6 sol. tur. parv. antiq.;NULL;NULL;NULL;6 sol.
+1032;cens;tournois;4 den. tur. parv. antiq.;NULL;NULL;NULL;4 den.
+1033;cens;tournois;8 den. tur. parv. antiq.;NULL;NULL;NULL;8 den.
+1034;cens;tournois;21 den. tur. parv. antiq.;NULL;NULL;NULL;21 den.
+1035;cens;tournois;4 den. tur. parv. antiq.;NULL;NULL;NULL;4 den.
+1036;cens;tournois;4 den. et ob. tur. par. antiq.;NULL;NULL;NULL;4 den. 1 ob.
+1037;cens;viennois;15 sol. viennen.;NULL;NULL;NULL;15 sol.
+1038;cens;tournois;18 den. tur. antiq.;NULL;NULL;NULL;18 den.
+1039;cens;tournois;4 sol. et 6 den. tur. parv. antiq.;NULL;NULL;NULL;4 sol. 6 den.
+1040;cens;tournois;3 sol. tur. parv. antiq.;NULL;NULL;NULL;3 sol.
+1041;cens;tournois;2 sol. tur. parv. antiq.;NULL;NULL;NULL;2 sol.
+1042;cens;melgorien;2 sol. melg.;NULL;NULL;NULL;2 sol.
+1043;cens;tournois;2 sol. et 3 den. tur. antiq.;NULL;NULL;NULL;2 sol. 3 den.
+1044;cens;tournois;3 sol. tur. parv. antiq.;NULL;NULL;NULL;3 sol.
+1045;cens;tournois;18 den. tur. antiq.;NULL;NULL;NULL;18 den.
+1046;cens;tournois;3 sol. tur. parv. antiq.;NULL;NULL;NULL;3 sol.
+1047;cens;tournois;12 den. tur. parv. antiq.;NULL;NULL;NULL;12 den.
+1048;cens;tournois;20 sol.tur.parv. antiq.;NULL;NULL;NULL;20 sol.
+1049;cens;tournois;30 sol. tur. parv. antiq.;NULL;NULL;NULL;30 sol.
+1050;cens;tournois;6 sol. 8 den. tur. parv. antiq.;NULL;NULL;NULL;6 sol. 8 den.
+1051;cens;tournois;5 sol. 4 den. tur. parv. antiq.;NULL;NULL;NULL;5 sol. 4 den.
+1052;cens;tournois;18 den. tur. parv. antiq.;NULL;NULL;NULL;18 den.
+1053;cens;tournois;6 den. tur. parv. antiq.;NULL;NULL;NULL;6 den.
+1054;cens;tournois;6 sol. tur. parv. antiq.;NULL;NULL;NULL;6 sol.
+1055;cens;tournois;2 sol. et 3 den. tur. antiq.;NULL;NULL;NULL;2 sol. 3 den.
+1056;cens;tournois;2 sol. et 3 den. tur. antiq.;NULL;NULL;NULL;2 sol. 3 den.
+1057;cens;tournois;18 den. tur. antiq.;NULL;NULL;NULL;18 den.
+1058;cens;viennois;17 sol. 6 den. viennen.;NULL;NULL;NULL;17 sol. 6 den.
+1059;cens;tournois;3 sol. 3 den. tur. parv. antiq.;NULL;NULL;NULL;3 sol. 3 den.
+1060;cens;tournois;3 sol. 3 den. tur. parv. antiq.;NULL;NULL;NULL;3 sol. 3 den.
+1061;cens;tournois;2 sol. tur. parv. antiq.;NULL;NULL;NULL;2 sol.
+1062;cens;tournois;2 sol. tur. parv. antiq.;NULL;NULL;NULL;2 sol.
+1063;cens;tournois;2 sol. tur. parv. antiq.;NULL;NULL;NULL;2 sol.
+1064;cens;tournois;3 den. tur. parv. antiq.;NULL;NULL;NULL;3 den.
+1065;cens;tournois;4 sol. tur. parv. antiq.;NULL;NULL;NULL;4 sol.
+1066;cens;tournois;2 sol. tur. parv. antiq.;NULL;NULL;NULL;2 sol.
+1067;cens;tournois;2 sol. et 6 den. tur. parv.;NULL;NULL;NULL;2 sol. 6 den.
+1068;cens;viennois;15 sol. viennen.;NULL;NULL;NULL;15 sol.
+1069;cens;tournois;10 sol. 3 den. tur. parv. antiq.;NULL;NULL;NULL;10 sol. 3 den.
+1070;cens;tournois;12 sol. tur. parv. antiq.;NULL;NULL;NULL;12 sol.
+1071;cens;tournois;15 sol. tur. parv. antiq.;NULL;NULL;NULL;15 sol.
+1072;cens;tournois;13 sol. tur. parv. antiq.;NULL;NULL;NULL;13 sol.
+1073;cens;tournois;6 sol. tur. parv. antiq.;NULL;NULL;NULL;6 sol.
+1074;cens;tournois;15 sol. tur. parv. antiq.;NULL;NULL;NULL;15 sol.
+1075;cens;tournois;2 sol. 2 den. tur. parv.;NULL;NULL;NULL;2 sol. 2 den.
+1076;cens;tournois;3 sol. tur. parv. antiq.;NULL;NULL;NULL;3 sol.
+1077;cens;tournois;37 sol. tur. parv.;NULL;NULL;NULL;37 sol.
+1078;cens;nr;10 sol. 4 den.;NULL;NULL;NULL;10 sol. 4 den.
+1079;cens;tournois;10 sol. tur. parv. antiq;NULL;NULL;NULL;10 sol.
+1080;cens;tournois;10 sol. tur. parv.;NULL;NULL;NULL;10 sol.
+1081;cens;tournois;5 sol. tur. parv. antiq.;NULL;NULL;NULL;5 sol.
+1082;cens;tournois;3 sol. 9 den. tur. parv. antiq.;NULL;NULL;NULL;3 sol. 9 den.
+1083;cens;tournois;6 sol. 3 den. tur. parv. antiq.;NULL;NULL;NULL;6 sol. 3 den.
+1084;cens;tournois;30 sol. tur. parv. antiq.;NULL;NULL;NULL;30 sol.
+1085;cens;tournois;10 sol. tur. parv. antiq.;NULL;NULL;NULL;10 sol.
+1086;cens;tournois;18 den. tur. antiq.;NULL;NULL;NULL;18 den.
+1087;cens;tournois;12 sol. tur. parv. antiq.;NULL;NULL;NULL;12 sol.
+1088;cens;tournois;18 sol. tur. parv. antiq.;NULL;NULL;NULL;18 sol.
+1089;cens;melgorien;3 sol. melg.;NULL;NULL;NULL;3 sol.
+1090;cens;tournois;2 sol. tur. parv. antiq.;NULL;NULL;NULL;2 sol.
+1091;cens;tournois;6 den. tur. parv. antiq.;NULL;NULL;NULL;6 den.
+1093;cens;tournois;18 den. tur. antiq.;NULL;NULL;NULL;18 den.
+1094;cens;tournois;2 sol. tur. parv. antiq.;NULL;NULL;NULL;2 sol.
+1095;cens;tournois;5 den. tur. parv.;NULL;NULL;NULL;5 den.
+1096;cens;tournois;15 sol. tur. parv. bon. et antiq;NULL;NULL;NULL;15 sol.
+1097;cens;tournois;12 den. tur. parv. antiq.;NULL;NULL;NULL;12 den.
+1098;cens;tournois;15 den. tur. parv. antiq.;NULL;NULL;NULL;15 den.
+1099;cens;tournois;5 sol. tur. parv. antiq;NULL;NULL;NULL;5 sol.
+1100;cens;tournois;5 sol. tur. parv.;NULL;NULL;NULL;5 sol.
+1101;cens;tournois;10 gross. argenti cum o rotando;NULL;NULL;NULL;10 gross.
+1102;cens;tournois;4 sol. tur. parv. antiq;NULL;NULL;NULL;4 sol.
+1103;cens;tournois;27 sol. tur. parv. antiq.;NULL;NULL;NULL;27 sol.
+1104;cens;NULL;NULL;NULL;NULL;NULL;null
+1105;cens;tournois;4 sol. tur. parv. antiq.;NULL;NULL;NULL;4 sol.
+1106;cens;tournois;12 den. tur. parv.;NULL;NULL;NULL;12 den.
+1107;cens;tournois;60 sol. tur. parv.antiq.;NULL;NULL;NULL;60 sol.
+1108;cens;tournois;2 sol. tur. parv. antiq.;NULL;NULL;NULL;2 sol.
+1109;cens;tournois;20 den. tur. parv. antiq.;NULL;NULL;NULL;20 den.
+1110;cens;tournois;22 den. tur. parv. antiq.;NULL;NULL;NULL;22 den.
+1111;cens;tournois;15 sol. tur. parv. antiq.;NULL;NULL;NULL;15 sol.
+1112;cens;tournois;15 sol. tur. parv. antiq.;NULL;NULL;NULL;15 sol.
+1113;cens;tournois;2 sol. et 6 den. tur. parv.;NULL;NULL;NULL;2 sol. 6 den.
+1114;cens;tournois;4 sol. tur. parv. antiq.;NULL;NULL;NULL;4 sol.
+1115;cens;tournois;2 sol. tur. parv. antiq.;NULL;NULL;NULL;2 sol.
+1116;cens;florin de florence;2 flor. de florentia;NULL;NULL;NULL;2 flor.
+1117;cens;tournois;2 sol. tur. parv. antiq.;NULL;NULL;NULL;2 sol.
+1118;cens;tournois;26 den. tur. parv. antiq.;NULL;NULL;NULL;26 den.
+1119;cens;tournois;12 den. tur. parv. antiq.;NULL;NULL;NULL;12 den.
+1120;cens;tournois;10 sol. tur. parv. antiq.;NULL;NULL;NULL;10 sol.
+1121;cens;tournois;2 sol. tur. parv. antiq.;NULL;NULL;NULL;2 sol.
+1122;cens;tournois;10 sol. tur. parv. antiq.;NULL;NULL;NULL;10 sol.
+1123;cens;tournois;2 sol. et 6 den. tur .parv. antiq.;NULL;NULL;NULL;2 sol. 6 den.
+1124;cens;tournois;10 lb. tur. parv. antiq;NULL;NULL;NULL;10 lb.
+1125;cens;tournois;6 sol. tur. parv. antiq.;NULL;NULL;NULL;6 sol.
+1126;cens;tournois;30 sol. tur. parv. antiq.;NULL;NULL;NULL;30 sol.
+1127;cens;tournois;8 sol. et 6 den. tur. parv. antiq.;NULL;NULL;NULL;8 sol. 6 den.
+1128;cens;tournois;7 den. tur. parv. antiq.;NULL;NULL;NULL;7 den.
+1129;cens;tournois;3 sol. tur. parv. antiq.;NULL;NULL;NULL;3 sol.
+1130;cens;tournois;12 den. tur. parv. antiq.;NULL;NULL;NULL;12 den.
+1131;cens;chapon;duarum gallinarum bonarum et sufficientium in dominica septuagesime solvend.;NULL;NULL;NULL;duarum gallinarum bonarum et sufficientium in dominica septuagesime solvend.
+1132;cens;tournois;2 sol. et 6 den. tur. parv. antiq.;NULL;NULL;NULL;2 sol. 6 den.
+1133;cens;tournois;18 den. tur. parv. antiq.;NULL;NULL;NULL;18 den.
+1134;cens;tournois;25 sol. tur. parv. antiq.;NULL;NULL;NULL;25 sol.
+1135;cens;tournois;12 den. tur. parv.;NULL;NULL;NULL;12 den.
+1136;cens;tournois;8 sol. tur. parv. antiq.;NULL;NULL;NULL;8 sol.
+1137;cens;nr;4 sol. et 6 den.;NULL;NULL;NULL;4 sol. 6 den.
+1138;cens;nr;4 sol. et 6 den.;NULL;NULL;NULL;4 sol. 6 den.
+1139;cens;nr;4 sol.;NULL;NULL;NULL;4 sol.
+1140;cens;nr;5 sol.;NULL;NULL;NULL;5 sol.
+1141;cens;nr;3 sol.;NULL;NULL;NULL;3 sol.
+1142;cens;tournois;53 sol. tur. parv. antiq.;NULL;NULL;NULL;53 sol.
+1143;cens;tournois;8 den. tur. parv. antiq.;NULL;NULL;NULL;8 den.
+1144;cens;tournois;4 sol. 10 den. tur. parv.;NULL;NULL;NULL;4 sol. 10 den.
+1145;cens;viennois;12 sol. vienn.;NULL;NULL;NULL;12 sol.
+1146;cens;viennois;12 sol. vien.;NULL;NULL;NULL;12 sol. vien.
+1147;cens;viennois;100 sol. vienn.;NULL;NULL;NULL;100 sol.
+1148;cens;viennois;7 lb. cum dimidia dicte monete viennen.;NULL;NULL;NULL;7,5 lb.
+1149;cens;florin d or de florence;5 flor. auri de florentia;NULL;NULL;NULL;5 flor.
+1150;cens;nr;12 gross. et dimidio;NULL;NULL;NULL;12 gross.
+1151;cens;nr;12 gross. et dimidio;NULL;NULL;NULL;12 gross.
+1152;cens;tournois;5 sol. tur. parv. antiq.;NULL;NULL;NULL;5 sol.
+1153;cens;tournois;20 den. tur. parv. antiq;NULL;NULL;NULL;20 den.
+1154;cens;tournois;40 den. tur. parv. antiq.;NULL;NULL;NULL;40 den.
+1155;cens;tournois;5 sol. tur. parv. antiq.;NULL;NULL;NULL;5 sol.
+1156;cens;nr;10 gross.;NULL;NULL;NULL;10 gross.
+1157;cens;tournois;10 sol. tur. parv.;NULL;NULL;NULL;10 sol.
+1158;cens;tournois;6 den. tur. parv. antiq.;NULL;NULL;NULL;6 den.
+1159;cens;nr;6 gross. talis monete cujus unus florenus valet decem grossos;NULL;NULL;NULL;6 gross.
+1160;cens;tournois;12 den. tur. parv.;NULL;NULL;NULL;12 den.
+1161;cens;tournois;18 sol. tur. parv. antiq.;NULL;NULL;NULL;18 sol.
+1162;cens;tournois;18 sol. tur. parv. antiq.;NULL;NULL;NULL;18 sol.
+1163;cens;tournois;12 den. tur. parv. antiq.;NULL;NULL;NULL;12 den.
+1164;cens;tournois;12 den. tur. parv. antiq.;NULL;NULL;NULL;12 den.
+1165;cens;tournois;6 sol. 3 den. tur. parv. antiq.;NULL;NULL;NULL;6 sol. 3 den.
+1166;cens;tournois;6 sol. tur. parv. antiq.;NULL;NULL;NULL;6 sol.
+1167;cens;florin de 24 sol. de monnaie courante d avignon;1 flor. boni ponderis 24 sol. monete currentis avinione cum uno. grosso tur. agrenti;NULL;NULL;NULL;1 flor.
+1168;cens;nr;3 sol.;NULL;NULL;NULL;3 sol.
+1169;cens;tournois;8 sol. tur. parv. antiq.;NULL;NULL;NULL;8 sol.
+1170;cens;tournois;2 sol. tur. parv. antiq.;NULL;NULL;NULL;2 sol.
+1171;cens;tournois;3 sol. tur. parv. antiq.;NULL;NULL;NULL;3 sol.
+1172;cens;tournois;12 den. tur. parv. antiq.;NULL;NULL;NULL;12 den.
+1173;cens;tournois;18 den. tur. parv. antiq.;NULL;NULL;NULL;18 den.
+1174;cens;melgorien;12 den. melg.;NULL;NULL;NULL;12 den.
+1175;cens;melgorien;7 den. melg.;NULL;NULL;NULL;7 den.
+1176;cens;tournois;6 den. tur. parv. antiq.;NULL;NULL;NULL;6 den.
+1177;cens;tournois;2 sol. tur. parv. antiq.;NULL;NULL;NULL;2 sol.
+1178;cens;NULL;NULL;NULL;NULL;NULL;null
+1179;cens;chapon;1 galline bone et sufficientis;NULL;NULL;NULL;1 galline bone et sufficientis
+1180;cens;tournois;5 sol. tur. parv.;NULL;NULL;NULL;5 sol.
+1181;cens;tournois;6 den. tur. parv. antiq.;NULL;NULL;NULL;6 den.
+1182;cens;NULL;NULL;NULL;NULL;NULL;null
+1183;cens;chapon;3 partium duarum gallinarum;NULL;NULL;NULL;3 partium duarum gallinarum
+1184;cens;chapon;1 galline bone et sufficientis;NULL;NULL;NULL;1 galline bone et sufficientis
+1185;cens;tournois;10 sol. tur. parv. antiq.;NULL;NULL;NULL;10 sol.
+1186;cens;tournois;15 sol. tur. parv. antiq.;NULL;NULL;NULL;15 sol.
+1187;cens;tournois;20 sol. tur. parv. antiq.;NULL;NULL;NULL;20 sol.
+1188;cens;tournois;12 sol. 6 den. tur. parv.;NULL;NULL;NULL;12 sol. 6 den.
+1189;cens;tournois;12 sol. 6 den. tur. parv.;NULL;NULL;NULL;12 sol. 6 den.
+1190;cens;tournois;20 sol. tur. parv. antiq.;NULL;NULL;NULL;20 sol.
+1191;cens;chapon;2 gallinarum bonarum et sufficientium;NULL;NULL;NULL;2 gallinarum bonarum et sufficientium
+1192;cens;tournois;10 sol. tur. parv.;NULL;NULL;NULL;10 sol.
+1193;cens;tournois;5 sol. tur. parv. antiq.;NULL;NULL;NULL;5 sol.
+1194;cens;tournois;6 den. tur. parv. antiq.;NULL;NULL;NULL;6 den.
+2001;cens;tournois;40 sol. tur.;NULL;NULL;NULL;40 sol.
+2002;cens;nr;2 sol. 6 den.;NULL;NULL;NULL;2 sol. 6 den.
+2003;cens;tournois;11 sol. tur.;NULL;NULL;NULL;11 sol.
+2004;cens;tournois;9 sol. tur.;NULL;NULL;NULL;9 sol.
+2005;cens;tournois;10 sol. tur.;NULL;NULL;NULL;10 sol.
+2006;cens;tournois;12 sol. tur.;soit 1 flor.;NULL;NULL;12 sol.
+2007;cens;tournois;20 sol. tur.;NULL;NULL;NULL;20 sol.
+2008;cens;viennois;15 sol. de vienn.;NULL;NULL;NULL;15 sol.
+2009;cens;tournois;25 sol. tur.;NULL;NULL;NULL;25 sol.
+2010;cens;tournois;30 sol. tur.;NULL;NULL;NULL;30 sol.
+2011;cens;tournois;30 sol. tur.;NULL;NULL;NULL;30 sol.
+2012;cens;tournois;10 sol. tur.;NULL;NULL;NULL;10 sol.
+2013;cens;tournois;5 sol. tur.;NULL;NULL;NULL;5 sol.
+2014;cens;tournois;10 sol. tur.;NULL;NULL;NULL;10 sol.
+2015;cens;florin;6 flor.;NULL;NULL;NULL;6 flor.
+2016;cens;nr;100 sol.;NULL;NULL;NULL;100 sol.
+2017;cens;nr;6 sol. 3 den.;NULL;NULL;NULL;6 sol. 3 den.
+2018;cens;tournois;22 sol. tur.;NULL;NULL;NULL;22 sol.
+2019;cens;nr;12 den.;NULL;NULL;NULL;12 den.
+2020;cens;tournois;20 sol. tur.;NULL;NULL;NULL;20 sol.
+2021;cens;tournois;10 sol. tur.;NULL;NULL;NULL;10 sol.
+2022;cens;tournois;25 sol. tur.;NULL;NULL;NULL;25 sol.
+2023;cens;tournois;6 sol. tur.;NULL;NULL;NULL;6 sol.
+2024;cens;tournois;6 sol. tur.;NULL;NULL;NULL;6 sol.
+2025;cens;melgorien;6 sol. 10 den. et 2 den. melg.;NULL;NULL;NULL;6 sol. 10 den. 2 den.
+2026;cens;tournois;5 sol. tur.;NULL;NULL;NULL;5 sol.
+2027;cens;tournois;20 sol. tur.;NULL;NULL;NULL;20 sol.
+2028;cens;nr;6 sol. 3 den.;NULL;NULL;NULL;6 sol. 3 den.
+2029;cens;tournois;10 sol. tur.;NULL;NULL;NULL;10 sol.
+2030;cens;nr;27 sol. 6 den.;NULL;NULL;NULL;27 sol. 6 den.
+2031;cens;tournois;10 sol. tur.;NULL;NULL;NULL;10 sol.
+2032;cens;tournois;30 sol. tur.;NULL;NULL;NULL;30 sol.
+2033;cens;tournois;15 sol. tur.;NULL;NULL;NULL;15 sol.
+2034;cens;tournois;18 sol. tur.;NULL;NULL;NULL;18 sol.
+2035;cens;tournois;7 sol 6 den. tur.;NULL;NULL;NULL;7 sol 6 den.
+2036;cens;tournois;20 sol. tur.;NULL;NULL;NULL;20 sol.
+2037;cens;tournois;20 sol. tur.;NULL;NULL;NULL;20 sol.
+2038;cens;tournois;20 sol. tur.;NULL;NULL;NULL;20 sol.
+2039;cens;tournois;20 sol. tur.;NULL;NULL;NULL;20 sol.
+2040;cens;tournois;15 sol. tur.;NULL;NULL;NULL;15 sol.
+2041;cens;tournois;15 sol. tur.;NULL;NULL;NULL;15 sol.
+2042;cens;tournois;10 sol. tur.;NULL;NULL;NULL;10 sol.
+2043;cens;tournois;10 sol. tur.;NULL;NULL;NULL;10 sol.
+2044;cens;tournois;3 sol. 4 den. tur.;NULL;NULL;NULL;3 sol. 4 den.
+2045;cens;tournois;2 sol. 8 den. tur.;NULL;NULL;NULL;2 sol. 8 den.
+2046;cens;tournois;4 sol. tur.;NULL;NULL;NULL;4 sol.
+2047;cens;tournois;18 den. tur.;NULL;NULL;NULL;18 den.
+2048;cens;tournois;18 den. tur.;NULL;NULL;NULL;18 den.
+2049;cens;tournois;5 sol. tur.;NULL;NULL;NULL;5 sol.
+2050;cens;tournois;50 sol. tur.;NULL;NULL;NULL;50 sol.
+2051;cens;tournois;25 sol. tur.;NULL;NULL;NULL;25 sol.
+2052;cens;tournois;35 sol. tur.;NULL;NULL;NULL;35 sol.
+2053;cens;tournois;60 sol. tur.;NULL;NULL;NULL;60 sol.
+2054;cens;tournois;6 sol. 8 den. tur.;NULL;NULL;NULL;6 sol. 8 den.
+2055;cens;tournois;3 sol. 4 den. tur.;NULL;NULL;NULL;3 sol. 4 den.
+2056;cens;tournois;12 den. tur.;NULL;NULL;NULL;12 den.
+2057;cens;tournois;11 den. tur.;NULL;NULL;NULL;11 den.
+2058;cens;tournois;2 den. tur.;NULL;NULL;NULL;2 den.
+2059;cens;tournois;3 den. tur.;NULL;NULL;NULL;3 den.
+2060;cens;viennois;3 sol. de vienn.;NULL;NULL;NULL;3 sol. de
+2061;cens;tournois;3 den. tur.;NULL;NULL;NULL;3 den.
+2062;cens;tournois;10 sol. tur.;NULL;NULL;NULL;10 sol.
+2063;cens;tournois;5 sol. tur.;NULL;NULL;NULL;5 sol.
+2064;cens;monnaie courante;2 sol. Monnent corrent;NULL;NULL;NULL;2 sol.
+2065;cens;tournois;48 sol. tur.;NULL;NULL;NULL;48 sol.
+2066;cens;tournois;24 sol. den. tur.;NULL;NULL;NULL;24 sol. den.
+2067;cens;tournois;40 sol. tur.;NULL;NULL;NULL;40 sol.
+2068;cens;tournois;45 sol. tur.;NULL;NULL;NULL;45 sol.
+2069;cens;tournois;36 sol. tur.;NULL;NULL;NULL;36 sol.
+2070;cens;tournois;20 den. tur.;NULL;NULL;NULL;20 den.
+2071;cens;tournois;5 sol. tur.;NULL;NULL;NULL;5 sol.
+2072;cens;tournois;5 sol. tur.;NULL;NULL;NULL;5 sol.
+2073;cens;nr;28 sol. 4 den.;NULL;NULL;NULL;28 sol. 4 den.
+2074;cens;nr;19 sol. et 2 den.;NULL;NULL;NULL;19 sol. 2 den.
+2075;cens;nr;2 sol. 6 den.;NULL;NULL;NULL;2 sol. 6 den.
+2076;cens;viennois;15 sol. vienn.;NULL;NULL;NULL;15 sol.
+2077;cens;tournois;3 sol. tur.;NULL;NULL;NULL;3 sol.
+2078;cens;tournois;35 sol. tur.;NULL;NULL;NULL;35 sol.
+2079;cens;tournois;40 sol. tur.;NULL;NULL;NULL;40 sol.
+2080;cens;tournois;11 sol. tur.;NULL;NULL;NULL;11 sol.
+2081;cens;nr;5 sol. 5 den.;NULL;NULL;NULL;5 sol. 5 den.
+2082;cens;tournois;4 lb. tur.;NULL;NULL;NULL;4 lb.
+2083;cens;tournois;20 sol. tur.;NULL;NULL;NULL;20 sol.
+2084;cens;nr;2 sol. 6 den.;NULL;NULL;NULL;2 sol. 6 den.
+2085;cens;nr;2 sol. 6 den.;NULL;NULL;NULL;2 sol. 6 den.
+2086;cens;tournois;10 sol. tur.;NULL;NULL;NULL;10 sol.
+2087;cens;tournois;40 sol. tur.;NULL;NULL;NULL;40 sol.
+2088;cens;tournois;50 sol. tur.;NULL;NULL;NULL;50 sol.
+2089;cens;viennois;18 sol. de viann.;NULL;NULL;NULL;18 sol.
+2090;cens;tournois;40 sol. tur.;NULL;NULL;NULL;40 sol.
+2091;cens;tournois;10 sol. tur.;NULL;NULL;NULL;10 sol.
+2092;cens;tournois;10 sol. tur.;NULL;NULL;NULL;10 sol.
+2093;cens;tournois;7 sol. tur.;NULL;NULL;NULL;7 sol.
+2094;cens;tournois;50 sol. tur.;NULL;NULL;NULL;50 sol.
+2095;cens;tournois;15 den. tur.;NULL;NULL;NULL;15 den.
+2096;cens;tournois;10 sol. tur.;NULL;NULL;NULL;10 sol.
+2097;cens;tournois;25 sol. tur.;NULL;NULL;NULL;25 sol.
+2098;cens;tournois;7 sol. 6 den. tur.;NULL;NULL;NULL;7 sol. 6 den.
+2099;cens;tournois;10 sol. tur.;NULL;NULL;NULL;10 sol.
+2100;cens;tournois;5 sol. tur.;NULL;NULL;NULL;5 sol.
+2101;cens;nr;3 sol. 4 den.;NULL;NULL;NULL;3 sol. 4 den.
+2102;cens;tournois;8 den. tur.;NULL;NULL;NULL;8 den.
+2103;cens;tournois;17 sol. 10 den. tur.;NULL;NULL;NULL;17 sol. 10 den.
+2104;cens;tournois;27 sol. tur.;NULL;NULL;NULL;27 sol.
+2105;cens;nr;36 sol.;NULL;NULL;NULL;36 sol.
+2106;cens;nr;20 sol.;NULL;NULL;NULL;20 sol.
+2107;cens;nr;7 sol. 2 den.;NULL;NULL;NULL;7 sol. 2 den.
+2108;cens;nr;56 sol. 8 den.;NULL;NULL;NULL;56 sol. 8 den.
+2109;cens;tournois;5 sol. tur.;NULL;NULL;NULL;5 sol.
+2110;cens;tournois;20 sol. tur.;NULL;NULL;NULL;20 sol.
+2111;cens;tournois;10 sol. tur.;NULL;NULL;NULL;10 sol.
+2112;cens;tournois;70 sol. tur.;NULL;NULL;NULL;70 sol.
+2113;cens;tournois;9 sol. tur.;NULL;NULL;NULL;9 sol.
+2114;cens;tournois;18 sol. tur.;NULL;NULL;NULL;18 sol.
+2115;cens;tournois;60 sol. tur.;NULL;NULL;NULL;60 sol.
+2116;cens;nr;33 sol. 4 den.;NULL;NULL;NULL;33 sol. 4 den.
+2117;cens;tournois;18 sol. 4 den. tur.;NULL;NULL;NULL;18 sol. 4 den.
+2118;cens;tournois;50 sol. tur.;NULL;NULL;NULL;50 sol.
+2119;cens;tournois;5 sol. tur.;NULL;NULL;NULL;5 sol.
+2120;cens;tournois;14 sol. 4 den. tur.;NULL;NULL;NULL;14 sol. 4 den.
+2121;cens;tournois;21 sol. 6 den. tur.;NULL;NULL;NULL;21 sol. 6 den.
+2122;cens;tournois;11 sol. tur.;NULL;NULL;NULL;11 sol.
+2123;cens;tournois;43 sol. 6 den. tur.;NULL;NULL;NULL;43 sol. 6 den.
+2124;cens;tournois;15 sol. tur.;NULL;NULL;NULL;15 sol.
+2125;cens;tournois;8 sol. 9 den. tur.;NULL;NULL;NULL;8 sol. 9 den.
+2126;cens;tournois;10 sol. tur.;NULL;NULL;NULL;10 sol.
+2127;cens;nr;6 sol. 6 den.;NULL;NULL;NULL;6 sol. 6 den.
+2128;cens;florin courant;4 flor. correns;NULL;NULL;NULL;4 flor.
+2129;cens;nr;9 sol.;NULL;NULL;NULL;9 sol.
+2130;cens;nr;18 sol. 4 den.;NULL;NULL;NULL;18 sol. 4 den.
+2131;cens;tournois;21 sol. 8 den. tur.;NULL;NULL;NULL;21 sol. 8 den.
+2132;cens;nr;5 sol.;NULL;NULL;NULL;5 sol.
+2133;cens;nr;4 sol.;NULL;NULL;NULL;4 sol.
+2134;cens;nr;6 sol. 8 den.;NULL;NULL;NULL;6 sol. 8 den.
+2135;cens;nr;9 sol.;NULL;NULL;NULL;9 sol.
+2136;cens;nr;30 sol.;NULL;NULL;NULL;30 sol.
+2137;cens;nr;18 den.;NULL;NULL;NULL;18 den.
+2138;cens;nr;6 sol. 4 den.;NULL;NULL;NULL;6 sol. 4 den.
+2139;cens;nr;30 sol.;NULL;NULL;NULL;30 sol.
+2140;cens;nr;18 sol.;NULL;NULL;NULL;18 sol.
+2141;cens;tournois;2 sol. 6 den. tur.;NULL;NULL;NULL;2 sol. 6 den.
+2142;cens;nr;10 sol.;NULL;NULL;NULL;10 sol.
+2143;cens;nr;16 sol.;NULL;NULL;NULL;16 sol.
+2144;cens;nr;18 sol.;NULL;NULL;NULL;18 sol.
+2145;cens;nr;22 sol.;NULL;NULL;NULL;22 sol.
+2146;cens;nr;20 sol. 6 den.;NULL;NULL;NULL;20 sol. 6 den.
+2147;cens;nr;18 sol.;NULL;NULL;NULL;18 sol.
+2148;cens;nr;10 sol.;NULL;NULL;NULL;10 sol.
+2149;cens;nr;25 sol.;NULL;NULL;NULL;25 sol.
+2150;cens;nr;26 sol. 6 den.;NULL;NULL;NULL;26 sol. 6 den.
+2151;cens;nr;12 sol.;NULL;NULL;NULL;12 sol.
+2152;cens;nr;16 sol.;NULL;NULL;NULL;16 sol.
+2153;cens;tournois;2 sol. 6 den. tur.;NULL;NULL;NULL;2 sol. 6 den.
+2154;cens;nr;18 den.;NULL;NULL;NULL;18 den.
+2155;cens;nr;5 sol. 9 den.;NULL;NULL;NULL;5 sol. 9 den.
+2156;cens;nr;23 sol.;NULL;NULL;NULL;23 sol.
+2157;cens;nr;10 sol.;NULL;NULL;NULL;10 sol.
+2158;cens;nr;8 sol. 7 den.;NULL;NULL;NULL;8 sol. 7 den.
+2159;cens;nr;19 sol. 3 den.;NULL;NULL;NULL;19 sol. 3 den.
+2160;cens;nr;32 sol. 6 den.;NULL;NULL;NULL;32 sol. 6 den.
+2161;cens;nr;20 sol. 7 den.;NULL;NULL;NULL;20 sol. 7 den.
+2162;cens;NULL;NULL;NULL;NULL;NULL;null
+2163;cens;florin;8 flor. 7 sol.;NULL;NULL;NULL;8 flor. 7 sol.
+2164;cens;nr;9 sol. 7 den.;NULL;NULL;NULL;9 sol. 7 den.
+2165;cens;NULL;NULL;9 den. la canne;NULL;NULL;null
+2166;cens;NULL;NULL;8 den. la canne;NULL;NULL;null
+2167;cens;NULL;NULL;9 den. la canne;NULL;NULL;null
+2168;cens;nr;12 sol.;NULL;NULL;NULL;12 sol.
+2169;cens;nr;12 sol.;NULL;NULL;NULL;12 sol.
+2170;cens;nr;8 sol. 6 den.;NULL;NULL;NULL;8 sol. 6 den.
+2171;cens;nr;15 sol.;NULL;NULL;NULL;15 sol.
+2172;cens;nr;10 sol.;NULL;NULL;NULL;10 sol.
+2173;cens;nr;11 sol.;NULL;NULL;NULL;11 sol.
+2174;cens;nr;3 sol. 6 den.;NULL;NULL;NULL;3 sol. 6 den.
+2175;cens;nr;2 sol. 7 den.;NULL;NULL;NULL;2 sol. 7 den.
+2176;cens;nr;16 sol.;NULL;NULL;NULL;16 sol.
+2177;cens;nr;5 sol. 6 den.;NULL;NULL;NULL;5 sol. 6 den.
+2178;cens;nr;4 sol.;NULL;NULL;NULL;4 sol.
+2179;cens;nr;2 sol.;NULL;NULL;NULL;2 sol.
+2180;cens;nr;6 sol. 6 den.;NULL;NULL;NULL;6 sol. 6 den.
+2181;cens;nr;33 sol.;NULL;NULL;NULL;33 sol.
+2182;cens;nr;12 sol.;NULL;NULL;NULL;12 sol.
+2183;cens;nr;8 sol. 6 den.;NULL;NULL;NULL;8 sol. 6 den.
+2184;cens;nr;70 sol. 6 den.;NULL;NULL;NULL;70 sol. 6 den.
+2185;cens;NULL;NULL;NULL;NULL;NULL;null
+2186;cens;nr;23 sol.;NULL;NULL;NULL;23 sol.
+2187;cens;nr;13 sol.;NULL;NULL;NULL;13 sol.
+3030;cens;florin de florence;1 flor. auri de florentia boni ponderis atque legis;NULL;NULL;NULL;1 flor.
+3031;cens;florin de bon poids;1 flor. auri boni ponderis;NULL;NULL;NULL;2 flor.
+3032;cens;florin de bon poids;1 flor. auri boni ponderis;NULL;NULL;NULL;3 flor.
+3033;cens;florin de bon poids;1 flor. auri boni ponderis;NULL;NULL;NULL;4 flor.
+3034;cens;monnaie ?;18 sol. monete cerribilis;NULL;NULL;NULL;18 sol.
+3035;cens;monnaie ?;15 sol. monete carribil.;NULL;NULL;NULL;15 sol.
+3036;cens;florin d or;2 flor. auri;NULL;NULL;NULL;2 flor.
+3037;cens;tournois;12 den. parv. tur.¬†;NULL;NULL;NULL;12 den.
+3038;cens;tournois;12 den. parv. tur.¬†;NULL;NULL;NULL;12 den.¬†
+3039;cens;tournois;12 den. parv. tur.¬†;NULL;NULL;NULL;12 den.¬†
+3040;cens;tournois du roi de france;20 grossos turonenses cum o rotundo boni ponderis atque legis domini regis francie¬†;NULL;NULL;NULL;20 gross.
+3041;cens;tournois;20 sol. parv. tur.¬†;NULL;NULL;NULL;20 sol.¬†
+3042;cens;tournois;7 den. parv. tur.¬†;NULL;NULL;NULL;7 den.¬†
+3043;cens;florin d or;0,5 flor. auri;NULL;NULL;NULL;0,5 flor.
+3044;cens;florin d or;0,5 flor. auri;NULL;NULL;NULL;0,5 flor.
+3045;cens;florin d or;0,5 flor. auri;NULL;NULL;NULL;0,5 flor.
+3046;cens;florin d or;0,5 flor. auri;NULL;NULL;NULL;0,5 flor.
+3047;cens;florin d or;0,5 flor. auri;NULL;NULL;NULL;0,5 flor.
+3048;cens;tournois du roi de france;2 grossos turonenses argenti cum o rotundo boni ponderis atque legis domini regis francie;NULL;NULL;NULL;2 gross.
+3049;cens;tournois du roi de france;2 grossos turonenses argenti cum o rotundo boni ponderis atque legis domini regis francie;NULL;NULL;NULL;2 gross.
+3050;cens;tournois du roi de france;4 grossos turonenses argenti cum o rotundo boni ponderis atque legis domini regis francie;NULL;NULL;NULL;4 gross.
+3051;cens;tournois;12 den. parv. tur.;NULL;NULL;NULL;12 den.
+3052;cens;florin de bon poids;1 flor. auri boni ponderis;NULL;NULL;NULL;1 flor.
+3053;cens;tournois;7 sol. parv. tur.;NULL;NULL;NULL;7 sol.
+3054;cens;florin de bon poids;2 flor. auri boni ponderis atque legis¬†;NULL;NULL;NULL;2 flor.
+3055;cens;tournois;12 sol. parv. tur.;NULL;NULL;NULL;12 sol.
+3056;cens;tournois;100 turonenses argenti tales quod 1 florenus auri computatur pro 12 grossis;1 florin vaut 12 gros;NULL;NULL;100 turonenses argenti tales quod 1 florenus computatur pro 12 grossis
+3057;franc;;francum et liberum ab omni servitio;NULL;NULL;NULL;
+3058;franc;;francum et liberum ab omni servitio;1 gros vaut 20 deniers;NULL;NULL;
+3059;cens;florin d or;2 flor. auri;NULL;NULL;NULL;2 flor.
+3060;cens;florin d or;1 flor. auri;NULL;NULL;NULL;1 flor.
+3061;cens;null;3 sol.;NULL;NULL;NULL;3 sol.
+3062;cens;null;3 sol.;NULL;NULL;NULL;3 sol.
+3063;cens;null;3 sol.;NULL;NULL;NULL;3 sol.
+3064;cens;tournois;3 sol. tu. parv.;NULL;NULL;NULL;3 sol.
+3065;cens;null;3 gros;NULL;NULL;NULL;3 gross.
+3066;cens;null;3 gros;NULL;NULL;NULL;3 gross.
+3067;cens;null;3 gros;NULL;NULL;NULL;3 gross.
+3068;cens;null;4 gros;NULL;NULL;NULL;4 gross.
+3069;cens;florin d or de florence;3 flor. auri de florencia;NULL;NULL;NULL;3 flor.
+3070;cens;tournois;4,5 sol. tur. parv.;NULL;NULL;NULL;4,5 sol.
+3071;cens;tournois;3 sol. tur. parv.;NULL;NULL;NULL;3 sol.
+3072;cens;null;3 sol. tur.;NULL;NULL;NULL;3 sol.
+3073;cens;tournois;6 sol. tur. parv.;NULL;NULL;NULL;6 sol.
+3074;cens;tournois;3 sol. tur. parv.;NULL;NULL;NULL;3 sol.
+3075;cens;tournois;3 sol. tur. parv.;NULL;NULL;NULL;3 sol.
+3076;cens;tournois;3 sol. tur. parv.;NULL;NULL;NULL;3 sol.
+3077;cens;tournois;3 sol. tur. parv.;NULL;NULL;NULL;3 sol.
+3078;cens;tournois;18 den. tur.;NULL;NULL;NULL;18 den.
+3079;cens;tournois;18 den. tur.;NULL;NULL;NULL;18 den.
+3080;cens;tournois;3 sol. tur. parv.¬†;NULL;NULL;NULL;3 sol. ¬†
+3081;cens;tournois;6 sol. tur. parv.;NULL;NULL;NULL;6 sol.
+3082;cens;tournois;3 sol. tur. parv.;NULL;NULL;NULL;3 sol.
+3083;cens;null;3 sol. tur. parv.;NULL;NULL;NULL;3 sol.
+3084;cens;tournois;3 sol. tur. parv.;NULL;NULL;NULL;3 sol.
+3085;cens;tournois;6 sol. tur. parv.;NULL;NULL;NULL;6 sol.
+3086;cens;tournois;3 sol. tur. parv.;NULL;NULL;NULL;3 sol.
+3087;cens;tournois;3 sol. tur. parv.;NULL;NULL;NULL;3 sol.
+3088;cens;tournois;3 sol. tur. parv.;NULL;NULL;NULL;3 sol.
+3089;cens;tournois;3 sol. tur. parv.;NULL;NULL;NULL;3 sol.
+3090;cens;tournois;18 den. tur. parv.;NULL;NULL;NULL;18 den.
+3091;cens;tournois;6 den. tur. parv.;NULL;NULL;NULL;6 den.
+3092;cens;tournois;2 sol. tur. parv.¬†;NULL;NULL;NULL;2 sol. ¬†
+3093;cens;null;null;NULL;NULL;NULL;null
+3094;cens;null;null;NULL;NULL;NULL;null
+3095;cens;null;null;NULL;NULL;NULL;null
+3096;cens;monnaie courante;1 gros de moneta coren;NULL;NULL;NULL;1 gros.
+3097;cens;tournois;4 sol. tur. parv.;NULL;NULL;NULL;4 sol.
+3098;cens;tournois;12 sol. tur.;NULL;NULL;NULL;12 sol.
+3099;cens;tournois;16 sol. tur.;6 sol. per eminada;NULL;NULL;16 sol.
+3100;cens;tournois;16 sol. tur.;6 den. Per eminada;NULL;NULL;16 sol.
+3101;cens;tournois;6 den. tur.;NULL;NULL;NULL;6 den.
+3102;cens;tournois;2 sol. tur. parv.;NULL;NULL;NULL;2 sol.
+3103;cens;tournois;5 sol.tur. parv.;NULL;NULL;NULL;5 sol.
+3104;cens;tournois;3 sol.tur. parv.;NULL;NULL;NULL;3 sol.
+3105;cens;null;null;NULL;NULL;NULL;null
+3106;cens;null;null;NULL;NULL;NULL;null
+3107;cens;tournois;10 sol. tur.;6 den. Per eminada;NULL;NULL;10 sol.
+3108;cens;florin d or;25 flor. auri;NULL;NULL;NULL;25 flor.
+3109;cens;florin d or;12 flor. auri;NULL;NULL;NULL;12 flor.
+4017;NULL;florin de florence;1 flor.;;NULL;NULL;1 flor.
+4018;NULL;florin de florence;1 flor.;;NULL;NULL;1 flor.
+4019;NULL;florin de florence;1 flor.;;NULL;NULL;1 flor.
+4020;NULL;florin de florence;1 flor.;;NULL;NULL;1 flor.
+4021;NULL;florin courant;1 flor.;;NULL;NULL;1 flor.
+4022;NULL;florin courant;1 flor.;;NULL;NULL;1 flor.
+4023;NULL;tournois gros du roi de France;XX gross. tur.;;NULL;NULL;20 gross.
+4024;NULL;tournois;V sol. tur.;;NULL;NULL;5 sol.
+4025;NULL;gros courant;VI gross.;la mitat ten aras Nicolau Esteve filh de Guymet de Castel et lautra mitat Berthomieu Broquier;NULL;NULL;6 gross.
+4026;NULL;;VI gross.;;NULL;NULL;6 gross.
+4027;NULL;tournois;VI sol. tur.;;NULL;NULL;6 sol.
+4028;NULL;tournois;VI sol. tur.;;NULL;NULL;6 sol.
+4029;NULL;tournois;V sol. tur.;;NULL;NULL;5 sol.
+4030;NULL;tournois;VIII d. de tur.¬†;;NULL;NULL;8 den.¬†
+4031;NULL;tournois;XIIII sol. tur.;;NULL;NULL;14 sol.
+4032;NULL;tournois;VI sol. tur.;;NULL;NULL;6 sol.
+4033;NULL;tournois;VII sol. tur.;;NULL;NULL;7 sol.
+4034;NULL;tournois;XXIIII sol. de tur.;;NULL;NULL;24 sol.
+4035;NULL;tournois;XIIII sol. tur.;;NULL;NULL;24 sol.
+4036;NULL;;;;NULL;NULL;
+4037;NULL;tournois;C tornes dargent tals que l flor. daur si cente per XII grossol.;;NULL;NULL;100 tornes dargent tals que l flor. daur si cente per XII grossol.
+4038;NULL;;;;NULL;NULL;
+4039;NULL;tournois;¬†XXIIII sol. tur.;;NULL;NULL;24 sol.
+4040;NULL;florin d or;II flor.;Fen li donat ad acapte¬†;NULL;NULL;2 flor.
+4041;NULL;tournois;IIII de. tor;;NULL;NULL;4 den.
+4042;NULL;;1 gross.;Acapte et reconnoyssensa;NULL;NULL;1 gross.
+4043;NULL;;III gross.;;NULL;NULL;3 gross.
+4044;NULL;tournois;III sol. tur.¬†;;NULL;NULL;3 sol.¬†
+4045;NULL;tournois;III sol. tur.;;NULL;NULL;3 sol.
+4046;NULL;tournois;VI sol. Tur.;;NULL;NULL;6 sol.
+4047;NULL;florin d or de florence;III flor.;;NULL;NULL;3 flor.
+4048;NULL;tournois;IIII sol. VI den. tur.¬†;;NULL;NULL;4 sol. 6 den.¬†
+4049;NULL;tournois;III sol. tur.¬†;Lacal luogua Izabel molher et heres que fon de Henric Ferret laborador habitador davinho per alcuns servizis que la dicha Lucia a la dicha Izabel fats la dicha luogua li donet et Rostanh de Mories et Salvayre Yrisson per adoncs syndegues a la dicha Lucia lauzeron;NULL;NULL;3 sol.¬†
+4050;NULL;tournois;III sol. tur.¬†;;NULL;NULL;3 sol.¬†
+4051;NULL;tournois;VI sol. tur.;;NULL;NULL;6 sol.
+4052;NULL;tournois;III sol. tur.;;NULL;NULL;3 sol.
+4053;NULL;tournois;III sol. tur.¬†;;NULL;NULL;3 sol.¬†
+4054;NULL;tournois;XII sol. tur.;1 emenada = III s. de tornes;NULL;NULL;12 sol.
+4055;NULL;tournois;XXIIII sol. de tur.;1 emenada = III s. de tornes;NULL;NULL;24 sol.
+4056;NULL;tournois;XVIII den. tur.;;NULL;NULL;18 den.
+4057;NULL;tournois;III sol. tur.;;NULL;NULL;III sol.
+4058;NULL;tournois;III sol. tur.;;NULL;NULL;III sol.
+4059;NULL;tournois;VI sol. tur.;;NULL;NULL;VI sol.
+4060;NULL;tournois;III sol. tur.;;NULL;NULL;3 sol.
+4061;NULL;tournois;III sol. tur.;;NULL;NULL;3 sol.
+4062;NULL;tournois;III sol. tur.;;NULL;NULL;3 sol.
+4063;NULL;tournois;VI sol. tur.;;NULL;NULL;6 sol.
+4064;NULL;tournois;III sol. tur.;;NULL;NULL;3 sol.
+4065;NULL;tournois;III sol. tur.;;NULL;NULL;3 sol.
+4066;NULL;tournois;VI sol. tur.;1 emenada = II s. de tornes;NULL;NULL;6 sol.
+4067;NULL;tournois;XVIII den. tur.;;NULL;NULL;18 den.
+4068;NULL;tournois;III sol. tur.;;NULL;NULL;3 sol.
+4069;NULL;tournois;VI den. tur.;;NULL;NULL;6 den.
+4070;NULL;tournois;XII sol. tur.;;NULL;NULL;12 sol.
+4071;NULL;tournois;IIII sol. tur.;;NULL;NULL;4 sol.
+4072;NULL;tournois;XII sol. tur.;;NULL;NULL;12 sol.
+4073;NULL;tournois;XII d. tur.;;NULL;NULL;12 den.
+4074;NULL;tournois;IIII sol. tur.;;NULL;NULL;4 sol.
+4076;NULL;tournois;VI sol. tur.;1 emenada = II s. de tornes;NULL;NULL;6 sol.
+4077;NULL;tournois;V sol. tur.;;NULL;NULL;5 sol.
+4078;NULL;tournois;III sol. tur.;;NULL;NULL;3 sol.
+4079;NULL;florin courant;1 flor.;;NULL;NULL;1 flor.
+4081;NULL;florin courant;L flor.;;NULL;NULL;50 flor.
+4082;NULL;florin courant;XII flor. VI gross.;;NULL;NULL;12 flor. 6 gross.
+4085;NULL;tournois;III sol. tur.;;NULL;NULL;3 sol.
+4086;NULL;tournois;III sol. tur.;;NULL;NULL;3 sol.
+4089;NULL;courant;XVIII den.;per cascun destre III mealhas de tornes petits paguades cascun;NULL;NULL;18 den.
+4090;NULL;tournois;VI sol. tur.;;NULL;NULL;6 sol.
+4091;NULL;;;;NULL;NULL;
+4093;NULL;tournois;I sol. tur.;;NULL;NULL;1 sol.
+4095;NULL;tournois;IIII sol. tur.;;NULL;NULL;4 sol.
+6001;NULL;florin;VI flor. de XXIIII s. mens 1 gro;24 sol vaut 1 florin;NULL;NULL;6 flor. 1 gross.
+6002;NULL;tournois;XV s. torn.;null;NULL;NULL;15 sol.
+6003;NULL;tournois;VIII s. torn.;null;NULL;NULL;8 sol.
+6004;NULL;reforciat;1 s. Reforsatz;null;NULL;NULL;1 sol.
+6005;NULL;tournois;V s. tor.;null;NULL;NULL;5 sol.
+6006;NULL;tournois;XI s. torn.;null;NULL;NULL;11 sol.
+6007;NULL;tournois;IX s. X d. torn.;null;NULL;NULL;9 sol. 10 den.
+6008;NULL;tournois;XX s. torn.;null;NULL;NULL;20 sol.
+6009;NULL;florin courant;III flor. Correns;null;NULL;NULL;3 flor.
+6010;NULL;tournois;XL s. torn.;null;NULL;NULL;40 sol.
+6011;NULL;viennois;L s. vianes;null;NULL;NULL;50 sol.
+6012;NULL;viennois;XL s. vien.;null;NULL;NULL;40 sol.
+6013;NULL;gros;1 g.;null;NULL;NULL;1 gross.
+6014;NULL;null;II flor. de XXIIII s.;24 sol vaut 1 florin;NULL;NULL;2 flor.
+6015;NULL;null;II flor. de XXIIII s.;25 sol vaut 1 florin;NULL;NULL;2 flor.
+6016;NULL;tournois;1 s. torr;null;NULL;NULL;1 sol.
+6017;NULL;tournois;1 s. torn.;null;NULL;NULL;1 sol.
+6018;NULL;tournois;1 s. torn.;null;NULL;NULL;1 sol.
+6019;NULL;florin;octo flor.¬†;null;NULL;NULL;8 flor.¬†
+6020;NULL;tournois;X flor. torn.;null;NULL;NULL;10 flor.
+6021;NULL;null;1 flor.¬†;null;NULL;NULL;1 flor.¬†
+6022;NULL;null;90 den. ?;null;NULL;NULL;90 den.
+6023;NULL;tournois;XII s. torn.;null;NULL;NULL;12 sol.
+6024;NULL;courant;XVII livras correns;null;NULL;NULL;17 lb.
+6025;NULL;courant;VII flor. VI s. VIII d. correns¬†;null;NULL;NULL;7 flor. 6 sol. 8 den.
+6026;NULL;courant;1 fl. corrent¬†;null;NULL;NULL;1 flor.¬†
+6027;NULL;tournois;30 s. torn;null;NULL;NULL;30 sol.
+7001;NULL;nr;6 sol. 6 den.;NULL;NULL;NULL;6 sol. 6 den.
+7002;NULL;tournois;12 sol. tur.;NULL;NULL;NULL;12 sol.
+7003;NULL;tournois;4 sol. tur.;NULL;NULL;NULL;4 sol.
+7004;NULL;tournois;4 sol. tur.;NULL;NULL;NULL;4 sol.
+7005;NULL;nr;4 sol.;NULL;NULL;NULL;4 sol.
+7006;NULL;tournois;5 sol. tur.;NULL;NULL;NULL;5 sol.
+7007;NULL;tournois;3 flor 6 den. tur.;NULL;NULL;NULL;3 flor. 6 den.
+7008;NULL;tournois;3 sol. tur.;NULL;NULL;NULL;3 sol.
+7009;NULL;tournois;15 sol. tur.;NULL;NULL;NULL;15 sol.
+7010;NULL;tournois;15 sol. tur.;NULL;NULL;NULL;15 sol.
+7011;NULL;tournois;15 sol. tur.;NULL;NULL;NULL;15 sol.
+7012;NULL;tournois;3 flor. auri et 9 sol. tur.;NULL;NULL;NULL;3 flor. 9 sol.
+7013;NULL;tournois;3 sol. tur.;NULL;NULL;NULL;3 sol.
+7014;NULL;tournois;16 sol. tur.;NULL;NULL;NULL;16 sol.
+7015;NULL;tournois;8 sol. tur.;NULL;NULL;NULL;8 sol.
+7016;NULL;tournois;16 tur. argenti cum dimidio cum o rotundo;NULL;NULL;NULL;16 gross.
+7017;NULL;tournois;10 sol. tur.;NULL;NULL;NULL;10 sol.
+7018;NULL;tournois;8 flor. auri et 2 sol. tur.;NULL;NULL;NULL;8 flor. 2 sol.
+7019;NULL;tournois;4 flor. auri et 8 sol. tur.;NULL;NULL;NULL;4 flor. 8 sol.
+7020;NULL;tournois;2 sol. tur.;NULL;NULL;NULL;2 sol.
+7021;NULL;tournois;7 flor. auri et 6 sol. tur.;NULL;NULL;NULL;7 flor. 6 sol.
+7022;NULL;florin d or;9 flor. auri;NULL;NULL;NULL;9 flor.
+7023;NULL;florin d or;11 flor. auri.;NULL;NULL;NULL;11 flor.
+7024;NULL;florin d or;6 flor. auri.;NULL;NULL;NULL;6 flor.
+7025;NULL;florin d or;5 flor. auri;NULL;NULL;NULL;5 flor.
+7026;NULL;tournois;32 sol. tur.;NULL;NULL;NULL;32 sol.
+7027;NULL;tournois;18 sol. tur.;NULL;NULL;NULL;18 sol.
+7028;NULL;tournois;4 sol. tur.;NULL;NULL;NULL;4 sol.
+7029;NULL;tournois;40 sol. tur.;NULL;NULL;NULL;40 sol.
+7030;NULL;tournois;6 sol. tur.;NULL;NULL;NULL;6 sol.
+7031;NULL;florin d or;5 flor. auri.;NULL;NULL;NULL;5 flor.
+7032;NULL;florin d or;4 flor. auri;NULL;NULL;NULL;4 flor.
+7033;NULL;tournois;25 sol. tur.;NULL;NULL;NULL;25 sol.
+7034;NULL;tournois;25 sol. tur.;NULL;NULL;NULL;25 sol.
+7035;NULL;florin d or fin de florence;3 flor. auri fini de florentia;NULL;NULL;NULL;3 flor.
+7036;NULL;florin d or courant;25 flor. auri currentium;NULL;NULL;NULL;25 flor.
+7037;NULL;tournois;12 sol. tur.;NULL;NULL;NULL;12 sol.
+7038;NULL;florin courant;5 flor. auri current;NULL;NULL;NULL;5 flor.
+7039;NULL;tournois;100 sol. tur.;NULL;NULL;NULL;100 sol.
+7040;NULL;tournois;100 sol. tur.;NULL;NULL;NULL;100 sol.
+7041;NULL;tournois;15 sol. tur.;qui fuerunt acquisiti per Johannam Arnaude, anno 1398 (?) et die 11 mensis junii et per eundem Johannam dati dicto capitul pro anniversario faciendo pro ut de acquisitione et donatione per eandem ac recognitionibus factis per dictum mag. Geraldum constat instrumentis, receptis par mag. P. Bassurelli notarium sub anno et die predictis, 15 sol. tur. ;NULL;NULL;15 sol.
+7042;NULL;tournois;100 sol. tur.;NULL;NULL;NULL;100 sol.
+7043;NULL;tournois;4 lb. tur.;NULL;NULL;NULL;4 lb.
+7044;NULL;tournois;100 sol. tur.;NULL;NULL;NULL;100 sol.
+7045;NULL;nr;12 sol. 6 den.;NULL;NULL;NULL;12 sol. 6 den.
+7046;NULL;florin d or;8 flor. auri;NULL;NULL;NULL;8 flor.
+7047;NULL;florin d or;6 flor. auri;NULL;NULL;NULL;6 flor.
+7048;NULL;florin d or;3 flor. auri.;NULL;NULL;NULL;3 flor.
+7049;NULL;florin de florence;10 flor. auri de florentia;NULL;NULL;NULL;10 flor.
+7050;NULL;tournois;60 sol. tur.;NULL;NULL;NULL;60 sol.
+7051;NULL;tournois;20 sol. tur.;NULL;NULL;NULL;20 sol.
+7052;NULL;tournois;10 sol. tur.;NULL;NULL;NULL;10 sol.
+7053;NULL;tournois;20 sol. tur.;NULL;NULL;NULL;20 sol.
+7054;NULL;tournois;10 sol. tur.;NULL;NULL;NULL;10 sol.
+7055;NULL;tournois;40 sol. tur.;NULL;NULL;NULL;40 sol.
+7056;NULL;tournois;20 sol. tur.;NULL;NULL;NULL;20 sol.
+7057;NULL;tournois;20 sol. tur.;NULL;NULL;NULL;20 sol.
+7058;NULL;tournois;100 sol. tur.;NULL;NULL;NULL;100 sol.
+7059;NULL;tournois;4 lb. tur.;NULL;NULL;NULL;4 lb.
+7060;NULL;tournois;30 sol. tur.;NULL;NULL;NULL;30 sol.
+7061;NULL;tournois;40 sol. tur.;NULL;NULL;NULL;40 sol.
+7062;NULL;tournois;50 sol. tur.;NULL;NULL;NULL;50 sol.
+7063;NULL;tournois;50 sol. tur.;NULL;NULL;NULL;50 sol.
+7064;NULL;florin de florence;1 flor. auri de florentia;NULL;NULL;NULL;1 flor.
+7065;NULL;florin d or;4 flor. auri et duas libras candelarum cere mochatarum vocatarum;NULL;NULL;NULL;4 flor. et 2 libras candelarum cere mochatarum vocatarum
+7066;NULL;tournois;40 sol. tur.;NULL;NULL;NULL;40 sol.
+7067;NULL;tournois;4 flor. 4 sol. tur.;NULL;NULL;NULL;4 flor. 4 sol.
+7068;NULL;florin d or;2 flor. auri;NULL;NULL;NULL;2 flor.
+7069;NULL;tournois;20 sol. tur.;NULL;NULL;NULL;20 sol.
+7070;NULL;tournois;3 flor. auri et 8 sol. tur.;NULL;NULL;NULL;3 flor. 8 sol.
+7071;NULL;tournois;4 sol. tur.;NULL;NULL;NULL;4 sol.
+7072;NULL;tournois;2 flo. auri. et 4 sol. tur.;NULL;NULL;NULL;2 flo. 4 sol.
+7073;NULL;tournois;2 flor. 6 sol. tur.;NULL;NULL;NULL;2 flor. 6 sol.
+7074;NULL;tournois;1 flor. auri et 3 sol. tur.;NULL;NULL;NULL;1 flor. 3 sol.
+7075;NULL;florin d or;2 flor. auri;NULL;NULL;NULL;2 flor.
+7076;NULL;tournois;3 flor. auri et 4 sol. tur.;NULL;NULL;NULL;3 flor. 4 sol.
+7077;NULL;tournois;20 sol. 3 den. tur.;canna 6 den. tur. ¬†;NULL;NULL;20 sol. 3 den.
+7078;NULL;tournois;11 sol. tur.;canna 5 den. ob. tur. qui;NULL;NULL;11 sol.
+7079;NULL;tournois;6 sol. 4 den. ob. tur.;canna 6 den. tur. ¬†;NULL;NULL;6 sol. 4 den. 1 ob.
+7080;NULL;tournois;8 sol. tur.;canna 6 den. tur. ¬†;NULL;NULL;8 sol.
+7081;NULL;tournois;5 sol. . 9 den. tur.;NULL;NULL;NULL;5 sol. 9 den.
+7082;NULL;tournois;11 sol. tur.;canna 5 den. ob. tur. ;NULL;NULL;11 sol.
+7083;NULL;tournois;5 sol. 6 den. tur.;canna 5 den. ob. tur. ;NULL;NULL;5 sol. 6 den.
+7084;NULL;tournois;6 sol. 10 den. ob. tur.;canna 5 den. ob. tur. ;NULL;NULL;6 sol. 10 den. 1 ob.
+7085;NULL;tournois;5 sol. 6 den. tur.;canna 5 den. ob. tur. ;NULL;NULL;5 sol. 6 den.
+7086;NULL;nr;12 cannas cadratas;canna 5 den. ob. tur. ;NULL;NULL;5 sol.
+7087;NULL;tournois;3 sol. 4 d. ob. tur.;canna 5 den. ob. tur. ;NULL;NULL;3 sol. 4 den. 1 ob.
+7088;NULL;tournois;3 sol. 8 den. tur.;canna 6 den. tur. ;NULL;NULL;3 sol. 8 den.
+7089;NULL;tournois;7 sol. 4 den. tur.;canna 5 den. ob. tur. ;NULL;NULL;7 sol. 4 den.
+7090;NULL;tournois;27 sol. 1 den. tur.;canna 5 den. ob. tur. ;NULL;NULL;27 sol. 1 den.
+7091;NULL;tournois;15 sol. tur.;canna 5 den. ob. tur. ;NULL;NULL;15 sol.
+7092;NULL;tournois;2 sol. 3 den. ob. tur.;canna 5 den. ob. tur. ;NULL;NULL;2 sol. 3 den. 1 ob.
+7093;NULL;tournois;16 sol. 11 den. ob. tur.;canna 5 den. ob. tur. ;NULL;NULL;16 sol. 11 den. 1 ob.
+7094;NULL;tournois;11 sol. 11 den. tur.;canna 5 den. ob. tur. ;NULL;NULL;11 sol. 11 den.
+7095;NULL;tournois;9 sol. 2 den. tur.;canna 5 den. ob. tur. ;NULL;NULL;9 sol. 2 den.
+7096;NULL;tournois;7 sol. 4 den. tur.;canna 5 den. ob. tur. ;NULL;NULL;7 sol. 4 den.
+7097;NULL;tournois;3 sol. tur. cum ob;NULL;NULL;NULL;3 sol. 1 ob.
+7098;NULL;tournois;5 sol. 5 den. ob. tur.;canna 5 den. ob. tur. ;NULL;NULL;5 sol. 5 den. 1 ob.
+7099;NULL;tournois;7 sol. 3 den. ob. tur.;canna 5 den. ob. tur. ;NULL;NULL;7 sol. 3 den. 1 ob.
+7100;NULL;tournois;3 sol. 10 den. ob. tur.;canna 6 den. ob. tur. ;NULL;NULL;3 sol. 10 den. 1 ob.
+7101;NULL;tournois;2 sol. 10 den. ob. tur.;canna 5 den. ob. tur. ;NULL;NULL;2 sol. 10 den. 1 ob.
+7102;NULL;nr;6 sol. 10 den. ob.;canna 6 den. ob. tur. ;NULL;NULL;6 sol. 10 den. 1 ob.
+7103;NULL;tournois;28 sol. 3 den. ob. tur.;canna 6 den. ob. tur. ;NULL;NULL;28 sol. 3 den. 1 ob.
+7104;NULL;nr;20 sol.;canna 6 den. ob. tur. ;NULL;NULL;20 sol.
+7105;NULL;tournois;3 sol. tur.;canna 6 den. ob. tur. ;NULL;NULL;3 sol.
+7106;NULL;tournois;5 sol. 11 den. ob. tur.;canna 5 den. ob. tur. ;NULL;NULL;5 sol. 11 den. 1 ob.
+7107;NULL;tournois;4 sol. 9 den. tur.;NULL;NULL;NULL;4 sol. 9 den.
+7108;NULL;tournois;12 sol. 6 den. tur.;canna 6 den. ob. tur. ;NULL;NULL;12 sol. 6 den.
+7109;NULL;nr;12 sol. 6 den. ob.;canna 5 den. ob. tur. ;NULL;NULL;12 sol. 6 den. 1 ob.
+7110;NULL;tournois;3 sol. 8 den. tur.;NULL;NULL;NULL;3 sol. 8 den.
+7111;NULL;tournois;11 sol. 2 den. tur.;5 den. ob. tur. ;NULL;NULL;11 sol. 2 den.
+7112;NULL;tournois;12 sol. tur.;canna 6 den. ob. tur. ;NULL;NULL;12 sol.
+7113;NULL;NULL;NULL;canna 6 den. ob. tur. ;NULL;NULL;null
+7114;NULL;nr;6 sol. 10 den. ob.;canna 5 den. ob. tur. ;NULL;NULL;6 sol. 10 den. 1 ob.
+7115;NULL;tournois;6 sol. 10 den. ob tur.;NULL;NULL;NULL;6 sol. 10 den. 1 ob.
+7116;NULL;tournois;4 sol. 7 den. tur.;canna 5 den. ob. tur. ;NULL;NULL;4 sol. 7 den.
+7117;NULL;tournois;4 sol. 7 den. tur.;NULL;NULL;NULL;4 sol. 7 den.
+7118;NULL;tournois;5 sol. 8 den. tur.;canna 5 den. ob. tur. ;NULL;NULL;5 sol. 8 den.
+7119;NULL;tournois;7 sol. tur. 5 den. ob tur.;canna 6 den. ob. tur. ;NULL;NULL;7 sol. 5 den. 1 ob.
+7120;NULL;tournois;7 sol. 4 den. tur.;NULL;NULL;NULL;7 sol. 4 den.
+7121;NULL;tournois;7 sol. tur. 2 den.;NULL;NULL;NULL;7 sol. 2 den.
+7122;NULL;nr;2 sol. 11 den. ob cum picta;NULL;NULL;NULL;2 sol. 11 den. 1 ob. 1 pict.
+7123;NULL;tournois;3 sol. 2 den. tur.;canna 5 den. ob. tur. ;NULL;NULL;3 sol. 2 den.
+7124;NULL;tournois;3 sol. 8 den. tur.;NULL;NULL;NULL;3 sol. 8 den.
+7125;NULL;tournois;5 sol. 11 den. ob tur.;canna 5 den. ob. tur. ;NULL;NULL;5 sol. 11 den. 1 ob.
+7126;NULL;tournois;3 sol. 1 den. ob tur.;canna 6 den. ob. tur. ;NULL;NULL;3 sol. 1 den. 1 ob.
+7127;NULL;tournois;21 den. tur.;canna 6 den. ob. tur. ;NULL;NULL;21 den.
+7128;NULL;tournois;16 den. ob tur.;NULL;NULL;NULL;16 den. 1 ob.
+7129;NULL;tournois;5 sol. tur.;canna 6 den. ob. tur. ;NULL;NULL;5 sol.
+7130;NULL;tournois;4 sol. 9 den. pict tur.;canna 6 den. ob. tur. ;NULL;NULL;4 sol. 9 den. 1 pict.
+7131;NULL;tournois;3 sol. tur.;canna 6 den. ob. tur. ;NULL;NULL;3 sol.
+7132;NULL;tournois;3 sol. tur.;canna 6 den. ob. tur. ;NULL;NULL;3 sol.
+7133;NULL;tournois;3 sol. 4 den. ob tur.;canna 5 den. ob. tur. ;NULL;NULL;3 sol. 4 den. 1 ob.
+7134;NULL;nr;5 sol. 11 den.;canna 5 den. ob. tur. ;NULL;NULL;5 sol. 11 den.
+7135;NULL;tournois;6 sol. cum obolo tur.;emina 5 den. ob. tur. ;NULL;NULL;6 sol. 1 ob.
+7136;NULL;tournois;3 sol. 8 den. tur.;canna 5 den. ob. tur. ;NULL;NULL;3 sol. 8 den.
+7137;NULL;tournois;3 sol. 8 den. tur.;canna 5 den. ob. tur. ;NULL;NULL;3 sol. 8 den.
+7138;NULL;tournois;11 sol. tur.;canna 5 den. ob. tur. ;NULL;NULL;11 sol.
+7139;NULL;tournois;4 sol. 7 den. tur.;canna 5 den. ob. tur. ;NULL;NULL;4 sol. 7 den.
+7140;NULL;tournois;3 sol. tur. minus picta;canna 5 den. ob. tur. ;NULL;NULL;3 sol. 1 pict.
+7141;NULL;tournois;5 sol. 8 den. tur. minus picta;NULL;NULL;NULL;5 sol. 8 den. 1 pict.
+7142;NULL;tournois;3 sol. 6 den. tur.;canna 6 den. tur. ¬†;NULL;NULL;3 sol. 6 den.
+7143;NULL;tournois;13 sol. 6 den. ob tur.;canna 5 den. ob. tur. ;NULL;NULL;13 sol. 6 den. 1 ob.
+7144;NULL;tournois;9 sol. 2 den. tur.;canna 5 den. ob. tur. ;NULL;NULL;9 sol. 2 den.
+7145;NULL;tournois;4 sol. tur.;canna 5 den. ob. tur. ;NULL;NULL;4 sol.
+7146;NULL;tournois;3 sol. 4 den. tur.;canna 5 den. ob. tur. ;NULL;NULL;3 sol. 4 den.
+7147;NULL;tournois;9 sol. 8 den. 1 pict. tur.;NULL;NULL;NULL;9 sol. 8 den. 1 pict.
+7148;NULL;nr;14 sol. 5 den. cum picta;canna 5 den. ob. tur. ;NULL;NULL;14 sol. 5 den. 1 pict.
+7149;NULL;tournois;14 sol. 6 den. tur.;canna 5 den. ob. tur. ;NULL;NULL;14 sol. 6 den.
+7150;NULL;nr;13 sol. 3 den. ob;canna 5 den. ob. tur. ;NULL;NULL;13 sol. 3 den. 1 ob.
+7151;NULL;tournois;4 sol. 1 den. ob tur.;canna 6 den. ob. tur. ;NULL;NULL;4 sol. 1 den. 1 ob.
+7152;NULL;tournois;4 sol. 1 den. ob tur.;NULL;NULL;NULL;4 sol. 1 den. 1 ob.
+7153;NULL;tournois;3 sol. 9 den. tur.;canna 6 den. ob. tur. ;NULL;NULL;3 sol. 9 den.
+7154;NULL;tournois;3 sol. 4 den. ob tur.;canna 5 den. ob. tur. ;NULL;NULL;3 sol. 4 den. 1 ob.
+7155;NULL;nr;3 sol. 5 den.;canna 5 den. ob. tur. ;NULL;NULL;3 sol. 5 den.
+7156;NULL;tournois;6 sol. 5 den. tur.;NULL;NULL;NULL;6 sol. 5 den.
+7157;NULL;tournois;12 sol. 4 den. ob tur.;canna 5 den. ob. tur. ;NULL;NULL;12 sol. 4 den. 1 ob.
+7158;NULL;nr;8 sol. cum picta;canna 5 den. ob. tur. ;NULL;NULL;8 sol. 1 pict.
+7159;NULL;tournois;8 sol. 5 den. 3 pic. tur.;canna 5 den. ob. tur. ;NULL;NULL;8 sol. 5 den. 3 pict.
+7160;NULL;tournois;18 sol. 10 den. ob tur.;NULL;NULL;NULL;18 sol. 10 den. 1 ob.
+7161;NULL;tournois;15 sol. 3 den. et 2 ob. tur.;canna 6 den. ob. tur. ;NULL;NULL;15 sol. 3 den. 2 ob.
+7162;NULL;tournois;13 sol. tur.;NULL;NULL;NULL;13 sol.
+7163;NULL;tournois;7 sol. ob cum pict. tur.;canna 5 den. ob. tur. ;NULL;NULL;7 sol. 1 ob. 1 pict.
+7164;NULL;tournois;7 sol. ob et pict. tur.;NULL;NULL;NULL;7 sol. 1 ob. 1 pict.
+7165;NULL;tournois;12 sol. 10 den. tur.;canna 5 den. ob. tur. ;NULL;NULL;12 sol. 10 den.
+7166;NULL;tournois;11 sol. 5 den. ob tur.;canna 5 den. ob. tur. ;NULL;NULL;11 sol. 5 den. 1 ob.
+7167;NULL;tournois;10 sol. tur.;canna 4 den. ob. tur. ;NULL;NULL;10 sol.
+7168;NULL;tournois;5 sol. ob tur.;canna 5 den. ob. tur. ;NULL;NULL;5 sol. 1 ob.
+7169;NULL;tournois;22 den. tur.;canna 5 den. ob. tur. ;NULL;NULL;22 den.
+7170;NULL;tournois;3 sol. 3 den. tur.;canna 5 den. ob. tur. ;NULL;NULL;3 sol. 3 den.
+7171;NULL;tournois;27 sol. 6 den. tur.;canna 5 den. ob. tur. ;NULL;NULL;27 sol. 6 den.
+7172;NULL;monnaie courante;1 ob. monete currentis;NULL;NULL;NULL;1 ob.
+7173;NULL;tournois;3 sol. tur.;NULL;NULL;NULL;3 sol.
+7174;NULL;tournois;42 sol. 8 den. tur.;NULL;NULL;NULL;42 sol. 8 den.
+7175;NULL;florin d or;2 flor. auri;NULL;NULL;NULL;2 flor.
+7176;NULL;tournois;75 sol. tur.;NULL;NULL;NULL;75 sol.
+7177;NULL;tournois;20 sol. tur.;NULL;NULL;NULL;20 sol.
+7178;NULL;florin d or;15 flor. auri;NULL;NULL;NULL;15 flor.
+7179;NULL;tournois;50 sol. tur.;NULL;NULL;NULL;50 sol.
+7180;NULL;tournois;30 sol. tur.;NULL;NULL;NULL;30 sol.
+7181;NULL;tournois;30 sol. tur.;NULL;NULL;NULL;30 sol.
+7182;NULL;tournois;66 sol. 8 den. tur.;NULL;NULL;NULL;66 sol. 8 den.
+7183;NULL;tournois;50 sol. tur.;NULL;NULL;NULL;50 sol.
+7184;NULL;tournois;12 sol. tur.;NULL;NULL;NULL;12 sol.
+7185;NULL;tournois;5 sol. tur.;NULL;NULL;NULL;5 sol.
+7186;NULL;tournois;40 sol. tur.;NULL;NULL;NULL;40 sol.
+7187;NULL;tournois;24 sol. tur.;NULL;NULL;NULL;24 sol.
+7188;NULL;tournois;70 sol. tur.;NULL;NULL;NULL;70 sol.
+7189;NULL;tournois;30 sol. tur.;NULL;NULL;NULL;30 sol.
+7190;NULL;tournois;35 sol. tur.;NULL;NULL;NULL;35 sol.
+7191;NULL;tournois;26 sol. tur.;NULL;NULL;NULL;26 sol.
+7192;NULL;tournois;12 sol. tur.;NULL;NULL;NULL;12 sol.
+7193;NULL;tournois;24 sol. tur.;NULL;NULL;NULL;24 sol.
+7194;NULL;tournois;12 sol. tur.;NULL;NULL;NULL;12 sol.
+7195;NULL;tournois;30 sol. tur.;NULL;NULL;NULL;30 sol.
+7196;NULL;tournois;66 sol. 8 den. tur.; 6 flor. 8 den. tur.  puis 7196;NULL;NULL;66 sol. 8 den.
+7197;NULL;tournois;14 sol. tur.;NULL;NULL;NULL;14 sol.
+7198;NULL;tournois;7 sol. tur.;NULL;NULL;NULL;7 sol.
+7199;NULL;tournois;et 6 sol. tur.;NULL;NULL;NULL;et 6 sol.
+7200;NULL;tournois;6 sol. tur.;NULL;NULL;NULL;6 sol.
+7201;NULL;tournois;8 sol. tur.;NULL;NULL;NULL;8 sol.
+7202;NULL;nr;14 sol.;NULL;NULL;NULL;14 sol.
+7203;NULL;tournois;13 sol. tur.;NULL;NULL;NULL;13 sol.
+7204;NULL;tournois;13 sol. tur.;NULL;NULL;NULL;13 sol.
+7205;NULL;tournois;12 sol. tur.;NULL;NULL;NULL;12 sol.
+7206;NULL;tournois;6 sol. 8 den. tur.;NULL;NULL;NULL;6 sol. 8 den.
+7207;NULL;tournois;12 sol. tur.;NULL;NULL;NULL;12 sol.
+7208;NULL;tournois;7 sol. tur.;NULL;NULL;NULL;7 sol.
+7209;NULL;tournois;50 sol. tur.;NULL;NULL;NULL;50 sol.
+7210;NULL;florin d or;10 flor. auri;NULL;NULL;NULL;10 flor.
+7211;NULL;tournois;12 sol. tur.;NULL;NULL;NULL;12 sol.
+7212;NULL;florin d or courant;10 flor. auri current;NULL;NULL;NULL;10 flor.
+7213;NULL;tournois;14 sol. tur.;NULL;NULL;NULL;14 sol.
+7214;NULL;tournois;20 tur. argenti cum o rotundo;NULL;NULL;NULL;20 gross.
+7215;NULL;florin;7 flor.;NULL;NULL;NULL;7 flor.
+7216;NULL;florin d or;4 flor. auri;NULL;NULL;NULL;4 flor.
+7217;NULL;florin d or;3 flor. Auri;NULL;NULL;NULL;3 flor.
+7218;NULL;tournois;8 tur. argenti et partem unius tur. oni cum o rotundo;NULL;NULL;NULL;8,5 gross.
+7219;NULL;tournois;6 tur. argenti cum o rotundo;NULL;NULL;NULL;6 gross.
+7220;NULL;tournois;22 sol. tur.;NULL;NULL;NULL;22 sol.
+7221;NULL;tournois;9 sol. tur.;NULL;NULL;NULL;9 sol.
+7222;NULL;tournois;9 sol. 4 den. tur.;NULL;NULL;NULL;9 sol. 4 den.
+7223;NULL;tournois;6 sol. tur.;NULL;NULL;NULL;6 sol.
+7224;NULL;tournois;9 sol. tur.;NULL;NULL;NULL;9 sol.
+7225;NULL;tournois;5 sol. tur.;NULL;NULL;NULL;5 sol.
+7226;NULL;tournois;100 sol. tur.;NULL;NULL;NULL;100 sol.
+7227;NULL;tournois;50 sol. tur.;NULL;NULL;NULL;50 sol.
+7228;NULL;tournois;40 sol. tur.;NULL;NULL;NULL;40 sol.
+7229;NULL;florin d or;5 flor. auri;NULL;NULL;NULL;5 flor.
+7230;NULL;tournois;50 sol. tur.;NULL;NULL;NULL;50 sol.
+7231;NULL;tournois;30 sol. tur.;NULL;NULL;NULL;30 sol.
+7232;NULL;florin d or;4 flor. auri;NULL;NULL;NULL;4 flor.
+7233;NULL;tournois;100 sol. tur.;NULL;NULL;NULL;100 sol.
+7234;NULL;florin d or;4 flor. auri;NULL;NULL;NULL;4 flor.
+7235;NULL;tournois;100 sol. tur.;NULL;NULL;NULL;100 sol.
+7236;NULL;tournois;50 sol. tur.;NULL;NULL;NULL;50 sol.
+7237;NULL;florin d or;11 flor. auri;NULL;NULL;NULL;11 flor.
+7238;NULL;tournois;20 sol. tur.;NULL;NULL;NULL;20 sol.
+7239;NULL;tournois;21 sol. tur.;NULL;NULL;NULL;21 sol.
+7240;NULL;tournois;20 sol. tur.;NULL;NULL;NULL;20 sol.
+7241;NULL;tournois;70 sol. tur.;NULL;NULL;NULL;70 sol.
+7242;NULL;tournois;40 sol. tur.;NULL;NULL;NULL;40 sol.
+7243;NULL;tournois;20 sol. tur.;NULL;NULL;NULL;20 sol.
+7244;NULL;tournois;40 sol. tur.;NULL;NULL;NULL;40 sol.
+7245;NULL;tournois;20 sol. tur.;NULL;NULL;NULL;20 sol.
+7246;NULL;tournois;20 sol. tur.;NULL;NULL;NULL;20 sol.
+7247;NULL;tournois;60 sol. tur.;NULL;NULL;NULL;60 sol.
+7248;NULL;tournois;60 sol. tur.;NULL;NULL;NULL;60 sol.
+7249;NULL;tournois;40 sol. tur.;NULL;NULL;NULL;40 sol.
+7250;NULL;tournois;20 sol. tur.;NULL;NULL;NULL;20 sol.
+7251;NULL;tournois;4 lb tur.;NULL;NULL;NULL;4 lb
+7252;NULL;tournois;12 sol. tur.;NULL;NULL;NULL;12 sol.
+7253;NULL;tournois;7 lb tur.;NULL;NULL;NULL;7 lb
+7254;NULL;florin d or;2 flor. auri;NULL;NULL;NULL;2 flor.
+7255;NULL;tournois;100 sol. tur.;NULL;NULL;NULL;100 sol.
+7256;NULL;tournois;50 sol. tur.;NULL;NULL;NULL;50 sol.
+7257;NULL;tournois;120 tur. argenti bonos cum o rotundo;NULL;NULL;NULL;120 gross.
+7258;NULL;tournois;40 lb. 72 tur. argenti;NULL;NULL;NULL;40 lb. 72 gross.
+7259;NULL;florin d or;2,5 flor. auri;NULL;NULL;NULL;2,5 flor.
+7260;NULL;tournois;50 sol. 11 den. tur.;NULL;NULL;NULL;50 sol. 11 den.
+7261;NULL;tournois;9 sol. tur.;NULL;NULL;NULL;9 sol.
+7262;NULL;tournois;3 sol. tur.;NULL;NULL;NULL;3 sol.
+7263;NULL;tournois;10 sol. tur.;NULL;NULL;NULL;10 sol.
+7264;NULL;tournois;6 sol. tur.;NULL;NULL;NULL;6 sol.
+7265;NULL;tournois;6 sol. tur.;NULL;NULL;NULL;6 sol.
+7266;NULL;tournois;4 sol. 6 den. tur.;NULL;NULL;NULL;4 sol. 6 den.
+7267;NULL;tournois;3 sol. tur.;NULL;NULL;NULL;3 sol.
+7268;NULL;tournois;4 sol. 6 den. tur.;NULL;NULL;NULL;4 sol. 6 den.
+7269;NULL;tournois;2 sol. 3 den. tur.;NULL;NULL;NULL;2 sol. 3 den.
+7270;NULL;tournois;10 sol. tur.;NULL;NULL;NULL;10 sol.
+7271;NULL;tournois;9 sol. tur.;NULL;NULL;NULL;9 sol.
+7272;NULL;tournois;32 sol. tur.;NULL;NULL;NULL;32 sol.
+7273;NULL;tournois;16 sol. tur.;NULL;NULL;NULL;16 sol.
+7274;NULL;tournois;16 sol. tur.;NULL;NULL;NULL;16 sol.
+7275;NULL;tournois;8 sol. tur.;NULL;NULL;NULL;8 sol.
+7276;NULL;tournois;7 sol. tur.;NULL;NULL;NULL;7 sol.
+7277;NULL;NULL;NULL;NULL;NULL;NULL;null
+7278;NULL;tournois;3 sol. tur.;NULL;NULL;NULL;3 sol.
+7279;NULL;tournois;11 sol. 6 den. tur.;NULL;NULL;NULL;11 sol. 6 den.
+7280;NULL;tournois;11 sol. 6 den. tur.;NULL;NULL;NULL;11 sol. 6 den.
+7281;NULL;tournois;16 sol. tur.;NULL;NULL;NULL;16 sol.
+7282;NULL;tournois;10 sol. tur.;NULL;NULL;NULL;10 sol.
+7283;NULL;tournois;15 sol. tur.;NULL;NULL;NULL;15 sol.
+7284;NULL;tournois;10 sol. tur.;NULL;NULL;NULL;10 sol.
+7285;NULL;tournois;5 sol. tur.;NULL;NULL;NULL;5 sol.
+7286;NULL;tournois;15 sol. tur.;NULL;NULL;NULL;15 sol.
+7287;NULL;tournois;5 sol. tur.;NULL;NULL;NULL;5 sol.
+7288;NULL;tournois;5 sol. tur.;NULL;NULL;NULL;5 sol.
+7289;NULL;viennois;3 sol. 3 ob. vienn. antiq.;NULL;NULL;NULL;3 sol. 3 ob.
+7290;NULL;nr;4 sol. 4 den. ob.;NULL;NULL;NULL;4 sol. 4 den. 1 ob.
+7291;NULL;tournois;30 sol. tur.;NULL;NULL;NULL;30 sol.
+7292;NULL;tournois;30 sol. tur.;NULL;NULL;NULL;30 sol.
+7293;NULL;tournois;30 sol. tur.;NULL;NULL;NULL;30 sol.
+7294;NULL;nr;24 sol.;NULL;NULL;NULL;24 sol.
+7295;NULL;tournois;50 sol. tur.;NULL;NULL;NULL;50 sol.
+7296;NULL;tournois;34 sol. 6 den. tur.;NULL;NULL;NULL;34 sol. 6 den.
+7297;NULL;tournois;15 sol. tur.;NULL;NULL;NULL;15 sol.
+7298;NULL;tournois;6 sol. 6 den. tur.;NULL;NULL;NULL;6 sol. 6 den.
+7299;NULL;florin d or de 12 sol. tur.;1 flor. auri valens 12 sol;NULL;NULL;NULL;1 flor.
+7300;NULL;tournois;1 flor. auri valens 12 sol. t;NULL;NULL;NULL;1 flor.
+7301;NULL;florin d or;8 flor. auri;NULL;NULL;NULL;8 flor.
+7302;NULL;tournois;50 sol. tur.;NULL;NULL;NULL;50 sol.
+7303;NULL;tournois;17 sol. 6 den. tur.;NULL;NULL;NULL;17 sol. 6 den.
+7304;NULL;tournois;30 sol. tur.;NULL;NULL;NULL;30 sol.
+7305;NULL;tournois;100 sol. tur.;NULL;NULL;NULL;100 sol.
+7306;NULL;tournois;20 sol. tur.;NULL;NULL;NULL;20 sol.
+7307;NULL;florin d or;2 flor. auri;NULL;NULL;NULL;2 flor.
+7448;NULL;NULL;NULL;NULL;NULL;NULL;null
+7449;NULL;NULL;NULL;NULL;NULL;NULL;null
+7450;NULL;NULL;NULL;NULL;NULL;NULL;null
+7451;NULL;NULL;NULL;NULL;NULL;NULL;null
+7452;NULL;NULL;NULL;NULL;NULL;NULL;null
+7453;NULL;NULL;NULL;NULL;NULL;NULL;null
+7454;NULL;NULL;NULL;NULL;NULL;NULL;null
+7455;NULL;NULL;NULL;NULL;NULL;NULL;null
+7456;NULL;NULL;NULL;NULL;NULL;NULL;null
+7457;NULL;NULL;NULL;NULL;NULL;NULL;null
+7458;NULL;NULL;NULL;NULL;NULL;NULL;null
+7459;NULL;NULL;NULL;NULL;NULL;NULL;null
+7460;NULL;NULL;NULL;NULL;NULL;NULL;null
+7461;NULL;NULL;NULL;NULL;NULL;NULL;null
+7462;NULL;NULL;NULL;NULL;NULL;NULL;null
+7463;NULL;NULL;NULL;NULL;NULL;NULL;null
+7464;NULL;NULL;NULL;NULL;NULL;NULL;null
+7465;NULL;NULL;NULL;NULL;NULL;NULL;null
+7466;NULL;NULL;NULL;NULL;NULL;NULL;null
+7467;NULL;NULL;NULL;NULL;NULL;NULL;null
+7468;NULL;NULL;NULL;NULL;NULL;NULL;null
+7469;NULL;NULL;NULL;NULL;NULL;NULL;null
+7470;NULL;NULL;NULL;NULL;NULL;NULL;null
