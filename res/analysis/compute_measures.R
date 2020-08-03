@@ -1027,20 +1027,26 @@ analyze.net.distance <- function(g)
 		vals <- distances(graph=g, mode=if(mode=="undirected") "all" else mode)
 		flat.vals <- vals[upper.tri(vals)]
 		custom.hist(vals=flat.vals, paste(long.names[i],"Distance"), file=file.path(distance.folder,paste0(fname,"_histo")))
+		
 		# average distance distribution
 		avg.vals <- apply(X=vals,MARGIN=1,FUN=function(v) mean(v[!is.infinite(v)]))
 		custom.hist(vals=avg.vals, name=paste("Average",long.names[i],"Distance"), file=file.path(distance.folder,paste0(fname,"_avg_histo")))
-		
-		# export CSV with average distance
-		df <- data.frame(V(g)$name, V(g)$label, avg.vals)
-		colnames(df) <- c("Name","Label",paste0(fname,"_avg")) 
-		write.csv(df, file=file.path(distance.folder,paste0(fname,"_avg_values.csv")), row.names=FALSE)
-		
-		# add results to the graph (as attributes) and stats table
-		g <- set_vertex_attr(graph=g, name=paste0(fname,"_avg"), value=avg.vals)
-		g <- set_graph_attr(graph=g, name=paste0(fname,"_mean"), value=mean(flat.vals))
-		g <- set_graph_attr(graph=g, name=paste0(fname,"_stdev"), value=sd(flat.vals))
-		stats[fname, ] <- list(Value=NA, Mean=mean(vals), Stdv=sd(vals))
+		{	# export CSV with average distance
+			df <- data.frame(V(g)$name, V(g)$label, avg.vals)
+			colnames(df) <- c("Name","Label",paste0(fname,"_avg")) 
+			write.csv(df, file=file.path(distance.folder,paste0(fname,"_avg_values.csv")), row.names=FALSE)
+			
+			# add results to the graph (as attributes) and stats table
+			g <- set_vertex_attr(graph=g, name=paste0(fname,"_avg"), value=avg.vals)
+			g <- set_graph_attr(graph=g, name=paste0(fname,"_mean"), value=mean(flat.vals))
+			g <- set_graph_attr(graph=g, name=paste0(fname,"_stdev"), value=sd(flat.vals))
+			stats[fname, ] <- list(Value=NA, Mean=mean(vals), Stdv=sd(vals))
+			
+			# plot graph using color for average distance
+			g <- update.node.labels(g, avg.vals)
+			custom.gplot(g,col.att=paste0(fname,"_avg"),file=file.path(distance.folder,paste0(fname,"_avg_graph")))
+			#custom.gplot(g,col.att=fname)
+		}
 		
 		# for each node, plot graph using color for distance
 		mode.folder <- file.path(distance.folder,mode)
