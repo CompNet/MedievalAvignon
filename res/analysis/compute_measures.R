@@ -517,13 +517,15 @@ analyze.net.assortativity <- function(g)
 	cat.data <- NA
 	
 	# gather regular categorical attributes 
-	attrs <- intersect(c(COL_PERS_NAME_LAST, COL_PERS_NAME_NICK, 
+	attrs <- intersect(c(
+				COL_PERS_NAME_LAST, COL_PERS_NAME_NICK, 
 				COL_PERS_GENDER, COL_PERS_RESIDENCE,
-				COL_PERS_ECCL_LAT, COL_PERS_ECCL_FRE, COL_PERS_ECCL_NORM,
-				COL_PERS_HEALTH_LAT, COL_PERS_HEALTH_FRE,
-				COL_PERS_CITY_LAT, COL_PERS_CITY_FRE,
-				COL_PERS_DIOC_LAT, COL_PERS_DIOC_FRE,
-				COL_PERS_STATUS_LAT, COL_PERS_STATUS_FRE, COL_PERS_STATUS_NORM), 
+				COL_PERS_ECCL_NORM, #COL_PERS_ECCL_LAT, COL_PERS_ECCL_FRE,
+				COL_PERS_HEALTH_FRE, #COL_PERS_HEALTH_LAT,
+				COL_PERS_CITY_FRE, #COL_PERS_CITY_LAT,
+				COL_PERS_DIOC_FRE, #COL_PERS_DIOC_LAT,
+				COL_PERS_STATUS_NORM #, COL_PERS_STATUS_LAT, COL_PERS_STATUS_FRE
+			), 
 			vertex_attr_names(g))
 	for(attr in attrs)
 	{	tmp <- vertex_attr(g, attr)
@@ -536,11 +538,11 @@ analyze.net.assortativity <- function(g)
 	
 	# convert tag-type attributes
 	attrs.lst <- list()
-	attrs.lst[[COL_PERS_TITLE_LAT1]] <- c(COL_PERS_TITLE_LAT1, COL_PERS_TITLE_LAT2)
-	attrs.lst[[COL_PERS_TITLE_FRE1]] <- c(COL_PERS_TITLE_FRE1, COL_PERS_TITLE_FRE2)
+	#attrs.lst[[COL_PERS_TITLE_LAT1]] <- c(COL_PERS_TITLE_LAT1, COL_PERS_TITLE_LAT2)
+	#attrs.lst[[COL_PERS_TITLE_FRE1]] <- c(COL_PERS_TITLE_FRE1, COL_PERS_TITLE_FRE2)
 	attrs.lst[[COL_PERS_TITLE_NORM1]] <- c(COL_PERS_TITLE_NORM1, COL_PERS_TITLE_NORM2)
-	attrs.lst[[COL_PERS_OCC_LAT1]] <- c(COL_PERS_OCC_LAT1, COL_PERS_OCC_LAT2)
-	attrs.lst[[COL_PERS_OCC_FRE1]] <- c(COL_PERS_OCC_FRE1, COL_PERS_OCC_FRE2)
+	#attrs.lst[[COL_PERS_OCC_LAT1]] <- c(COL_PERS_OCC_LAT1, COL_PERS_OCC_LAT2)
+	#attrs.lst[[COL_PERS_OCC_FRE1]] <- c(COL_PERS_OCC_FRE1, COL_PERS_OCC_FRE2)
 	attrs.lst[[COL_PERS_OCC_NORM1]] <- c(COL_PERS_OCC_NORM1, COL_PERS_OCC_NORM2)
 	attrs <- intersect(names(attrs.lst),
 			vertex_attr_names(g))
@@ -701,13 +703,15 @@ analyze.net.attributes <- function(g)
 	cat.data <- NA
 	
 	# gather regular categorical attributes
-	attrs <- intersect(c(COL_PERS_NAME_LAST, COL_PERS_NAME_NICK, 
+	attrs <- intersect(c(
+				COL_PERS_NAME_LAST, COL_PERS_NAME_NICK, 
 				COL_PERS_GENDER, COL_PERS_RESIDENCE,
-				COL_PERS_ECCL_LAT, COL_PERS_ECCL_FRE, COL_PERS_ECCL_NORM,
-				COL_PERS_HEALTH_LAT, COL_PERS_HEALTH_FRE,
-				COL_PERS_CITY_LAT, COL_PERS_CITY_FRE,
-				COL_PERS_DIOC_LAT, COL_PERS_DIOC_FRE,
-				COL_PERS_STATUS_LAT, COL_PERS_STATUS_FRE, COL_PERS_STATUS_NORM), 
+				COL_PERS_ECCL_NORM, #COL_PERS_ECCL_LAT, COL_PERS_ECCL_FRE,
+				COL_PERS_HEALTH_FRE, #COL_PERS_HEALTH_LAT, 
+				COL_PERS_CITY_FRE, #COL_PERS_CITY_LAT, 
+				COL_PERS_DIOC_FRE, #COL_PERS_DIOC_LAT,
+				COL_PERS_STATUS_NORM #, COL_PERS_STATUS_LAT, COL_PERS_STATUS_FRE
+			), 
 			vertex_attr_names(g))
 	for(attr in attrs)
 	{	# get values
@@ -746,11 +750,11 @@ analyze.net.attributes <- function(g)
 	
 	# convert tag-type attributes
 	attrs.lst <- list()
-	attrs.lst[[COL_PERS_TITLE_LAT1]] <- c(COL_PERS_TITLE_LAT1, COL_PERS_TITLE_LAT2)
-	attrs.lst[[COL_PERS_TITLE_FRE1]] <- c(COL_PERS_TITLE_FRE1, COL_PERS_TITLE_FRE2)
+	#attrs.lst[[COL_PERS_TITLE_LAT1]] <- c(COL_PERS_TITLE_LAT1, COL_PERS_TITLE_LAT2)
+	#attrs.lst[[COL_PERS_TITLE_FRE1]] <- c(COL_PERS_TITLE_FRE1, COL_PERS_TITLE_FRE2)
 	attrs.lst[[COL_PERS_TITLE_NORM1]] <- c(COL_PERS_TITLE_NORM1, COL_PERS_TITLE_NORM2)
-	attrs.lst[[COL_PERS_OCC_LAT1]] <- c(COL_PERS_OCC_LAT1, COL_PERS_OCC_LAT2)
-	attrs.lst[[COL_PERS_OCC_FRE1]] <- c(COL_PERS_OCC_FRE1, COL_PERS_OCC_FRE2)
+	#attrs.lst[[COL_PERS_OCC_LAT1]] <- c(COL_PERS_OCC_LAT1, COL_PERS_OCC_LAT2)
+	#attrs.lst[[COL_PERS_OCC_FRE1]] <- c(COL_PERS_OCC_FRE1, COL_PERS_OCC_FRE2)
 	attrs.lst[[COL_PERS_OCC_NORM1]] <- c(COL_PERS_OCC_NORM1, COL_PERS_OCC_NORM2)
 	attrs <- intersect(names(attrs.lst),
 			vertex_attr_names(g))
