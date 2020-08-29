@@ -232,7 +232,7 @@ idBien;idQuartier;idRue;idBourg;idRedevance;idSeigneurie;type;qualif;detail;mesu
 231;7;NULL;NULL;231;1;hospitia et magazina contigua et unita;NULL;NULL;NULL;NULL;233;01010000206A080000FDCC591216C52941C227ED34DB195841;maison3 et magasin contigus et unis;1;maison;NULL;magasin;NULL;NULL;NULL;NULL
 232;7;NULL;NULL;232;1;grangia cum logis et curtibus;NULL;NULL;NULL;NULL;234;01010000206A080000091B1B4418C5294184F9A5DBD5195841;grange avec loge et cour;1;grange;NULL;NULL;NULL;NULL;NULL;NULL
 233;7;NULL;NULL;233;1;domus et logis contigua et unita;NULL;NULL;NULL;NULL;235;01010000206A0800001569DC751AC5294166B6425FD0195841;maison2 et loge contigues et unies;1;maison;NULL;loge;NULL;NULL;NULL;NULL
-234;7;NULL;NULL;234;1;grangia cum domibus et logis sive curtibus et sese tenentibus;NULL;NULL;NULL;NULL;236;01010000206A0800001B10BD8E1BC52941E9B1334CCB195841;grange avec maison et loge ou cour¬†;1;maison;NULL;grange;loge;NULL;NULL;NULL
+234;7;NULL;NULL;234;1;grangia cum domibus et logis sive curtibus et sese tenentibus;NULL;NULL;NULL;NULL;236;01010000206A0800001B10BD8E1BC52941E9B1334CCB195841;grange avec maison et loge ou courï¿½ï¿½;1;maison;NULL;grange;loge;NULL;NULL;NULL
 235;7;NULL;NULL;235;1;hospitia et viridaria;NULL;NULL;NULL;NULL;237;01010000206A08000084544B331FC5294182091E11C2195841;maisons3 et vergers et cours;1;maison;NULL;verger;cour;NULL;NULL;NULL
 236;7;NULL;NULL;236;1;hospitia et viridaria ac curtis;NULL;NULL;NULL;NULL;238;01010000206A080000F1C1F65AE4C42941E3EB43BDBE195841;maisons3 et vergers;1;maison;NULL;verger;NULL;NULL;NULL;NULL
 237;7;NULL;NULL;237;1;hospitia et magazina ac logua sive curtis et magne platee terre cum viridario et puteo;NULL;NULL;NULL;NULL;239;01010000206A080000783F521BD5C4294149B07EECB9195841;maison3 et magasin avec loge ou cour et grande place de terre avec verger et puit;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
@@ -511,7 +511,7 @@ idBien;idQuartier;idRue;idBourg;idRedevance;idSeigneurie;type;qualif;detail;mesu
 1105;4;54;NULL;1105;19;parte hospitium;NULL;NULL;NULL;NULL;1100;01010000206A080000977C0EF957CA29416D3DB37C0C1A5841;part de maison3;1;part de maison;NULL;NULL;NULL;NULL;NULL;NULL
 1106;4;52;NULL;1106;19;hospitium;NULL;NULL;NULL;NULL;1101;01010000206A080000603CFBDBBCCB2941587A7D371E1A5841;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1107;4;52;NULL;1107;19;hospitium;NULL;in quo moratur;NULL;NULL;1102;01010000206A080000C31071D7B4CB29410B114B6F181A5841;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
-1108;4;52;NULL;1108;19;hospitium cum curte intermedia;NULL;NULL;NULL;NULL;1103;01010000206A08000071BCFF8EC5CB29416DC76537151A5841;maison3 autour d‚Äôune cour centrale;1;maison;NULL;cour;NULL;NULL;NULL;NULL
+1108;4;52;NULL;1108;19;hospitium cum curte intermedia;NULL;NULL;NULL;NULL;1103;01010000206A08000071BCFF8EC5CB29416DC76537151A5841;maison3 autour dï¿½ï¿½ï¿½une cour centrale;1;maison;NULL;cour;NULL;NULL;NULL;NULL
 1109;5;NULL;NULL;1109;19;hospitium;NULL;NULL;NULL;NULL;1104;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1110;5;NULL;NULL;1110;19;hospitium;NULL;in quo moratur;NULL;NULL;1105;01010000206A08000005C6BC513CCD294199592AC4E9195841;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1111;5;NULL;NULL;1111;19;hospitium;NULL;NULL;NULL;NULL;1106;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
@@ -570,7 +570,7 @@ idBien;idQuartier;idRue;idBourg;idRedevance;idSeigneurie;type;qualif;detail;mesu
 1164;7;NULL;NULL;1164;19;logua sive locale;NULL;ad edificandum supra murum dicti bedalis qui est a parte liciarum;2 canne fronterie parum plus vel minus;NULL;1157;01010000206A080000A3D69CDAE7C72941F768F1C7501A5841;loge ou emplacement occupe par des batiments ou destine a etre bati;1;loge;NULL;NULL;NULL;NULL;NULL;NULL
 1165;7;NULL;NULL;1165;19;hospitium;NULL;in quo moratur;NULL;NULL;1158;01010000206A0800002B15455161C729411A9AF443111A5841;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1166;7;NULL;NULL;1166;19;logue sive localis cujusdam pontis cum hospitio super edificato;NULL;NULL;6 canne;NULL;1159;01010000206A080000DF51FD047AC72941F05EB541101A5841;loge qui passe au dessus de la rue maison edifiee sur cette arche;1;loge;NULL;NULL;NULL;NULL;NULL;NULL
-1167;7;NULL;NULL;1167;19;bottigua et forgiam fabrilis hospitia contigua;NULL;NULL;NULL;NULL;1160;01010000206A08000035FFFA18F6C62941527700F70A1A5841;boutique et forge contigue¬†;1;boutique;NULL;forge;NULL;NULL;NULL;NULL
+1167;7;NULL;NULL;1167;19;bottigua et forgiam fabrilis hospitia contigua;NULL;NULL;NULL;NULL;1160;01010000206A08000035FFFA18F6C62941527700F70A1A5841;boutique et forge contigueï¿½ï¿½;1;boutique;NULL;forge;NULL;NULL;NULL;NULL
 1168;7;NULL;NULL;1168;19;locale;NULL;ad construendum quemdam pontem ligneum in dicto locali;12 palme fronteris in longitudine et quatuor canne in latitudine bedalis sogie;NULL;1161;01010000206A08000079C861B151C729415B1F3D99091A5841;emplacement occupe par des batiments ou destine a etre bati;1;emplacement occupe par des batiments ou destine a etre bati;NULL;NULL;NULL;NULL;NULL;NULL
 1169;7;NULL;NULL;1169;19;locale;NULL;ad edificantum;4 canne fronterie in longitude et 2 in latitudine dicte bedalis et sic in universo 8 canne parum vel minus;NULL;1162;NULL;emplacement occupe par des batiments ou destine a etre bati;1;emplacement occupe par des batiments ou destine a etre bati;NULL;NULL;NULL;NULL;NULL;NULL
 1170;1;NULL;NULL;1170;19;hospitium;NULL;contiguum hospitio suo in quo moratur;NULL;NULL;1163;01010000206A0800004E2F7473A0C929415B2D74C5861A5841;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
@@ -623,7 +623,7 @@ idBien;idQuartier;idRue;idBourg;idRedevance;idSeigneurie;type;qualif;detail;mesu
 1423;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;01010000206A080000A4703D8AA9CB2941AE47E18A721A5841;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1424;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;1333, 1334;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1425;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;2000;NULL;NULL;NULL;01010000206A080000E17A14AE54CC29411F85EB217D1A5841;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
-1426;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;1063 ??;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
+1426;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;1063;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1427;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;2332 capellanie sancti blasi in ecclesi s-catherine;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1429;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1430;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
@@ -634,14 +634,14 @@ idBien;idQuartier;idRue;idBourg;idRedevance;idSeigneurie;type;qualif;detail;mesu
 1435;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;1999;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1436;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;1995;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1437;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
-1438;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;1999 ?;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
+1438;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;1999;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1439;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;01010000206A080000D7A370BDC4CC29419A9999A9771A5841;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1440;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1441;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1442;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1443;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1444;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
-1445;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;1188 ?;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
+1445;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;1188;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1446;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;2004;NULL;NULL;NULL;01010000206A08000052B81E8571CC2941C3F5280C791A5841;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1447;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1448;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
@@ -712,14 +712,14 @@ idBien;idQuartier;idRue;idBourg;idRedevance;idSeigneurie;type;qualif;detail;mesu
 1513;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1514;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;1758;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1515;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;2679;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
-1516;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;2683 ??;NULL;NULL;NULL;01010000206A080000D2CB67DBA1CB29414A4C53380E1A5841;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
+1516;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;2683;NULL;NULL;NULL;01010000206A080000D2CB67DBA1CB29414A4C53380E1A5841;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1517;NULL;NULL;NULL;NULL;NULL;curte ubi est puteus cujusdam alterius hospitium;NULL;NULL;NULL;NULL;NULL;NULL;cour ou il y a un puit d une autre maison3;1;cour;NULL;puit;NULL;NULL;NULL;NULL
 1518;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1519;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1520;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;2031;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1521;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;2043;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1522;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
-1523;NULL;NULL;NULL;NULL;NULL;casale;NULL;1336 ?;NULL;NULL;NULL;NULL;masure;1;masure;NULL;NULL;NULL;NULL;NULL;NULL
+1523;NULL;NULL;NULL;NULL;NULL;casale;NULL;1336;NULL;NULL;NULL;NULL;masure;1;masure;NULL;NULL;NULL;NULL;NULL;NULL
 1524;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1525;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1526;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
@@ -740,7 +740,7 @@ idBien;idQuartier;idRue;idBourg;idRedevance;idSeigneurie;type;qualif;detail;mesu
 1541;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1542;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1543;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
-1544;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;BD_70 ???;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
+1544;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;BD_70;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1545;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;2672;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1546;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1547;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;BD_1027;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
@@ -776,11 +776,11 @@ idBien;idQuartier;idRue;idBourg;idRedevance;idSeigneurie;type;qualif;detail;mesu
 1577;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1578;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;3207;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1579;NULL;NULL;NULL;NULL;NULL;pons sive passage hospitium;NULL;NULL;NULL;NULL;NULL;NULL;pont ou passage maison3;1;pont;NULL;NULL;NULL;NULL;NULL;NULL
-1580;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;3222 ?;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
+1580;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;3222;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1581;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1582;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1583;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
-1584;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;3265 ou 3270 ??;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
+1584;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;3265 ou 3270;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1585;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;1798;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1586;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 1587;NULL;NULL;NULL;NULL;NULL;logua;NULL;NULL;NULL;NULL;NULL;NULL;loge;1;loge;NULL;NULL;NULL;NULL;NULL;NULL
@@ -887,7 +887,7 @@ idBien;idQuartier;idRue;idBourg;idRedevance;idSeigneurie;type;qualif;detail;mesu
 2054;2;43;NULL;2054;NULL;ostal;NULL;NULL;NULL;NULL;2054;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 2055;2;43;NULL;2055;NULL;ostal;NULL;NULL;NULL;NULL;2055;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 2056;2;43;NULL;2056;NULL;ostal;NULL;NULL;2 canne en lonc 3 palme et en 15 palme et 2 part d''une palme en larc;NULL;2056;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
-2057;2;NULL;NULL;2057;NULL;ostal;NULL;per la tersa part¬†;NULL;NULL;2057;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
+2057;2;NULL;NULL;2057;NULL;ostal;NULL;per la tersa partï¿½ï¿½;NULL;NULL;2057;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 2058;2;NULL;NULL;2058;NULL;ostal;NULL;la tersa part d''alcun petit ostal non partit;NULL;NULL;2058;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 2059;2;NULL;NULL;2059;NULL;ostal;NULL;NULL;NULL;NULL;2059;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 2060;2;NULL;NULL;2060;NULL;ostal;NULL;NULL;NULL;NULL;2060;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
@@ -897,7 +897,7 @@ idBien;idQuartier;idRue;idBourg;idRedevance;idSeigneurie;type;qualif;detail;mesu
 2064;2;NULL;NULL;2064;NULL;ostal;NULL;NULL;NULL;NULL;2064;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 2065;2;102;NULL;2065;NULL;gran ostal;NULL;NULL;NULL;NULL;2065;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 2066;2;485;NULL;2066;NULL;ostal ambe reyrecort;NULL;NULL;NULL;NULL;2066;NULL;maison3 et arriere cour;1;maison;NULL;arriere cour;NULL;NULL;NULL;NULL
-2067;7;NULL;NULL;2067;NULL;ostal;NULL;lo cal ostal fon de maystre raymon alant sa entras notari,¬†;NULL;NULL;2067;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
+2067;7;NULL;NULL;2067;NULL;ostal;NULL;lo cal ostal fon de maystre raymon alant sa entras notari,ï¿½ï¿½;NULL;NULL;2067;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 2068;7;6;NULL;2068;NULL;ostal;NULL;NULL;NULL;NULL;2068;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 2069;7;22;NULL;2069;NULL;ostal;NULL;NULL;NULL;NULL;2069;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 2070;7;737;NULL;2070;NULL;pars ostal;NULL;la quarta part de la mittat;NULL;NULL;2070;NULL;part de maison3;1;part de maison;NULL;NULL;NULL;NULL;NULL;NULL
@@ -933,14 +933,14 @@ idBien;idQuartier;idRue;idBourg;idRedevance;idSeigneurie;type;qualif;detail;mesu
 2100;6;NULL;NULL;2100;NULL;ostal;NULL;NULL;NULL;NULL;2100;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 2101;6;NULL;NULL;2101;NULL;ostal;NULL;NULL;NULL;NULL;2101;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 2102;6;59;NULL;2102;NULL;ostal non partit;NULL;NULL;NULL;NULL;2102;NULL;maison3 indivise;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
-2103;NULL;NULL;443;2103;NULL;ostal;NULL;NULL;53 eminata cadrate¬†;NULL;2103;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
+2103;NULL;NULL;443;2103;NULL;ostal;NULL;NULL;53 eminata cadrateï¿½ï¿½;NULL;2103;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 2104;NULL;NULL;443;2104;NULL;ostal et un ort;NULL;NULL;80 canne et 5 palme cadrate;NULL;2104;NULL;maison3 et jardin;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 2105;6;NULL;NULL;2105;NULL;borguet;NULL;NULL;NULL;NULL;2105;NULL;bourguet;1;bourguet;NULL;NULL;NULL;NULL;NULL;NULL
 2106;NULL;NULL;443;2106;NULL;ostal;NULL;NULL;NULL;NULL;2106;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 2107;NULL;NULL;443;2107;NULL;ostal;NULL;NULL;NULL;NULL;2107;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 2108;NULL;NULL;NULL;2108;NULL;ostal e vergier ensems;NULL;NULL;NULL;NULL;2108;NULL;maison3 et verger contigus;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 2109;NULL;NULL;443;2109;NULL;ostal;NULL;NULL;15 canne cadrate;NULL;2109;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
-2110;6;NULL;443;2110;NULL;ostal et ort¬†;NULL;NULL;NULL;NULL;2110;NULL;maison3 et jardin;1;maison;NULL;jardin;NULL;NULL;NULL;NULL
+2110;6;NULL;443;2110;NULL;ostal et ortï¿½ï¿½;NULL;NULL;NULL;NULL;2110;NULL;maison3 et jardin;1;maison;NULL;jardin;NULL;NULL;NULL;NULL
 2111;NULL;NULL;443;2111;NULL;ort;NULL;NULL;0,5 eminata;NULL;2111;NULL;jardin;1;jardin;NULL;NULL;NULL;NULL;NULL;NULL
 2112;NULL;NULL;443;2112;NULL;ort;NULL;NULL;3 eminata de terra;NULL;2112;NULL;jardin;1;jardin;NULL;NULL;NULL;NULL;NULL;NULL
 2113;NULL;NULL;NULL;2113;NULL;ostal an cort;NULL;NULL;36 canne cadrate;NULL;2113;NULL;maison3 et cour;1;maison;NULL;cour;NULL;NULL;NULL;NULL
@@ -954,14 +954,14 @@ idBien;idQuartier;idRue;idBourg;idRedevance;idSeigneurie;type;qualif;detail;mesu
 2121;NULL;NULL;NULL;2121;NULL;ostal et ort ensems;NULL;per cascuna canna 4 den.;64 canne cadrate 2 palme;NULL;2121;NULL;maison3 et jardin contigus;1;maison;NULL;jardin;NULL;NULL;NULL;NULL
 2122;NULL;NULL;443;2122;NULL;luega;NULL;per cascuna canna 4 den.;8,5 canne cadrate;NULL;2122;NULL;loge;1;loge;NULL;NULL;NULL;NULL;NULL;NULL
 2123;NULL;NULL;NULL;2123;NULL;vergier;NULL;NULL;NULL;NULL;2123;NULL;verger;1;verger;NULL;NULL;NULL;NULL;NULL;NULL
-2124;NULL;NULL;NULL;2124;NULL;ostal e reyre cort;NULL;per cascuna canna 4 den.;47 canne cadrate pauc mays o pauc mens¬†;NULL;2124;NULL;maison3 et arriere cour;1;maison;NULL;arriere cour;NULL;NULL;NULL;NULL
+2124;NULL;NULL;NULL;2124;NULL;ostal e reyre cort;NULL;per cascuna canna 4 den.;47 canne cadrate pauc mays o pauc mensï¿½ï¿½;NULL;2124;NULL;maison3 et arriere cour;1;maison;NULL;arriere cour;NULL;NULL;NULL;NULL
 2125;NULL;NULL;NULL;2125;NULL;ostal an reyre cort;NULL;NULL;26 canne cadrate 3 palme;NULL;2125;NULL;maison3 avec arriere cour;1;maison;NULL;arriere cour;NULL;NULL;NULL;NULL
 2126;NULL;NULL;443;2126;NULL;ostal;NULL;NULL;NULL;NULL;2126;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
-2127;6;NULL;443;2127;NULL;luogua¬†;NULL;palme 4 den.;20 canne cadrate 5 palme;NULL;2127;NULL;loge;1;loge;NULL;NULL;NULL;NULL;NULL;NULL
-2128;NULL;NULL;NULL;2128;NULL;ostal et ort¬†;NULL;NULL;NULL;NULL;2128;NULL;maison3 et jardin;1;maison;NULL;jardin;NULL;NULL;NULL;NULL
+2127;6;NULL;443;2127;NULL;luoguaï¿½ï¿½;NULL;palme 4 den.;20 canne cadrate 5 palme;NULL;2127;NULL;loge;1;loge;NULL;NULL;NULL;NULL;NULL;NULL
+2128;NULL;NULL;NULL;2128;NULL;ostal et ortï¿½ï¿½;NULL;NULL;NULL;NULL;2128;NULL;maison3 et jardin;1;maison;NULL;jardin;NULL;NULL;NULL;NULL
 2129;6;NULL;NULL;2129;NULL;ostal e reyre cort;NULL;NULL;36 canne cadrate;NULL;2129;NULL;maison3 et arriere cour;1;maison;NULL;arriere cour;NULL;NULL;NULL;NULL
-2130;6;NULL;443;2130;NULL;ostal et ort¬†;NULL;NULL;NULL;NULL;2130;NULL;maison3 et jardin;1;maison;NULL;jardin;NULL;NULL;NULL;NULL
-2131;NULL;NULL;443;2131;NULL;ostal et ort¬†;NULL;NULL;NULL;NULL;2131;NULL;maison3 et jardin;1;maison;NULL;jardin;NULL;NULL;NULL;NULL
+2130;6;NULL;443;2130;NULL;ostal et ortï¿½ï¿½;NULL;NULL;NULL;NULL;2130;NULL;maison3 et jardin;1;maison;NULL;jardin;NULL;NULL;NULL;NULL
+2131;NULL;NULL;443;2131;NULL;ostal et ortï¿½ï¿½;NULL;NULL;NULL;NULL;2131;NULL;maison3 et jardin;1;maison;NULL;jardin;NULL;NULL;NULL;NULL
 2132;NULL;NULL;413;2132;NULL;terra;NULL;NULL;0,5 eminata;NULL;2132;NULL;terre;1;terre;NULL;NULL;NULL;NULL;NULL;NULL
 2133;NULL;NULL;413;2133;NULL;cambras;NULL;NULL;NULL;NULL;2133;NULL;pieces;1;piece;NULL;NULL;NULL;NULL;NULL;NULL
 2134;NULL;NULL;413;2134;NULL;hostal;NULL;NULL;NULL;NULL;2134;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
@@ -990,10 +990,10 @@ idBien;idQuartier;idRue;idBourg;idRedevance;idSeigneurie;type;qualif;detail;mesu
 2157;3;NULL;413;2157;NULL;plassa;NULL;NULL;20 canne cadrate;NULL;2157;NULL;place;1;place;NULL;NULL;NULL;NULL;NULL;NULL
 2158;NULL;NULL;413;2158;NULL;ostal an reyre cort;NULL;NULL;11 canne cadrate pauc mays o paux mens pauzat;NULL;2158;NULL;maison3 avec arriere cour;1;maison;NULL;arriere cour;NULL;NULL;NULL;NULL
 2159;NULL;NULL;413;2159;NULL;ostal;NULL;NULL;25 canne cadrate et 6 palme pauc mays o paux mens;NULL;2159;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
-2160;NULL;NULL;413;2160;NULL;ostal et ort¬†;NULL;NULL;44 cannes cadrate et 6 palme paux mays et o paux mens;NULL;2160;NULL;maison3 et jardin;1;maison;NULL;jardin;NULL;NULL;NULL;NULL
+2160;NULL;NULL;413;2160;NULL;ostal et ortï¿½ï¿½;NULL;NULL;44 cannes cadrate et 6 palme paux mays et o paux mens;NULL;2160;NULL;maison3 et jardin;1;maison;NULL;jardin;NULL;NULL;NULL;NULL
 2161;NULL;NULL;413;2161;NULL;ostal et reyre cort;NULL;NULL;27 canne cadrate et 3 palme paux mays o paux mens;NULL;2161;NULL;maison3 et arriere cour;1;maison;NULL;arriere cour;NULL;NULL;NULL;NULL
 2162;NULL;NULL;413;2162;NULL;ostal an reyre cort;NULL;NULL;NULL;NULL;2162;NULL;maison3 avec arriere cour;1;maison;NULL;arriere cour;NULL;NULL;NULL;NULL
-2163;NULL;NULL;413;2163;NULL;ostal et ort¬†;NULL;NULL;240 cannes cadrate pauc mays o pauc mens;NULL;2163;NULL;maison3 et jardin;1;maison;NULL;jardin;NULL;NULL;NULL;NULL
+2163;NULL;NULL;413;2163;NULL;ostal et ortï¿½ï¿½;NULL;NULL;240 cannes cadrate pauc mays o pauc mens;NULL;2163;NULL;maison3 et jardin;1;maison;NULL;jardin;NULL;NULL;NULL;NULL
 2164;NULL;NULL;413;2164;NULL;ostal an reyre cort;NULL;NULL;12 canne cadrate et 6 palme;NULL;2164;NULL;maison3 avec arriere cour;1;maison;NULL;arriere cour;NULL;NULL;NULL;NULL
 2165;NULL;NULL;413;2165;NULL;2 ostals;NULL;NULL;16 canne cadrate et 6 palme pauc mays o pauc mens;NULL;2165;NULL;2 maisons3;2;maison;NULL;NULL;NULL;NULL;NULL;NULL
 2166;NULL;NULL;413;2166;NULL;ostal;NULL;NULL;8 cannes quaradas;NULL;2166;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
@@ -1002,8 +1002,8 @@ idBien;idQuartier;idRue;idBourg;idRedevance;idSeigneurie;type;qualif;detail;mesu
 2169;3;NULL;422;2169;NULL;ostal e vergier;NULL;NULL;NULL;NULL;2169;NULL;maison3 et verger;1;maison;NULL;verger;NULL;NULL;NULL;NULL
 2170;3;NULL;422;2170;NULL;ostal;NULL;NULL;NULL;NULL;2170;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 2171;3;NULL;422;2171;NULL;ostal anbe ort;NULL;NULL;NULL;NULL;2171;NULL;maison3 avec jardin;1;maison;NULL;jardin;NULL;NULL;NULL;NULL
-2172;3;NULL;422;2172;NULL;ostal an cort;NULL;NULL;NULL;NULL;2172;NULL;maison3 et cour;1;maison an cort¬¨;NULL;cour;NULL;NULL;NULL;NULL
-2173;3;NULL;422;2173;NULL;ostal an cort;NULL;NULL;NULL;NULL;2173;NULL;maison3 et cour;1;maison an cort¬¨;NULL;cour;NULL;NULL;NULL;NULL
+2172;3;NULL;422;2172;NULL;ostal an cort;NULL;NULL;NULL;NULL;2172;NULL;maison3 et cour;1;maison an cortï¿½ï¿½;NULL;cour;NULL;NULL;NULL;NULL
+2173;3;NULL;422;2173;NULL;ostal an cort;NULL;NULL;NULL;NULL;2173;NULL;maison3 et cour;1;maison an cortï¿½ï¿½;NULL;cour;NULL;NULL;NULL;NULL
 2174;3;NULL;422;2174;NULL;ostal;NULL;NULL;NULL;NULL;2174;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 2175;3;NULL;422;2175;NULL;parti ostal;NULL;NULL;5 canne et 2 palme cadrate;NULL;2175;NULL;partie de maison3;1;part de maison;NULL;NULL;NULL;NULL;NULL;NULL
 2176;3;NULL;422;2176;NULL;5 cambras e 1 areycor;NULL;NULL;NULL;NULL;2176;NULL;5 pieces et une arriere cour;5;piece;NULL;arriere cour;NULL;NULL;NULL;NULL
@@ -1015,7 +1015,7 @@ idBien;idQuartier;idRue;idBourg;idRedevance;idSeigneurie;type;qualif;detail;mesu
 2182;3;NULL;422;2182;NULL;ostal e vergier;NULL;NULL;NULL;NULL;2182;NULL;maison3 et verger;1;maison;NULL;verger;NULL;NULL;NULL;NULL
 2183;3;NULL;422;2183;NULL;ostal an reyre cort;NULL;NULL;NULL;NULL;2183;NULL;maison3 avec arriere cour;1;maison;NULL;arriere cour;NULL;NULL;NULL;NULL
 2184;3;NULL;422;2184;NULL;ostals e ort e plassa;NULL;NULL;NULL;NULL;2184;NULL;maison3 et jardin et place;1;maison;NULL;jardin;place;NULL;NULL;NULL
-2185;NULL;NULL;NULL;2185;NULL;dos ostals an reyre cort¬†;NULL;mezeme contengutz;NULL;NULL;2116;NULL;2 maison3 et arriere cour;2;maison;NULL;arriere cour;NULL;NULL;NULL;NULL
+2185;NULL;NULL;NULL;2185;NULL;dos ostals an reyre cortï¿½ï¿½;NULL;mezeme contengutz;NULL;NULL;2116;NULL;2 maison3 et arriere cour;2;maison;NULL;arriere cour;NULL;NULL;NULL;NULL
 2186;3;NULL;NULL;2186;NULL;ostal;NULL;NULL;NULL;NULL;2146;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 2187;3;NULL;422;2187;NULL;6 cambras;NULL;NULL;NULL;NULL;2171;NULL;6 pieces;6;piece;NULL;NULL;NULL;NULL;NULL;NULL
 2401;NULL;NULL;NULL;NULL;NULL;ostal;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
@@ -1105,7 +1105,7 @@ idBien;idQuartier;idRue;idBourg;idRedevance;idSeigneurie;type;qualif;detail;mesu
 2485;NULL;NULL;NULL;NULL;NULL;ostal;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 2486;NULL;NULL;NULL;NULL;NULL;ostal;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 2487;NULL;NULL;NULL;NULL;NULL;ostal;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
-2488;NULL;NULL;NULL;NULL;NULL;ostal;NULL;est-ce le m?™me que le 2484;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
+2488;NULL;NULL;NULL;NULL;NULL;ostal;NULL;est-ce le meme que le 2484;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 2489;NULL;NULL;NULL;NULL;NULL;ostal;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 2490;NULL;NULL;NULL;NULL;NULL;ostal;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 2491;NULL;NULL;NULL;NULL;NULL;ostal;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
@@ -1174,7 +1174,7 @@ idBien;idQuartier;idRue;idBourg;idRedevance;idSeigneurie;type;qualif;detail;mesu
 2554;NULL;NULL;NULL;NULL;NULL;ostal;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 2555;NULL;NULL;NULL;NULL;NULL;ostal;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 2556;NULL;NULL;NULL;NULL;NULL;ostal;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
-2557;NULL;NULL;NULL;NULL;NULL;ort;NULL;tenu par l'h?¥pital de bernart rascas;NULL;NULL;NULL;NULL;jardin;1;jardin;NULL;NULL;NULL;NULL;NULL;NULL
+2557;NULL;NULL;NULL;NULL;NULL;ort;NULL;tenu par l'hopital de bernart rascas;NULL;NULL;NULL;NULL;jardin;1;jardin;NULL;NULL;NULL;NULL;NULL;NULL
 2558;NULL;NULL;NULL;NULL;NULL;ort;NULL;NULL;NULL;NULL;NULL;NULL;jardin;1;jardin;NULL;NULL;NULL;NULL;NULL;NULL
 2559;NULL;NULL;NULL;NULL;NULL;ort;NULL;NULL;NULL;NULL;NULL;NULL;jardin;1;jardin;NULL;NULL;NULL;NULL;NULL;NULL
 2560;NULL;NULL;NULL;NULL;NULL;ostal;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
@@ -1185,12 +1185,12 @@ idBien;idQuartier;idRue;idBourg;idRedevance;idSeigneurie;type;qualif;detail;mesu
 3032;3;25;NULL;3032;NULL;locali;NULL;NULL;1 canne de long;NULL;3032;NULL;emplacement occupe par des batiments ou destine a etre bati;1;emplacement occupe par des batiments ou destine a etre bati;NULL;NULL;NULL;NULL;NULL;NULL
 3033;3;25;NULL;3033;NULL;locali;NULL;NULL;1 canne de long;NULL;3033;NULL;emplacement occupe par des batiments ou destine a etre bati;1;emplacement occupe par des batiments ou destine a etre bati;NULL;NULL;NULL;NULL;NULL;NULL
 3034;3;25;NULL;3034;NULL;locali;NULL;NULL;6 palme de long;NULL;3034;NULL;emplacement occupe par des batiments ou destine a etre bati;1;emplacement occupe par des batiments ou destine a etre bati;NULL;NULL;NULL;NULL;NULL;NULL
-3035;3;25;NULL;3035;NULL;logia sive locali¬†;NULL;NULL;5 palme longitudinus;NULL;3035;NULL;loge ou emplacement occupe par des batiments ou destine a etre bati;1;loge;NULL;NULL;NULL;NULL;NULL;NULL
+3035;3;25;NULL;3035;NULL;logia sive localiï¿½ï¿½;NULL;NULL;5 palme longitudinus;NULL;3035;NULL;loge ou emplacement occupe par des batiments ou destine a etre bati;1;loge;NULL;NULL;NULL;NULL;NULL;NULL
 3036;3;25;NULL;3036;NULL;2 logiis sive localibus;NULL;NULL;NULL;NULL;3036;NULL;2 loge ou emplacement occupe par des batiments ou destine a etre bati;2;loge;NULL;NULL;NULL;NULL;NULL;NULL
 3037;NULL;NULL;NULL;3037;NULL;locali;NULL;NULL;NULL;NULL;3037;NULL;emplacement occupe par des batiments ou destine a etre bati;1;emplacement occupe par des batiments ou destine a etre bati;NULL;NULL;NULL;NULL;NULL;NULL
 3038;NULL;NULL;NULL;3038;NULL;locali;NULL;NULL;NULL;NULL;3038;NULL;emplacement occupe par des batiments ou destine a etre bati;1;emplacement occupe par des batiments ou destine a etre bati;NULL;NULL;NULL;NULL;NULL;NULL
 3039;NULL;NULL;NULL;3039;NULL;locali;NULL;NULL;NULL;NULL;3039;NULL;emplacement occupe par des batiments ou destine a etre bati;1;emplacement occupe par des batiments ou destine a etre bati;NULL;NULL;NULL;NULL;NULL;NULL
-3040;NULL;78;NULL;3040;NULL;platea limacii¬†;NULL;NULL;NULL;NULL;3040;NULL;place du limas;1;place;NULL;NULL;NULL;NULL;NULL;NULL
+3040;NULL;78;NULL;3040;NULL;platea limaciiï¿½ï¿½;NULL;NULL;NULL;NULL;3040;NULL;place du limas;1;place;NULL;NULL;NULL;NULL;NULL;NULL
 3041;NULL;NULL;NULL;3041;NULL;locali;NULL;NULL;NULL;NULL;3041;NULL;emplacement occupe par des batiments ou destine a etre bati;1;emplacement occupe par des batiments ou destine a etre bati;NULL;NULL;NULL;NULL;NULL;NULL
 3042;NULL;NULL;NULL;3042;NULL;locali seu platea;NULL;NULL;NULL;NULL;3042;NULL;emplacement occupe par des batiments ou destine a etre bati ou place;1;place;NULL;NULL;NULL;NULL;NULL;NULL
 3043;NULL;72;NULL;3043;NULL;logia sive locali;NULL;NULL;NULL;NULL;3043;NULL;loge ou emplacement occupe par des batiments ou destine a etre bati;1;loge;NULL;NULL;NULL;NULL;NULL;NULL
@@ -1202,16 +1202,16 @@ idBien;idQuartier;idRue;idBourg;idRedevance;idSeigneurie;type;qualif;detail;mesu
 3049;NULL;72;NULL;3049;NULL;logia sive locale;NULL;NULL;4 palme de long;NULL;3049;NULL;loge ou emplacement occupe par des batiments ou destine a etre bati;1;loge;NULL;NULL;NULL;NULL;NULL;NULL
 3050;NULL;72;NULL;3050;NULL;logia sive locali;NULL;NULL;6 palme de long;NULL;3050;NULL;loge ou emplacement occupe par des batiments ou destine a etre bati;1;loge;NULL;NULL;NULL;NULL;NULL;NULL
 3051;NULL;NULL;NULL;3051;NULL;clibano sive furno pasticerii;NULL;NULL;NULL;NULL;3051;NULL;clibanus ou four patissier;1;four;NULL;NULL;NULL;NULL;NULL;NULL
-3052;NULL;NULL;NULL;3052;NULL;transversia¬†;NULL;qui moratur in castro reynardo;NULL;NULL;3052;NULL;traverse;1;traverse;NULL;NULL;NULL;NULL;NULL;NULL
-3053;NULL;NULL;NULL;3053;NULL;transversia¬†;NULL;transversia per eum constructa et edificata in parrochia sancti agricoli¬†;NULL;NULL;3053;NULL;traverse;1;traverse;NULL;NULL;NULL;NULL;NULL;NULL
+3052;NULL;NULL;NULL;3052;NULL;transversiaï¿½ï¿½;NULL;qui moratur in castro reynardo;NULL;NULL;3052;NULL;traverse;1;traverse;NULL;NULL;NULL;NULL;NULL;NULL
+3053;NULL;NULL;NULL;3053;NULL;transversiaï¿½ï¿½;NULL;transversia per eum constructa et edificata in parrochia sancti agricoliï¿½ï¿½;NULL;NULL;3053;NULL;traverse;1;traverse;NULL;NULL;NULL;NULL;NULL;NULL
 3054;2;40;NULL;3054;NULL;platea sive locali;NULL;platea sive locali per eum edificat et constructa;NULL;NULL;3054;NULL;place ou emplacement occupe par des batiments ou destine a etre bati;1;place;NULL;NULL;NULL;NULL;NULL;NULL
 3055;NULL;NULL;NULL;3055;NULL;terra;NULL;NULL;8 eminata;NULL;3055;NULL;terre;1;NULL;NULL;NULL;NULL;NULL;NULL;NULL
 3056;NULL;NULL;NULL;3056;NULL;platea in qua sunt edificate domus sive logie predictorum merceriorum;NULL;platea in qua sunt edificate domus sive logie predictorum merceriorum;NULL;NULL;3056;NULL;place ou sont edifiees maison2 ou loge desdits merciers;1;place;NULL;NULL;NULL;NULL;NULL;NULL
 3057;NULL;NULL;NULL;3057;NULL;hospitium;NULL;;NULL;NULL;3057;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 3058;NULL;NULL;NULL;3058;NULL;hospitium;NULL;;NULL;NULL;3058;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
-3059;NULL;NULL;NULL;3059;NULL;locali;NULL;moratur in burgo martinenki¬†;1 canne de long;NULL;3059;NULL;emplacement occupe par des batiments ou destine a etre bati;1;emplacement occupe par des batiments ou destine a etre bati;NULL;NULL;NULL;NULL;NULL;NULL
+3059;NULL;NULL;NULL;3059;NULL;locali;NULL;moratur in burgo martinenkiï¿½ï¿½;1 canne de long;NULL;3059;NULL;emplacement occupe par des batiments ou destine a etre bati;1;emplacement occupe par des batiments ou destine a etre bati;NULL;NULL;NULL;NULL;NULL;NULL
 3060;NULL;NULL;NULL;3060;NULL;quatam tabula;NULL;NULL;12 palme de long et  12 palme de large;NULL;3060;NULL;quatam table;1;table;NULL;NULL;NULL;NULL;NULL;NULL
-3061;NULL;NULL;NULL;3061;NULL;segonda taulla¬†;NULL;NULL;NULL;NULL;3061;NULL;segonda taulla¬†;1;table;NULL;NULL;NULL;NULL;NULL;NULL
+3061;NULL;NULL;NULL;3061;NULL;segonda taullaï¿½ï¿½;NULL;NULL;NULL;NULL;3061;NULL;segonda taullaï¿½ï¿½;1;table;NULL;NULL;NULL;NULL;NULL;NULL
 3062;NULL;NULL;NULL;3062;NULL;tessa taulla;NULL;NULL;NULL;NULL;3062;NULL;tessa table;1;table;NULL;NULL;NULL;NULL;NULL;NULL
 3063;NULL;NULL;NULL;3063;NULL;renquena taulla;NULL;renquena taulla de cola le sementeri de sayse forian;NULL;NULL;3063;NULL;renquena table;1;table;NULL;NULL;NULL;NULL;NULL;NULL
 3064;NULL;NULL;NULL;3064;NULL;logia;NULL;NULL;1 canne de long;NULL;3064;NULL;loge;1;loge;NULL;NULL;NULL;NULL;NULL;NULL
@@ -1238,7 +1238,7 @@ idBien;idQuartier;idRue;idBourg;idRedevance;idSeigneurie;type;qualif;detail;mesu
 3085;2;NULL;NULL;3085;NULL;logia;NULL;NULL;2 canne de long;NULL;3085;NULL;loge;1;loge;NULL;NULL;NULL;NULL;NULL;NULL
 3086;2;NULL;NULL;3086;NULL;logia;NULL;NULL;1 canne de long;NULL;3086;NULL;loge;1;loge;NULL;NULL;NULL;NULL;NULL;NULL
 3087;2;NULL;NULL;3087;NULL;logia;NULL;NULL;1 canne de long;NULL;3087;NULL;loge;1;loge;NULL;NULL;NULL;NULL;NULL;NULL
-3088;2;NULL;NULL;3088;NULL;pasagio sive conducto aque durensole;NULL;pasagio sive conducto aque durensole pro adoquando 2 em. orti debet recipe aquam juxta pontem daucere¬†;NULL;NULL;3088;NULL;pasagio ou conduit d eau de la durance;1;conduit d eau;NULL;NULL;NULL;NULL;NULL;NULL
+3088;2;NULL;NULL;3088;NULL;pasagio sive conducto aque durensole;NULL;pasagio sive conducto aque durensole pro adoquando 2 em. orti debet recipe aquam juxta pontem daucereï¿½ï¿½;NULL;NULL;3088;NULL;pasagio ou conduit d eau de la durance;1;conduit d eau;NULL;NULL;NULL;NULL;NULL;NULL
 3089;2;NULL;NULL;3089;NULL;conducto aque durensole;NULL;conducto aque durensole pro aquando undecim eminatas orti;NULL;NULL;3089;NULL;conduit d eau de la durance;1;conduit d eau;NULL;NULL;NULL;NULL;NULL;NULL
 3090;2;NULL;NULL;3090;NULL;logua;NULL;NULL;4 palme de long;NULL;3090;NULL;loge;1;loge;NULL;NULL;NULL;NULL;NULL;NULL
 3091;NULL;NULL;NULL;3091;NULL;platea;NULL;NULL;NULL;NULL;3091;NULL;place;1;place;NULL;NULL;NULL;NULL;NULL;NULL
@@ -1247,7 +1247,7 @@ idBien;idQuartier;idRue;idBourg;idRedevance;idSeigneurie;type;qualif;detail;mesu
 3094;NULL;NULL;NULL;3094;NULL;ostal;NULL;NULL;NULL;NULL;3094;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 3095;NULL;NULL;NULL;3095;NULL;plasa;NULL;NULL;5 canne carre;NULL;3095;NULL;place;1;place;NULL;NULL;NULL;NULL;NULL;NULL
 3096;NULL;NULL;NULL;3096;NULL;plasa;NULL;NULL;NULL;NULL;3096;NULL;place;1;place;NULL;NULL;NULL;NULL;NULL;NULL
-3097;12;NULL;NULL;3097;NULL;pour ?©difier un four;NULL;NULL;NULL;NULL;3097;NULL;pour ?©difier un four;1;four;NULL;NULL;NULL;NULL;NULL;NULL
+3097;12;NULL;NULL;3097;NULL;pourï¿½difier un four;NULL;NULL;NULL;NULL;3097;NULL;pourï¿½difier un four;1;four;NULL;NULL;NULL;NULL;NULL;NULL
 3098;NULL;NULL;NULL;3098;NULL;tera;NULL;NULL;24 emine;NULL;3098;NULL;terre;1;terre;NULL;NULL;NULL;NULL;NULL;NULL
 3099;NULL;NULL;NULL;3099;NULL;tera;NULL;NULL;32 emine;NULL;3099;NULL;terre;1;terre;NULL;NULL;NULL;NULL;NULL;NULL
 3100;NULL;NULL;NULL;3100;NULL;terra;NULL;NULL;24 emine;NULL;3100;NULL;terre;1;terre;NULL;NULL;NULL;NULL;NULL;NULL
@@ -1290,17 +1290,17 @@ idBien;idQuartier;idRue;idBourg;idRedevance;idSeigneurie;type;qualif;detail;mesu
 4029;NULL;NULL;NULL;4029;NULL;luoga;NULL;null;null;NULL;4029;NULL;loge;1;loge;NULL;null;NULL;NULL;NULL;NULL
 4030;NULL;NULL;NULL;4030;NULL;1 forn de pasticier et angle de justa lo dich forn;NULL;null;null;NULL;4030;NULL;1 four de patissier et angle a cote dudit four;1;four;1;angle;NULL;NULL;NULL;NULL
 4031;5;54;NULL;4031;NULL;hostal en le calsolia esser travessa;NULL;null;null;NULL;4031;NULL;maison3 en le calsolia esser travessa;1;maison;NULL;null;NULL;NULL;NULL;NULL
-4032;5;NULL;NULL;4032;NULL;hostal sieu en lo cal solia esser alcuna traversa;NULL;null;15 palme de long et 10 palme de large et en au teza en tre alcun cubert de taulissa que son fach anthicament¬†;NULL;4032;NULL;maison3 sieu en lo cal solia esser alcuna traversa;1;maison;NULL;null;NULL;NULL;NULL;NULL
-4033;7;NULL;NULL;4033;NULL;traversa¬†;NULL;null;null;NULL;4033;NULL;traversa¬†;1;traverse;NULL;null;NULL;NULL;NULL;NULL
+4032;5;NULL;NULL;4032;NULL;hostal sieu en lo cal solia esser alcuna traversa;NULL;null;15 palme de long et 10 palme de large et en au teza en tre alcun cubert de taulissa que son fach anthicamentï¿½ï¿½;NULL;4032;NULL;maison3 sieu en lo cal solia esser alcuna traversa;1;maison;NULL;null;NULL;NULL;NULL;NULL
+4033;7;NULL;NULL;4033;NULL;traversaï¿½ï¿½;NULL;null;null;NULL;4033;NULL;traversaï¿½ï¿½;1;traverse;NULL;null;NULL;NULL;NULL;NULL
 4034;NULL;NULL;NULL;4034;NULL;hostal;NULL;null;null;NULL;4034;NULL;maison3;1;maison;NULL;null;NULL;NULL;NULL;NULL
 4035;NULL;NULL;NULL;4035;NULL;null;NULL;null;null;NULL;4035;NULL;null;NULL;null;NULL;null;NULL;NULL;NULL;NULL
-4036;3;NULL;NULL;4036;NULL;plassa en que es aras mayzen hedifficada¬†;NULL;null;null;NULL;4036;NULL;place sur lauqelle sont edifiees des maisons;1;place;1;maison;NULL;NULL;NULL;NULL
-4037;NULL;NULL;NULL;4037;NULL;¬†la plassa en la cal son hedifficadas mayzes o logas dels davant dits mercies;NULL;null;null;NULL;4037;NULL;place sur laquelle sont edifies des maisons ou loges desdits merciers;1;place;1;maison;NULL;NULL;NULL;NULL
+4036;3;NULL;NULL;4036;NULL;plassa en que es aras mayzen hedifficadaï¿½ï¿½;NULL;null;null;NULL;4036;NULL;place sur lauqelle sont edifiees des maisons;1;place;1;maison;NULL;NULL;NULL;NULL
+4037;NULL;NULL;NULL;4037;NULL;ï¿½ï¿½la plassa en la cal son hedifficadas mayzes o logas dels davant dits mercies;NULL;null;null;NULL;4037;NULL;place sur laquelle sont edifies des maisons ou loges desdits merciers;1;place;1;maison;NULL;NULL;NULL;NULL
 4038;NULL;NULL;NULL;4038;NULL;hostal;NULL;null;null;NULL;4038;NULL;maison3;1;maison;NULL;null;NULL;NULL;NULL;NULL
 4039;7;NULL;NULL;4039;NULL;hostal;NULL;null;null;NULL;4039;NULL;maison3;1;maison;NULL;null;NULL;NULL;NULL;NULL
 4040;NULL;NULL;NULL;4040;NULL;luoga;NULL;null;1 canne de long;NULL;4040;NULL;loge;1;loge;NULL;null;NULL;NULL;NULL;NULL
 4041;NULL;NULL;NULL;4041;NULL;angle;NULL;null;null;NULL;4041;NULL;angle;1;angle;NULL;null;NULL;NULL;NULL;NULL
-4042;NULL;NULL;NULL;4042;NULL;part dun hostal¬†;NULL;null;null;NULL;4042;NULL;part d une maison3¬†;1;maison;NULL;null;NULL;NULL;NULL;NULL
+4042;NULL;NULL;NULL;4042;NULL;part dun hostalï¿½ï¿½;NULL;null;null;NULL;4042;NULL;part d une maison3ï¿½ï¿½;1;maison;NULL;null;NULL;NULL;NULL;NULL
 4043;2;NULL;NULL;4043;NULL;plassa e lougua;NULL;null;null;NULL;4043;NULL;place et loge;1;place et loge;NULL;null;NULL;NULL;NULL;NULL
 4044;NULL;NULL;NULL;4044;NULL;luoga;NULL;null;1 canne de long;NULL;4044;NULL;loge;1;loge;NULL;null;NULL;NULL;NULL;NULL
 4045;NULL;NULL;NULL;4045;NULL;luoga;NULL;null;1 canne de long;NULL;4045;NULL;loge;1;loge;NULL;null;NULL;NULL;NULL;NULL
@@ -1315,7 +1315,7 @@ idBien;idQuartier;idRue;idBourg;idRedevance;idSeigneurie;type;qualif;detail;mesu
 4054;NULL;NULL;NULL;4054;NULL;conduch dayga de la durensola;NULL;null;pour arroser 4 emine de jardin;NULL;4054;NULL;conduit d eau de la durance;1;conduit d eau;NULL;null;NULL;NULL;NULL;NULL
 4055;NULL;NULL;NULL;4055;NULL;conduch daygua de la durensola per ad ayguar;NULL;null;8 emine;NULL;4055;NULL;conduit d eau de la durance pour l irrigation;1;conduit d eau;NULL;null;NULL;NULL;NULL;NULL
 4056;NULL;NULL;NULL;4056;NULL;luoga;NULL;null;4 palme de long;NULL;4056;NULL;loge;1;loge;NULL;null;NULL;NULL;NULL;NULL
-4057;NULL;NULL;NULL;4057;NULL;luoga;NULL;null;1?5 canne de long;NULL;4057;NULL;loge;1;loge;NULL;null;NULL;NULL;NULL;NULL
+4057;NULL;NULL;NULL;4057;NULL;luoga;NULL;null;15 canne de long;NULL;4057;NULL;loge;1;loge;NULL;null;NULL;NULL;NULL;NULL
 4058;NULL;NULL;NULL;4058;NULL;luoga;NULL;null;1 canne de long;NULL;4058;NULL;loge;1;loge;NULL;null;NULL;NULL;NULL;NULL
 4059;NULL;NULL;NULL;4059;NULL;luoga;NULL;null;2 canne de long;NULL;4059;NULL;loge;1;loge;NULL;null;NULL;NULL;NULL;NULL
 4060;NULL;NULL;NULL;4060;NULL;luoga;NULL;null;1 canne de long;NULL;4060;NULL;loge;1;loge;NULL;null;NULL;NULL;NULL;NULL
@@ -1377,9 +1377,9 @@ idBien;idQuartier;idRue;idBourg;idRedevance;idSeigneurie;type;qualif;detail;mesu
 6016;NULL;NULL;NULL;6016;NULL;ostal;NULL;NULL;null;NULL;6016;NULL;maison3;1;maison;NULL;null;null;null;NULL;NULL
 6017;NULL;NULL;NULL;6017;NULL;ostal cum escriut;NULL;NULL;null;NULL;6017;NULL;maison3;1;maison;NULL;null;null;null;NULL;NULL
 6018;NULL;NULL;NULL;6018;NULL;ostal;NULL;NULL;null;NULL;6018;NULL;maison3;1;maison;NULL;null;null;null;NULL;NULL
-6019;NULL;NULL;NULL;6019;NULL;hostal am las cortz et am la trilhas et potz en lo mey¬†;NULL;NULL;null;NULL;6019;NULL;maison3 et cours et treille et puit;1;maison;1;cour;treille;puit;NULL;NULL
+6019;NULL;NULL;NULL;6019;NULL;hostal am las cortz et am la trilhas et potz en lo meyï¿½ï¿½;NULL;NULL;null;NULL;6019;NULL;maison3 et cours et treille et puit;1;maison;1;cour;treille;puit;NULL;NULL
 6020;NULL;NULL;NULL;6020;NULL;ostal;NULL;NULL;null;NULL;6020;NULL;maison3;1;maison;NULL;null;null;null;NULL;NULL
-6021;NULL;NULL;NULL;6021;NULL;ort per endevis socs non partit¬†;NULL;NULL;null;NULL;6021;NULL;jardin indivis;1;jardin;NULL;null;null;null;NULL;NULL
+6021;NULL;NULL;NULL;6021;NULL;ort per endevis socs non partitï¿½ï¿½;NULL;NULL;null;NULL;6021;NULL;jardin indivis;1;jardin;NULL;null;null;null;NULL;NULL
 6022;NULL;NULL;NULL;6022;NULL;ort;NULL;NULL;XV canas;NULL;6022;NULL;jardin;1;jardin;NULL;null;null;null;NULL;NULL
 6023;NULL;NULL;NULL;6023;NULL;ostal;NULL;NULL;null;NULL;6023;NULL;maison;1;maison;NULL;null;null;null;NULL;NULL
 6024;NULL;NULL;NULL;6024;NULL;ostal;NULL;NULL;null;NULL;6024;NULL;maison;1;maison;NULL;null;null;null;NULL;NULL
@@ -1449,8 +1449,8 @@ idBien;idQuartier;idRue;idBourg;idRedevance;idSeigneurie;type;qualif;detail;mesu
 7061;3;29;NULL;7061;NULL;hospitium;NULL;NULL;NULL;NULL;7061;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7062;3;30;NULL;7062;NULL;medietate hospitium;NULL;NULL;NULL;NULL;7062;NULL;moitie de maison3;1;moitie de maison;NULL;NULL;NULL;NULL;NULL;NULL
 7063;3;30;NULL;7063;NULL;hospitium;NULL;NULL;NULL;NULL;7063;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
-7064;3;NULL;NULL;7064;NULL;solo ecclesie ipsorum ac aliis edificiis, claustro et domibus ipsorum;NULL;NULL;NULL;NULL;7064;NULL;parvis de l‚Äôeglise et autres edifices, cloitre et maisons;1;parvis de l eglise;NULL;edifices;cloitre;maison;NULL;NULL
-7065;3;NULL;NULL;7065;NULL;solo ecclesie et hospitalis ac domibus et aliis edificiis ipsorum;NULL;NULL;NULL;NULL;7065;NULL;parvis de l‚Äôeglise et hopital avec maisons et autres edifices;1;parvis de l eglise;NULL;hopital;edifices;maison;NULL;NULL
+7064;3;NULL;NULL;7064;NULL;solo ecclesie ipsorum ac aliis edificiis, claustro et domibus ipsorum;NULL;NULL;NULL;NULL;7064;NULL;parvis de lï¿½ï¿½ï¿½eglise et autres edifices, cloitre et maisons;1;parvis de l eglise;NULL;edifices;cloitre;maison;NULL;NULL
+7065;3;NULL;NULL;7065;NULL;solo ecclesie et hospitalis ac domibus et aliis edificiis ipsorum;NULL;NULL;NULL;NULL;7065;NULL;parvis de lï¿½ï¿½ï¿½eglise et hopital avec maisons et autres edifices;1;parvis de l eglise;NULL;hopital;edifices;maison;NULL;NULL
 7066;3;67;NULL;7066;NULL;hospitium cum retrocurte;NULL;NULL;NULL;NULL;7066;NULL;maison3 avec arriere cour;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7067;3;NULL;NULL;7067;NULL;hospitium;NULL;NULL;NULL;NULL;7067;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7068;3;NULL;NULL;7068;NULL;hospitium;NULL;NULL;NULL;NULL;7068;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
@@ -1720,7 +1720,7 @@ idBien;idQuartier;idRue;idBourg;idRedevance;idSeigneurie;type;qualif;detail;mesu
 7601;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7602;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7603;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;3075;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
-7604;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;3792 ?;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
+7604;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;3792;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7605;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7606;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7607;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
@@ -1728,7 +1728,7 @@ idBien;idQuartier;idRue;idBourg;idRedevance;idSeigneurie;type;qualif;detail;mesu
 7609;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7610;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7611;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
-7612;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;1962 ?;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
+7612;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;1962;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7613;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7614;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7615;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
@@ -1758,8 +1758,8 @@ idBien;idQuartier;idRue;idBourg;idRedevance;idSeigneurie;type;qualif;detail;mesu
 7639;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7640;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7641;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
-7642;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;2218 ??;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
-7643;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;1707 ??;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
+7642;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;2218;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
+7643;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;1707;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7644;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7645;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7646;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
@@ -1769,7 +1769,7 @@ idBien;idQuartier;idRue;idBourg;idRedevance;idSeigneurie;type;qualif;detail;mesu
 7650;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7651;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7652;NULL;NULL;NULL;NULL;NULL;hospitium et retrocurte;NULL;NULL;NULL;NULL;NULL;NULL;maison3 et arriere cour;1;maison;NULL;arriere cour;NULL;NULL;NULL;NULL
-7653;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;159??;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
+7653;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;159;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7654;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7655;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7656;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
@@ -1807,15 +1807,15 @@ idBien;idQuartier;idRue;idBourg;idRedevance;idSeigneurie;type;qualif;detail;mesu
 7690;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7691;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7692;NULL;NULL;NULL;NULL;NULL;ortus;NULL;NULL;NULL;NULL;NULL;NULL;jardin;1;jardin;NULL;NULL;NULL;NULL;NULL;NULL
-7693;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;1994 ?;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
+7693;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;1994;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7694;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7695;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7696;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7697;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
-7698;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;1009 ?† 1012 ?;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
+7698;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;1009ï¿½ 1012;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7699;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7700;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
-7701;NULL;NULL;NULL;NULL;NULL;tinali;NULL;directe de sainte catherine?;NULL;NULL;NULL;NULL;tinel;1;tinel;NULL;NULL;NULL;NULL;NULL;NULL
+7701;NULL;NULL;NULL;NULL;NULL;tinali;NULL;directe de sainte catherine;NULL;NULL;NULL;NULL;tinel;1;tinel;NULL;NULL;NULL;NULL;NULL;NULL
 7702;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7703;NULL;NULL;NULL;NULL;NULL;cortile;NULL;NULL;NULL;NULL;NULL;NULL;enclos ou petite cour fermee;1;enclos ou petite cour fermee;NULL;NULL;NULL;NULL;NULL;NULL
 7704;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
@@ -1828,22 +1828,22 @@ idBien;idQuartier;idRue;idBourg;idRedevance;idSeigneurie;type;qualif;detail;mesu
 7711;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7712;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7713;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
-7714;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;2683 ?;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
+7714;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;2683;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7715;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7717;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
-7718;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;2780 ?;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
+7718;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;2780;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7719;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7720;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7721;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7722;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
-7723;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;1338 ?;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
+7723;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;1338;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7724;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7725;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7726;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7727;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7728;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
-7729;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;2904 ou 2040 ?;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
-7730;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;2038 ?;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
+7729;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;2904 ou 2040;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
+7730;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;2038;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7731;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7732;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7733;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
@@ -1908,7 +1908,7 @@ idBien;idQuartier;idRue;idBourg;idRedevance;idSeigneurie;type;qualif;detail;mesu
 7793;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7794;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;3738;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7795;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
-7796;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;1482?;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
+7796;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;1482;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7797;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;1952;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7798;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
 7799;NULL;NULL;NULL;NULL;NULL;hospitium;NULL;NULL;NULL;NULL;NULL;NULL;maison3;1;maison;NULL;NULL;NULL;NULL;NULL;NULL
@@ -2281,7 +2281,7 @@ idBien;idQuartier;idRue;idBourg;idRedevance;idSeigneurie;type;qualif;detail;mesu
 30192;NULL;NULL;NULL;30192;NULL;null;NULL;NULL;XV cannis que computantur pro XIII de locali ambarri et XIII vallati;NULL;30192;NULL;rempart et fosse;1;part de rempart;1;part de fosse;NULL;NULL;NULL;NULL
 30193;NULL;NULL;NULL;30193;NULL;null;NULL;NULL;XIIII cannis ambarrii et XIIII cannis vallati;NULL;30193;NULL;rempart et fosse;1;part de rempart;1;part de fosse;NULL;NULL;NULL;NULL
 30194;NULL;NULL;NULL;30194;NULL;null;NULL;NULL;XIIII cannis vallati;NULL;30194;NULL;fosse;1;part de fosse;NULL;null;NULL;NULL;NULL;NULL
-30195;NULL;NULL;NULL;30195;NULL;null;NULL;NULL;?;NULL;30195;NULL;null;NULL;null;NULL;null;NULL;NULL;NULL;NULL
+30195;NULL;NULL;NULL;30195;NULL;null;NULL;NULL;;NULL;30195;NULL;null;NULL;null;NULL;null;NULL;NULL;NULL;NULL
 30196;NULL;NULL;NULL;30196;NULL;null;NULL;NULL;locale;NULL;30196;NULL;emplacement occupe par des batiments ou destine a etre bati;1;emplacement occupe par des batiments ou destine a etre bati;NULL;null;NULL;NULL;NULL;NULL
 30197;NULL;NULL;NULL;30197;NULL;null;NULL;NULL;locale;NULL;30197;NULL;emplacement occupe par des batiments ou destine a etre bati;1;emplacement occupe par des batiments ou destine a etre bati;NULL;null;NULL;NULL;NULL;NULL
 30198;NULL;NULL;NULL;30198;NULL;null;NULL;NULL;tercia parte cujusdam orti qui est in stari suo;NULL;30198;NULL;jardin et maison;0.75;maison;1;jardin;NULL;NULL;NULL;NULL

@@ -121,13 +121,13 @@ idRedevance;type;espece;montant;detailRedev;montant2;echelonMontant;montantN
 232;cens;tournois;5 sol. bon. tur. parv.;affranchi de la vigne episcopale;20 sol. bon. tur. parv.;NULL;20 sol.
 138;cens;tournois;1 den. bon. tur. parv.;NULL;NULL;NULL;1 den.
 443;accensement;tournois;2 sol. bon. tur.;2 sol. bon. tur. censuales sub directo dominio et majori senhoria, consilio et assensu ac jure prelationis et laudationis et trezenationis dicti domini episcopi quotienscumque alienantur et venduntur;NULL;NULL;2 sol.
-444;accensement;tournois;60 tur. grossos argenti de turonis cum o rotundo domini francie regis;¬†60 tur. grossos argenti de Turonis cum o rotundo domini Francie regis censuales sub directe dominio et majori senhoria, consilio et assensu ac jure prelationis, laudationis et trezenationis domini episcopi Avinionensis episcopi supradicti;NULL;NULL;60 gross.
+444;accensement;tournois;60 tur. grossos argenti de turonis cum o rotundo domini francie regis;ï¿½ï¿½60 tur. grossos argenti de Turonis cum o rotundo domini Francie regis censuales sub directe dominio et majori senhoria, consilio et assensu ac jure prelationis, laudationis et trezenationis domini episcopi Avinionensis episcopi supradicti;NULL;NULL;60 gross.
 445;accensement;tournois;17 sol. bon.tur.parv.;17 sol. bon.tur.parv. censuales sub directo dominio et majori senhoria, consilio et assensu ac jure prelationis, laudationis et confirmationis domini episcopi supradicti ;NULL;NULL;17 sol.
 139;cens;tournois;3 sol. bon. tur. parv.;NULL;NULL;NULL;3 sol.
 140;cens;tournois;18 den. bon. tur. parv.;NULL;NULL;NULL;18 den.
 141;cens;tournois;18 den. bon. tur. parv.;NULL;NULL;NULL;18 den.
 144;cens;tournois;50 sol. bon. tur. parv.;NULL;NULL;NULL;50 sol.
-3034;cens;monnaie ?;18 sol. monete cerribilis;NULL;NULL;NULL;18 sol.
+3034;cens;monnaie;18 sol. monete cerribilis;NULL;NULL;NULL;18 sol.
 239;cens;NULL;NULL;NULL;NULL;NULL;NULL
 50153;NULL;NULL;10 den.;NULL;NULL;NULL;10 den.
 50154;NULL;NULL;2 sol. 3 den.;NULL;NULL;NULL;2 sol. 3 den.
@@ -151,7 +151,7 @@ idRedevance;type;espece;montant;detailRedev;montant2;echelonMontant;montantN
 40092;NULL;tournois;IX turon. Denarii;NULL;NULL;NULL;9 den.
 40093;NULL;tournois;II turon. Solidi XI denarii et picta;NULL;NULL;NULL;2 sol. 11 den. 1 pict.
 40094;NULL;tournois;II turon. Solidis VI denarii;NULL;NULL;NULL;2 sol. 6 den.
-40095;NULL;tournois;X turon. Denarii et VII (XVII?);NULL;NULL;NULL;17 den.
+40095;NULL;tournois;X turon. Denarii et VII (XVII);NULL;NULL;NULL;17 den.
 40096;NULL;viennois;XV vianen. Denarii;NULL;NULL;NULL;15 den.
 40097;NULL;tournois;XII turon. Denarii;NULL;NULL;NULL;12 den.
 40098;NULL;viennois;III vianen. Denarii;NULL;NULL;NULL;3 den.
@@ -281,17 +281,17 @@ idRedevance;type;espece;montant;detailRedev;montant2;echelonMontant;montantN
 224;cens;tournois;9 den. bon. tur. parv.;NULL;NULL;NULL;9 den.
 225;cens;tournois;1 den. bon. tur. parv.;NULL;NULL;NULL;1 den.
 1089;cens;melgorien;3 sol. melg.;NULL;NULL;NULL;3 sol.
-3035;cens;monnaie ?;15 sol. monete carribil.;NULL;NULL;NULL;15 sol.
+3035;cens;monnaie;15 sol. monete carribil.;NULL;NULL;NULL;15 sol.
 3036;cens;florin d or;2 flor. auri;NULL;NULL;NULL;2 flor.
-3037;cens;tournois;12 den. parv. tur.¬†;NULL;NULL;NULL;12 den.
-3038;cens;tournois;12 den. parv. tur.¬†;NULL;NULL;NULL;12 den.¬†
+3037;cens;tournois;12 den. parv. tur.ï¿½ï¿½;NULL;NULL;NULL;12 den.
+3038;cens;tournois;12 den. parv. tur.ï¿½ï¿½;NULL;NULL;NULL;12 den.ï¿½ï¿½
 226;cens;tournois;4 den. et 1 ob. tur. parv.;NULL;NULL;NULL;4 den. 1 ob.
-3039;cens;tournois;12 den. parv. tur.¬†;NULL;NULL;NULL;12 den.¬†
+3039;cens;tournois;12 den. parv. tur.ï¿½ï¿½;NULL;NULL;NULL;12 den.ï¿½ï¿½
 227;cens;tournois;1 ob. tur. parv.;NULL;NULL;NULL;1 ob.
 228;cens;tournois;7 den. et 1 ob. tur.parv.;NULL;NULL;NULL;7 den. 1 ob.
 229;cens;tournois;17 den. et 1 ob. tur. parv.;NULL;NULL;NULL;17 den. 1 ob.
-3041;cens;tournois;20 sol. parv. tur.¬†;NULL;NULL;NULL;20 sol.¬†
-3042;cens;tournois;7 den. parv. tur.¬†;NULL;NULL;NULL;7 den.¬†
+3041;cens;tournois;20 sol. parv. tur.ï¿½ï¿½;NULL;NULL;NULL;20 sol.ï¿½ï¿½
+3042;cens;tournois;7 den. parv. tur.ï¿½ï¿½;NULL;NULL;NULL;7 den.ï¿½ï¿½
 3043;cens;florin d or;0,5 flor. auri;NULL;NULL;NULL;0,5 flor.
 1178;cens;NULL;NULL;NULL;NULL;NULL;NULL
 1182;cens;NULL;NULL;NULL;NULL;NULL;NULL
@@ -695,9 +695,9 @@ idRedevance;type;espece;montant;detailRedev;montant2;echelonMontant;montantN
 30028;NULL;avignon;6 sol. 3 den.;NULL;NULL;NULL;6 sol. 3 den.
 30029;NULL;raymondin;5 sol. ;NULL;NULL;NULL;5 sol. 
 4025;NULL;gros courant;VI gross.;la mitat ten aras Nicolau Esteve filh de Guymet de Castel et lautra mitat Berthomieu Broquier;NULL;NULL;6 gross.
-4040;NULL;florin d or;II flor.;Fen li donat ad acapte¬†;NULL;NULL;2 flor.
+4040;NULL;florin d or;II flor.;Fen li donat ad acapteï¿½ï¿½;NULL;NULL;2 flor.
 30074;NULL;viennois;22 den. 1 ob.;NULL;NULL;NULL;22 den. 1 ob.
-4049;NULL;tournois;III sol. tur.¬†;Lacal luogua Izabel molher et heres que fon de Henric Ferret laborador habitador davinho per alcuns servizis que la dicha Lucia a la dicha Izabel fats la dicha luogua li donet et Rostanh de Mories et Salvayre Yrisson per adoncs syndegues a la dicha Lucia lauzeron;NULL;NULL;3 sol.¬†
+4049;NULL;tournois;III sol. tur.ï¿½ï¿½;Lacal luogua Izabel molher et heres que fon de Henric Ferret laborador habitador davinho per alcuns servizis que la dicha Lucia a la dicha Izabel fats la dicha luogua li donet et Rostanh de Mories et Salvayre Yrisson per adoncs syndegues a la dicha Lucia lauzeron;NULL;NULL;3 sol.ï¿½ï¿½
 4054;NULL;tournois;XII sol. tur.;1 emenada = III s. de tornes;NULL;NULL;12 sol.
 4055;NULL;tournois;XXIIII sol. de tur.;1 emenada = III s. de tornes;NULL;NULL;24 sol.
 4066;NULL;tournois;VI sol. tur.;1 emenada = II s. de tornes;NULL;NULL;6 sol.
@@ -752,12 +752,12 @@ idRedevance;type;espece;montant;detailRedev;montant2;echelonMontant;montantN
 6016;NULL;tournois;1 s. torr;NULL;NULL;NULL;1 sol.
 6017;NULL;tournois;1 s. torn.;NULL;NULL;NULL;1 sol.
 6018;NULL;tournois;1 s. torn.;NULL;NULL;NULL;1 sol.
-6019;NULL;florin;octo flor.¬†;NULL;NULL;NULL;8 flor.¬†
+6019;NULL;florin;octo flor.ï¿½ï¿½;NULL;NULL;NULL;8 flor.ï¿½ï¿½
 6020;NULL;tournois;X flor. torn.;NULL;NULL;NULL;10 flor.
 6023;NULL;tournois;XII s. torn.;NULL;NULL;NULL;12 sol.
 6024;NULL;courant;XVII livras correns;NULL;NULL;NULL;17 lb.
-6025;NULL;courant;VII flor. VI s. VIII d. correns¬†;NULL;NULL;NULL;7 flor. 6 sol. 8 den.
-6026;NULL;courant;1 fl. corrent¬†;NULL;NULL;NULL;1 flor.¬†
+6025;NULL;courant;VII flor. VI s. VIII d. corrensï¿½ï¿½;NULL;NULL;NULL;7 flor. 6 sol. 8 den.
+6026;NULL;courant;1 fl. correntï¿½ï¿½;NULL;NULL;NULL;1 flor.ï¿½ï¿½
 6027;NULL;tournois;30 s. torn;NULL;NULL;NULL;30 sol.
 10053;NULL;obole d or;1 ob.;NULL;NULL;NULL;1 ob.
 30192;NULL;tournois;9 sol.;NULL;NULL;NULL;9 sol.
@@ -766,8 +766,8 @@ idRedevance;type;espece;montant;detailRedev;montant2;echelonMontant;montantN
 30195;NULL;tournois;2 sol.;NULL;NULL;NULL;2 sol.
 30196;NULL;melgorien;1 den.;NULL;NULL;NULL;1 den.
 30197;NULL;monnaie qui a cours;3 sol.;NULL;NULL;NULL;3 sol.
-6021;NULL;NULL;1 flor.¬†;NULL;NULL;NULL;1 flor.¬†
-6022;NULL;NULL;90 den. ?;NULL;NULL;NULL;90 den.
+6021;NULL;NULL;1 flor.ï¿½ï¿½;NULL;NULL;NULL;1 flor.ï¿½ï¿½
+6022;NULL;NULL;90 den.;NULL;NULL;NULL;90 den.
 30249;NULL;raymondin;4 sol. ;NULL;NULL;NULL;4 sol. 
 40027;NULL;viennois;XII vianen. Denarii;NULL;NULL;NULL;12 den.
 40028;NULL;tournois;II turon. Denarii;NULL;NULL;NULL;2 den.
@@ -776,11 +776,11 @@ idRedevance;type;espece;montant;detailRedev;montant2;echelonMontant;montantN
 40215;NULL;tournois;III turon. Solidi V denarii picta;NULL;NULL;NULL;3 sol. 5 den. 1 pict.
 40309;NULL;tournois;XVII turon. Denarii;NULL;NULL;NULL;17 den.
 7005;NULL;nr;4 sol.;NULL;NULL;NULL;4 sol.
-7041;NULL;tournois;15 sol. tur.;qui fuerunt acquisiti per Johannam Arnaude, anno 1398 (?) et die 11 mensis junii et per eundem Johannam dati dicto capitul pro anniversario faciendo pro ut de acquisitione et donatione per eandem ac recognitionibus factis per dictum mag. Geraldum constat instrumentis, receptis par mag. P. Bassurelli notarium sub anno et die predictis, 15 sol. tur. ;NULL;NULL;15 sol.
-7077;NULL;tournois;20 sol. 3 den. tur.;canna 6 den. tur. ¬†;NULL;NULL;20 sol. 3 den.
+7041;NULL;tournois;15 sol. tur.;qui fuerunt acquisiti per Johannam Arnaude, anno 1398 et die 11 mensis junii et per eundem Johannam dati dicto capitul pro anniversario faciendo pro ut de acquisitione et donatione per eandem ac recognitionibus factis per dictum mag. Geraldum constat instrumentis, receptis par mag. P. Bassurelli notarium sub anno et die predictis, 15 sol. tur. ;NULL;NULL;15 sol.
+7077;NULL;tournois;20 sol. 3 den. tur.;canna 6 den. tur. ï¿½ï¿½;NULL;NULL;20 sol. 3 den.
 7078;NULL;tournois;11 sol. tur.;canna 5 den. ob. tur. qui;NULL;NULL;11 sol.
-7079;NULL;tournois;6 sol. 4 den. ob. tur.;canna 6 den. tur. ¬†;NULL;NULL;6 sol. 4 den. 1 ob.
-7080;NULL;tournois;8 sol. tur.;canna 6 den. tur. ¬†;NULL;NULL;8 sol.
+7079;NULL;tournois;6 sol. 4 den. ob. tur.;canna 6 den. tur. ï¿½ï¿½;NULL;NULL;6 sol. 4 den. 1 ob.
+7080;NULL;tournois;8 sol. tur.;canna 6 den. tur. ï¿½ï¿½;NULL;NULL;8 sol.
 7082;NULL;tournois;11 sol. tur.;canna 5 den. ob. tur. ;NULL;NULL;11 sol.
 7083;NULL;tournois;5 sol. 6 den. tur.;canna 5 den. ob. tur. ;NULL;NULL;5 sol. 6 den.
 7084;NULL;tournois;6 sol. 10 den. ob. tur.;canna 5 den. ob. tur. ;NULL;NULL;6 sol. 10 den. 1 ob.
@@ -829,7 +829,7 @@ idRedevance;type;espece;montant;detailRedev;montant2;echelonMontant;montantN
 7138;NULL;tournois;11 sol. tur.;canna 5 den. ob. tur. ;NULL;NULL;11 sol.
 7139;NULL;tournois;4 sol. 7 den. tur.;canna 5 den. ob. tur. ;NULL;NULL;4 sol. 7 den.
 7140;NULL;tournois;3 sol. tur. minus picta;canna 5 den. ob. tur. ;NULL;NULL;3 sol. 1 pict.
-7142;NULL;tournois;3 sol. 6 den. tur.;canna 6 den. tur. ¬†;NULL;NULL;3 sol. 6 den.
+7142;NULL;tournois;3 sol. 6 den. tur.;canna 6 den. tur. ï¿½ï¿½;NULL;NULL;3 sol. 6 den.
 7143;NULL;tournois;13 sol. 6 den. ob tur.;canna 5 den. ob. tur. ;NULL;NULL;13 sol. 6 den. 1 ob.
 7173;NULL;tournois;3 sol. tur.;NULL;NULL;NULL;3 sol.
 7196;NULL;tournois;66 sol. 8 den. tur.; 6 flor. 8 den. tur.  puis 7196;NULL;NULL;66 sol. 8 den.
@@ -906,7 +906,7 @@ idRedevance;type;espece;montant;detailRedev;montant2;echelonMontant;montantN
 50127;NULL;NULL;12 den.;NULL;NULL;NULL;12 den.
 50128;NULL;NULL;3 sol.;NULL;NULL;NULL;3 sol.
 50129;NULL;NULL;2 sol. 3 den.;NULL;NULL;NULL;2 sol. 3 den.
-50130;NULL;NULL;6 den. (1 sol. ?);NULL;NULL;NULL;6 den. (1 sol. ?)
+50130;NULL;NULL;6 den. (1 sol.);NULL;NULL;NULL;6 den. (1 sol.)
 50132;NULL;NULL;1 sol.;NULL;NULL;NULL;1 sol.
 50133;NULL;NULL;6 den.;NULL;NULL;NULL;6 den.
 50134;NULL;NULL;3 sol. 4 den.;NULL;NULL;NULL;3 sol. 4 den.
@@ -1012,7 +1012,7 @@ idRedevance;type;espece;montant;detailRedev;montant2;echelonMontant;montantN
 1145;cens;viennois;12 sol. vienn.;NULL;NULL;NULL;12 sol.
 1146;cens;viennois;12 sol. vien.;NULL;NULL;NULL;12 sol. vien.
 1147;cens;viennois;100 sol. vienn.;NULL;NULL;NULL;100 sol.
-3040;cens;tournois du roi de france;20 grossos turonenses cum o rotundo boni ponderis atque legis domini regis francie¬†;NULL;NULL;NULL;20 gross.
+3040;cens;tournois du roi de france;20 grossos turonenses cum o rotundo boni ponderis atque legis domini regis francieï¿½ï¿½;NULL;NULL;NULL;20 gross.
 1015;cens;tournois;5 den. tur. parv.;NULL;NULL;NULL;5 den.
 40175;NULL;tournois;VII turon. Solidi X denarii;NULL;NULL;NULL;7 sol. 10 den.
 40176;NULL;tournois;IV turon. Solidi IV denarii;NULL;NULL;NULL;4 sol. 4 den.
@@ -1060,7 +1060,7 @@ idRedevance;type;espece;montant;detailRedev;montant2;echelonMontant;montantN
 157;cens;tournois;3 sol. 3 den. bon. tur. parv.;NULL;NULL;NULL;3 sol. 3 den.
 158;cens;tournois;2 den. bon. tur. parv.;NULL;NULL;NULL;2 den.
 3071;cens;tournois;3 sol. tur. parv.;NULL;NULL;NULL;3 sol.
-3054;cens;florin de bon poids;2 flor. auri boni ponderis atque legis¬†;NULL;NULL;NULL;2 flor.
+3054;cens;florin de bon poids;2 flor. auri boni ponderis atque legisï¿½ï¿½;NULL;NULL;NULL;2 flor.
 30201;NULL;raymondin;2 sol. ;NULL;NULL;NULL;2 sol. 
 30202;NULL;raymondin;12 den. ;NULL;NULL;NULL;12 den. 
 30203;NULL;raymondin;2 sol. 1 den. ;NULL;NULL;NULL;2 sol. 1 den. 
@@ -1288,7 +1288,7 @@ idRedevance;type;espece;montant;detailRedev;montant2;echelonMontant;montantN
 3077;cens;tournois;3 sol. tur. parv.;NULL;NULL;NULL;3 sol.
 3078;cens;tournois;18 den. tur.;NULL;NULL;NULL;18 den.
 3079;cens;tournois;18 den. tur.;NULL;NULL;NULL;18 den.
-3080;cens;tournois;3 sol. tur. parv.¬†;NULL;NULL;NULL;3 sol. ¬†
+3080;cens;tournois;3 sol. tur. parv.ï¿½ï¿½;NULL;NULL;NULL;3 sol. ï¿½ï¿½
 3081;cens;tournois;6 sol. tur. parv.;NULL;NULL;NULL;6 sol.
 3082;cens;tournois;3 sol. tur. parv.;NULL;NULL;NULL;3 sol.
 3072;cens;NULL;3 sol. tur.;NULL;NULL;NULL;3 sol.
@@ -1305,7 +1305,7 @@ idRedevance;type;espece;montant;detailRedev;montant2;echelonMontant;montantN
 3089;cens;tournois;3 sol. tur. parv.;NULL;NULL;NULL;3 sol.
 3090;cens;tournois;18 den. tur. parv.;NULL;NULL;NULL;18 den.
 3091;cens;tournois;6 den. tur. parv.;NULL;NULL;NULL;6 den.
-3092;cens;tournois;2 sol. tur. parv.¬†;NULL;NULL;NULL;2 sol. ¬†
+3092;cens;tournois;2 sol. tur. parv.ï¿½ï¿½;NULL;NULL;NULL;2 sol. ï¿½ï¿½
 470;accensement;tournois;14 sol. tur.;NULL;NULL;NULL;14 sol.
 471;accensement;tournois;10 sol. tur.;NULL;NULL;NULL;10 sol.
 472;accensement;tournois;10 sol. tur.;NULL;NULL;NULL;10 sol.
@@ -1732,24 +1732,24 @@ idRedevance;type;espece;montant;detailRedev;montant2;echelonMontant;montantN
 4095;NULL;tournois;IIII sol. tur.;NULL;NULL;NULL;4 sol.
 4028;NULL;tournois;VI sol. tur.;NULL;NULL;NULL;6 sol.
 4029;NULL;tournois;V sol. tur.;NULL;NULL;NULL;5 sol.
-4030;NULL;tournois;VIII d. de tur.¬†;NULL;NULL;NULL;8 den.¬†
+4030;NULL;tournois;VIII d. de tur.ï¿½ï¿½;NULL;NULL;NULL;8 den.ï¿½ï¿½
 4031;NULL;tournois;XIIII sol. tur.;NULL;NULL;NULL;14 sol.
 4032;NULL;tournois;VI sol. tur.;NULL;NULL;NULL;6 sol.
 4033;NULL;tournois;VII sol. tur.;NULL;NULL;NULL;7 sol.
 4034;NULL;tournois;XXIIII sol. de tur.;NULL;NULL;NULL;24 sol.
 4035;NULL;tournois;XIIII sol. tur.;NULL;NULL;NULL;24 sol.
 4037;NULL;tournois;C tornes dargent tals que l flor. daur si cente per XII grossol.;NULL;NULL;NULL;100 tornes dargent tals que l flor. daur si cente per XII grossol.
-4039;NULL;tournois;¬†XXIIII sol. tur.;NULL;NULL;NULL;24 sol.
+4039;NULL;tournois;ï¿½ï¿½XXIIII sol. tur.;NULL;NULL;NULL;24 sol.
 4041;NULL;tournois;IIII de. tor;NULL;NULL;NULL;4 den.
-4044;NULL;tournois;III sol. tur.¬†;NULL;NULL;NULL;3 sol.¬†
+4044;NULL;tournois;III sol. tur.ï¿½ï¿½;NULL;NULL;NULL;3 sol.ï¿½ï¿½
 4045;NULL;tournois;III sol. tur.;NULL;NULL;NULL;3 sol.
 4046;NULL;tournois;VI sol. Tur.;NULL;NULL;NULL;6 sol.
 4047;NULL;florin d or de florence;III flor.;NULL;NULL;NULL;3 flor.
-4048;NULL;tournois;IIII sol. VI den. tur.¬†;NULL;NULL;NULL;4 sol. 6 den.¬†
-4050;NULL;tournois;III sol. tur.¬†;NULL;NULL;NULL;3 sol.¬†
+4048;NULL;tournois;IIII sol. VI den. tur.ï¿½ï¿½;NULL;NULL;NULL;4 sol. 6 den.ï¿½ï¿½
+4050;NULL;tournois;III sol. tur.ï¿½ï¿½;NULL;NULL;NULL;3 sol.ï¿½ï¿½
 4051;NULL;tournois;VI sol. tur.;NULL;NULL;NULL;6 sol.
 4052;NULL;tournois;III sol. tur.;NULL;NULL;NULL;3 sol.
-4053;NULL;tournois;III sol. tur.¬†;NULL;NULL;NULL;3 sol.¬†
+4053;NULL;tournois;III sol. tur.ï¿½ï¿½;NULL;NULL;NULL;3 sol.ï¿½ï¿½
 4056;NULL;tournois;XVIII den. tur.;NULL;NULL;NULL;18 den.
 4057;NULL;tournois;III sol. tur.;NULL;NULL;NULL;III sol.
 4058;NULL;tournois;III sol. tur.;NULL;NULL;NULL;III sol.
@@ -1856,7 +1856,7 @@ idRedevance;type;espece;montant;detailRedev;montant2;echelonMontant;montantN
 40105;NULL;tournois;VII turon. Solidis II denarii et picta;NULL;NULL;NULL;7 sol. 2 den. 1 pict.
 40106;NULL;tournois;XIV turon. Solidi;NULL;NULL;NULL;14 sol.
 40107;NULL;viennois;XX vianen. Denarii;NULL;NULL;NULL;20 den.
-40108;NULL;tournois;X turon. Denarii et VIII (XVIII?);NULL;NULL;NULL;18 den.
+40108;NULL;tournois;X turon. Denarii et VIII (XVIII);NULL;NULL;NULL;18 den.
 40109;NULL;tournois;II turon. Solidi III denarii;NULL;NULL;NULL;2 sol. 3 den.
 40110;NULL;coronat;XX cor. Denarii;NULL;NULL;NULL;20 den.
 40111;NULL;viennois;XVI vianen. Denarii;NULL;NULL;NULL;16 den.
