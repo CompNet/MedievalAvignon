@@ -24,10 +24,11 @@ extract.social.networks <- function()
 	tlog(2,"Loading relational information")
 	data <- read.table(
 		file=FILE_IN_ANAL_SOCIAL_LINKS,
-		sep=";",
+		sep=",",
 		header=TRUE,
 		stringsAsFactors=FALSE,
-		quote=""
+		check.names=FALSE,
+#		quote=""
 	)
 	
 	# build graph
@@ -42,11 +43,12 @@ extract.social.networks <- function()
 	tlog(2,"Loading individual information")
 	info <- read.table(
 		file=FILE_IN_ANAL_PERSON_NODES,
-		sep=";",
+		sep=",",
 		header=TRUE,
 		stringsAsFactors=FALSE,
 		na.strings="NULL",
-		quote='"'
+		check.names=FALSE,
+#		quote='"'
 	)
 	# remove empty values
 	for(i in 1:ncol(info))
