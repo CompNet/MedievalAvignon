@@ -30,7 +30,7 @@ extract.social.networks <- function()
 		quote='"',
 		check.names=FALSE
 	)
-	
+
 	# build graph
 	tlog(2,"Building graph")
 	edge.list <- cbind(as.character(data[,COL_SOC_SRC]), as.character(data[,COL_SOC_TGT]))
