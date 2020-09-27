@@ -73,9 +73,9 @@ analyze.net.eccentricity <- function(g)
 				if(p==1 || !all(diam.paths[[pp]][[p]]==diam.paths[[pp]][[p-1]]))
 				{	V(g)$label <- rep(NA,gorder(g))
 					vstart <- diam.paths[[pp]][[p]][1]
-					V(g)[vstart]$label <- vertex_attr(g, COL_PERS_NAME_FULL_NORM, vstart) 
+					V(g)[vstart]$label <- get.person.names(g, vstart) 
 					vend <- diam.paths[[pp]][[p]][length(diam.paths[[pp]][[p]])]
-					V(g)[vend]$label <- vertex_attr(g, COL_PERS_NAME_FULL_NORM, vend) 
+					V(g)[vend]$label <- get.person.names(g, vend) 
 					custom.gplot(g, paths=diam.paths[[pp]][[p]], file=file.path(diameter.folder,paste0("diam_",mode,"_graph_",pp,"_",q)))
 					q <- q + 1
 				}
@@ -106,8 +106,8 @@ analyze.net.eccentricity <- function(g)
 		custom.hist(vals, name=paste(long.names[i],"Eccentricity"), file=file.path(eccentricity.folder,paste0(fname,"_histo")))
 		
 		# export CSV with eccentricity
-		df <- data.frame(V(g)$name,V(g)$label,vals)
-		colnames(df) <- c("Name","Label",fname) 
+		df <- data.frame(vertex_attr(g, COL_PERS_ID), get.person.names(g), vals)
+		colnames(df) <- c("Id","Name",fname) 
 		write.csv(df, file=file.path(eccentricity.folder,paste0(fname,"_values.csv")), row.names=FALSE)
 		
 		# add eccentricity (as node attributes) to the graph and stats table
@@ -138,7 +138,7 @@ analyze.net.eccentricity <- function(g)
 	
 	# record graph and return it
 	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
-	write.graph(graph=g, file=graph.file, format="graphml")
+	write.graphml.file(g=g, file=graph.file)
 	return(g)
 }
 
@@ -173,8 +173,8 @@ analyze.net.degree <- function(g)
 		custom.hist(vals, name=paste(long.names[i],"Degree"), file=file.path(degree.folder,paste0(fname,"_histo")))
 			
 		# export CSV with degree
-		df <- data.frame(V(g)$name, V(g)$label, vals)
-		colnames(df) <- c("Name","Label",fname) 
+		df <- data.frame(vertex_attr(g, COL_PERS_ID), get.person.names(g), vals)
+		colnames(df) <- c("Id","Name",fname) 
 		write.csv(df, file=file.path(degree.folder,paste0(fname,"_values.csv")), row.names=FALSE)
 		
 		# add degree (as node attributes) to the graph and stats table
@@ -194,7 +194,7 @@ analyze.net.degree <- function(g)
 	
 	# record graph and return it
 	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
-	write.graph(graph=g, file=graph.file, format="graphml")
+	write.graphml.file(g=g, file=graph.file)
 	return(g)
 }
 
@@ -232,8 +232,8 @@ analyze.net.eigencentrality <- function(g)
 		custom.hist(vals, name=paste(long.names[i],"Eigencentrality"), file=file.path(eigen.folder,paste0(fname,"_histo")))
 		
 		# export CSV with Eigencentrality
-		df <- data.frame(V(g)$name,V(g)$label,vals)
-		colnames(df) <- c("Name","Label",fname) 
+		df <- data.frame(vertex_attr(g, COL_PERS_ID), get.person.names(g), vals)
+		colnames(df) <- c("Id","Name",fname) 
 		write.csv(df, file=file.path(eigen.folder,paste0(fname,"_values.csv")), row.names=FALSE)
 		
 		# add results to the graph (as attributes) and record
@@ -243,6 +243,7 @@ analyze.net.eigencentrality <- function(g)
 		stats[fname, ] <- list(Value=NA, Mean=mean(vals), Stdv=sd(vals))
 		
 		# plot graph using color for Eigencentrality
+		g <- update.node.labels(g, vals)
 		custom.gplot(g,col.att=fname,file=file.path(eigen.folder,paste0(fname,"_graph")))
 		#custom.gplot(g,col.att=fname)
 	}
@@ -252,7 +253,7 @@ analyze.net.eigencentrality <- function(g)
 	
 	# record graph and return it
 	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
-	write.graph(graph=g, file=graph.file, format="graphml")
+	write.graphml.file(g=g, file=graph.file)
 	return(g)
 }
 
@@ -287,8 +288,8 @@ analyze.net.betweenness <- function(g)
 		custom.hist(vals, name=paste(long.names[i],"Betweenness"), file=file.path(betweenness.folder,paste0(fname,"_histo")))
 		
 		# export CSV with betweenness
-		df <- data.frame(V(g)$name,V(g)$label,vals)
-		colnames(df) <- c("Name","Label",fname) 
+		df <- data.frame(vertex_attr(g, COL_PERS_ID), get.person.names(g), vals)
+		colnames(df) <- c("Id","Name",fname) 
 		write.csv(df, file=file.path(betweenness.folder,paste0(fname,"_values.csv")), row.names=FALSE)
 		
 		# add results to the graph (as attributes) and record
@@ -298,6 +299,7 @@ analyze.net.betweenness <- function(g)
 		stats[fname, ] <- list(Value=NA, Mean=mean(vals), Stdv=sd(vals))
 		
 		# plot graph using color for betweenness
+		g <- update.node.labels(g, vals)
 		custom.gplot(g,col.att=fname,file=file.path(betweenness.folder,paste0(fname,"_graph")))
 		#custom.gplot(g,col.att=fname)
 	}
@@ -307,7 +309,7 @@ analyze.net.betweenness <- function(g)
 	
 	# record graph and return it
 	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
-	write.graph(graph=g, file=graph.file, format="graphml")
+	write.graphml.file(g=g, file=graph.file)
 	return(g)
 }
 
@@ -316,6 +318,9 @@ analyze.net.betweenness <- function(g)
 
 #############################################################
 # Computes closeness and generates plots and CSV files.
+#
+# If the graph has several components, the closeness is computed
+# only for the largest one.
 #
 # g: original graph to process.
 # 
@@ -350,8 +355,8 @@ analyze.net.closeness <- function(g)
 		custom.hist(vals, name=paste(long.names[i],"Closeness"), file=file.path(closeness.folder,paste0(fname,"_histo")))
 		
 		# export CSV with closeness
-		df <- data.frame(V(g)$name,V(g)$label,vals)
-		colnames(df) <- c("Name","Label",fname) 
+		df <- data.frame(vertex_attr(g, COL_PERS_ID), get.person.names(g), vals)
+		colnames(df) <- c("Id","Name",fname) 
 		write.csv(df, file=file.path(closeness.folder,paste0(fname,"_values.csv")), row.names=FALSE)
 		
 		# add degree (as node attributes) to the graph and stats table
@@ -373,7 +378,67 @@ analyze.net.closeness <- function(g)
 	
 	# record graph and return it
 	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
-	write.graph(graph=g, file=graph.file, format="graphml")
+	write.graphml.file(g=g, file=graph.file)
+	return(g)
+}
+
+
+
+
+#############################################################
+# Computes harmonic closeness and generates plots and CSV files.
+#
+# g: original graph to process.
+# 
+# returns: same graph, updated with the results.
+#############################################################
+analyze.net.harmonic.closeness <- function(g)
+{	# get the stat table
+	stat.file <- file.path(FOLDER_OUT_ANAL, g$name, "stats.csv")
+	stats <- retrieve.stats(stat.file)
+	
+	modes <- c("undirected","in","out")
+	long.names <- c("Undirected","Incoming","Outgoing")
+	for(i in 1:length(modes))
+	{	mode <- modes[i]
+		tlog(2,"Computing harmonic closeness: mode=",mode)
+		
+		# possibly create folder
+		fname <- paste0("closeness_harmo_",mode)
+		closeness.folder <- file.path(FOLDER_OUT_ANAL,g$name,"closeness_harmo")
+		dir.create(path=closeness.folder, showWarnings=FALSE, recursive=TRUE)
+		
+		# harmonic closeness distribution: only giant component
+		vals <- rep(NA, vcount(g))
+		vals <- harmonic_centrality(x=g, mode=if(mode=="undirected") "all" else mode)
+		vals[is.nan(vals)] <- NA
+		custom.hist(vals, name=paste(long.names[i],"Harmonic Closeness"), file=file.path(closeness.folder,paste0(fname,"_histo")))
+		
+		# export CSV with harmonic closeness
+		df <- data.frame(vertex_attr(g, COL_PERS_ID), get.person.names(g), vals)
+		colnames(df) <- c("Id","Name",fname) 
+		write.csv(df, file=file.path(closeness.folder,paste0(fname,"_values.csv")), row.names=FALSE)
+		
+		# add degree (as node attributes) to the graph and stats table
+		g <- set_vertex_attr(graph=g, name=fname, value=vals)
+		g <- set_graph_attr(graph=g, name=paste0(fname,"_mean"), value=mean(vals,na.rm=TRUE))
+		g <- set_graph_attr(graph=g, name=paste0(fname,"_stdev"), value=sd(vals,na.rm=TRUE))
+		stats[fname, ] <- list(Value=NA, Mean=mean(vals,na.rm=TRUE), Stdv=sd(vals,na.rm=TRUE))
+		
+		# plot graph using color for harmonic closeness
+		g <- update.node.labels(g, vals)
+		custom.gplot(g,col.att=fname,file=file.path(closeness.folder,paste0(fname,"_graph")))
+		#custom.gplot(g,col.att=fname)
+		if(all(is.na(vals)))
+			tlog(4,"WARNING: all values are NA, so no color in the plot")
+	}
+	
+	# export CSV with average degree
+	write.csv(stats, file=stat.file, row.names=TRUE)
+	
+	# record graph and return it
+	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
+	write.graphml.file(g=g, file=graph.file)
 	return(g)
 }
 
@@ -404,8 +469,8 @@ analyze.net.transitivity <- function(g)
 	global <- transitivity(graph=g, type="globalundirected", isolates="zero")
 	
 	# export CSV with transitivity
-	df <- data.frame(V(g)$name,V(g)$label,vals)
-	colnames(df) <- c("Name","Label",fname) 
+	df <- data.frame(vertex_attr(g, COL_PERS_ID), get.person.names(g), vals)
+	colnames(df) <- c("Id","Name",fname) 
 	write.csv(df, file=file.path(transitivity.folder,paste0(fname,"_values.csv")), row.names=FALSE)
 	
 	# add results to the graph (as attributes) and stats table
@@ -417,6 +482,7 @@ analyze.net.transitivity <- function(g)
 	stats[paste0(fname,"global"), ] <- list(Value=global, Mean=NA, Stdv=NA)
 	
 	# plot graph using color for transitivity
+	g <- update.node.labels(g, vals)
 	custom.gplot(g,col.att=fname,file=file.path(transitivity.folder,paste0(fname,"_graph")))
 	#custom.gplot(g,col.att=fname)
 	
@@ -425,7 +491,7 @@ analyze.net.transitivity <- function(g)
 	
 	# record graph and return it
 	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
-	write.graph(graph=g, file=graph.file, format="graphml")
+	write.graphml.file(g=g, file=graph.file)
 	return(g)
 }
 
@@ -455,7 +521,7 @@ analyze.net.comstruct <- function(g)
 		communities.folder <- file.path(FOLDER_OUT_ANAL,g$name,"communities")
 		dir.create(path=communities.folder, showWarnings=FALSE, recursive=TRUE)
 		
-		# community size distribution
+		# detect communities
 		#coms <- cluster_optimal(graph=simplify(g))		# much slower, obviously
 		#coms <- cluster_spinglass(graph=simplify(g))
 		#coms <- cluster_infomap(graph=simplify(g))
@@ -465,12 +531,14 @@ analyze.net.comstruct <- function(g)
 		com.nbr <- length(unique(mbrs))
 		tlog(4,"Number of communities: ",com.nbr)
 		tlog(4,"Modularity: ",mod)
+		
+		# community size distribution
 		sizes <- table(mbrs,useNA="ifany")
 		custom.barplot(sizes, text=names(sizes), xlab="Community", ylab="Size", file=file.path(communities.folder,paste0(fname,"size_bars")))
 		
 		# export CSV with community membership
-		df <- data.frame(V(g)$name,V(g)$label,mbrs)
-		colnames(df) <- c("Name","Label","Community") 
+		df <- data.frame(vertex_attr(g, COL_PERS_ID), get.person.names(g), mbrs)
+		colnames(df) <- c("Id","Name","Community") 
 		write.csv(df, file=file.path(communities.folder,paste0(fname,"membership.csv")), row.names=FALSE)
 		
 		# add results to the graph (as attributes) and stats table
@@ -481,6 +549,7 @@ analyze.net.comstruct <- function(g)
 		stats[paste0(fname,"_mod"), ] <- list(Value=mod, Mean=NA, Stdv=NA)
 		
 		# plot graph using color for communities
+		V(g)$label <- rep(NA, gorder(g))
 		custom.gplot(g,col.att=fname,cat.att=TRUE,file=file.path(communities.folder,paste0(fname,"_graph")))
 		#custom.gplot(g,col.att=fname,cat.att=TRUE)
 	}
@@ -490,7 +559,7 @@ analyze.net.comstruct <- function(g)
 	
 	# record graph and return it
 	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
-	write.graph(graph=g, file=graph.file, format="graphml")
+	write.graphml.file(g=g, file=graph.file)
 	return(g)
 }
 
@@ -667,7 +736,7 @@ analyze.net.assortativity <- function(g)
 		stats[attr, ] <- list(Value=vals[i], Mean=NA, Stdv=NA)
 	}
 	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
-	write.graph(graph=g, file=graph.file, format="graphml")
+	write.graphml.file(g=g, file=graph.file)
 	
 	# record table
 	write.csv(stats, file=stat.file, row.names=TRUE)
@@ -738,6 +807,7 @@ analyze.net.attributes <- function(g)
 		# plot the graph using colors for attribute values
 		tlog(4,"Graph-plotting attribute \"",attr,"\"")
 		plot.file <- file.path(plot.folder, paste0(attr,"_graph"))
+		V(g)$label <- rep(NA, gorder(g))
 		custom.gplot(g, col.att=attr, cat.att=TRUE, color.isolates=TRUE, file=plot.file)
 		#custom.gplot(g, col.att=attr, cat.att=TRUE, color.isolates=TRUE)
 		
@@ -803,6 +873,7 @@ analyze.net.attributes <- function(g)
 			}
 		}
 		plot.file <- file.path(plot.folder, paste0(attr,"_graph"))
+		V(g)$label <- rep(NA, gorder(g))
 		custom.gplot(g=g, col.att=attrc, cat.att=TRUE, color.isolates=TRUE, file=plot.file)
 		#custom.gplot(g=g, col.att=attrc, cat.att=TRUE, color.isolates=TRUE)
 #		if(attr==ATT_NODE_TRAV_DEST)
@@ -847,6 +918,7 @@ analyze.net.attributes <- function(g)
 			tlog(6,"Graph-plotting attribute \"",att_name,"\"")
 			plot.file <- file.path(plot.folder2, "graphs")
 			gg <- set_vertex_attr(graph=g, name=att_name, value=vals)
+			V(gg)$label <- rep(NA, gorder(gg))
 			custom.gplot(gg, col.att=att_name, cat.att=TRUE, color.isolates=TRUE, file=plot.file)
 			#custom.gplot(gg, col.att=att_name, cat.att=TRUE, color.isolates=TRUE)
 		}
@@ -926,6 +998,7 @@ analyze.net.attributes <- function(g)
 #	{	attr <- colnames(num.data)[i]
 #		tlog(4,"Plotting attribute \"",attr,"\"")
 #		gg <- set_vertex_attr(graph=g, name=attr, value=num.data[,i])
+#		V(gg)$label <- rep(NA, gorder(gg))
 #		custom.gplot(gg,col.att=attr,cat.att=FALSE,color.isolates=TRUE,file=file.path(attr.folder,paste0(attr,"_graph")))
 ##		custom.gplot(gg,col.att=attr,cat.att=FALSE,color.isolates=TRUE)
 #	}
@@ -940,6 +1013,14 @@ analyze.net.attributes <- function(g)
 
 #############################################################
 # Recursively computes articulation points.
+#
+# An articulation point is a vertex whose removal makes the
+# graph disconnected (i.e. it contains several components).
+# This function recursively identifies them, i.e. it looks for
+# first level articulation points, removes them, then look 
+# for articulation points in the resulting components to get
+# second level ones, and so on until no more articulation
+# point is detected. Edge directions are ignored by igraph here.
 #
 # g: original graph to process.
 # 
@@ -980,8 +1061,8 @@ analyze.net.articulation <- function(g)
 	custom.hist(vals, name="Articulation Point Levels", file=file.path(articulation.folder,"articulation_histo"))
 	
 	# export CSV with articulation
-	df <- data.frame(V(g)$name,V(g)$label,vals)
-	colnames(df) <- c("Name","Label","articulation") 
+	df <- data.frame(vertex_attr(g, COL_PERS_ID), get.person.names(g), vals)
+	colnames(df) <- c("Id","Name","articulation") 
 	write.csv(df, file=file.path(articulation.folder,"articulation_values.csv"), row.names=FALSE)
 	
 	# add results to the graph (as attributes) and record
@@ -999,7 +1080,7 @@ analyze.net.articulation <- function(g)
 
 	# record graph and return it
 	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
-	write.graph(graph=g, file=graph.file, format="graphml")
+	write.graphml.file(g=g, file=graph.file)
 	return(g)
 }
 
@@ -1038,35 +1119,36 @@ analyze.net.distance <- function(g)
 		avg.vals <- apply(X=vals,MARGIN=1,FUN=function(v) mean(v[!is.infinite(v)]))
 		custom.hist(vals=avg.vals, name=paste("Average",long.names[i],"Distance"), file=file.path(distance.folder,paste0(fname,"_avg_histo")))
 		{	# export CSV with average distance
-			df <- data.frame(V(g)$name, V(g)$label, avg.vals)
-			colnames(df) <- c("Name","Label",paste0(fname,"_avg")) 
+			df <- data.frame(vertex_attr(g, COL_PERS_ID), get.person.names(g), avg.vals)
+			colnames(df) <- c("Id","Name",paste0(fname,"_avg")) 
 			write.csv(df, file=file.path(distance.folder,paste0(fname,"_avg_values.csv")), row.names=FALSE)
 			
 			# add results to the graph (as attributes) and stats table
 			g <- set_vertex_attr(graph=g, name=paste0(fname,"_avg"), value=avg.vals)
-			g <- set_graph_attr(graph=g, name=paste0(fname,"_mean"), value=mean(flat.vals))
-			g <- set_graph_attr(graph=g, name=paste0(fname,"_stdev"), value=sd(flat.vals))
-			stats[fname, ] <- list(Value=NA, Mean=mean(vals), Stdv=sd(vals))
+			g <- set_graph_attr(graph=g, name=paste0(fname,"_mean"), value=mean(flat.vals[!is.infinite(flat.vals)]))
+			g <- set_graph_attr(graph=g, name=paste0(fname,"_stdev"), value=sd(flat.vals[!is.infinite(flat.vals)]))
+			stats[fname, ] <- list(Value=NA, Mean=mean(vals[!is.infinite(vals)]), Stdv=sd(vals[!is.infinite(vals)]))
 			
 			# plot graph using color for average distance
 			g <- update.node.labels(g, avg.vals)
 			custom.gplot(g,col.att=paste0(fname,"_avg"),file=file.path(distance.folder,paste0(fname,"_avg_graph")))
-			#custom.gplot(g,col.att=fname)
+			#custom.gplot(g,col.att=paste0(fname,"_avg"))
 		}
 		
 		# for each node, plot graph using color for distance
 		mode.folder <- file.path(distance.folder,mode)
 		dir.create(path=mode.folder, showWarnings=FALSE, recursive=TRUE)
 		for(n in 1:gorder(g))
-		{	nname <- vertex_attr(g, COL_PERS_NAME_FULL_NORM, n)
+		{	id <- vertex_attr(g, COL_PERS_ID, n)
+			nname <- get.person.names(g, n)
 			nname <- trimws(gsub("?", "", nname, fixed=TRUE))
 			g <- set_vertex_attr(graph=g, name=fname, value=vals[n,])
 			if(all(is.infinite(vals[n,-n])))
-				tlog(4,"NOT plotting graph for node #",n,"(",nname,"), as all values are infinite")
+				tlog(4,"NOT plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),"), as all values are infinite")
 			else
-			{	tlog(4,"Plotting graph for node #",n,": ",nname)
+			{	tlog(4,"Plotting graph for node #",id," (",nname, ", ",n,"/",gorder(g),")")
 				g <- update.node.labels(g, vals[n,])
-				custom.gplot(g,col.att=fname,v.hl=n,file=file.path(mode.folder,paste0("n",n,"_",nname)))
+				custom.gplot(g,col.att=fname,v.hl=n,file=file.path(mode.folder,paste0("n",id,"_",nname)))
 			}
 			g <- delete_vertex_attr(graph=g, name=fname)
 		}
@@ -1077,7 +1159,7 @@ analyze.net.distance <- function(g)
 	
 	# record graph and return it
 	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
-	write.graph(graph=g, file=graph.file, format="graphml")
+	write.graphml.file(g=g, file=graph.file)
 	return(g)
 }
 
@@ -1086,6 +1168,9 @@ analyze.net.distance <- function(g)
 
 #############################################################
 # Computes vertex connectivity and generates plots and CSV files.
+#
+# The connectivity of two vertices is the minimal number of vertices
+# that should be removed in order to make the vertices disconnected.
 #
 # g: original graph to process.
 # 
@@ -1096,64 +1181,166 @@ analyze.net.connectivity <- function(g)
 	stat.file <- file.path(FOLDER_OUT_ANAL, g$name, "stats.csv")
 	stats <- retrieve.stats(stat.file)
 	
-	tlog(2,"Computing vertex connectivity")
-	# possibly create folder
-	fname <- "connectivity"
-	connectivity.folder <- file.path(FOLDER_OUT_ANAL,g$name,"connectivity")
-	dir.create(path=connectivity.folder, showWarnings=FALSE, recursive=TRUE)
-	
-	# connectivity distribution
-	vals <- matrix(NA, nrow=gorder(g), ncol=gorder(g))
-	for(n in 1:(gorder(g)-1))
-	{	vals[n,n] <- 0
-		neigh <- neighbors(graph=g, v=n)
-		for(n2 in (n+1):gorder(g))
-		{	if(n2 %in% neigh)
-				tmp <- 1
+	modes <- c("undirected", "directed")
+	for(mode in modes)
+	{	tlog(2,"Computing vertex connectivity: mode=",mode)
+		
+		# possibly create folder
+		fname <- paste0("connectivity_",mode)
+		connectivity.folder <- file.path(FOLDER_OUT_ANAL,g$name,"connectivity")
+		dir.create(path=connectivity.folder, showWarnings=FALSE, recursive=TRUE)
+		
+		# compute connectivity
+		vals <- matrix(NA, nrow=gorder(g), ncol=gorder(g))
+		g2 <- if(mode=="directed") g else as.undirected(g)
+		for(n in 1:(gorder(g2)-1))
+		{	vals[n,n] <- 0
+			neigh <- neighbors(graph=g2, v=n)
+			for(n2 in (n+1):gorder(g2))
+			{	if(n2 %in% neigh)
+					tmp <- 1	# direct connexion: should be Inf, I guess? but igraph throws an error
+				else
+					tmp <- vertex_connectivity(
+							graph=g2,
+							source=n, target=n2)
+				vals[n,n2] <- tmp
+				vals[n2,n] <- vals[n,n2]
+			}
+		}
+		vals[gorder(g),gorder(g)] <- 0
+		flat.vals <- vals[upper.tri(vals)]
+		custom.hist(vals=flat.vals, name="Connectivity", file=file.path(connectivity.folder,paste0(fname,"_histo")))
+		# connectivity distribution
+		avg.vals <- apply(X=vals,MARGIN=1,FUN=function(v) mean(v[!is.infinite(v)]))
+		custom.hist(vals=avg.vals, name="Connectivity", file=file.path(connectivity.folder,paste0(fname,"_avg_histo")))
+		{	# export CSV with average connectivity
+			df <- data.frame(vertex_attr(g, COL_PERS_ID), get.person.names(g), avg.vals)
+			colnames(df) <- c("Id","Name",fname) 
+			write.csv(df, file=file.path(connectivity.folder,paste0(fname,"_avg_values.csv")), row.names=FALSE)
+			
+			# add results to the graph (as attributes) and record
+			g <- set_vertex_attr(graph=g, name=paste0(fname,"_avg"), value=avg.vals)
+			g <- set_graph_attr(graph=g, name=paste0(fname,"_mean"), value=mean(vals))
+			g <- set_graph_attr(graph=g, name=paste0(fname,"_stdev"), value=sd(vals))
+			stats[fname, ] <- list(Value=NA, Mean=mean(vals), Stdv=sd(vals))
+			
+			# plot graph using color for average connectivity
+			g <- update.node.labels(g, avg.vals)
+			custom.gplot(g,col.att=paste0(fname,"_avg"),file=file.path(connectivity.folder,paste0(fname,"_avg_graph")))
+			#custom.gplot(g,col.att=paste0(fname,"_avg"))
+		}
+		
+		# for each node, plot graph using color for connectivity
+		mode.folder <- file.path(connectivity.folder,mode)
+		dir.create(path=mode.folder, showWarnings=FALSE, recursive=TRUE)
+		for(n in 1:gorder(g))
+		{	id <- vertex_attr(g, COL_PERS_ID, n)
+			nname <- get.person.names(g, n)
+			nname <- trimws(gsub("?", "", nname, fixed=TRUE))
+			g <- set_vertex_attr(graph=g, name=fname, value=vals[n,])
+			if(all(vals[n,]==0))
+				tlog(4,"NOT plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),"), as all values are zero")
 			else
-				tmp <- vertex_connectivity(graph=g, source=n, target=n2)
-			vals[n,n2] <- tmp
-			vals[n2,n] <- vals[n,n2]
+			{	tlog(4,"Plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),")")
+				g <- update.node.labels(g, vals[n,])
+				custom.gplot(g,col.att=fname,v.hl=n,file=file.path(mode.folder,paste0("n",id,"_",nname)))
+			}
+			g <- delete_vertex_attr(graph=g, name=fname)
 		}
 	}
-	vals[gorder(g),gorder(g)] <- 0
-	flat.vals <- vals[upper.tri(vals)]
-	custom.hist(vals=flat.vals, name="Connectivity", file=file.path(connectivity.folder,paste0(fname,"_histo")))
-	# connectivity distribution
-	avg.vals <- apply(X=vals,MARGIN=1,FUN=function(v) mean(v[!is.infinite(v)]))
-	custom.hist(vals=avg.vals, name="Connectivity", file=file.path(connectivity.folder,paste0(fname,"_avg_histo")))
 	
 	# export CSV with average connectivity
-	df <- data.frame(V(g)$name,V(g)$label,avg.vals)
-	colnames(df) <- c("Name","Label",fname) 
-	write.csv(df, file=file.path(connectivity.folder,paste0(fname,"_avg_values.csv")), row.names=FALSE)
-	
-	# add results to the graph (as attributes) and record
-	g <- set_vertex_attr(graph=g, name=paste0(fname,"_avg"), value=avg.vals)
-	g <- set_graph_attr(graph=g, name=paste0(fname,"_mean"), value=mean(vals))
-	g <- set_graph_attr(graph=g, name=paste0(fname,"_stdev"), value=sd(vals))
-	stats[fname, ] <- list(Value=NA, Mean=mean(vals), Stdv=sd(vals))
-	
-	# for each node, plot graph using color for connectivity
-	for(n in 1:gorder(g))
-	{	nname <- vertex_attr(g, COL_PERS_NAME_FULL_NORM, n)
-		nname <- trimws(gsub("?", "", nname, fixed=TRUE))
-		g <- set_vertex_attr(graph=g, name=fname, value=vals[n,])
-		if(all(vals[n,]==0))
-			tlog(4,"NOT plotting graph for node #",n,"(",nname,"), as all values are zero")
-		else
-		{	tlog(4,"Plotting graph for node #",n,": ",nname)
-			custom.gplot(g,col.att=fname,v.hl=n,file=file.path(connectivity.folder,paste0("n",n,"_",nname)))
-		}
-		g <- delete_vertex_attr(graph=g, name=fname)
-	}
-	
-	# export CSV with average degree
 	write.csv(stats, file=stat.file, row.names=TRUE)
 	
 	# record graph and return it
 	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
-	write.graph(graph=g, file=graph.file, format="graphml")
+	write.graphml.file(g=g, file=graph.file)
+	return(g)
+}
+
+
+
+
+#############################################################
+# Identifies the weak and strong components of the graph.
+#
+# g: original graph to process.
+# 
+# returns: same graph, updated with the results.
+#############################################################
+analyze.net.components <- function(g)
+{	# get the stat table
+	stat.file <- file.path(FOLDER_OUT_ANAL, g$name, "stats.csv")
+	stats <- retrieve.stats(stat.file)
+	
+	# numbers of nodes and edges
+	stats[paste0("node_nbr"), ] <- list(Value=gorder(g), Mean=NA, Stdv=NA)
+	stats[paste0("link_nbr"), ] <- list(Value=gsize(g), Mean=NA, Stdv=NA)
+	
+	# computing components
+	modes <- c("undirected", "directed")
+	for(mode in modes)
+	{	tlog(2,"Computing components: mode=",mode)
+		
+		# possibly create folder
+		fname <- paste0("components_",mode)
+		components.folder <- file.path(FOLDER_OUT_ANAL,g$name,"components")
+		dir.create(path=components.folder, showWarnings=FALSE, recursive=TRUE)
+		
+		# detect components
+		cmp <- components(graph=g, mode=if(mode=="undirected") "weak" else "strong")
+		mbrs <- cmp$membership
+		comp.nbr <- cmp$no
+		tlog(4,"Number of components: ",comp.nbr)
+		
+		# component size distribution
+		sizes <- table(mbrs,useNA="ifany")
+		custom.barplot(sizes, text=names(sizes), xlab="Component", ylab="Size", file=file.path(components.folder,paste0(fname,"size_bars")))
+		
+		# export CSV with component membership
+		df <- data.frame(vertex_attr(g, COL_PERS_ID), get.person.names(g), mbrs)
+		colnames(df) <- c("Id","Name","Component") 
+		write.csv(df, file=file.path(components.folder,paste0(fname,"membership.csv")), row.names=FALSE)
+		
+		# add results to the graph (as attributes) and stats table
+		g <- set_vertex_attr(graph=g, name=fname, value=mbrs)
+		g <- set_graph_attr(graph=g, name=paste0(fname,"_nbr"), value=comp.nbr)
+		stats[paste0(fname,"_nbr"), ] <- list(Value=comp.nbr, Mean=NA, Stdv=NA)
+		
+		# continue with only the largest components
+#		idx <- which(cmp$csize >= 0.1*gorder(g))	# keep only the components containing at least 10% of the nodes
+		idx <- which(cmp$csize >= 10)				# too strict: switched to 10 nodes
+		tlog(4,"Number of large components: ",length(idx))
+		mbrs[is.na(match(mbrs,idx))] <- NA
+		g <- set_vertex_attr(graph=g, name=fname, value=mbrs)
+		
+		# plot graph using color for components
+		V(g)$label <- rep(NA, gorder(g))
+		custom.gplot(g,col.att=fname,cat.att=TRUE,file=file.path(components.folder,paste0(fname,"_graph")))
+		#custom.gplot(g,col.att=fname,cat.att=TRUE)
+		g <- set_vertex_attr(graph=g, name=fname, value=cmp$membership)
+	
+		# plot components separately
+		mode.folder <- file.path(components.folder, mode)
+		dir.create(path=mode.folder, showWarnings=FALSE, recursive=TRUE)
+		for(i in idx)
+		{	# plot subgraph
+			g2 <- induced_subgraph(graph=g, vids=which(mbrs==i))
+			V(g2)$label <- rep(NA, gorder(g2))
+			custom.gplot(g2,file=file.path(mode.folder,paste0("component_",i)))
+			
+			# export subgraph
+			graph.file <- file.path(mode.folder,paste0("component_",i,".graphml"))
+			write.graphml.file(g=g, file=graph.file)
+		}
+	}
+	
+	# export CSV with results
+	write.csv(stats, file=stat.file, row.names=TRUE)
+	
+	# record graph and return it
+	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
+	write.graphml.file(g=g, file=graph.file)
 	return(g)
 }
 
@@ -1194,6 +1381,9 @@ analyze.network <- function(gname)
 	# compute closeness
 	g <- analyze.net.closeness(g)
 	
+	# compute harmonic closeness
+	g <- analyze.net.harmonic.closeness(g)
+	
 	# compute distances
 	g <- analyze.net.distance(g)
 	
@@ -1208,6 +1398,9 @@ analyze.network <- function(gname)
 	
 	# compute vertex connectivity
 	g <- analyze.net.connectivity(g)
+	
+	# compute components
+	g <- analyze.net.components(g)
 	
 	# compute assortativity
 	g <- analyze.net.assortativity(g)

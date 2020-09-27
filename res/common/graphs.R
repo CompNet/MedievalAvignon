@@ -40,6 +40,38 @@ load.graphml.file <- function(file)
 
 
 ###############################################################################
+# Records a graphml file and replaces NA by -1 whenever necessary.
+#
+# file: the graphml file to record to.
+# 
+# returns: the recorded graph. 
+###############################################################################
+write.graphml.file <- function(g, file)
+{	# clean vertex attributes
+	for(att in vertex_attr_names(g))
+	{	vals <- vertex_attr(graph=g, name=att)
+		if(is.numeric(vals) && any(is.na(vals)))
+		{	vals[is.na(vals)] <- -1
+			g <- set_vertex_attr(graph=g, name=att, value=vals)
+		}
+	}
+	
+	# clean edge attributes
+	for(att in edge_attr_names(g))
+	{	vals <- edge_attr(graph=g, name=att)
+		if(is.numeric(vals) && any(is.na(vals)))
+		{	vals[is.na(vals)] <- -1
+			g <- set_edge_attr(graph=g, name=att, value=vals)
+		}
+	}
+	
+	write.graph(g, file=file, format="graphml")
+}
+
+
+
+
+###############################################################################
 # Updates the label node attribute of the graph, in order to restrict values
 # only to top nodes according to the specified node attribute. This is convenient
 # when there are too many nodes, and displaying all names makes graph plots
@@ -66,7 +98,7 @@ update.node.labels <- function(g, vals, best.low=FALSE)
 		bottom.idx <- 1:gorder(g)
 	else
 		bottom.idx <- order(vals, decreasing=TRUE)[1:lim]
-	V(g)$label[bottom.idx] <- vertex_attr(g, COL_PERS_NAME_FULL_NORM, bottom.idx)
+	V(g)$label[bottom.idx] <- get.person.names(g, vs=bottom.idx)
 	
 	return(g)
 }
