@@ -588,7 +588,7 @@ analyze.net.assortativity <- function(g)
 	# gather regular categorical attributes 
 	attrs <- intersect(c(
 				COL_PERS_NAME_LAST, COL_PERS_NAME_NICK, COL_PERS_NAME_TYPE,
-				COL_PERS_GENDER, COL_PERS_RESIDENCE,
+				COL_PERS_GENDER, COL_PERS_IDENTIFICATION, COL_PERS_RESIDENCE,
 				COL_PERS_ECCL_NORM, #COL_PERS_ECCL_LAT, COL_PERS_ECCL_FRE,
 				COL_PERS_HEALTH_FRE, #COL_PERS_HEALTH_LAT,
 				COL_PERS_CITY_FRE, #COL_PERS_CITY_LAT,
@@ -775,7 +775,7 @@ analyze.net.attributes <- function(g)
 	# gather regular categorical attributes
 	attrs <- intersect(c(
 				COL_PERS_NAME_LAST, COL_PERS_NAME_NICK, COL_PERS_NAME_TYPE,
-				COL_PERS_GENDER, COL_PERS_RESIDENCE,
+				COL_PERS_GENDER, COL_PERS_IDENTIFICATION, COL_PERS_RESIDENCE,
 				COL_PERS_ECCL_NORM, #COL_PERS_ECCL_LAT, COL_PERS_ECCL_FRE,
 				COL_PERS_HEALTH_FRE, #COL_PERS_HEALTH_LAT,
 				COL_PERS_CITY_FRE, #COL_PERS_CITY_LAT,
@@ -1139,18 +1139,23 @@ analyze.net.distance <- function(g)
 		mode.folder <- file.path(distance.folder,mode)
 		dir.create(path=mode.folder, showWarnings=FALSE, recursive=TRUE)
 		for(n in 1:gorder(g))
-		{	id <- vertex_attr(g, COL_PERS_ID, n)
-			nname <- get.person.names(g, n)
-			nname <- trimws(gsub("?", "", nname, fixed=TRUE))
-			g <- set_vertex_attr(graph=g, name=fname, value=vals[n,])
-			if(all(is.infinite(vals[n,-n])))
-				tlog(4,"NOT plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),"), as all values are infinite")
+		{	# only for significant nodes
+			if(degree(g, v=n, mode="all"))
+				tlog(4,"NOT plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),"), as its degree is <3")
 			else
-			{	tlog(4,"Plotting graph for node #",id," (",nname, ", ",n,"/",gorder(g),")")
-				g <- update.node.labels(g, vals[n,])
-				custom.gplot(g,col.att=fname,v.hl=n,file=file.path(mode.folder,paste0("n",id,"_",nname)))
+			{	id <- vertex_attr(g, COL_PERS_ID, n)
+				nname <- get.person.names(g, n)
+				nname <- trimws(gsub("?", "", nname, fixed=TRUE))
+				g <- set_vertex_attr(graph=g, name=fname, value=vals[n,])
+				if(all(is.infinite(vals[n,-n])))
+					tlog(4,"NOT plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),"), as all values are infinite")
+				else
+				{	tlog(4,"Plotting graph for node #",id," (",nname, ", ",n,"/",gorder(g),")")
+					g <- update.node.labels(g, vals[n,])
+					custom.gplot(g,col.att=fname,v.hl=n,file=file.path(mode.folder,paste0("n",id,"_",nname)))
+				}
+				g <- delete_vertex_attr(graph=g, name=fname)
 			}
-			g <- delete_vertex_attr(graph=g, name=fname)
 		}
 	}
 	
@@ -1234,18 +1239,23 @@ analyze.net.connectivity <- function(g)
 		mode.folder <- file.path(connectivity.folder,mode)
 		dir.create(path=mode.folder, showWarnings=FALSE, recursive=TRUE)
 		for(n in 1:gorder(g))
-		{	id <- vertex_attr(g, COL_PERS_ID, n)
-			nname <- get.person.names(g, n)
-			nname <- trimws(gsub("?", "", nname, fixed=TRUE))
-			g <- set_vertex_attr(graph=g, name=fname, value=vals[n,])
-			if(all(vals[n,]==0))
-				tlog(4,"NOT plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),"), as all values are zero")
+		{	# only for significant nodes
+			if(degree(g, v=n, mode="all"))
+				tlog(4,"NOT plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),"), as its degree is <3")
 			else
-			{	tlog(4,"Plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),")")
-				g <- update.node.labels(g, vals[n,])
-				custom.gplot(g,col.att=fname,v.hl=n,file=file.path(mode.folder,paste0("n",id,"_",nname)))
+			{	id <- vertex_attr(g, COL_PERS_ID, n)
+				nname <- get.person.names(g, n)
+				nname <- trimws(gsub("?", "", nname, fixed=TRUE))
+				g <- set_vertex_attr(graph=g, name=fname, value=vals[n,])
+				if(all(vals[n,]==0))
+					tlog(4,"NOT plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),"), as all values are zero")
+				else
+				{	tlog(4,"Plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),")")
+					g <- update.node.labels(g, vals[n,])
+					custom.gplot(g,col.att=fname,v.hl=n,file=file.path(mode.folder,paste0("n",id,"_",nname)))
+				}
+				g <- delete_vertex_attr(graph=g, name=fname)
 			}
-			g <- delete_vertex_attr(graph=g, name=fname)
 		}
 	}
 	

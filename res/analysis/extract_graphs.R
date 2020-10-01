@@ -185,8 +185,17 @@ extract.social.networks <- function()
 			idx.mult <- which(count_multiple(g1)>1)
 			tlog(6,"Multiple links: ",length(idx.mult))
 			if(length(idx.mult)>0)
-			{	tab <- cbind(V(g1)$name[el[idx.mult,1]], V(g1)$name[el[idx.mult,2]], count_multiple(g1)[idx.mult])
-				colnames(tab) <- c("Source","Target","Multiplicity")
+			{	tab <- matrix(nrow=0, ncol=4)
+				colnames(tab) <- c("Source","Target","Multiplicity","Description")
+				for(j in 1:length(idx.mult))
+				{	lids <- E(g1)[el[idx.mult[j],1] %->% el[idx.mult[j],2]]
+					descr <- edge_attr(g1,LK_DESCR, E(g1)[lids])
+					if(length(descr)>length(unique(descr)))
+					{	row <- c(V(g1)$name[el[idx.mult[j],1]], V(g1)$name[el[idx.mult[j],2]], 
+								count_multiple(g1)[idx.mult[j]], paste(descr, collapse=":"))
+						tab <- rbind(tab, row)
+					}
+				}
 				print(tab)
 				tab.file <- file.path(graph.folder, "pb_multiple_links.txt")
 				write.table(tab, file=tab.file, quote=FALSE, sep="\t", row.names=FALSE, col.names=TRUE)
