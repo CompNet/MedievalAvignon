@@ -1139,14 +1139,15 @@ analyze.net.distance <- function(g)
 		mode.folder <- file.path(distance.folder,mode)
 		dir.create(path=mode.folder, showWarnings=FALSE, recursive=TRUE)
 		for(n in 1:gorder(g))
-		{	# only for significant nodes
+		{	id <- vertex_attr(g, COL_PERS_ID, n)
+			nname <- get.person.names(g, n)
+			nname <- trimws(gsub("?", "", nname, fixed=TRUE))
+			
+			# only for significant nodes
 			if(degree(g, v=n, mode="all"))
 				tlog(4,"NOT plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),"), as its degree is <3")
 			else
-			{	id <- vertex_attr(g, COL_PERS_ID, n)
-				nname <- get.person.names(g, n)
-				nname <- trimws(gsub("?", "", nname, fixed=TRUE))
-				g <- set_vertex_attr(graph=g, name=fname, value=vals[n,])
+			{	g <- set_vertex_attr(graph=g, name=fname, value=vals[n,])
 				if(all(is.infinite(vals[n,-n])))
 					tlog(4,"NOT plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),"), as all values are infinite")
 				else
@@ -1239,14 +1240,15 @@ analyze.net.connectivity <- function(g)
 		mode.folder <- file.path(connectivity.folder,mode)
 		dir.create(path=mode.folder, showWarnings=FALSE, recursive=TRUE)
 		for(n in 1:gorder(g))
-		{	# only for significant nodes
+		{	id <- vertex_attr(g, COL_PERS_ID, n)
+			nname <- get.person.names(g, n)
+			nname <- trimws(gsub("?", "", nname, fixed=TRUE))
+			
+			# only for significant nodes
 			if(degree(g, v=n, mode="all"))
 				tlog(4,"NOT plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),"), as its degree is <3")
 			else
-			{	id <- vertex_attr(g, COL_PERS_ID, n)
-				nname <- get.person.names(g, n)
-				nname <- trimws(gsub("?", "", nname, fixed=TRUE))
-				g <- set_vertex_attr(graph=g, name=fname, value=vals[n,])
+			{	g <- set_vertex_attr(graph=g, name=fname, value=vals[n,])
 				if(all(vals[n,]==0))
 					tlog(4,"NOT plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),"), as all values are zero")
 				else
