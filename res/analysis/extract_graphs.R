@@ -311,3 +311,17 @@ extract.social.networks <- function()
 }
 
 # TODO extract directly the network with all 8000 nodes?
+
+
+
+
+########################################################################
+# Loads the raw data, extracts the different types of estate networks,
+# records them as graphml files, and plots them.
+########################################################################
+extract.confront.networks <- function()
+{	# load the data and create various versions of the graph
+	tlog(0,"Extracting various versions of the estate graph")
+	
+	
+}

@@ -34,12 +34,13 @@ retrieve.stats <- function(stat.file)
 # Same thing for radius and eccentricity.
 #
 # g: original graph to process.
+# out.folder: main output folder.
 # 
 # returns: same graph, updated with the results.
 #############################################################
-analyze.net.eccentricity <- function(g)
+analyze.net.eccentricity <- function(g, out.folder)
 {	# get the stat table
-	stat.file <- file.path(FOLDER_OUT_ANAL, g$name, "stats.csv")
+	stat.file <- file.path(out.folder, g$name, "stats.csv")
 	stats <- retrieve.stats(stat.file)
 	
 	# compute diameter
@@ -55,7 +56,7 @@ analyze.net.eccentricity <- function(g)
 		
 		# possibly create folder
 		fname <- paste0("diameter_",mode)
-		diameter.folder <- file.path(FOLDER_OUT_ANAL, g$name, "diameter", mode)
+		diameter.folder <- file.path(out.folder, g$name, "diameter", mode)
 		dir.create(path=diameter.folder, showWarnings=FALSE, recursive=TRUE)
 		
 		# plot diameter
@@ -99,7 +100,7 @@ analyze.net.eccentricity <- function(g)
 		
 		# possibly create folder
 		fname <- paste0("eccentricity_",mode)
-		eccentricity.folder <- file.path(FOLDER_OUT_ANAL, g$name, "eccentricity")
+		eccentricity.folder <- file.path(out.folder, g$name, "eccentricity")
 		dir.create(path=eccentricity.folder, showWarnings=FALSE, recursive=TRUE)
 		
 		# plot distribution
@@ -137,7 +138,7 @@ analyze.net.eccentricity <- function(g)
 	write.csv(stats, file=stat.file, row.names=TRUE)
 	
 	# record graph and return it
-	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
+	graph.file <- file.path(out.folder, g$name, FILE_GRAPH)
 	write.graphml.file(g=g, file=graph.file)
 	return(g)
 }
@@ -149,12 +150,13 @@ analyze.net.eccentricity <- function(g)
 # Computes the degree and generates plots and CSV files.
 #
 # g: original graph to process.
+# out.folder: main output folder.
 # 
 # returns: same graph, updated with the results.
 #############################################################
-analyze.net.degree <- function(g)
+analyze.net.degree <- function(g, out.folder)
 {	# get the stat table
-	stat.file <- file.path(FOLDER_OUT_ANAL, g$name, "stats.csv")
+	stat.file <- file.path(out.folder, g$name, "stats.csv")
 	stats <- retrieve.stats(stat.file)
 	
 	modes <- c("undirected","in","out")
@@ -165,7 +167,7 @@ analyze.net.degree <- function(g)
 		
 		# possibly create folder
 		fname <- paste0("degree_",mode)
-		degree.folder <- file.path(FOLDER_OUT_ANAL, g$name, "degree")
+		degree.folder <- file.path(out.folder, g$name, "degree")
 		dir.create(path=degree.folder, showWarnings=FALSE, recursive=TRUE)
 		
 		# degree distribution
@@ -193,7 +195,7 @@ analyze.net.degree <- function(g)
 	write.csv(stats, file=stat.file, row.names=TRUE)
 	
 	# record graph and return it
-	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
+	graph.file <- file.path(out.folder, g$name, FILE_GRAPH)
 	write.graphml.file(g=g, file=graph.file)
 	return(g)
 }
@@ -205,12 +207,13 @@ analyze.net.degree <- function(g)
 # Computes Eigencentrality and generates plots and CSV files.
 #
 # g: original graph to process.
+# out.folder: main output folder.
 # 
 # returns: same graph, updated with the results.
 #############################################################
-analyze.net.eigencentrality <- function(g)
+analyze.net.eigencentrality <- function(g, out.folder)
 {	# get the stat table
-	stat.file <- file.path(FOLDER_OUT_ANAL, g$name, "stats.csv")
+	stat.file <- file.path(out.folder, g$name, "stats.csv")
 	stats <- retrieve.stats(stat.file)
 	
 	modes <- c("undirected","directed")
@@ -221,7 +224,7 @@ analyze.net.eigencentrality <- function(g)
 		
 		# possibly create folder
 		fname <- paste0("eigencentrality_",mode)
-		eigen.folder <- file.path(FOLDER_OUT_ANAL, g$name, "eigencentrality")
+		eigen.folder <- file.path(out.folder, g$name, "eigencentrality")
 		dir.create(path=eigen.folder, showWarnings=FALSE, recursive=TRUE)
 		
 		# Eigencentrality distribution
@@ -252,7 +255,7 @@ analyze.net.eigencentrality <- function(g)
 	write.csv(stats, file=stat.file, row.names=TRUE)
 	
 	# record graph and return it
-	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
+	graph.file <- file.path(out.folder, g$name, FILE_GRAPH)
 	write.graphml.file(g=g, file=graph.file)
 	return(g)
 }
@@ -264,12 +267,13 @@ analyze.net.eigencentrality <- function(g)
 # Computes betweenness and generates plots and CSV files.
 #
 # g: original graph to process.
+# out.folder: main output folder.
 # 
 # returns: same graph, updated with the results.
 #############################################################
-analyze.net.betweenness <- function(g)
+analyze.net.betweenness <- function(g, out.folder)
 {	# get the stat table
-	stat.file <- file.path(FOLDER_OUT_ANAL, g$name, "stats.csv")
+	stat.file <- file.path(out.folder, g$name, "stats.csv")
 	stats <- retrieve.stats(stat.file)
 	
 	modes <- c("undirected", "directed")
@@ -280,7 +284,7 @@ analyze.net.betweenness <- function(g)
 		
 		# possibly create folder
 		fname <- paste0("betweenness_",mode)
-		betweenness.folder <- file.path(FOLDER_OUT_ANAL,g$name,"betweenness")
+		betweenness.folder <- file.path(out.folder,g$name,"betweenness")
 		dir.create(path=betweenness.folder, showWarnings=FALSE, recursive=TRUE)
 		
 		# betweenness distribution
@@ -308,7 +312,7 @@ analyze.net.betweenness <- function(g)
 	write.csv(stats, file=stat.file, row.names=TRUE)
 	
 	# record graph and return it
-	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
+	graph.file <- file.path(out.folder, g$name, FILE_GRAPH)
 	write.graphml.file(g=g, file=graph.file)
 	return(g)
 }
@@ -323,12 +327,13 @@ analyze.net.betweenness <- function(g)
 # only for the largest one.
 #
 # g: original graph to process.
+# out.folder: main output folder.
 # 
 # returns: same graph, updated with the results.
 #############################################################
-analyze.net.closeness <- function(g)
+analyze.net.closeness <- function(g, out.folder)
 {	# get the stat table
-	stat.file <- file.path(FOLDER_OUT_ANAL, g$name, "stats.csv")
+	stat.file <- file.path(out.folder, g$name, "stats.csv")
 	stats <- retrieve.stats(stat.file)
 	
 	modes <- c("undirected","in","out")
@@ -339,7 +344,7 @@ analyze.net.closeness <- function(g)
 		
 		# possibly create folder
 		fname <- paste0("closeness_",mode)
-		closeness.folder <- file.path(FOLDER_OUT_ANAL,g$name,"closeness")
+		closeness.folder <- file.path(out.folder,g$name,"closeness")
 		dir.create(path=closeness.folder, showWarnings=FALSE, recursive=TRUE)
 		
 		# retrieve giant component, do not compute measure for the rest of the graph
@@ -377,7 +382,7 @@ analyze.net.closeness <- function(g)
 	write.csv(stats, file=stat.file, row.names=TRUE)
 	
 	# record graph and return it
-	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
+	graph.file <- file.path(out.folder, g$name, FILE_GRAPH)
 	write.graphml.file(g=g, file=graph.file)
 	return(g)
 }
@@ -389,12 +394,13 @@ analyze.net.closeness <- function(g)
 # Computes harmonic closeness and generates plots and CSV files.
 #
 # g: original graph to process.
+# out.folder: main output folder.
 # 
 # returns: same graph, updated with the results.
 #############################################################
-analyze.net.harmonic.closeness <- function(g)
+analyze.net.harmonic.closeness <- function(g, out.folder)
 {	# get the stat table
-	stat.file <- file.path(FOLDER_OUT_ANAL, g$name, "stats.csv")
+	stat.file <- file.path(out.folder, g$name, "stats.csv")
 	stats <- retrieve.stats(stat.file)
 	
 	modes <- c("undirected","in","out")
@@ -405,7 +411,7 @@ analyze.net.harmonic.closeness <- function(g)
 		
 		# possibly create folder
 		fname <- paste0("closeness_harmo_",mode)
-		closeness.folder <- file.path(FOLDER_OUT_ANAL,g$name,"closeness_harmo")
+		closeness.folder <- file.path(out.folder,g$name,"closeness_harmo")
 		dir.create(path=closeness.folder, showWarnings=FALSE, recursive=TRUE)
 		
 		# harmonic closeness distribution: only giant component
@@ -437,7 +443,7 @@ analyze.net.harmonic.closeness <- function(g)
 	write.csv(stats, file=stat.file, row.names=TRUE)
 	
 	# record graph and return it
-	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
+	graph.file <- file.path(out.folder, g$name, FILE_GRAPH)
 	write.graphml.file(g=g, file=graph.file)
 	return(g)
 }
@@ -449,18 +455,19 @@ analyze.net.harmonic.closeness <- function(g)
 # Computes transitivity and generates plots and CSV files.
 #
 # g: original graph to process.
+# out.folder: main output folder.
 # 
 # returns: same graph, updated with the results.
 #############################################################
-analyze.net.transitivity <- function(g)
+analyze.net.transitivity <- function(g, out.folder)
 {	# get the stat table
-	stat.file <- file.path(FOLDER_OUT_ANAL, g$name, "stats.csv")
+	stat.file <- file.path(out.folder, g$name, "stats.csv")
 	stats <- retrieve.stats(stat.file)
 	
 	tlog(2,"Computing transitivity")
 	# possibly create folder
 	fname <- "transitivity"
-	transitivity.folder <- file.path(FOLDER_OUT_ANAL,g$name,"transitivity")
+	transitivity.folder <- file.path(out.folder,g$name,"transitivity")
 	dir.create(path=transitivity.folder, showWarnings=FALSE, recursive=TRUE)
 	
 	# transitivity distribution
@@ -490,7 +497,7 @@ analyze.net.transitivity <- function(g)
 	write.csv(stats, file=stat.file, row.names=TRUE)
 	
 	# record graph and return it
-	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
+	graph.file <- file.path(out.folder, g$name, FILE_GRAPH)
 	write.graphml.file(g=g, file=graph.file)
 	return(g)
 }
@@ -502,12 +509,13 @@ analyze.net.transitivity <- function(g)
 # Detects the community structure of the network.
 #
 # g: original graph to process.
+# out.folder: main output folder.
 # 
 # returns: same graph, updated with the results.
 #############################################################
-analyze.net.comstruct <- function(g)
+analyze.net.comstruct <- function(g, out.folder)
 {	# get the stat table
-	stat.file <- file.path(FOLDER_OUT_ANAL, g$name, "stats.csv")
+	stat.file <- file.path(out.folder, g$name, "stats.csv")
 	stats <- retrieve.stats(stat.file)
 	
 	modes <- c("undirected","directed")
@@ -518,7 +526,7 @@ analyze.net.comstruct <- function(g)
 		
 		# possibly create folder
 		fname <- paste0("community_",mode)
-		communities.folder <- file.path(FOLDER_OUT_ANAL,g$name,"communities")
+		communities.folder <- file.path(out.folder,g$name,"communities")
 		dir.create(path=communities.folder, showWarnings=FALSE, recursive=TRUE)
 		
 		# detect communities
@@ -558,7 +566,7 @@ analyze.net.comstruct <- function(g)
 	write.csv(stats, file=stat.file, row.names=TRUE)
 	
 	# record graph and return it
-	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
+	graph.file <- file.path(out.folder, g$name, FILE_GRAPH)
 	write.graphml.file(g=g, file=graph.file)
 	return(g)
 }
@@ -570,10 +578,11 @@ analyze.net.comstruct <- function(g)
 # Computes the assortativity of the network.
 #
 # g: original graph to process.
+# out.folder: main output folder.
 # 
 # returns: same graph, updated with the results.
 #############################################################
-analyze.net.assortativity <- function(g)
+analyze.net.assortativity <- function(g, out.folder)
 {	tlog(2,"Computing the assortativity")
 	
 	# retrieve the list of vertex attributes
@@ -726,7 +735,7 @@ analyze.net.assortativity <- function(g)
 	# record the results
 
 	# get the stat table
-	stat.file <- file.path(FOLDER_OUT_ANAL, g$name, "stats.csv")
+	stat.file <- file.path(out.folder, g$name, "stats.csv")
 	stats <- retrieve.stats(stat.file)
 
 	# add results to the graph (as attributes) and record
@@ -735,7 +744,7 @@ analyze.net.assortativity <- function(g)
 		g <- set_vertex_attr(graph=g, name=attr, value=vals[i])
 		stats[attr, ] <- list(Value=vals[i], Mean=NA, Stdv=NA)
 	}
-	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
+	graph.file <- file.path(out.folder, g$name, FILE_GRAPH)
 	write.graphml.file(g=g, file=graph.file)
 	
 	# record table
@@ -753,13 +762,14 @@ analyze.net.assortativity <- function(g)
 # Computes stats related to the node attributes.
 #
 # g: original graph to process.
+# out.folder: main output folder.
 # 
 # returns: same graph, updated with the results.
 #############################################################
-analyze.net.attributes <- function(g)
+analyze.net.attributes <- function(g, out.folder)
 {	tlog(2,"Computing nodal attribute stats")
 	# possibly create folders
-	graph.folder <- file.path(FOLDER_OUT_ANAL, g$name)
+	graph.folder <- file.path(out.folder, g$name)
 	attr.folder <- file.path(graph.folder, "attributes")
 	dir.create(path=attr.folder, showWarnings=FALSE, recursive=TRUE)
 	comp.folder <- file.path(attr.folder, "_comparison")
@@ -1023,12 +1033,13 @@ analyze.net.attributes <- function(g)
 # point is detected. Edge directions are ignored by igraph here.
 #
 # g: original graph to process.
+# out.folder: main output folder.
 # 
 # returns: same graph, updated with the results.
 #############################################################
-analyze.net.articulation <- function(g)
+analyze.net.articulation <- function(g, out.folder)
 {	# get the stat table
-	stat.file <- file.path(FOLDER_OUT_ANAL, g$name, "stats.csv")
+	stat.file <- file.path(out.folder, g$name, "stats.csv")
 	stats <- retrieve.stats(stat.file)
 	
 	# init 
@@ -1054,7 +1065,7 @@ analyze.net.articulation <- function(g)
 	vals <- V(g1)$Articulation
 	
 	# possibly create folder
-	articulation.folder <- file.path(FOLDER_OUT_ANAL,g$name,"articulation")
+	articulation.folder <- file.path(out.folder,g$name,"articulation")
 	dir.create(path=articulation.folder, showWarnings=FALSE, recursive=TRUE)
 	
 	# plot distribution
@@ -1079,7 +1090,7 @@ analyze.net.articulation <- function(g)
 	write.csv(stats, file=stat.file, row.names=TRUE)
 
 	# record graph and return it
-	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
+	graph.file <- file.path(out.folder, g$name, FILE_GRAPH)
 	write.graphml.file(g=g, file=graph.file)
 	return(g)
 }
@@ -1091,12 +1102,13 @@ analyze.net.articulation <- function(g)
 # Computes average distances and generates plots and CSV files.
 #
 # g: original graph to process.
+# out.folder: main output folder.
 # 
 # returns: same graph, updated with the results.
 #############################################################
-analyze.net.distance <- function(g)
+analyze.net.distance <- function(g, out.folder)
 {	# get the stat table
-	stat.file <- file.path(FOLDER_OUT_ANAL, g$name, "stats.csv")
+	stat.file <- file.path(out.folder, g$name, "stats.csv")
 	stats <- retrieve.stats(stat.file)
 	
 	modes <- c("undirected","in","out")
@@ -1107,7 +1119,7 @@ analyze.net.distance <- function(g)
 		
 		# possibly create folder
 		fname <- paste0("distance_",mode)
-		distance.folder <- file.path(FOLDER_OUT_ANAL,g$name,"distance")
+		distance.folder <- file.path(out.folder,g$name,"distance")
 		dir.create(path=distance.folder, showWarnings=FALSE, recursive=TRUE)
 		
 		# distance distribution
@@ -1164,7 +1176,7 @@ analyze.net.distance <- function(g)
 	write.csv(stats, file=stat.file, row.names=TRUE)
 	
 	# record graph and return it
-	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
+	graph.file <- file.path(out.folder, g$name, FILE_GRAPH)
 	write.graphml.file(g=g, file=graph.file)
 	return(g)
 }
@@ -1179,12 +1191,13 @@ analyze.net.distance <- function(g)
 # that should be removed in order to make the vertices disconnected.
 #
 # g: original graph to process.
+# out.folder: main output folder.
 # 
 # returns: same graph, updated with the results.
 #############################################################
-analyze.net.connectivity <- function(g)
+analyze.net.connectivity <- function(g, out.folder)
 {	# get the stat table
-	stat.file <- file.path(FOLDER_OUT_ANAL, g$name, "stats.csv")
+	stat.file <- file.path(out.folder, g$name, "stats.csv")
 	stats <- retrieve.stats(stat.file)
 	
 	modes <- c("undirected", "directed")
@@ -1193,7 +1206,7 @@ analyze.net.connectivity <- function(g)
 		
 		# possibly create folder
 		fname <- paste0("connectivity_",mode)
-		connectivity.folder <- file.path(FOLDER_OUT_ANAL,g$name,"connectivity")
+		connectivity.folder <- file.path(out.folder,g$name,"connectivity")
 		dir.create(path=connectivity.folder, showWarnings=FALSE, recursive=TRUE)
 		
 		# compute connectivity
@@ -1265,7 +1278,7 @@ analyze.net.connectivity <- function(g)
 	write.csv(stats, file=stat.file, row.names=TRUE)
 	
 	# record graph and return it
-	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
+	graph.file <- file.path(out.folder, g$name, FILE_GRAPH)
 	write.graphml.file(g=g, file=graph.file)
 	return(g)
 }
@@ -1277,12 +1290,13 @@ analyze.net.connectivity <- function(g)
 # Identifies the weak and strong components of the graph.
 #
 # g: original graph to process.
+# out.folder: main output folder.
 # 
 # returns: same graph, updated with the results.
 #############################################################
-analyze.net.components <- function(g)
+analyze.net.components <- function(g, out.folder)
 {	# get the stat table
-	stat.file <- file.path(FOLDER_OUT_ANAL, g$name, "stats.csv")
+	stat.file <- file.path(out.folder, g$name, "stats.csv")
 	stats <- retrieve.stats(stat.file)
 	
 	# numbers of nodes and edges
@@ -1296,7 +1310,7 @@ analyze.net.components <- function(g)
 		
 		# possibly create folder
 		fname <- paste0("components_",mode)
-		components.folder <- file.path(FOLDER_OUT_ANAL,g$name,"components")
+		components.folder <- file.path(out.folder,g$name,"components")
 		dir.create(path=components.folder, showWarnings=FALSE, recursive=TRUE)
 		
 		# detect components
@@ -1351,7 +1365,7 @@ analyze.net.components <- function(g)
 	write.csv(stats, file=stat.file, row.names=TRUE)
 	
 	# record graph and return it
-	graph.file <- file.path(FOLDER_OUT_ANAL, g$name, FILE_GRAPH)
+	graph.file <- file.path(out.folder, g$name, FILE_GRAPH)
 	write.graphml.file(g=g, file=graph.file)
 	return(g)
 }
@@ -1366,56 +1380,57 @@ analyze.net.components <- function(g)
 # use.
 #
 # gname: name of the graph, used to get the path of its graphml file.
+# out.folder: main output folder.
 #
 # returns: the graph with updated attributes.
 #############################################################
-analyze.network <- function(gname)
+analyze.network <- function(gname, out.folder)
 {	# load graph
-	file.path <- file.path(FOLDER_OUT_ANAL, gname, FILE_GRAPH)
+	file.path <- file.path(out.folder, gname, FILE_GRAPH)
 	g <- load.graphml.file(file=file.path)
 	
 	# compute attribute stats 
 	# (must be done first, before other results are added as attributes)
-	g <- analyze.net.attributes(g)
+	g <- analyze.net.attributes(g, out.folder)
 		
 	# compute diameters, eccentricity, radius
-	g <- analyze.net.eccentricity(g)
+	g <- analyze.net.eccentricity(g, out.folder)
 		
 	# compute degree
-	g <- analyze.net.degree(g)
+	g <- analyze.net.degree(g, out.folder)
 		
 	# compute eigencentrality
-	g <- analyze.net.eigencentrality(g)
+	g <- analyze.net.eigencentrality(g, out.folder)
 	
 	# compute betweenness
-	g <- analyze.net.betweenness(g)
+	g <- analyze.net.betweenness(g, out.folder)
 	
 	# compute closeness
-	g <- analyze.net.closeness(g)
+	g <- analyze.net.closeness(g, out.folder)
 	
 	# compute harmonic closeness
-	g <- analyze.net.harmonic.closeness(g)
+	g <- analyze.net.harmonic.closeness(g, out.folder)
 	
 	# compute distances
-	g <- analyze.net.distance(g)
+	g <- analyze.net.distance(g, out.folder)
 	
 	# compute articulation points
-	g <- analyze.net.articulation(g)
+	g <- analyze.net.articulation(g, out.folder)
 	
 	# detect communities
-	g <- analyze.net.comstruct(g)
+	g <- analyze.net.comstruct(g, out.folder)
 	
 	# compute transitivity
-	g <- analyze.net.transitivity(g)
+	g <- analyze.net.transitivity(g, out.folder)
 	
 	# compute vertex connectivity
-	g <- analyze.net.connectivity(g)
+	g <- analyze.net.connectivity(g, out.folder)
 	
 	# compute components
-	g <- analyze.net.components(g)
+	g <- analyze.net.components(g, out.folder)
 	
 	# compute assortativity
-	g <- analyze.net.assortativity(g)
+	g <- analyze.net.assortativity(g, out.folder)
 	
 	return(g)
 }

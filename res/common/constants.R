@@ -22,6 +22,8 @@ FOLDER_IN <- "in"
 		FOLDER_OUT <- "out"
 	FOLDER_OUT_POS <- file.path(FOLDER_OUT,"positioning")
 	FOLDER_OUT_ANAL <- file.path(FOLDER_OUT,"analysis")
+		FOLDER_OUT_ANAL_SOC <- file.path(FOLDER_OUT,"social")
+		FOLDER_OUT_ANAL_EST <- file.path(FOLDER_OUT,"estate")
 FOLDER_LOG <- "log"
 
 FILE_GRAPH <- "graph.graphml"

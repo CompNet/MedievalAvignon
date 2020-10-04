@@ -20,7 +20,7 @@ source("res/analysis/compute_measures.R")
 # start logging
 start.rec.log(text="SOCNET")
 # possibly create folder
-dir.create(path=FOLDER_OUT_ANAL, showWarnings=FALSE, recursive=TRUE)
+dir.create(path=FOLDER_OUT_ANAL_SOC, showWarnings=FALSE, recursive=TRUE)
 
 
 
@@ -38,10 +38,10 @@ tlog.start.loop(0,length(LK_TYPE_LST), "Processing the measures for each extract
 for(i in 1:length(LK_TYPE_LST))
 {	tlog.loop(2, i, "Processing the measures for graph ",LK_TYPE_LST[i]," (",i,"/",length(LK_TYPE_LST),")")
 	# compute all topological measures
-	g <- analyze.network(gname=LK_TYPE_LST[i])
+	g <- analyze.network(gname=LK_TYPE_LST[i], out.folder=FOLDER_OUT_ANAL_SOC)
 	# same for the augmented graph
 	if(LK_TYPE_LST[i]==LK_TYPE_PRO || LK_TYPE_LST[i]==LK_TYPE_ALL)
-		g <- analyze.network(gname=paste0(LK_TYPE_LST[i],"_c"))
+		g <- analyze.network(gname=paste0(LK_TYPE_LST[i],"_c"), out.folder=FOLDER_OUT_ANAL_SOC)
 }
 tlog.end.loop("Measure computation over")
 
