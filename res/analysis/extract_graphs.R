@@ -154,7 +154,7 @@ extract.social.networks <- function()
 	tlog(2,"Adding to graph")
 	idx <- match(V(g)$name, as.character(info[,COL_PERS_ID]))
 	if(length(which(is.na(idx)))>0)
-		stop("Problem while matching the tables: NA values", paste(which(is.na(idx)), collapse=", "))
+		stop("Problem while matching the tables: NA values ", paste(which(is.na(idx)), collapse=", "))
 	atts <- colnames(info)
 	for(i in 1:length(atts))
 	{	att <- atts[i]
@@ -373,10 +373,11 @@ extract.estate.networks <- function()
 	tlog(4,"Found ",nrow(data)," relations")
 	
 	# collapse the ids from 3 to 2 columns
+	cols <- c(COL_CONF_EST2_ID,COL_CONF_INV_ID,COL_CONF_AREA_ID)
 	edge.list <- cbind(
 		as.character(data[,COL_CONF_EST1_ID]),
 		as.character(sapply(1:nrow(data), function(r)
-		{	idx <- which(!is.na(data[r,c(COL_CONF_EST2_ID,COL_CONF_INV_ID,COL_CONF_AREA_ID)]))
+		{	idx <- which(!is.na(data[r,cols]))
 			if(length(idx)==0)
 			{	print(data[r,])
 				stop(paste0("ERROR: found no destination id in row #",r))
@@ -386,7 +387,7 @@ extract.estate.networks <- function()
 				stop(paste0("ERROR: found two destination ids in row #",r))
 			}
 			else
-				return(data[r,idx])
+				return(data[r,cols[idx]])
 		}))
 	)
 	
@@ -422,7 +423,7 @@ extract.estate.networks <- function()
 	tlog(2,"Adding to graph")
 	idx <- match(V(g)$name, as.character(info[,COL_EST_ID]))
 	if(length(which(is.na(idx)))>0)
-		stop("Problem while matching the tables: NA values", paste(which(is.na(idx)), collapse=", "))
+		stop("Problem while matching the tables: NA values ", paste(which(is.na(idx)), collapse=", "))
 	atts <- colnames(info)
 	for(i in 1:length(atts))
 	{	att <- atts[i]
@@ -436,7 +437,8 @@ extract.estate.networks <- function()
 	comp.names <- get.estate.names(g)
 	V(g)$label <- comp.names
 	
-# TODO compléter avec les tables supplémentaires (pr les noms)	
+# TODO compléter avec les tables supplémentaires (pr les noms)
+# >> nécessaire car certains édifices manquent complètement sinon (d'où l'absence de nom)
 	
 	# init layout
 #	layout <- layout_with_fr(g)
@@ -444,8 +446,10 @@ extract.estate.networks <- function()
 #	layout <- layout_nicely(g)
 #	layout <- layout_with_dh(g)		# very slow
 #	layout <- layout_with_gem(g)		# extremely slow
-	layout <- layout_with_kk(g, kkconst=gorder(g)/8)
+	layout <- layout_with_kk(g, kkconst=gorder(g)/16)
 #	layout <- layout_with_mds(g)
+#	layout <- layout_with_lgl(g)
+	layout <- layout_with_graphopt(g, charge=0.01, spring.length=3)
 	# old code used to manually refine the layout
 #		tkplot(g, layout=layout)
 #		layout <- tk_coords(3)
