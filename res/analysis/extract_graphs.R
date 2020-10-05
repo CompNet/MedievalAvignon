@@ -69,6 +69,40 @@ get.person.names <- function(g, vs=1:gorder(g))
 
 
 
+#############################################################################################
+# Returns the names of the specified estates, using (by priority order): normalized qualification,
+# latin qualification, translated type, type.
+#
+# g: considered graph.
+# vs: ids of the vertices (default: all of them).
+#
+# returns: vector of strings corresponding to the vertex names.
+#############################################################################################
+get.estate.names <- function(g, vs=1:gorder(g))
+{	# init with normalized qualification
+	result <- vertex_attr(graph=g, name=COL_EST_QUALIF_NORM, index=vs)
+	
+	# complete with latin qualification
+	idx <- which(is.na(result))
+	if(length(idx)>0)
+		result[idx] <- vertex_attr(graph=g, name=COL_EST_QUALIF_LAT, index=vs[idx])
+	
+	# complete with translated type
+	idx <- which(is.na(result))
+	if(length(idx)>0)
+		result[idx] <- vertex_attr(graph=g, name=COL_EST_TYPE_FRE, index=vs[idx])
+	
+	# complete with latin type
+	idx <- which(is.na(result))
+	if(length(idx)>0)
+		result[idx] <- vertex_attr(graph=g, name=COL_EST_TYPE_LAT, index=vs[idx])
+	
+	return(result)
+}
+
+
+
+
 ########################################################################
 # Loads the raw data, extracts the different types of social networks,
 # records them as graphml files, and plots them.
@@ -98,7 +132,7 @@ extract.social.networks <- function()
 	tlog(4,"Number of edges: ",gsize(g),"/",nrow(data))
 	tlog(4,"Edge attributes: ",paste(edge_attr_names(g),collapse=", "))
 	
-	# load personal information
+	# load individual information
 	tlog(2,"Loading individual information")
 	info <- read.table(
 		file=FILE_IN_ANAL_PERSON_NODES,
@@ -116,7 +150,7 @@ extract.social.networks <- function()
 		info[which(info[,i]==""), i] <- NA
 	}
 	
-	# complete graph with personal information
+	# complete graph with individual information
 	tlog(2,"Adding to graph")
 	idx <- match(V(g)$name, as.character(info[,COL_PERS_ID]))
 	if(length(which(is.na(idx)))>0)
@@ -152,24 +186,24 @@ extract.social.networks <- function()
 	
 	# extract several versions
 	tlog(2,"Extracting several variants of the graph")
-	for(i in 1:length(LK_TYPE_LST))
-	{	tlog(4,"Extracting graph \"",LK_TYPE_LST[i],"\" (",i,"/",length(LK_TYPE_LST),")")
+	for(i in 1:length(LK_TYPE_SOC_LST))
+	{	tlog(4,"Extracting graph \"",LK_TYPE_SOC_LST[i],"\" (",i,"/",length(LK_TYPE_SOC_LST),")")
 		
 		# keep only the targeted type of links
-		if(LK_TYPE_LST[i]==LK_TYPE_ALL)
+		if(LK_TYPE_SOC_LST[i]==LK_TYPE_ALL)
 			g1 <- g
 		else
-		{	g1 <- delete_edges(graph=g, edges=which(E(g)$type!=LK_TYPE_LST[i]))
+		{	g1 <- delete_edges(graph=g, edges=which(E(g)$type!=LK_TYPE_SOC_LST[i]))
 			#g1 <- delete_vertices(graph=g1, v=which(degree(g, mode="all")==0))
 		}
-		g1$name <- LK_TYPE_LST[i]
+		g1$name <- LK_TYPE_SOC_LST[i]
 		
 		# init folder
-		graph.folder <- file.path(FOLDER_OUT_ANAL, g1$name)
+		graph.folder <- file.path(FOLDER_OUT_ANAL_SOC, g1$name)
 		dir.create(path=graph.folder, showWarnings=FALSE, recursive=TRUE)
 		
 		# check graph validity
-		if(LK_TYPE_LST[i]!=LK_TYPE_ALL && any_multiple(graph=g1))
+		if(LK_TYPE_SOC_LST[i]!=LK_TYPE_ALL && any_multiple(graph=g1))
 		{	el <- as_edgelist(graph=g1, names=FALSE)
 			# loops
 			idx.loop <- which(count_multiple(g1)<1)
@@ -228,7 +262,7 @@ extract.social.networks <- function()
 		write.graphml.file(g=g1, file=graph.file)
 		
 		# if professional links: add the courtier relations to the pope
-		if(LK_TYPE_LST[i]==LK_TYPE_PRO || LK_TYPE_LST[i]==LK_TYPE_ALL)
+		if(LK_TYPE_SOC_LST[i]==LK_TYPE_PRO || LK_TYPE_SOC_LST[i]==LK_TYPE_ALL)
 		{	tlog(4,"Adding extra links between the pope and its courtiers")
 			
 			# get the ids of all courtiers
@@ -289,8 +323,8 @@ extract.social.networks <- function()
 			V(g1)$y <- layoutC[,2]
 			
 			# init folder
-			g1$name <- paste0(LK_TYPE_LST[i],"_c")
-			graph.folder <- file.path(FOLDER_OUT_ANAL, g1$name)
+			g1$name <- paste0(LK_TYPE_SOC_LST[i],"_c")
+			graph.folder <- file.path(FOLDER_OUT_ANAL_SOC, g1$name)
 			dir.create(path=graph.folder, showWarnings=FALSE, recursive=TRUE)
 			
 			# keep the labels of only top hubs 
@@ -318,10 +352,185 @@ extract.social.networks <- function()
 ########################################################################
 # Loads the raw data, extracts the different types of estate networks,
 # records them as graphml files, and plots them.
+#
+# returns: vector of all the link types.
 ########################################################################
-extract.confront.networks <- function()
+extract.estate.networks <- function()
 {	# load the data and create various versions of the graph
 	tlog(0,"Extracting various versions of the estate graph")
 	
+	# load relationships
+	tlog(2,"Loading relational information")
+	data <- read.table(
+		file=FILE_IN_ANAL_CONFR_LINKS,
+		sep=",",
+		header=TRUE,
+		stringsAsFactors=FALSE,
+		na.strings="NULL",
+		quote='"',
+		check.names=FALSE
+	)
+	tlog(4,"Found ",nrow(data)," relations")
 	
+	# collapse the ids from 3 to 2 columns
+	edge.list <- cbind(
+		as.character(data[,COL_CONF_EST1_ID]),
+		as.character(sapply(1:nrow(data), function(r)
+		{	idx <- which(!is.na(data[r,c(COL_CONF_EST2_ID,COL_CONF_INV_ID,COL_CONF_AREA_ID)]))
+			if(length(idx)==0)
+			{	print(data[r,])
+				stop(paste0("ERROR: found no destination id in row #",r))
+			}
+			else if(length(idx)>1)
+			{	print(data[r,])
+				stop(paste0("ERROR: found two destination ids in row #",r))
+			}
+			else
+				return(data[r,idx])
+		}))
+	)
+	
+	# build graph
+	tlog(2,"Building graph")
+	g <- graph_from_edgelist(el=edge.list, directed=TRUE)
+	g <- set_edge_attr(graph=g, name=LK_TYPE, value=data[,COL_CONF_LOC_LAT])
+	g <- set_edge_attr(graph=g, name=COL_CONF_AREA_ID, value=data[,COL_CONF_AREA_ID])
+	tlog(4,"Number of edges: ",gsize(g),"/",nrow(data))
+	tlog(4,"Edge attributes (",length(edge_attr_names(g)),"): ",paste(edge_attr_names(g),collapse=", "))
+	link.types <- sort(unique(data[,COL_CONF_LOC_LAT]))
+	tlog(4,"Link types (",length(link.types),"): ",paste(link.types,collapse=", "))
+	
+	# load personal information
+	tlog(2,"Loading individual information")
+	info <- read.table(
+		file=FILE_IN_ANAL_ESTATE_NODES,
+		sep=",",
+		header=TRUE,
+		stringsAsFactors=FALSE,
+		na.strings="NULL",
+		quote='"',
+		check.names=FALSE
+	)
+	tlog(4,"Found ",nrow(info)," estates")
+	# remove empty values
+	for(i in 1:ncol(info))
+	{	info[which(info[,i]==" "),i] <- ""
+		info[which(info[,i]==""), i] <- NA
+	}
+	
+	# complete graph with individual information
+	tlog(2,"Adding to graph")
+	idx <- match(V(g)$name, as.character(info[,COL_EST_ID]))
+	if(length(which(is.na(idx)))>0)
+		stop("Problem while matching the tables: NA values", paste(which(is.na(idx)), collapse=", "))
+	atts <- colnames(info)
+	for(i in 1:length(atts))
+	{	att <- atts[i]
+		tlog(4,"Processing attribute ",att," (",i,"/",length(atts),")")
+		g <- set_vertex_attr(graph=g, name=att, value=info[idx,att])
+	}
+	tlog(4,"Number of nodes: ",gorder(g),"/",nrow(info))
+	tlog(4,"Vertex attributes (",length(vertex_attr_names(g)),"): ",paste(vertex_attr_names(g),collapse=", "))
+	
+	# add composite name as label
+	comp.names <- get.estate.names(g)
+	V(g)$label <- comp.names
+	
+# TODO compléter avec les tables supplémentaires (pr les noms)	
+	
+	# init layout
+#	layout <- layout_with_fr(g)
+#	layout <- layout_with_fr(g, kkconst=0)
+#	layout <- layout_nicely(g)
+#	layout <- layout_with_dh(g)		# very slow
+#	layout <- layout_with_gem(g)		# extremely slow
+	layout <- layout_with_kk(g, kkconst=gorder(g)/8)
+#	layout <- layout_with_mds(g)
+	# old code used to manually refine the layout
+#		tkplot(g, layout=layout)
+#		layout <- tk_coords(3)
+	# update graph
+	V(g)$x <- layout[,1]
+	V(g)$y <- layout[,2]
+	
+	# extract several versions
+	tlog(2,"Extracting several variants of the graph")
+	link.types <- c(LK_TYPE_ALL, link.types)
+	for(i in 1:length(link.types))
+	{	tlog(4,"Extracting graph \"",link.types[i],"\" (",i,"/",length(link.types),")")
+		
+		# keep only the targeted type of links
+		if(link.types[i]==LK_TYPE_ALL)
+			g1 <- g
+		else
+		{	g1 <- delete_edges(graph=g, edges=which(E(g)$type!=link.types[i]))
+			#g1 <- delete_vertices(graph=g1, v=which(degree(g, mode="all")==0))
+		}
+		g1$name <- link.types[i]
+		
+		# init folder
+		graph.folder <- file.path(FOLDER_OUT_ANAL_EST, g1$name)
+		dir.create(path=graph.folder, showWarnings=FALSE, recursive=TRUE)
+		
+		# check graph validity
+		if(link.types[i]!=LK_TYPE_ALL && any_multiple(graph=g1))
+		{	el <- as_edgelist(graph=g1, names=FALSE)
+			# loops
+			idx.loop <- which(count_multiple(g1)<1)
+			tlog(6,"Loops: ",length(idx.loop))
+			if(length(idx.loop)>0)
+			{	tab <- cbind(V(g1)$name[el[idx.loop,1]], V(g1)$name[el[idx.loop,2]], count_multiple(g1)[idx.loop])
+				colnames(tab) <- c("Source","Target","Multiplicity")
+				print(tab)
+				tab.file <- file.path(graph.folder, "pb_loops.txt")
+				write.table(tab, file=tab.file, quote=FALSE, sep="\t", row.names=FALSE, col.names=TRUE)
+			}
+			# multiple links
+			idx.mult <- which(count_multiple(g1)>1)
+			tlog(6,"Multiple links: ",length(idx.mult))
+			if(length(idx.mult)>0)
+			{	tab <- matrix(nrow=0, ncol=4)
+				colnames(tab) <- c("Source","Target","Multiplicity","Description")
+				for(j in 1:length(idx.mult))
+				{	lids <- E(g1)[el[idx.mult[j],1] %->% el[idx.mult[j],2]]
+					descr <- edge_attr(g1,LK_DESCR, E(g1)[lids])
+					if(length(descr)>length(unique(descr)))
+					{	row <- c(V(g1)$name[el[idx.mult[j],1]], V(g1)$name[el[idx.mult[j],2]], 
+								count_multiple(g1)[idx.mult[j]], paste(descr, collapse=":"))
+						tab <- rbind(tab, row)
+					}
+				}
+				print(tab)
+				tab.file <- file.path(graph.folder, "pb_multiple_links.txt")
+				write.table(tab, file=tab.file, quote=FALSE, sep="\t", row.names=FALSE, col.names=TRUE)
+			}
+			# stop execution
+			#stop("The graph contains multiple edges or loops")
+			g1 <- simplify(graph=g1, remove.multiple=TRUE, remove.loops=TRUE, 
+					edge.attr.comb=list(type="first", label=function(x) 
+							{	x <- x[!is.na(x)]
+								if(length(x)>0)
+									res <- paste(x, collapse=";")
+								else
+									res <- NA
+								return(res)
+							}))
+		}
+		
+		# keep the labels of only top hubs 
+		g1 <- update.node.labels(g1, vals=degree(g1))
+		
+		# plot full graph
+		plot.file <- file.path(graph.folder, "graph")
+		tlog(4,"Plotting graph in \"",plot.file,"\"")
+		custom.gplot(g1, file=plot.file)
+		#custom.gplot(g1)
+		
+		# record graph as a graphml file
+		graph.file <- file.path(graph.folder, FILE_GRAPH)
+		tlog(4,"Recording graph in \"",graph.file,"\"")
+		write.graphml.file(g=g1, file=graph.file)
+	}
+	
+	return(link.types)
 }

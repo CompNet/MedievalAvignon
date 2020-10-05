@@ -98,8 +98,10 @@ update.node.labels <- function(g, vals, best.low=FALSE)
 		bottom.idx <- 1:gorder(g)
 	else
 		bottom.idx <- order(vals, decreasing=TRUE)[1:lim]
-	V(g)$label[bottom.idx] <- get.person.names(g, vs=bottom.idx)
-	
+	if(COL_PERS_ID %in% vertex_attr_names(g))
+		V(g)$label[bottom.idx] <- get.person.names(g, vs=bottom.idx)
+	else
+		V(g)$label[bottom.idx] <- get.estate.names(g, vs=bottom.idx)
 	return(g)
 }
 

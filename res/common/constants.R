@@ -16,6 +16,7 @@ FOLDER_IN <- "in"
 	FOLDER_IN_ANAL <- file.path(FOLDER_IN,"analysis")
 		FILE_IN_ANAL_PERSON_NODES <- file.path(FOLDER_IN_ANAL,"Table_Individu.csv")
 		FILE_IN_ANAL_ESTATE_NODES <- file.path(FOLDER_IN_ANAL,"Table_Bien.csv")
+		FILE_IN_ANAL_CONFR_LINKS <- file.path(FOLDER_IN_ANAL,"Table_Localisation_Confront.csv")
 		FILE_IN_ANAL_SOCIAL_LINKS <- file.path(FOLDER_IN_ANAL,"Table_LienIndividu.csv")
 		FILE_IN_ANAL_OWNERSHIP_LINKS <- file.path(FOLDER_IN_ANAL,"Table_BienIndividu.csv")
 		FILE_IN_ANAL_ESTATE_FEE <- file.path(FOLDER_IN_ANAL,"Table_Redevance.csv")
@@ -128,6 +129,15 @@ FILE_GRAPH <- "graph.graphml"
 	COL_OWN_MEANS <- "moyenAcqui"
 	COL_OWN_SAFE <- "sureteDate"
 
+# spatial links table
+	COL_CONF_ID <- "idConfront"
+	COL_CONF_LOC_LAT <- "localisation"
+	COL_CONF_LOC_NORM <- "localisationTN"
+	COL_CONF_EST1_ID <- "idBien1"
+	COL_CONF_EST2_ID <- "idBien2"
+	COL_CONF_INV_ID <- "idInvariant"
+	COL_CONF_AREA_ID <- "idQuartierParoisse"
+
 # estate fee table
 	COL_FEE_ID <- "idRedevance"
 	COL_FEE_TYPE <- "type"
@@ -154,7 +164,8 @@ LK_TYPE <- "type"
 	LK_TYPE_ALL <- "Full"
 	LK_TYPE_FAM <- "Familial"
 	LK_TYPE_PRO <- "Professional"
-	LK_TYPE_LST <- c(LK_TYPE_ALL, LK_TYPE_FAM, LK_TYPE_PRO)
+	LK_TYPE_SOC_LST <- c(LK_TYPE_ALL, LK_TYPE_FAM, LK_TYPE_PRO)
+	LK_TYPE_EST_LST <- c(LK_TYPE_ALL, LK_TYPE_FAM, LK_TYPE_PRO)
 LK_DESCR <- "description"
 	
 # map to convert link attribute names
