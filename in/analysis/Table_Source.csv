@@ -1,0 +1,18 @@
+"idsource","nature","lieuDeConservation","nom","support","dimension","feuillet","redacteur","datedebut","datefin","cote"
+5,"terrier","archives communales d'avignon","terrier de la ville",NULL,NULL,NULL,NULL,1362,NULL,"CC1"
+6,"terrier","archives communales d'avignon","terrier de la ville",NULL,NULL,NULL,NULL,1401,NULL,"DD7"
+3,"terrier","archives departementales du vaucluse","terrier du monastere de sainte-catherine","papier",NULL,NULL,NULL,1366,NULL,NULL
+7,"terrier","archives departementales du vaucluse","terrier des repenties des miracles",NULL,NULL,NULL,NULL,NULL,NULL,NULL
+2,"terrier","archives departementales du vaucluse","terrier du chapitre cathedrale de notre-dame des doms","parchemin ",NULL,106,NULL,1366,NULL,"1G536"
+4,"terrier","archives departementales du vaucluse","terrier du chapitre de l'eglise saint-pierre","parchemin",NULL,336,NULL,1380,NULL,"9G2"
+1,"terrier","archives departementales du vaucluse","terrier de l'eveque anglic grimoard","parchemin","445x315mm",181,NULL,1366,1368,"1G10"
+8,"inventaire","edition de maulde","inventaire des biens de la commune",NULL,NULL,NULL,NULL,1233,NULL,NULL
+9,"enquete","edition e. baratier","enquete de charles d anjou en provence",NULL,NULL,NULL,NULL,1251,1252,NULL
+10,"inventaire","edition de maulde","inventaire des biens d alphonse de poitiers et charles d anjou",NULL,NULL,NULL,NULL,1255,NULL,NULL
+11,"enquete",NULL,"enquete de charles II",NULL,NULL,NULL,NULL,1298,NULL,NULL
+12,"enquete",NULL,"enquete de leopardo da foligno",NULL,NULL,NULL,NULL,1333,NULL,NULL
+13,NULL,NULL,"liber divisionis",NULL,NULL,NULL,NULL,1371,NULL,NULL
+14,"hommage","archives communales d avignon","citoyens d avignon",NULL,NULL,NULL,NULL,1384,NULL,NULL
+15,"liste citoyens","archives vaticanes","liste citoyens",NULL,NULL,NULL,NULL,NULL,NULL,NULL
+16,"terrier","archives communales d avignon","terrier de la ville",NULL,NULL,NULL,NULL,1404,NULL,NULL
+17,"terrier","archives departementales du vaucluse","terrier de sainte catherine",NULL,NULL,NULL,NULL,1416,NULL,NULL
