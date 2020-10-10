@@ -14,12 +14,22 @@
 FOLDER_IN <- "in"
 	FOLDER_IN_POS <- file.path(FOLDER_IN,"positioning")
 	FOLDER_IN_ANAL <- file.path(FOLDER_IN,"analysis")
-		FILE_IN_ANAL_PERSON_NODES <- file.path(FOLDER_IN_ANAL,"Table_Individu.csv")
 		FILE_IN_ANAL_ESTATE_NODES <- file.path(FOLDER_IN_ANAL,"Table_Bien.csv")
-		FILE_IN_ANAL_CONFR_LINKS <- file.path(FOLDER_IN_ANAL,"Table_Localisation_Confront.csv")
-		FILE_IN_ANAL_SOCIAL_LINKS <- file.path(FOLDER_IN_ANAL,"Table_LienIndividu.csv")
 		FILE_IN_ANAL_OWNERSHIP_LINKS <- file.path(FOLDER_IN_ANAL,"Table_BienIndividu.csv")
+		FILE_IN_ANAL_VILG_NODES <- file.path(FOLDER_IN_ANAL,"Table_Bourg.csv")
+		FILE_IN_ANAL_EDIFICE_NODES <- file.path(FOLDER_IN_ANAL,"Table_Edifice.csv")
+		FILE_IN_ANAL_PERSON_NODES <- file.path(FOLDER_IN_ANAL,"Table_Individu.csv")
+		FILE_IN_ANAL_FIX_NODES <- file.path(FOLDER_IN_ANAL,"Table_Invariant_Renvoi_Table.csv")
+		FILE_IN_ANAL_SOCIAL_LINKS <- file.path(FOLDER_IN_ANAL,"Table_LienIndividu.csv")
+		FILE_IN_ANAL_CARD_NODES <- file.path(FOLDER_IN_ANAL,"Table_LivreeCardinalice.csv")
+		FILE_IN_ANAL_CONFR_LINKS <- file.path(FOLDER_IN_ANAL,"Table_Localisation_Confront.csv")
+		FILE_IN_ANAL_GATE_NODES <- file.path(FOLDER_IN_ANAL,"Table_PortePortail.csv")
+		FILE_IN_ANAL_AREA_NODES <- file.path(FOLDER_IN_ANAL,"Table_QuartierParoisse.csv")
 		FILE_IN_ANAL_ESTATE_FEE <- file.path(FOLDER_IN_ANAL,"Table_Redevance.csv")
+		FILE_IN_ANAL_WALL_NODES <- file.path(FOLDER_IN_ANAL,"Table_Rempart.csv")
+		FILE_IN_ANAL_LDMRK_NODES <- file.path(FOLDER_IN_ANAL,"Table_RepereGeo.csv")
+		FILE_IN_ANAL_STREET_NODES <- file.path(FOLDER_IN_ANAL,"Table_Rue.csv")
+		FILE_IN_ANAL_SRC_NODES <- file.path(FOLDER_IN_ANAL,"Table_Source.csv")
 		FOLDER_OUT <- "out"
 	FOLDER_OUT_POS <- file.path(FOLDER_OUT,"positioning")
 	FOLDER_OUT_ANAL <- file.path(FOLDER_OUT,"analysis")
@@ -119,6 +129,116 @@ FILE_GRAPH <- "graph.graphml"
 	COL_EST_COMP_LAB6 <- "composant6"
 	# NOTE: declared estate = COL_EST_DECLARATION_ID | COL_EST_FEE_ID
 
+# fixes table
+	COL_FIX_ID <- "idInvariant"
+	COL_FIX_TYPE <- "Type"
+	COL_FIX_NAME <- "nom"
+	COL_FIX_GEOMETRY <- "the_geom"
+
+# invariant table
+	COL_INV_ID <- "idInvariant"
+	COL_INV_TYPE <- "Type"
+	COL_INV_NAME <- "nom"
+	COL_INV_GEOMETRY <- "the_geom"
+	
+# edifice table
+	COL_EDIF_ID <- "id"
+	COL_EDIF_GEOMETRY <- "geom"
+	COL_EDIF_TYPE <- "type"
+	COL_EDIF_NAME <- "nom"
+	COL_EDIF_STATUS <- "statut"
+	COL_EDIF_DATE_FRST_OCC <- "datePremiereMention"
+	COL_EDIF_DATE_BUILD_START <- "dateDebutConst"
+	COL_EDIF_DATE_BUILD_END <- "dateFinConst"
+	COL_EDIF_SRC <- "source"
+	COL_EDIF_BIBLIO <- "biblio"
+	COL_EDIF_DATE_DESTR <- "dateDestr"
+	COL_EDIF_ID_SAVE <- "idsave"
+	COL_EDIF_LOC <- "localisation"
+	
+# village table
+	COL_VILG_ID <- "id"
+	COL_VILG_NAME <- "nom"
+	COL_VILG_GEOMETRY <- "geom"
+	COL_VILG_SURF <- "area"
+	COL_VILG_PERIM <- "perimeter"
+	COL_VILG_TYPE <- "type"
+	COL_VILG_ID_SAVE <- "idsave"
+	COL_VILG_DATE_FRST_OCC <- "datePremiereMention"
+	COL_VILG_DATE_CREATED <- "dateCreation"
+
+# cardinal palace table
+	COL_CARD_ID <- "id"
+	COL_CARD_GEOMETRY <- "geom"
+	COL_CARD_NAME <- "nom"
+	COL_CARD_DASSIGN <- "dassign"
+	COL_CARD_LABEL_X <- "x_etiq"
+	COL_CARD_LABEL_Y <- "y_etiq"
+	COL_CARD_LABEL_ANGLE <- "angle_etiq"
+	COL_CARD_TYPE <- "type"
+	COL_CARD_ID_SAVE <- "idsave"
+	
+# gate table
+	COL_GATE_ID <- "id"
+	COL_GATE_NAME_LAT <- "nomlatin"
+	COL_GATE_NAME_FRE <- "nom"
+	COL_GATE_TYPE <- "type"
+	COL_GATE_GEOMETRY <- "the_geom"
+	COL_GATE_COORD_X <- "xcoord"
+	COL_GATE_COORD_Y <- "ycoord"
+	COL_GATE_ID_SAVE <- "idsave"
+	COL_GATE_DATE_FRST_OCC <- "datePremiereMention"
+	COL_GATE_DATE_BUILD_START1 <- "dateDebutConst1"
+	COL_GATE_DATE_BUILD_END2 <- "dateFinConst1"
+	COL_GATE_DATE_DESTR1 <- "dateDestr1"
+	COL_GATE_DATE_BUILD_START2 <- "dateDebutConst2"
+	COL_GATE_DATE_BUILD_END2 <- "dateFinConst2"
+	COL_GATE_DATE_DESTR2 <- "dateDestr2"
+	
+# area table
+	COL_AREA_ID <- "idQuartier"
+	COL_AREA_NAME_LAT <- "nom"
+	COL_AREA_NAME_FRE <- "nomtrad"
+	COL_AREA_SURF <- "area"
+	COL_AREA_PERIM <- "perimeter"
+	COL_AREA_GEOMETRY <- "the_geom"
+	
+# wall table
+	COL_WALL_ID <- "id"
+	COL_WALL_GEOMETRY <- "geom"
+	COL_WALL_DATE_BUILD_START1 <- "dateDebutConst1"
+	COL_WALL_DATE_BUILD_END1 <- "dateFinConst1"
+	COL_WALL_DATE_DESTR1 <- "dateDestr1"
+	COL_WALL_NAME_LAT <- "nomlatin"
+	COL_WALL_NAME_FRE <- "nom"
+	COL_WALL_TYPE <- "type"
+	COL_WALL_ID_SAVE <- "idsave"
+	COL_WALL_DATE_BUILD_START2 <- "dateDebutConst2"
+	COL_WALL_DATE_BUILD_END2 <- "dateFinConst2"
+	COL_WALL_DATE_DESTR2 <- "dateDestr2"
+	COL_WALL_DATE_FRST_OCC <- "datePremiereMention"
+
+# landmark table
+	COL_LDMRK_ID <- "id"
+	COL_LDMRK_GEOMETRY <- "geom"
+	COL_LDMRK_TYPE <- "type"
+	COL_LDMRK_NAME <- "nom"
+	COL_LDMRK_DATE_DERIV <- "dateDeriv"
+	COL_LDMRK_DATE_COUV <- "dateCouv"
+	COL_LDMRK_SRC <- "sources"
+	COL_LDMRK_BIBLIO <- "biblio"
+	COL_LDMRK_DATE <- "date"
+	COL_LDMRK_ID_SAVE <- "idsave"
+
+# street table
+	COL_STREET_ID <- "id"
+	COL_STREET_NAME <- "nom"
+	COL_STREET_NAME_CURR <- "nomActuel"
+	COL_STREET_GEOMETRY <- "the_geom"
+	COL_STREET_LENGTH <- "length"
+	COL_STREET_TYPE <- "type"
+	COL_STREET_LOC <- "detailLoc"
+	
 # ownership table
 	COL_OWN_ID <- "idBienIndividu"
 	COL_OWN_PERS_ID <- "idIndividu"
@@ -148,6 +268,19 @@ FILE_GRAPH <- "graph.graphml"
 	COL_FEE_AMOUNT_RAW2 <- "montant2"
 	COL_FEE_AMOUNT_INCR <- "echelonMontant"
 
+# source table
+	COL_SRC_ID <- "idsource"
+	COL_SRC_NATURE <- "nature"
+	COL_SRC_LOC <- "lieuDeConservation"
+	COL_SRC_NAME <- "nom"
+	COL_SRC_SUPPORT <- "support"
+	COL_SRC_DIM <- "dimension"
+	COL_SRC_LEAF <- "feuillet"
+	COL_SRC_AUTH <- "redacteur"
+	COL_SRC_DATE_START <- "datedebut"
+	COL_SRC_DATE_END <- "datefin"
+	COL_SRC_COTE <- "cote"
+	
 # values
 	# social links
 	VAL_SOC_TYPE_FAMILY <- "LIFAM"

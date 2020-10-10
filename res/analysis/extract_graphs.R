@@ -350,6 +350,41 @@ extract.social.networks <- function()
 
 
 ########################################################################
+# Loads and cleans the specified table describing various types of
+# locations.
+#
+# tab.file: name of the file to load.
+# type: location type.
+#
+# returns: corresponding table.
+########################################################################
+load.location.table <- function(tab.file, type)
+{	# load table
+	tlog(2,"Loading ",type," information")
+	tab <- read.table(
+			file=tab.file,
+			sep=",",
+			header=TRUE,
+			stringsAsFactors=FALSE,
+			na.strings="NULL",
+			quote='"',
+			check.names=FALSE
+	)
+	tlog(4,"Found ",nrow(tab)," ",type,"(s)")
+	
+	# remove empty values
+	for(i in 1:ncol(tab))
+	{	tab[which(tab[,i]==" "),i] <- ""
+		tab[which(tab[,i]==""), i] <- NA
+	}
+	
+	return(tab)
+}
+
+
+
+
+########################################################################
 # Loads the raw data, extracts the different types of estate networks,
 # records them as graphml files, and plots them.
 #
@@ -358,6 +393,23 @@ extract.social.networks <- function()
 extract.estate.networks <- function()
 {	# load the data and create various versions of the graph
 	tlog(0,"Extracting various versions of the estate graph")
+	
+	# load estate information
+	info.estate <- load.location.table(FILE_IN_ANAL_ESTATE_NODES,"estate")
+	# load area information
+	info.area <- load.location.table(FILE_IN_ANAL_FIX_NODES,"area")
+	# load fix information
+	info.fix <- load.location.table(FILE_IN_ANAL_FIX_NODES,"fix")
+	info.village <- load.location.table(FILE_IN_ANAL_VILG_NODES,"village")
+	info.edifice <- load.location.table(FILE_IN_ANAL_EDIFICE_NODES,"edifice")
+	info.cardinal <- load.location.table(FILE_IN_ANAL_CARD_NODES,"cardinal")
+	info.gate <- load.location.table(FILE_IN_ANAL_GATE_NODES,"gate")
+	info.wall <- load.location.table(FILE_IN_ANAL_WALL_NODES,"wall")
+	info.landmark <- load.location.table(FILE_IN_ANAL_LDMRK_NODES,"landmark")
+	info.street <- load.location.table(FILE_IN_ANAL_STREET_NODES,"street")
+	
+	# build conversion map
+	
 	
 	# load relationships
 	tlog(2,"Loading relational information")
@@ -401,23 +453,7 @@ extract.estate.networks <- function()
 	link.types <- sort(unique(data[,COL_CONF_LOC_LAT]))
 	tlog(4,"Link types (",length(link.types),"): ",paste(link.types,collapse=", "))
 	
-	# load personal information
-	tlog(2,"Loading individual information")
-	info <- read.table(
-		file=FILE_IN_ANAL_ESTATE_NODES,
-		sep=",",
-		header=TRUE,
-		stringsAsFactors=FALSE,
-		na.strings="NULL",
-		quote='"',
-		check.names=FALSE
-	)
-	tlog(4,"Found ",nrow(info)," estates")
-	# remove empty values
-	for(i in 1:ncol(info))
-	{	info[which(info[,i]==" "),i] <- ""
-		info[which(info[,i]==""), i] <- NA
-	}
+	
 	
 	# complete graph with individual information
 	tlog(2,"Adding to graph")
