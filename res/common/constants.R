@@ -100,6 +100,10 @@ FILE_GRAPH <- "graph.graphml"
 	COL_SOC_DESCR <- "descriptionLien"
 	COL_SOC_TYPE <- "typeLien"
 
+# location
+	COL_LOC_X <- "xcoord"
+	COL_LOC_Y <- "ycoord"
+	
 # estate table
 	# ids
 	COL_EST_ID <- "idBien"
@@ -131,15 +135,9 @@ FILE_GRAPH <- "graph.graphml"
 
 # fixes table
 	COL_FIX_ID <- "idInvariant"
-	COL_FIX_TYPE <- "Type"
+	COL_FIX_TYPE <- "type"
 	COL_FIX_NAME <- "nom"
 	COL_FIX_GEOMETRY <- "the_geom"
-
-# invariant table
-	COL_INV_ID <- "idInvariant"
-	COL_INV_TYPE <- "Type"
-	COL_INV_NAME <- "nom"
-	COL_INV_GEOMETRY <- "the_geom"
 	
 # edifice table
 	COL_EDIF_ID <- "id"
@@ -255,7 +253,7 @@ FILE_GRAPH <- "graph.graphml"
 	COL_CONF_LOC_NORM <- "localisationTN"
 	COL_CONF_EST1_ID <- "idBien1"
 	COL_CONF_EST2_ID <- "idBien2"
-	COL_CONF_INV_ID <- "idInvariant"
+	COL_CONF_FIX_ID <- "idInvariant"
 	COL_CONF_AREA_ID <- "idQuartierParoisse"
 
 # estate fee table
@@ -303,8 +301,9 @@ LK_DESCR <- "description"
 	
 # map to convert link attribute names
 MAP_TABLE2GRAPH <- c()
-MAP_TABLE2GRAPH[VAL_SOC_TYPE_FAMILY] <- LK_TYPE_FAM
-MAP_TABLE2GRAPH[VAL_SOC_TYPE_WORK] <- LK_TYPE_PRO
+	# social links
+	MAP_TABLE2GRAPH[VAL_SOC_TYPE_FAMILY] <- LK_TYPE_FAM
+	MAP_TABLE2GRAPH[VAL_SOC_TYPE_WORK] <- LK_TYPE_PRO
 
 # misc
 VAL_OTHER <- "Other"

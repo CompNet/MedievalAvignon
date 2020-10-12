@@ -70,6 +70,28 @@ get.person.names <- function(g, vs=1:gorder(g))
 
 
 #############################################################################################
+# Function used by get.location.names to update only the names still NA.
+#
+# g: considered graph.
+# vs: ids of the vertices (default: all of them).
+# att.name: attribute name to consider.
+# result: current names.
+#
+# returns: updated names.
+#############################################################################################
+complete.names <- function(g, vs=1:gorder(g), att.name, result)
+{	#print(att.name)
+	idx <- which(is.na(result))
+	if(length(idx)>0)
+		result[idx] <- vertex_attr(graph=g, name=att.name, index=vs[idx])
+	
+	return(result)
+}
+
+
+
+
+#############################################################################################
 # Returns the names of the specified estates, using (by priority order): normalized qualification,
 # latin qualification, translated type, type.
 #
@@ -78,24 +100,44 @@ get.person.names <- function(g, vs=1:gorder(g))
 #
 # returns: vector of strings corresponding to the vertex names.
 #############################################################################################
-get.estate.names <- function(g, vs=1:gorder(g))
-{	# init with normalized qualification
-	result <- vertex_attr(graph=g, name=COL_EST_QUALIF_NORM, index=vs)
+get.location.names <- function(g, vs=1:gorder(g))
+{	result <- rep(NA, length(vs))
 	
-	# complete with latin qualification
-	idx <- which(is.na(result))
-	if(length(idx)>0)
-		result[idx] <- vertex_attr(graph=g, name=COL_EST_QUALIF_LAT, index=vs[idx])
+	att.names <- c(
+		# current name
+		COL_STREET_NAME_CURR,
+		# translated name
+		COL_GATE_NAME_FRE, COL_AREA_NAME_FRE, COL_WALL_NAME_FRE, 
+		# name
+#		COL_FIX_NAME, 
+		COL_EDIF_NAME, COL_VILG_NAME, COL_CARD_NAME, COL_LDMRK_NAME, COL_STREET_NAME, 
+		# latin name
+		COL_GATE_NAME_LAT, COL_AREA_NAME_LAT, COL_WALL_NAME_LAT, 
+		
+		# normalized qualification
+		COL_EST_QUALIF_NORM,
+		# latin qualification
+		COL_EST_QUALIF_LAT,
+		
+		# translated type
+		COL_EST_TYPE_FRE,
+		# type
+#		COL_FIX_TYPE, 
+		COL_EDIF_TYPE, COL_VILG_TYPE, COL_CARD_TYPE, COL_GATE_TYPE, COL_WALL_TYPE, COL_LDMRK_TYPE, COL_STREET_TYPE, 
+		# latin type
+		COL_EST_TYPE_LAT,
+		
+		# detail
+		COL_EST_DETAIL,
+		
+		# id
+		COL_EST_ID, #COL_FIX_ID, 
+		COL_EDIF_ID, COL_VILG_ID, COL_CARD_ID, COL_GATE_ID, COL_AREA_ID, COL_WALL_ID, COL_LDMRK_ID, COL_STREET_ID
+	)
 	
-	# complete with translated type
-	idx <- which(is.na(result))
-	if(length(idx)>0)
-		result[idx] <- vertex_attr(graph=g, name=COL_EST_TYPE_FRE, index=vs[idx])
-	
-	# complete with latin type
-	idx <- which(is.na(result))
-	if(length(idx)>0)
-		result[idx] <- vertex_attr(graph=g, name=COL_EST_TYPE_LAT, index=vs[idx])
+	# complete with various graph attributes
+	for(att.name in att.names)
+		result <- complete.names(g=g, vs=vs, att.name=att.name, result=result)
 	
 	return(result)
 }
@@ -358,7 +400,7 @@ extract.social.networks <- function()
 #
 # returns: corresponding table.
 ########################################################################
-load.location.table <- function(tab.file, type)
+load.location.table <- function(tab.file, type, last)
 {	# load table
 	tlog(2,"Loading ",type," information")
 	tab <- read.table(
@@ -396,20 +438,76 @@ extract.estate.networks <- function()
 	
 	# load estate information
 	info.estate <- load.location.table(FILE_IN_ANAL_ESTATE_NODES,"estate")
+info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID, COL_EST_STREET_ID, COL_EST_VILLAGE_ID))]
+	cols <- colnames(info.estate)
+	total.nbr <- nrow(info.estate)
 	# load area information
-	info.area <- load.location.table(FILE_IN_ANAL_FIX_NODES,"area")
+	info.area <- load.location.table(FILE_IN_ANAL_AREA_NODES,"area", last=)
+	cols <- c(cols, colnames(info.area))
+	total.nbr <- total.nbr + nrow(info.estate)
 	# load fix information
-	info.fix <- load.location.table(FILE_IN_ANAL_FIX_NODES,"fix")
+#	info.fix <- load.location.table(FILE_IN_ANAL_FIX_NODES,"fix")
+#	cols <- c(cols, colnames(info.fix))
+#	total.nbr <- total.nbr + nrow(info.fix)
 	info.village <- load.location.table(FILE_IN_ANAL_VILG_NODES,"village")
+	cols <- c(cols, colnames(info.village))
+	total.nbr <- total.nbr + nrow(info.village)
 	info.edifice <- load.location.table(FILE_IN_ANAL_EDIFICE_NODES,"edifice")
+	cols <- c(cols, colnames(info.edifice))
+	total.nbr <- total.nbr + nrow(info.edifice)
 	info.cardinal <- load.location.table(FILE_IN_ANAL_CARD_NODES,"cardinal")
+	cols <- c(cols, colnames(info.cardinal))
+	total.nbr <- total.nbr + nrow(info.cardinal)
 	info.gate <- load.location.table(FILE_IN_ANAL_GATE_NODES,"gate")
+	cols <- c(cols, colnames(info.gate))
+	total.nbr <- total.nbr + nrow(info.gate)
 	info.wall <- load.location.table(FILE_IN_ANAL_WALL_NODES,"wall")
+	cols <- c(cols, colnames(info.wall))
+	total.nbr <- total.nbr + nrow(info.wall)
 	info.landmark <- load.location.table(FILE_IN_ANAL_LDMRK_NODES,"landmark")
+	cols <- c(cols, colnames(info.landmark))
+	total.nbr <- total.nbr + nrow(info.landmark)
 	info.street <- load.location.table(FILE_IN_ANAL_STREET_NODES,"street")
+	cols <- c(cols, colnames(info.street))
+	total.nbr <- total.nbr + nrow(info.street)
 	
-	# build conversion map
-	
+	# merge these tables
+	cols <- unique(cols)
+	info.all <- data.frame(matrix(NA, nrow=total.nbr, ncol=length(cols), dimnames=list(c(), cols)),stringsAsFactors=F)
+	last <- 0
+	# add estate info
+	com.cols <- intersect(cols,colnames(info.estate))
+	info.all[(last+1):(last+nrow(info.estate)),com.cols] <- info.estate[,com.cols]
+	last <- last + nrow(info.estate)
+	# add area info
+	com.cols <- intersect(cols,colnames(info.area))
+	info.all[(last+1):(last+nrow(info.area)),com.cols] <- info.area[,com.cols]
+	last <- last + nrow(info.area)
+	# add fix info
+#	com.cols <- intersect(cols,colnames(info.fix))
+#	info.all[(last+1):(last+nrow(info.fix)),com.cols] <- info.fix[,com.cols]
+#	last <- last + nrow(info.fix)
+	com.cols <- intersect(cols,colnames(info.village))
+	info.all[(last+1):(last+nrow(info.village)),com.cols] <- info.village[,com.cols]
+	last <- last + nrow(info.village)
+	com.cols <- intersect(cols,colnames(info.edifice))
+	info.all[(last+1):(last+nrow(info.edifice)),com.cols] <- info.edifice[,com.cols]
+	last <- last + nrow(info.edifice)
+	com.cols <- intersect(cols,colnames(info.cardinal))
+	info.all[(last+1):(last+nrow(info.cardinal)),com.cols] <- info.cardinal[,com.cols]
+	last <- last + nrow(info.cardinal)
+	com.cols <- intersect(cols,colnames(info.gate))
+	info.all[(last+1):(last+nrow(info.gate)),com.cols] <- info.gate[,com.cols]
+	last <- last + nrow(info.gate)
+	com.cols <- intersect(cols,colnames(info.wall))
+	info.all[(last+1):(last+nrow(info.wall)),com.cols] <- info.wall[,com.cols]
+	last <- last + nrow(info.wall)
+	com.cols <- intersect(cols,colnames(info.landmark))
+	info.all[(last+1):(last+nrow(info.landmark)),com.cols] <- info.landmark[,com.cols]
+	last <- last + nrow(info.landmark)
+	com.cols <- intersect(cols,colnames(info.street))
+	info.all[(last+1):(last+nrow(info.street)),com.cols] <- info.street[,com.cols]
+	last <- last + nrow(info.street)
 	
 	# load relationships
 	tlog(2,"Loading relational information")
@@ -424,57 +522,71 @@ extract.estate.networks <- function()
 	)
 	tlog(4,"Found ",nrow(data)," relations")
 	
-	# collapse the ids from 3 to 2 columns
-	cols <- c(COL_CONF_EST2_ID,COL_CONF_INV_ID,COL_CONF_AREA_ID)
-	edge.list <- cbind(
-		as.character(data[,COL_CONF_EST1_ID]),
-		as.character(sapply(1:nrow(data), function(r)
-		{	idx <- which(!is.na(data[r,cols]))
-			if(length(idx)==0)
-			{	print(data[r,])
-				stop(paste0("ERROR: found no destination id in row #",r))
-			}
-			else if(length(idx)>1)
-			{	print(data[r,])
-				stop(paste0("ERROR: found two destination ids in row #",r))
-			}
-			else
-				return(data[r,cols[idx]])
-		}))
-	)
+	# collapse the ids from 3 to 2 columns and convert them to internal ids
+	edge.list <- t(sapply(1:nrow(data), function(r)
+	{	print(r)
+		# get the source id
+		if(is.na(data[r,COL_CONF_EST1_ID]))
+			stop(paste0("ERROR: found no source id in row #",r))
+		src.id <- which(info.all[,COL_EST_ID]==data[r,COL_CONF_EST1_ID])
+		if(is.na(src.id))
+			stop(paste0("ERROR: could not find an estate matching source id in row #",r))
+		
+		# get the second estate id
+		tgt.id <- c()
+		if(!is.na(data[r,COL_CONF_EST2_ID]))
+			tgt.id <- c(tgt.id, which(info.all[,COL_EST_ID]==data[r,COL_CONF_EST2_ID]))
+		if(!is.na(data[r,COL_CONF_FIX_ID]))
+			tgt.id <- c(tgt.id, which(
+#								info.all[,COL_FIX_ID]==data[r,COL_CONF_FIX_ID]))
+								info.all[,COL_VILG_ID]==data[r,COL_CONF_FIX_ID]
+								| info.all[,COL_EDIF_ID]==data[r,COL_CONF_FIX_ID]
+								| info.all[,COL_CARD_ID]==data[r,COL_CONF_FIX_ID]
+								| info.all[,COL_GATE_ID]==data[r,COL_CONF_FIX_ID]
+								| info.all[,COL_WALL_ID]==data[r,COL_CONF_FIX_ID]
+								| info.all[,COL_LDMRK_ID]==data[r,COL_CONF_FIX_ID]
+								| info.all[,COL_STREET_ID]==data[r,COL_CONF_FIX_ID]
+							))
+		if(!is.na(data[r,COL_CONF_AREA_ID]))
+			tgt.id <- c(tgt.id, which(info.all[,COL_AREA_ID]==data[r,COL_CONF_AREA_ID]))		
+		
+		if(length(tgt.id)==0)
+			stop(paste0("ERROR: found no destinations id in row #",r))
+		if(length(tgt.id)>1)
+			stop(paste0("ERROR: found several destinations ids in row #",r))
+		if(is.na(tgt.id))
+			stop(paste0("ERROR: could not match the destination id in row #",r))
+		
+		result <- as.character(c(src.id, tgt.id))
+		return(result)
+	}))
 	
 	# build graph
 	tlog(2,"Building graph")
 	g <- graph_from_edgelist(el=edge.list, directed=TRUE)
 	g <- set_edge_attr(graph=g, name=LK_TYPE, value=data[,COL_CONF_LOC_LAT])
 	g <- set_edge_attr(graph=g, name=COL_CONF_AREA_ID, value=data[,COL_CONF_AREA_ID])
+	g <- set_edge_attr(graph=g, name=COL_CONF_LOC_NORM, value=data[,COL_CONF_LOC_NORM])
 	tlog(4,"Number of edges: ",gsize(g),"/",nrow(data))
 	tlog(4,"Edge attributes (",length(edge_attr_names(g)),"): ",paste(edge_attr_names(g),collapse=", "))
 	link.types <- sort(unique(data[,COL_CONF_LOC_LAT]))
 	tlog(4,"Link types (",length(link.types),"): ",paste(link.types,collapse=", "))
 	
-	
-	
 	# complete graph with individual information
 	tlog(2,"Adding to graph")
-	idx <- match(V(g)$name, as.character(info[,COL_EST_ID]))
-	if(length(which(is.na(idx)))>0)
-		stop("Problem while matching the tables: NA values ", paste(which(is.na(idx)), collapse=", "))
-	atts <- colnames(info)
+	idx <- as.integer(V(g)$name)
+	atts <- colnames(info.all)
 	for(i in 1:length(atts))
 	{	att <- atts[i]
 		tlog(4,"Processing attribute ",att," (",i,"/",length(atts),")")
-		g <- set_vertex_attr(graph=g, name=att, value=info[idx,att])
+		g <- set_vertex_attr(graph=g, name=att, value=info.all[idx,att])
 	}
-	tlog(4,"Number of nodes: ",gorder(g),"/",nrow(info))
+	tlog(4,"Number of nodes: ",gorder(g),"/",nrow(info.all))
 	tlog(4,"Vertex attributes (",length(vertex_attr_names(g)),"): ",paste(vertex_attr_names(g),collapse=", "))
 	
 	# add composite name as label
-	comp.names <- get.estate.names(g)
+	comp.names <- get.location.names(g)
 	V(g)$label <- comp.names
-	
-# TODO compléter avec les tables supplémentaires (pr les noms)
-# >> nécessaire car certains édifices manquent complètement sinon (d'où l'absence de nom)
 	
 	# init layout
 #	layout <- layout_with_fr(g)
@@ -492,7 +604,15 @@ extract.estate.networks <- function()
 	# update graph
 	V(g)$x <- layout[,1]
 	V(g)$y <- layout[,2]
+	#V(g)$label <- NA
+	#custom.gplot(g)
 	
+	# use spatial coordinates for layour
+	V(g)$x <- vertex_attr(g, name=COL_LOC_X)
+	V(g)$y <- vertex_attr(g, name=COL_LOC_Y)
+	#V(g)$label <- NA
+	#custom.gplot(g)
+
 	# extract several versions
 	tlog(2,"Extracting several variants of the graph")
 	link.types <- c(LK_TYPE_ALL, link.types)
