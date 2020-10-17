@@ -145,6 +145,27 @@ get.location.names <- function(g, vs=1:gorder(g))
 
 
 
+#############################################################################################
+# Returns the names of the specified nodes, using either get.person.names or get.location.names.
+#
+# g: considered graph.
+# vs: ids of the vertices (default: all of them).
+#
+# returns: vector of strings corresponding to the vertex names.
+#############################################################################################
+get.names <- function(g, vs=1:gorder(g))
+{	link.types <- edge_attr(g, LK_TYPE)
+	
+	if(length(intersect(link.types,c(LK_TYPE_FAM, LK_TYPE_PRO))))
+		result <- get.person.names(g, vs)
+	else
+		result <- get.location.names(g, vs)
+	
+	return(result)
+}
+
+
+
 ########################################################################
 # Loads the raw data, extracts the different types of social networks,
 # records them as graphml files, and plots them.
@@ -251,8 +272,10 @@ extract.social.networks <- function()
 			idx.loop <- which(count_multiple(g1)<1)
 			tlog(6,"Loops: ",length(idx.loop))
 			if(length(idx.loop)>0)
-			{	tab <- cbind(V(g1)$name[el[idx.loop,1]], V(g1)$name[el[idx.loop,2]], count_multiple(g1)[idx.loop])
-				colnames(tab) <- c("Source","Target","Multiplicity")
+			{	tab <- cbind(V(g1)$name[el[idx.loop,1]], V(g1)$name[el[idx.loop,2]], count_multiple(g1)[idx.loop], 
+						sapply(1:length(idx.loop), 
+							function(j) edge_attr(g1, LK_DESCR, E(g1)[el[idx.loop[j],1] %->% el[idx.loop[j],2]])))
+				colnames(tab) <- c("Source","Target","Multiplicity","Description")
 				print(tab)
 				tab.file <- file.path(graph.folder, "pb_loops.txt")
 				write.table(tab, file=tab.file, quote=FALSE, sep="\t", row.names=FALSE, col.names=TRUE)
@@ -272,9 +295,11 @@ extract.social.networks <- function()
 						tab <- rbind(tab, row)
 					}
 				}
-				print(tab)
-				tab.file <- file.path(graph.folder, "pb_multiple_links.txt")
-				write.table(tab, file=tab.file, quote=FALSE, sep="\t", row.names=FALSE, col.names=TRUE)
+				if(nrow(tab)>0)
+				{	print(tab)
+					tab.file <- file.path(graph.folder, "pb_multiple_links.txt")
+					write.table(tab, file=tab.file, quote=FALSE, sep="\t", row.names=FALSE, col.names=TRUE)
+				}
 			}
 			# stop execution
 			#stop("The graph contains multiple edges or loops")
@@ -586,30 +611,56 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 	
 	# add composite name as label
 	comp.names <- get.location.names(g)
+	#print(which(is.na(comp.names)))
 	V(g)$label <- comp.names
 	
-	# init layout
-#	layout <- layout_with_fr(g)
-#	layout <- layout_with_fr(g, kkconst=0)
-#	layout <- layout_nicely(g)
-#	layout <- layout_with_dh(g)		# very slow
-#	layout <- layout_with_gem(g)		# extremely slow
-	layout <- layout_with_kk(g, kkconst=gorder(g)/16)
-#	layout <- layout_with_mds(g)
-#	layout <- layout_with_lgl(g)
-	layout <- layout_with_graphopt(g, charge=0.01, spring.length=3)
-	# old code used to manually refine the layout
-#		tkplot(g, layout=layout)
-#		layout <- tk_coords(3)
-	# update graph
-	V(g)$x <- layout[,1]
-	V(g)$y <- layout[,2]
-	#V(g)$label <- NA
-	#custom.gplot(g)
+#	# init layout
+##	layout <- layout_with_fr(g)
+##	layout <- layout_with_fr(g, kkconst=0)
+##	layout <- layout_nicely(g)
+##	layout <- layout_with_dh(g)		# very slow
+##	layout <- layout_with_gem(g)		# extremely slow
+#	layout <- layout_with_kk(g, kkconst=gorder(g)/16)
+##	layout <- layout_with_mds(g)
+##	layout <- layout_with_lgl(g)
+#	layout <- layout_with_graphopt(g, charge=0.01, spring.length=3)
+#	# old code used to manually refine the layout
+##		tkplot(g, layout=layout)
+##		layout <- tk_coords(3)
+#	# update graph
+#	V(g)$x <- layout[,1]
+#	V(g)$y <- layout[,2]
+#	#V(g)$label <- NA
+#	#custom.gplot(g)
 	
-	# use spatial coordinates for layour
+	# use spatial coordinates for layout
 	V(g)$x <- vertex_attr(g, name=COL_LOC_X)
 	V(g)$y <- vertex_attr(g, name=COL_LOC_Y)
+	# missing coordinates: use the average of the neighbors
+	idx <- which(is.na(V(g)$x))
+	if(length(idx)>0)
+	{	neighs <- ego(graph=g, order=1, nodes=idx, mode="all", mindist=1)
+		rx <- range(V(g)$x, na.rm=TRUE)
+		ry <- range(V(g)$y, na.rm=TRUE)
+		tmp <- sapply(1:length(idx), function(v)
+		{	ns <- as.integer(neighs[[v]])
+			vals.x <- V(g)$x[ns]
+			vals.y <- V(g)$y[ns]
+			vals.x <- vals.x[!is.na(vals.x)]
+			vals.y <- vals.y[!is.na(vals.y)]
+			if(length(vals.x)>1)
+				res <- c(mean(vals.x), mean(vals.y))
+			else if(length(vals.x)==1)
+				res <- c(vals.x+runif(1,0,0.1), vals.y+runif(1,0,0.1))
+			else
+				res <- c(runif(1,rx[1],rx[2]), runif(1,ry[1],ry[2]))
+			
+		})
+		V(g)$x[idx] <- tmp[1,]
+		V(g)$y[idx] <- tmp[2,]
+	}
+	##V(g)$x[which(is.na(V(g)$x))] <- min(V(g)$x, na.rm=TRUE)
+	##V(g)$y[which(is.na(V(g)$y))] <- min(V(g)$y, na.rm=TRUE)
 	#V(g)$label <- NA
 	#custom.gplot(g)
 
@@ -639,8 +690,10 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 			idx.loop <- which(count_multiple(g1)<1)
 			tlog(6,"Loops: ",length(idx.loop))
 			if(length(idx.loop)>0)
-			{	tab <- cbind(V(g1)$name[el[idx.loop,1]], V(g1)$name[el[idx.loop,2]], count_multiple(g1)[idx.loop])
-				colnames(tab) <- c("Source","Target","Multiplicity")
+			{	tab <- cbind(V(g1)$name[el[idx.loop,1]], V(g1)$name[el[idx.loop,2]], count_multiple(g1)[idx.loop], 
+					sapply(1:length(idx.loop), function(j) 
+								edge_attr(g1, LK_TYPE, E(g1)[el[idx.loop[j],1] %->% el[idx.loop[j],2]])))
+				colnames(tab) <- c("Source","Target","Multiplicity","Type")
 				print(tab)
 				tab.file <- file.path(graph.folder, "pb_loops.txt")
 				write.table(tab, file=tab.file, quote=FALSE, sep="\t", row.names=FALSE, col.names=TRUE)
@@ -650,19 +703,21 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 			tlog(6,"Multiple links: ",length(idx.mult))
 			if(length(idx.mult)>0)
 			{	tab <- matrix(nrow=0, ncol=4)
-				colnames(tab) <- c("Source","Target","Multiplicity","Description")
+				colnames(tab) <- c("Source","Target","Multiplicity","Type")
 				for(j in 1:length(idx.mult))
 				{	lids <- E(g1)[el[idx.mult[j],1] %->% el[idx.mult[j],2]]
-					descr <- edge_attr(g1,LK_DESCR, E(g1)[lids])
+					descr <- edge_attr(g1,LK_TYPE, E(g1)[lids])
 					if(length(descr)>length(unique(descr)))
 					{	row <- c(V(g1)$name[el[idx.mult[j],1]], V(g1)$name[el[idx.mult[j],2]], 
 								count_multiple(g1)[idx.mult[j]], paste(descr, collapse=":"))
 						tab <- rbind(tab, row)
 					}
 				}
-				print(tab)
-				tab.file <- file.path(graph.folder, "pb_multiple_links.txt")
-				write.table(tab, file=tab.file, quote=FALSE, sep="\t", row.names=FALSE, col.names=TRUE)
+				if(nrow(tab)>0)
+				{	print(tab)
+					tab.file <- file.path(graph.folder, "pb_multiple_links.txt")
+					write.table(tab, file=tab.file, quote=FALSE, sep="\t", row.names=FALSE, col.names=TRUE)
+				}
 			}
 			# stop execution
 			#stop("The graph contains multiple edges or loops")
@@ -694,3 +749,6 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 	
 	return(link.types)
 }
+
+# TODO lien entre la taille du composant et les différents attributs ?
+# TODO rajouter les noms systématiquement dans les graphes de composants

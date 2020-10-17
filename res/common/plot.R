@@ -51,10 +51,18 @@ custom.gplot <- function(g, paths, col.att, cat.att=FALSE, v.hl, e.hl, color.iso
 	ecols <- rep("BLACK", gsize(g))						# default color
 	nature <- edge_attr(g, LK_TYPE)
 	if(length(nature)>0)
-	{	ecols[nature==LK_TYPE_PRO] <- "#1A8F39"			# green
-		ecols[nature==LK_TYPE_FAM] <- "#9C1699"			# purple
-#		ecols[nature==LK_TYPE_XXX] <- "#C27604"			# orange
-#		ecols[nature==LK_TYPE_UNK] <- "#222222"			# dark grey
+	{	if(length(intersect(nature,c(LK_TYPE_FAM, LK_TYPE_PRO))))
+		{	ecols[nature==LK_TYPE_PRO] <- "#1A8F39"			# green
+			ecols[nature==LK_TYPE_FAM] <- "#9C1699"			# purple
+#			ecols[nature==LK_TYPE_XXX] <- "#C27604"			# orange
+#			ecols[nature==LK_TYPE_UNK] <- "#222222"			# dark grey
+		}
+		else
+		{	nats <- sort(unique(nature))
+			epal <- get.palette(length(nats))
+			for(i in 1:length(nats))
+				ecols[nature==nats[i]] <- epal[i]
+		}
 	}
 	# set edge width
 	if(is.null(E(g)$weight))							# if no weight:
@@ -189,16 +197,30 @@ custom.gplot <- function(g, paths, col.att, cat.att=FALSE, v.hl, e.hl, color.iso
 			edge.lty=elty,							# link type
 			edge.width=ewidth						# link thickness
 		)
-		legend(
-			title="Link type",								# title of the legend box
-			x="topright",									# position
-			legend=c(LK_TYPE_FAM, LK_TYPE_PRO),				# text of the legend
-			col=c("#9C1699","#1A8F39"),						# color of the lines
-			lty=1,											# type of lines
-			lwd=4,											# line thickness
-			bty="n",										# no box around the legend
-			cex=0.8
-		)
+		if(length(intersect(nature,c(LK_TYPE_FAM, LK_TYPE_PRO))))
+		{	legend(
+				title="Link type",								# title of the legend box
+				x="topright",									# position
+				legend=c(LK_TYPE_FAM, LK_TYPE_PRO),				# text of the legend
+				col=c("#9C1699","#1A8F39"),						# color of the lines
+				lty=1,											# type of lines
+				lwd=4,											# line thickness
+				bty="n",										# no box around the legend
+				cex=0.8
+			)
+		}
+		else
+		{	legend(
+				title="Link type",								# title of the legend box
+				x="topright",									# position
+				legend=nats,									# text of the legend
+				col=epal,										# color of the lines
+				lty=1,											# type of lines
+				lwd=4,											# line thickness
+				bty="n",										# no box around the legend
+				cex=0.8
+			)
+		}
 		if(hasArg(col.att))
 		{	if(!all(!connected) && !all(is.na(vvals)))
 			{	# categorical attributes

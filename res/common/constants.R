@@ -30,11 +30,11 @@ FOLDER_IN <- "in"
 		FILE_IN_ANAL_LDMRK_NODES <- file.path(FOLDER_IN_ANAL,"Table_RepereGeo.csv")
 		FILE_IN_ANAL_STREET_NODES <- file.path(FOLDER_IN_ANAL,"Table_Rue.csv")
 		FILE_IN_ANAL_SRC_NODES <- file.path(FOLDER_IN_ANAL,"Table_Source.csv")
-		FOLDER_OUT <- "out"
-	FOLDER_OUT_POS <- file.path(FOLDER_OUT,"positioning")
-	FOLDER_OUT_ANAL <- file.path(FOLDER_OUT,"analysis")
-		FOLDER_OUT_ANAL_SOC <- file.path(FOLDER_OUT,"social")
-		FOLDER_OUT_ANAL_EST <- file.path(FOLDER_OUT,"estate")
+	FOLDER_OUT <- "out"
+		FOLDER_OUT_POS <- file.path(FOLDER_OUT,"positioning")
+		FOLDER_OUT_ANAL <- file.path(FOLDER_OUT,"analysis")
+			FOLDER_OUT_ANAL_SOC <- file.path(FOLDER_OUT_ANAL,"social")
+			FOLDER_OUT_ANAL_EST <- file.path(FOLDER_OUT_ANAL,"estate")
 FOLDER_LOG <- "log"
 
 FILE_GRAPH <- "graph.graphml"
@@ -187,7 +187,7 @@ FILE_GRAPH <- "graph.graphml"
 	COL_GATE_ID_SAVE <- "idsave"
 	COL_GATE_DATE_FRST_OCC <- "datePremiereMention"
 	COL_GATE_DATE_BUILD_START1 <- "dateDebutConst1"
-	COL_GATE_DATE_BUILD_END2 <- "dateFinConst1"
+	COL_GATE_DATE_BUILD_END1 <- "dateFinConst1"
 	COL_GATE_DATE_DESTR1 <- "dateDestr1"
 	COL_GATE_DATE_BUILD_START2 <- "dateDebutConst2"
 	COL_GATE_DATE_BUILD_END2 <- "dateFinConst2"
@@ -289,6 +289,7 @@ FILE_GRAPH <- "graph.graphml"
 	
 #############################################################################################
 # graph-related values
+ND_NAME <- "name"
 
 # types of links 
 LK_TYPE <- "type"
@@ -296,7 +297,7 @@ LK_TYPE <- "type"
 	LK_TYPE_FAM <- "Familial"
 	LK_TYPE_PRO <- "Professional"
 	LK_TYPE_SOC_LST <- c(LK_TYPE_ALL, LK_TYPE_FAM, LK_TYPE_PRO)
-	LK_TYPE_EST_LST <- c(LK_TYPE_ALL, LK_TYPE_FAM, LK_TYPE_PRO)
+#	LK_TYPE_EST_LST <- c(LK_TYPE_ALL, LK_TYPE_FAM, LK_TYPE_PRO)
 LK_DESCR <- "description"
 	
 # map to convert link attribute names

@@ -68,17 +68,19 @@ analyze.net.eccentricity <- function(g, out.folder)
 			custom.gplot(g, paths=diam.paths[[pp]], file=file.path(diameter.folder,paste0("diam_",mode,"_graph_",pp)))
 			#custom.gplot(g, paths=diam.paths[[pp]])
 			
-			q <- 1
-			for(p in 1:length(diam.paths[[pp]]))
-			{	tlog(8,"Plotting variant ",p,"/",length(diam.paths[[pp]]))
-				if(p==1 || !all(diam.paths[[pp]][[p]]==diam.paths[[pp]][[p-1]]))
-				{	V(g)$label <- rep(NA,gorder(g))
-					vstart <- diam.paths[[pp]][[p]][1]
-					V(g)[vstart]$label <- get.person.names(g, vstart) 
-					vend <- diam.paths[[pp]][[p]][length(diam.paths[[pp]][[p]])]
-					V(g)[vend]$label <- get.person.names(g, vend) 
-					custom.gplot(g, paths=diam.paths[[pp]][[p]], file=file.path(diameter.folder,paste0("diam_",mode,"_graph_",pp,"_",q)))
-					q <- q + 1
+			if(length(diam.paths[[pp]])<=20)
+			{	q <- 1
+				for(p in 1:length(diam.paths[[pp]]))
+				{	tlog(8,"Plotting variant ",p,"/",length(diam.paths[[pp]]))
+					if(p==1 || !all(diam.paths[[pp]][[p]]==diam.paths[[pp]][[p-1]]))
+					{	V(g)$label <- rep(NA,gorder(g))
+						vstart <- diam.paths[[pp]][[p]][1]
+						V(g)[vstart]$label <- get.names(g, vstart) 
+						vend <- diam.paths[[pp]][[p]][length(diam.paths[[pp]][[p]])]
+						V(g)[vend]$label <- get.names(g, vend) 
+						custom.gplot(g, paths=diam.paths[[pp]][[p]], file=file.path(diameter.folder,paste0("diam_",mode,"_graph_",pp,"_",q)))
+						q <- q + 1
+					}
 				}
 			}
 		}
@@ -107,7 +109,7 @@ analyze.net.eccentricity <- function(g, out.folder)
 		custom.hist(vals, name=paste(long.names[i],"Eccentricity"), file=file.path(eccentricity.folder,paste0(fname,"_histo")))
 		
 		# export CSV with eccentricity
-		df <- data.frame(vertex_attr(g, COL_PERS_ID), get.person.names(g), vals)
+		df <- data.frame(vertex_attr(g, ND_NAME), get.names(g), vals)
 		colnames(df) <- c("Id","Name",fname) 
 		write.csv(df, file=file.path(eccentricity.folder,paste0(fname,"_values.csv")), row.names=FALSE)
 		
@@ -175,7 +177,7 @@ analyze.net.degree <- function(g, out.folder)
 		custom.hist(vals, name=paste(long.names[i],"Degree"), file=file.path(degree.folder,paste0(fname,"_histo")))
 			
 		# export CSV with degree
-		df <- data.frame(vertex_attr(g, COL_PERS_ID), get.person.names(g), vals)
+		df <- data.frame(vertex_attr(g, ND_NAME), get.names(g), vals)
 		colnames(df) <- c("Id","Name",fname) 
 		write.csv(df, file=file.path(degree.folder,paste0(fname,"_values.csv")), row.names=FALSE)
 		
@@ -235,7 +237,7 @@ analyze.net.eigencentrality <- function(g, out.folder)
 		custom.hist(vals, name=paste(long.names[i],"Eigencentrality"), file=file.path(eigen.folder,paste0(fname,"_histo")))
 		
 		# export CSV with Eigencentrality
-		df <- data.frame(vertex_attr(g, COL_PERS_ID), get.person.names(g), vals)
+		df <- data.frame(vertex_attr(g, ND_NAME), get.names(g), vals)
 		colnames(df) <- c("Id","Name",fname) 
 		write.csv(df, file=file.path(eigen.folder,paste0(fname,"_values.csv")), row.names=FALSE)
 		
@@ -292,7 +294,7 @@ analyze.net.betweenness <- function(g, out.folder)
 		custom.hist(vals, name=paste(long.names[i],"Betweenness"), file=file.path(betweenness.folder,paste0(fname,"_histo")))
 		
 		# export CSV with betweenness
-		df <- data.frame(vertex_attr(g, COL_PERS_ID), get.person.names(g), vals)
+		df <- data.frame(vertex_attr(g, ND_NAME), get.names(g), vals)
 		colnames(df) <- c("Id","Name",fname) 
 		write.csv(df, file=file.path(betweenness.folder,paste0(fname,"_values.csv")), row.names=FALSE)
 		
@@ -360,7 +362,7 @@ analyze.net.closeness <- function(g, out.folder)
 		custom.hist(vals, name=paste(long.names[i],"Closeness"), file=file.path(closeness.folder,paste0(fname,"_histo")))
 		
 		# export CSV with closeness
-		df <- data.frame(vertex_attr(g, COL_PERS_ID), get.person.names(g), vals)
+		df <- data.frame(vertex_attr(g, ND_NAME), get.names(g), vals)
 		colnames(df) <- c("Id","Name",fname) 
 		write.csv(df, file=file.path(closeness.folder,paste0(fname,"_values.csv")), row.names=FALSE)
 		
@@ -421,7 +423,7 @@ analyze.net.harmonic.closeness <- function(g, out.folder)
 		custom.hist(vals, name=paste(long.names[i],"Harmonic Closeness"), file=file.path(closeness.folder,paste0(fname,"_histo")))
 		
 		# export CSV with harmonic closeness
-		df <- data.frame(vertex_attr(g, COL_PERS_ID), get.person.names(g), vals)
+		df <- data.frame(vertex_attr(g, ND_NAME), get.names(g), vals)
 		colnames(df) <- c("Id","Name",fname) 
 		write.csv(df, file=file.path(closeness.folder,paste0(fname,"_values.csv")), row.names=FALSE)
 		
@@ -476,7 +478,7 @@ analyze.net.transitivity <- function(g, out.folder)
 	global <- transitivity(graph=g, type="globalundirected", isolates="zero")
 	
 	# export CSV with transitivity
-	df <- data.frame(vertex_attr(g, COL_PERS_ID), get.person.names(g), vals)
+	df <- data.frame(vertex_attr(g, ND_NAME), get.names(g), vals)
 	colnames(df) <- c("Id","Name",fname) 
 	write.csv(df, file=file.path(transitivity.folder,paste0(fname,"_values.csv")), row.names=FALSE)
 	
@@ -545,7 +547,7 @@ analyze.net.comstruct <- function(g, out.folder)
 		custom.barplot(sizes, text=names(sizes), xlab="Community", ylab="Size", file=file.path(communities.folder,paste0(fname,"size_bars")))
 		
 		# export CSV with community membership
-		df <- data.frame(vertex_attr(g, COL_PERS_ID), get.person.names(g), mbrs)
+		df <- data.frame(vertex_attr(g, ND_NAME), get.names(g), mbrs)
 		colnames(df) <- c("Id","Name","Community") 
 		write.csv(df, file=file.path(communities.folder,paste0(fname,"membership.csv")), row.names=FALSE)
 		
@@ -596,6 +598,7 @@ analyze.net.assortativity <- function(g, out.folder)
 	
 	# gather regular categorical attributes 
 	attrs <- intersect(c(
+				# social
 				COL_PERS_NAME_LAST, COL_PERS_NAME_NICK, COL_PERS_NAME_TYPE,
 				COL_PERS_GENDER, COL_PERS_IDENTIFICATION, COL_PERS_RESIDENCE,
 				COL_PERS_ECCL_NORM, #COL_PERS_ECCL_LAT, COL_PERS_ECCL_FRE,
@@ -603,7 +606,31 @@ analyze.net.assortativity <- function(g, out.folder)
 				COL_PERS_CITY_FRE, #COL_PERS_CITY_LAT,
 				COL_PERS_DIOC_FRE, #COL_PERS_DIOC_LAT,
 				COL_PERS_OCC_CAT, COL_PERS_OCC_THEME,
-				COL_PERS_STATUS_NORM #, COL_PERS_STATUS_LAT, COL_PERS_STATUS_FRE
+				COL_PERS_STATUS_NORM, #COL_PERS_STATUS_LAT, COL_PERS_STATUS_FRE,
+						
+				# estates
+				COL_EST_AREA_ID, COL_EST_STREET_ID, COL_EST_VILLAGE_ID, COL_EST_LORDSHIP_ID,
+				COL_EST_TYPE_FRE, #COL_EST_TYPE_LAT
+				COL_EST_QUALIF_NORM, #COL_EST_QUALIF_LAT
+				#COL_EST_DETAIL, COL_EST_MEASURE, COL_EST_MATERIALS,
+				# edifices
+				COL_EDIF_TYPE, COL_EDIF_STATUS, COL_EDIF_LOC, #COL_EDIF_SRC,
+				# villages
+				COL_VILG_TYPE,
+				# palaces
+				COL_CARD_TYPE,
+				# gates
+				COL_GATE_NAME_FRE, #COL_GATE_NAME_LAT, 
+				COL_GATE_TYPE,
+				# areas
+				COL_AREA_NAME_FRE, #COL_AREA_NAME_LAT,
+				# walls
+				COL_WALL_NAME_FRE, #COL_WALL_NAME_LAT, 
+				COL_WALL_TYPE, 
+				# landmarks
+				COL_LDMRK_TYPE,
+				# streets
+				COL_STREET_TYPE
 			), 
 			vertex_attr_names(g))
 	for(attr in attrs)
@@ -623,8 +650,8 @@ analyze.net.assortativity <- function(g, out.folder)
 	#attrs.lst[[COL_PERS_OCC_LAT1]] <- c(COL_PERS_OCC_LAT1, COL_PERS_OCC_LAT2)
 	#attrs.lst[[COL_PERS_OCC_FRE1]] <- c(COL_PERS_OCC_FRE1, COL_PERS_OCC_FRE2)
 	attrs.lst[[COL_PERS_OCC_NORM1]] <- c(COL_PERS_OCC_NORM1, COL_PERS_OCC_NORM2)
-	attrs <- intersect(names(attrs.lst),
-			vertex_attr_names(g))
+	attrs.lst[[COL_EST_COMP_LAB1]] <- c(COL_EST_COMP_LAB1, COL_EST_COMP_LAB2, COL_EST_COMP_LAB3, COL_EST_COMP_LAB4, COL_EST_COMP_LAB5, COL_EST_COMP_LAB6)
+	attrs <- intersect(names(attrs.lst), vertex_attr_names(g))
 	for(attr in attrs)
 	{	tmp <- attrs.lst[[attr]]
 		m <- sapply(tmp, function(att) vertex_attr(g, att))
@@ -675,61 +702,81 @@ analyze.net.assortativity <- function(g, out.folder)
 		}
 	}
 	
-#	#############################
-#	# deal with numerical attributes
-#	tlog(4,"Dealing with numerical attributes")
-#	num.data <- NA
-#	
-#	# gather regular numerical attributes
-#	attrs <- intersect(c(ATT_NODE_TRAV_NBR),
-#		vertex_attr_names(g))
-#	for(attr in attrs)
-#	{	tmp <- vertex_attr(g, attr)
-#		if(all(is.na(num.data)))
-#			num.data <- matrix(tmp,ncol=1)
-#		else
-#			num.data <- cbind(num.data, tmp)
-#		colnames(num.data)[ncol(num.data)] <- attr
-#	}
-#	
-#	# compute the assortativity for all numerical attributes
-#	modes <- c("undirected", "directed")
-#	for(mode in modes)
-#	{	for(i in 1:ncol(num.data))
-#		{	# compute the assortativity
-#			attr <- colnames(num.data)[i]
-#			
-#			# if there are some NAs
-#			if(any(is.na(num.data[,i])))
-#			{	# explicitly represent them as zeroes
-#				cd <- num.data[,i]
-#				cd[is.na(cd)] <- 0
-#				ass <- assortativity(graph=g, types1=cd, directed=mode=="directed")
-#				tlog(6,"Assortativity for attribute \"",attr,"\" (mode=",mode,") when replacing NAs by 0: ",ass)
-#				vals <- c(vals, ass)
-#				names(vals)[length(vals)] <- paste0(attr,"_expxNA_",mode)
-#				# ignore them
-#				cd <- num.data[,i]
-#				cd <- cd[!is.na(cd)]
-#				if(length(cd)>1)
-#				{	gg <- delete_vertices(g, which(is.na(num.data[,i])))
-#					ass <- assortativity(graph=gg, types1=cd, directed=mode=="directed")
-#				}
-#				else
-#					ass <- NA
-#				tlog(6,"Assortativity for attribute \"",attr,"\" (mode=",mode,") when ignoring NAs: ",ass)
-#				vals <- c(vals, ass)
-#				names(vals)[length(vals)] <- paste0(attr,"_noNA_",mode)
-#			}
-#			# no NA at all
-#			else
-#			{	ass <- assortativity(graph=g, types1=num.data[,i], directed=mode=="directed")
-#				tlog(6,"Assortativity for attribute \"",attr,"\" (mode=",mode,"): ",ass)
-#				vals <- c(vals, ass)
-#				names(vals)[length(vals)] <- paste0(attr, "_", mode)
-#			}
-#		}
-#	}
+	#############################
+	# deal with numerical attributes
+	tlog(4,"Dealing with numerical attributes")
+	num.data <- NA
+	
+	# gather regular numerical attributes
+	attrs <- intersect(c(
+					COL_LOC_X, COL_LOC_Y,
+					# estates
+					COL_EST_COMP_NBR1, COL_EST_COMP_NBR2,
+					# edifices
+					COL_EDIF_DATE_FRST_OCC, COL_EDIF_DATE_BUILD_START, COL_EDIF_DATE_BUILD_END, COL_EDIF_DATE_DESTR,
+					# villages
+					COL_VILG_SURF, COL_VILG_PERIM, COL_VILG_DATE_FRST_OCC, COL_VILG_DATE_CREATED,
+					# gates
+					COL_GATE_DATE_FRST_OCC, COL_GATE_DATE_BUILD_START1, COL_GATE_DATE_BUILD_END1, COL_GATE_DATE_DESTR1, 
+					COL_GATE_DATE_BUILD_START2, COL_GATE_DATE_BUILD_END2, COL_GATE_DATE_DESTR2,
+					# areas
+					COL_AREA_SURF, COL_AREA_PERIM,
+					# walls
+					COL_WALL_DATE_FRST_OCC, COL_WALL_DATE_BUILD_START1, COL_WALL_DATE_BUILD_END1, COL_WALL_DATE_DESTR1, 
+					COL_WALL_DATE_BUILD_START2, COL_WALL_DATE_BUILD_END2, COL_WALL_DATE_DESTR2, 
+					# landmarks
+					COL_LDMRK_DATE_DERIV, COL_LDMRK_DATE_COUV, COL_LDMRK_DATE,
+					# streets
+					COL_STREET_LENGTH
+				),
+			vertex_attr_names(g))
+	for(attr in attrs)
+	{	tmp <- vertex_attr(g, attr)
+		if(all(is.na(num.data)))
+			num.data <- matrix(tmp,ncol=1)
+		else
+			num.data <- cbind(num.data, tmp)
+		colnames(num.data)[ncol(num.data)] <- attr
+	}
+	
+	# compute the assortativity for all numerical attributes
+	modes <- c("undirected", "directed")
+	for(mode in modes)
+	{	for(i in 1:ncol(num.data))
+		{	# compute the assortativity
+			attr <- colnames(num.data)[i]
+			
+			# if there are some NAs
+			if(any(is.na(num.data[,i])))
+			{	# explicitly represent them as zeroes
+				cd <- num.data[,i]
+				cd[is.na(cd)] <- 0
+				ass <- assortativity(graph=g, types1=cd, directed=mode=="directed")
+				tlog(6,"Assortativity for attribute \"",attr,"\" (mode=",mode,") when replacing NAs by 0: ",ass)
+				vals <- c(vals, ass)
+				names(vals)[length(vals)] <- paste0(attr,"_expxNA_",mode)
+				# ignore them
+				cd <- num.data[,i]
+				cd <- cd[!is.na(cd)]
+				if(length(cd)>1)
+				{	gg <- delete_vertices(g, which(is.na(num.data[,i])))
+					ass <- assortativity(graph=gg, types1=cd, directed=mode=="directed")
+				}
+				else
+					ass <- NA
+				tlog(6,"Assortativity for attribute \"",attr,"\" (mode=",mode,") when ignoring NAs: ",ass)
+				vals <- c(vals, ass)
+				names(vals)[length(vals)] <- paste0(attr,"_noNA_",mode)
+			}
+			# no NA at all
+			else
+			{	ass <- assortativity(graph=g, types1=num.data[,i], directed=mode=="directed")
+				tlog(6,"Assortativity for attribute \"",attr,"\" (mode=",mode,"): ",ass)
+				vals <- c(vals, ass)
+				names(vals)[length(vals)] <- paste0(attr, "_", mode)
+			}
+		}
+	}
 	
 	#############################
 	# record the results
@@ -784,6 +831,7 @@ analyze.net.attributes <- function(g, out.folder)
 	
 	# gather regular categorical attributes
 	attrs <- intersect(c(
+				# social
 				COL_PERS_NAME_LAST, COL_PERS_NAME_NICK, COL_PERS_NAME_TYPE,
 				COL_PERS_GENDER, COL_PERS_IDENTIFICATION, COL_PERS_RESIDENCE,
 				COL_PERS_ECCL_NORM, #COL_PERS_ECCL_LAT, COL_PERS_ECCL_FRE,
@@ -791,7 +839,31 @@ analyze.net.attributes <- function(g, out.folder)
 				COL_PERS_CITY_FRE, #COL_PERS_CITY_LAT,
 				COL_PERS_DIOC_FRE, #COL_PERS_DIOC_LAT,
 				COL_PERS_OCC_CAT, COL_PERS_OCC_THEME,
-				COL_PERS_STATUS_NORM #, COL_PERS_STATUS_LAT, COL_PERS_STATUS_FRE
+				COL_PERS_STATUS_NORM, #COL_PERS_STATUS_LAT, COL_PERS_STATUS_FRE,
+				
+				# estates
+				COL_EST_AREA_ID, COL_EST_STREET_ID, COL_EST_VILLAGE_ID, COL_EST_LORDSHIP_ID,
+				COL_EST_TYPE_FRE, #COL_EST_TYPE_LAT
+				COL_EST_QUALIF_NORM, #COL_EST_QUALIF_LAT
+				#COL_EST_DETAIL, COL_EST_MEASURE, COL_EST_MATERIALS,
+				# edifices
+				COL_EDIF_TYPE, COL_EDIF_STATUS, COL_EDIF_LOC, #COL_EDIF_SRC,
+				# villages
+				COL_VILG_TYPE,
+				# palaces
+				COL_CARD_TYPE,
+				# gates
+				COL_GATE_NAME_FRE, #COL_GATE_NAME_LAT, 
+				COL_GATE_TYPE,
+				# areas
+				COL_AREA_NAME_FRE, #COL_AREA_NAME_LAT,
+				# walls
+				COL_WALL_NAME_FRE, #COL_WALL_NAME_LAT, 
+				COL_WALL_TYPE, 
+				# landmarks
+				COL_LDMRK_TYPE,
+				# streets
+				COL_STREET_TYPE
 			), 
 			vertex_attr_names(g))
 	for(attr in attrs)
@@ -838,6 +910,7 @@ analyze.net.attributes <- function(g, out.folder)
 	#attrs.lst[[COL_PERS_OCC_LAT1]] <- c(COL_PERS_OCC_LAT1, COL_PERS_OCC_LAT2)
 	#attrs.lst[[COL_PERS_OCC_FRE1]] <- c(COL_PERS_OCC_FRE1, COL_PERS_OCC_FRE2)
 	attrs.lst[[COL_PERS_OCC_NORM1]] <- c(COL_PERS_OCC_NORM1, COL_PERS_OCC_NORM2)
+	attrs.lst[[COL_EST_COMP_LAB1]] <- c(COL_EST_COMP_LAB1, COL_EST_COMP_LAB2, COL_EST_COMP_LAB3, COL_EST_COMP_LAB4, COL_EST_COMP_LAB5, COL_EST_COMP_LAB6)
 	attrs <- intersect(names(attrs.lst),
 			vertex_attr_names(g))
 	for(attr in attrs)
@@ -964,54 +1037,76 @@ analyze.net.attributes <- function(g, out.folder)
 		}
 	}
 	
-#	#############################
-#	# deal with numerical attributes
-#	num.data <- NA
-#	
-#	# gather regular numerical attributes
-#	attrs <- intersect(c(ATT_NODE_TRAV_NBR),
-#				vertex_attr_names(g))
-#	for(attr in attrs)
-#	{	# get values
-#		tmp <- vertex_attr(g, attr)
-#		
-#		# plot the attribute distribution as a histogram 
-#		# (actually a barplot, for now, as the only numeric attribute is an integer)
-#		tlog(4,"Bar-plotting attribute \"",attr,"\"")
-#		tt <- table(tmp, useNA="ifany")
-#		plot.folder <- file.path(attr.folder, attr)
-#		dir.create(path=plot.folder, showWarnings=FALSE, recursive=TRUE)
-#		plot.file <- file.path(plot.folder, paste0(attr,"_bars"))
-#		custom.barplot(tt, 
-#				text=names(tt), 
-#				xlab=LONG_NAME[attr], ylab="Frequence", 
-#				file=plot.file)
-#		# record as a table
-#		tt <- as.data.frame(tt)
-#		colnames(tt) <- c("Value","Frequency")
-#		table.file <- file.path(plot.folder, paste0(attr,"_vals.csv"))
-#		write.csv(tt, file=table.file, row.names=FALSE)
-#		
-#		# add to matrix
-#		if(all(is.na(num.data)))
-#			num.data <- matrix(tmp,ncol=1)
-#		else
-#			num.data <- cbind(num.data, tmp)
-#		colnames(num.data)[ncol(num.data)] <- attr
-#	}
-#	
-#	# replace NAs by "Unknown" tags
-##	num.data[which(is.na(num.data))] <- VAL_UNK
-#	
-#	# plot the graph using colors for attribute values
-#	for(i in 1:ncol(num.data))
-#	{	attr <- colnames(num.data)[i]
-#		tlog(4,"Plotting attribute \"",attr,"\"")
-#		gg <- set_vertex_attr(graph=g, name=attr, value=num.data[,i])
-#		V(gg)$label <- rep(NA, gorder(gg))
-#		custom.gplot(gg,col.att=attr,cat.att=FALSE,color.isolates=TRUE,file=file.path(attr.folder,paste0(attr,"_graph")))
-##		custom.gplot(gg,col.att=attr,cat.att=FALSE,color.isolates=TRUE)
-#	}
+	#############################
+	# deal with numerical attributes
+	num.data <- NA
+	
+	# gather regular numerical attributes
+	attrs <- intersect(c(
+				COL_LOC_X, COL_LOC_Y,
+				# estates
+				COL_EST_COMP_NBR1, COL_EST_COMP_NBR2,
+				# edifices
+				COL_EDIF_DATE_FRST_OCC, COL_EDIF_DATE_BUILD_START, COL_EDIF_DATE_BUILD_END, COL_EDIF_DATE_DESTR,
+				# villages
+				COL_VILG_SURF, COL_VILG_PERIM, COL_VILG_DATE_FRST_OCC, COL_VILG_DATE_CREATED,
+				# gates
+				COL_GATE_DATE_FRST_OCC, COL_GATE_DATE_BUILD_START1, COL_GATE_DATE_BUILD_END1, COL_GATE_DATE_DESTR1, 
+				COL_GATE_DATE_BUILD_START2, COL_GATE_DATE_BUILD_END2, COL_GATE_DATE_DESTR2,
+				# areas
+				COL_AREA_SURF, COL_AREA_PERIM,
+				# walls
+				COL_WALL_DATE_FRST_OCC, COL_WALL_DATE_BUILD_START1, COL_WALL_DATE_BUILD_END1, COL_WALL_DATE_DESTR1, 
+				COL_WALL_DATE_BUILD_START2, COL_WALL_DATE_BUILD_END2, COL_WALL_DATE_DESTR2, 
+				# landmarks
+				COL_LDMRK_DATE_DERIV, COL_LDMRK_DATE_COUV, COL_LDMRK_DATE,
+				# streets
+				COL_STREET_LENGTH
+			),
+			vertex_attr_names(g))
+	for(attr in attrs)
+	{	# get values
+		tmp <- vertex_attr(g, attr)
+		
+		# plot the attribute distribution as a histogram 
+		# (actually a barplot, for now, as the only numeric attribute is an integer)
+		tlog(4,"Bar-plotting attribute \"",attr,"\"")
+		tt <- table(tmp, useNA="ifany")
+		plot.folder <- file.path(attr.folder, attr)
+		dir.create(path=plot.folder, showWarnings=FALSE, recursive=TRUE)
+		plot.file <- file.path(plot.folder, paste0(attr,"_bars"))
+		custom.barplot(tt, 
+				text=names(tt), 
+				xlab=LONG_NAME[attr], ylab="Frequence", 
+				file=plot.file)
+		# record as a table
+		tt <- as.data.frame(tt)
+		colnames(tt) <- c("Value","Frequency")
+		table.file <- file.path(plot.folder, paste0(attr,"_vals.csv"))
+		write.csv(tt, file=table.file, row.names=FALSE)
+		
+		# add to matrix
+		if(all(is.na(num.data)))
+			num.data <- matrix(tmp,ncol=1)
+		else
+			num.data <- cbind(num.data, tmp)
+		colnames(num.data)[ncol(num.data)] <- attr
+	}
+	
+	# replace NAs by "Unknown" tags
+#	num.data[which(is.na(num.data))] <- VAL_UNK
+	
+	# plot the graph using colors for attribute values
+	for(i in 1:ncol(num.data))
+	{	attr <- colnames(num.data)[i]
+		tlog(4,"Plotting attribute \"",attr,"\"")
+		gg <- set_vertex_attr(graph=g, name=attr, value=num.data[,i])
+		V(gg)$label <- rep(NA, gorder(gg))
+		plot.folder <- file.path(attr.folder, attr)
+		plot.file <- file.path(plot.folder, paste0(attr,"_graph"))
+		custom.gplot(gg,col.att=attr,cat.att=FALSE,color.isolates=TRUE,file=plot.file)
+#		custom.gplot(gg,col.att=attr,cat.att=FALSE,color.isolates=TRUE)
+	}
 	
 	#############################
 	# attributes over
@@ -1072,7 +1167,7 @@ analyze.net.articulation <- function(g, out.folder)
 	custom.hist(vals, name="Articulation Point Levels", file=file.path(articulation.folder,"articulation_histo"))
 	
 	# export CSV with articulation
-	df <- data.frame(vertex_attr(g, COL_PERS_ID), get.person.names(g), vals)
+	df <- data.frame(vertex_attr(g, ND_NAME), get.names(g), vals)
 	colnames(df) <- c("Id","Name","articulation") 
 	write.csv(df, file=file.path(articulation.folder,"articulation_values.csv"), row.names=FALSE)
 	
@@ -1131,7 +1226,7 @@ analyze.net.distance <- function(g, out.folder)
 		avg.vals <- apply(X=vals,MARGIN=1,FUN=function(v) mean(v[!is.infinite(v)]))
 		custom.hist(vals=avg.vals, name=paste("Average",long.names[i],"Distance"), file=file.path(distance.folder,paste0(fname,"_avg_histo")))
 		{	# export CSV with average distance
-			df <- data.frame(vertex_attr(g, COL_PERS_ID), get.person.names(g), avg.vals)
+			df <- data.frame(vertex_attr(g, ND_NAME), get.names(g), avg.vals)
 			colnames(df) <- c("Id","Name",paste0(fname,"_avg")) 
 			write.csv(df, file=file.path(distance.folder,paste0(fname,"_avg_values.csv")), row.names=FALSE)
 			
@@ -1151,8 +1246,8 @@ analyze.net.distance <- function(g, out.folder)
 		mode.folder <- file.path(distance.folder,mode)
 		dir.create(path=mode.folder, showWarnings=FALSE, recursive=TRUE)
 		for(n in 1:gorder(g))
-		{	id <- vertex_attr(g, COL_PERS_ID, n)
-			nname <- get.person.names(g, n)
+		{	id <- vertex_attr(g, ND_NAME, n)
+			nname <- get.names(g, n)
 			nname <- trimws(gsub("?", "", nname, fixed=TRUE))
 			
 			# only for significant nodes
@@ -1233,7 +1328,7 @@ analyze.net.connectivity <- function(g, out.folder)
 		avg.vals <- apply(X=vals,MARGIN=1,FUN=function(v) mean(v[!is.infinite(v)]))
 		custom.hist(vals=avg.vals, name="Connectivity", file=file.path(connectivity.folder,paste0(fname,"_avg_histo")))
 		{	# export CSV with average connectivity
-			df <- data.frame(vertex_attr(g, COL_PERS_ID), get.person.names(g), avg.vals)
+			df <- data.frame(vertex_attr(g, ND_NAME), get.names(g), avg.vals)
 			colnames(df) <- c("Id","Name",fname) 
 			write.csv(df, file=file.path(connectivity.folder,paste0(fname,"_avg_values.csv")), row.names=FALSE)
 			
@@ -1253,8 +1348,8 @@ analyze.net.connectivity <- function(g, out.folder)
 		mode.folder <- file.path(connectivity.folder,mode)
 		dir.create(path=mode.folder, showWarnings=FALSE, recursive=TRUE)
 		for(n in 1:gorder(g))
-		{	id <- vertex_attr(g, COL_PERS_ID, n)
-			nname <- get.person.names(g, n)
+		{	id <- vertex_attr(g, ND_NAME, n)
+			nname <- get.names(g, n)
 			nname <- trimws(gsub("?", "", nname, fixed=TRUE))
 			
 			# only for significant nodes
@@ -1324,7 +1419,7 @@ analyze.net.components <- function(g, out.folder)
 		custom.barplot(sizes, text=names(sizes), xlab="Component", ylab="Size", file=file.path(components.folder,paste0(fname,"size_bars")))
 		
 		# export CSV with component membership
-		df <- data.frame(vertex_attr(g, COL_PERS_ID), get.person.names(g), mbrs)
+		df <- data.frame(vertex_attr(g, ND_NAME), get.names(g), mbrs)
 		colnames(df) <- c("Id","Name","Component") 
 		write.csv(df, file=file.path(components.folder,paste0(fname,"membership.csv")), row.names=FALSE)
 		
