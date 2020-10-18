@@ -65,8 +65,8 @@ analyze.net.eccentricity <- function(g, out.folder)
 		for(pp in 1:length(diam.paths))
 		{	tlog(6,"Plotting diameter path ",pp,"/",length(diam.paths))
 			V(g)$label <- rep(NA, gorder(g))
-			custom.gplot(g, paths=diam.paths[[pp]], file=file.path(diameter.folder,paste0("diam_",mode,"_graph_",pp)))
-			#custom.gplot(g, paths=diam.paths[[pp]])
+			custom.gplot(g=g, paths=diam.paths[[pp]], file=file.path(diameter.folder,paste0("diam_",mode,"_graph_",pp)))
+			#custom.gplot(g=g, paths=diam.paths[[pp]])
 			
 			if(length(diam.paths[[pp]])<=20)
 			{	q <- 1
@@ -78,7 +78,7 @@ analyze.net.eccentricity <- function(g, out.folder)
 						V(g)[vstart]$label <- get.names(g, vstart) 
 						vend <- diam.paths[[pp]][[p]][length(diam.paths[[pp]][[p]])]
 						V(g)[vend]$label <- get.names(g, vend) 
-						custom.gplot(g, paths=diam.paths[[pp]][[p]], file=file.path(diameter.folder,paste0("diam_",mode,"_graph_",pp,"_",q)))
+						custom.gplot(g=g, paths=diam.paths[[pp]][[p]], file=file.path(diameter.folder,paste0("diam_",mode,"_graph_",pp,"_",q)))
 						q <- q + 1
 					}
 				}
@@ -121,8 +121,8 @@ analyze.net.eccentricity <- function(g, out.folder)
 		
 		# plot graph using color for eccentricity
 		g <- update.node.labels(g, vals)
-		custom.gplot(g,col.att=fname,file=file.path(eccentricity.folder,paste0(fname,"_graph")))
-		#custom.gplot(g,col.att=fname)
+		custom.gplot(g=g, col.att=fname, file=file.path(eccentricity.folder,paste0(fname,"_graph")))
+		#custom.gplot(g=g, col.att=fname)
 		
 		# compute radius
 		tlog(2,"Computing radius: mode=",mode)
@@ -189,8 +189,8 @@ analyze.net.degree <- function(g, out.folder)
 		
 		# plot graph using color for degree
 		g <- update.node.labels(g, vals)
-		custom.gplot(g,col.att=fname,file=file.path(degree.folder,paste0(fname,"_graph")))
-		#custom.gplot(g,col.att=fname)
+		custom.gplot(g=g, col.att=fname, file=file.path(degree.folder,paste0(fname,"_graph")))
+		#custom.gplot(g=g, col.att=fname)
 	}
 	
 	# export CSV with average degree
@@ -249,8 +249,8 @@ analyze.net.eigencentrality <- function(g, out.folder)
 		
 		# plot graph using color for Eigencentrality
 		g <- update.node.labels(g, vals)
-		custom.gplot(g,col.att=fname,file=file.path(eigen.folder,paste0(fname,"_graph")))
-		#custom.gplot(g,col.att=fname)
+		custom.gplot(g=g, col.att=fname, file=file.path(eigen.folder,paste0(fname,"_graph")))
+		#custom.gplot(g=g, col.att=fname)
 	}
 	
 	# export CSV with results
@@ -306,8 +306,8 @@ analyze.net.betweenness <- function(g, out.folder)
 		
 		# plot graph using color for betweenness
 		g <- update.node.labels(g, vals)
-		custom.gplot(g,col.att=fname,file=file.path(betweenness.folder,paste0(fname,"_graph")))
-		#custom.gplot(g,col.att=fname)
+		custom.gplot(g=g, col.att=fname, file=file.path(betweenness.folder,paste0(fname,"_graph")))
+		#custom.gplot(g=g, col.att=fname)
 	}
 	
 	# export CSV with results
@@ -374,8 +374,8 @@ analyze.net.closeness <- function(g, out.folder)
 		
 		# plot graph using color for closeness
 		g <- update.node.labels(g, vals)
-		custom.gplot(g,col.att=fname,file=file.path(closeness.folder,paste0(fname,"_graph")))
-		#custom.gplot(g,col.att=fname)
+		custom.gplot(g=g, col.att=fname, file=file.path(closeness.folder,paste0(fname,"_graph")))
+		#custom.gplot(g=g, col.att=fname)
 		if(all(is.na(vals)))
 			tlog(4,"WARNING: all values are NA, so no color in the plot")
 	}
@@ -435,8 +435,8 @@ analyze.net.harmonic.closeness <- function(g, out.folder)
 		
 		# plot graph using color for harmonic closeness
 		g <- update.node.labels(g, vals)
-		custom.gplot(g,col.att=fname,file=file.path(closeness.folder,paste0(fname,"_graph")))
-		#custom.gplot(g,col.att=fname)
+		custom.gplot(g=g, col.att=fname, file=file.path(closeness.folder,paste0(fname,"_graph")))
+		#custom.gplot(g=g, col.att=fname)
 		if(all(is.na(vals)))
 			tlog(4,"WARNING: all values are NA, so no color in the plot")
 	}
@@ -492,8 +492,8 @@ analyze.net.transitivity <- function(g, out.folder)
 	
 	# plot graph using color for transitivity
 	g <- update.node.labels(g, vals)
-	custom.gplot(g,col.att=fname,file=file.path(transitivity.folder,paste0(fname,"_graph")))
-	#custom.gplot(g,col.att=fname)
+	custom.gplot(g=g, col.att=fname, file=file.path(transitivity.folder,paste0(fname,"_graph")))
+	#custom.gplot(g=g, col.att=fname)
 	
 	# export CSV with average degree
 	write.csv(stats, file=stat.file, row.names=TRUE)
@@ -560,8 +560,8 @@ analyze.net.comstruct <- function(g, out.folder)
 		
 		# plot graph using color for communities
 		V(g)$label <- rep(NA, gorder(g))
-		custom.gplot(g,col.att=fname,cat.att=TRUE,file=file.path(communities.folder,paste0(fname,"_graph")))
-		#custom.gplot(g,col.att=fname,cat.att=TRUE)
+		custom.gplot(g=g, col.att=fname,cat.att=TRUE, file=file.path(communities.folder,paste0(fname,"_graph")))
+		#custom.gplot(g=g, col.att=fname,cat.att=TRUE)
 	}
 	
 	# export CSV with average degree
@@ -650,7 +650,8 @@ analyze.net.assortativity <- function(g, out.folder)
 	#attrs.lst[[COL_PERS_OCC_LAT1]] <- c(COL_PERS_OCC_LAT1, COL_PERS_OCC_LAT2)
 	#attrs.lst[[COL_PERS_OCC_FRE1]] <- c(COL_PERS_OCC_FRE1, COL_PERS_OCC_FRE2)
 	attrs.lst[[COL_PERS_OCC_NORM1]] <- c(COL_PERS_OCC_NORM1, COL_PERS_OCC_NORM2)
-	attrs.lst[[COL_EST_COMP_LAB1]] <- c(COL_EST_COMP_LAB1, COL_EST_COMP_LAB2, COL_EST_COMP_LAB3, COL_EST_COMP_LAB4, COL_EST_COMP_LAB5, COL_EST_COMP_LAB6)
+	attrs.lst[[COL_EST_COMP_LAB1]] <- intersect(c(COL_EST_COMP_LAB1, COL_EST_COMP_LAB2, COL_EST_COMP_LAB3, COL_EST_COMP_LAB4, COL_EST_COMP_LAB5, COL_EST_COMP_LAB6),
+										vertex_attr_names(g))
 	attrs <- intersect(names(attrs.lst), vertex_attr_names(g))
 	for(attr in attrs)
 	{	tmp <- attrs.lst[[attr]]
@@ -715,7 +716,7 @@ analyze.net.assortativity <- function(g, out.folder)
 					# edifices
 					COL_EDIF_DATE_FRST_OCC, COL_EDIF_DATE_BUILD_START, COL_EDIF_DATE_BUILD_END, COL_EDIF_DATE_DESTR,
 					# villages
-					COL_VILG_SURF, COL_VILG_PERIM, COL_VILG_DATE_FRST_OCC, COL_VILG_DATE_CREATED,
+					COL_VILG_SURF, COL_VILG_PERIM, COL_VILG_DATE_FRST_OCC, #COL_VILG_DATE_CREATED,
 					# gates
 					COL_GATE_DATE_FRST_OCC, COL_GATE_DATE_BUILD_START1, COL_GATE_DATE_BUILD_END1, COL_GATE_DATE_DESTR1, 
 					COL_GATE_DATE_BUILD_START2, COL_GATE_DATE_BUILD_END2, COL_GATE_DATE_DESTR2,
@@ -890,8 +891,8 @@ analyze.net.attributes <- function(g, out.folder)
 		tlog(4,"Graph-plotting attribute \"",attr,"\"")
 		plot.file <- file.path(plot.folder, paste0(attr,"_graph"))
 		V(g)$label <- rep(NA, gorder(g))
-		custom.gplot(g, col.att=attr, cat.att=TRUE, color.isolates=TRUE, file=plot.file)
-		#custom.gplot(g, col.att=attr, cat.att=TRUE, color.isolates=TRUE)
+		custom.gplot(g=g, col.att=attr, cat.att=TRUE, color.isolates=TRUE, file=plot.file)
+		#custom.gplot(g=g, col.att=attr, cat.att=TRUE, color.isolates=TRUE)
 		
 		# add to matrix
 		tlog(4,"Adding attribute \"",attr,"\" to data matrix")
@@ -910,9 +911,9 @@ analyze.net.attributes <- function(g, out.folder)
 	#attrs.lst[[COL_PERS_OCC_LAT1]] <- c(COL_PERS_OCC_LAT1, COL_PERS_OCC_LAT2)
 	#attrs.lst[[COL_PERS_OCC_FRE1]] <- c(COL_PERS_OCC_FRE1, COL_PERS_OCC_FRE2)
 	attrs.lst[[COL_PERS_OCC_NORM1]] <- c(COL_PERS_OCC_NORM1, COL_PERS_OCC_NORM2)
-	attrs.lst[[COL_EST_COMP_LAB1]] <- c(COL_EST_COMP_LAB1, COL_EST_COMP_LAB2, COL_EST_COMP_LAB3, COL_EST_COMP_LAB4, COL_EST_COMP_LAB5, COL_EST_COMP_LAB6)
-	attrs <- intersect(names(attrs.lst),
-			vertex_attr_names(g))
+	attrs.lst[[COL_EST_COMP_LAB1]] <- intersect(c(COL_EST_COMP_LAB1, COL_EST_COMP_LAB2, COL_EST_COMP_LAB3, COL_EST_COMP_LAB4, COL_EST_COMP_LAB5, COL_EST_COMP_LAB6),
+										vertex_attr_names(g))
+	attrs <- intersect(names(attrs.lst), vertex_attr_names(g))
 	for(attr in attrs)
 	{	attrc <- attrs.lst[[attr]]
 		m <- sapply(attrc, function(att) vertex_attr(g, att))
@@ -1002,8 +1003,8 @@ analyze.net.attributes <- function(g, out.folder)
 			plot.file <- file.path(plot.folder2, "graphs")
 			gg <- set_vertex_attr(graph=g, name=att_name, value=vals)
 			V(gg)$label <- rep(NA, gorder(gg))
-			custom.gplot(gg, col.att=att_name, cat.att=TRUE, color.isolates=TRUE, file=plot.file)
-			#custom.gplot(gg, col.att=att_name, cat.att=TRUE, color.isolates=TRUE)
+			custom.gplot(g=gg, col.att=att_name, cat.att=TRUE, color.isolates=TRUE, file=plot.file)
+			#custom.gplot(g=gg, col.att=att_name, cat.att=TRUE, color.isolates=TRUE)
 		}
 	}
 	
@@ -1039,7 +1040,7 @@ analyze.net.attributes <- function(g, out.folder)
 	
 	#############################
 	# deal with numerical attributes
-	num.data <- NA
+	num.data <- NULL
 	
 	# gather regular numerical attributes
 	attrs <- intersect(c(
@@ -1049,7 +1050,7 @@ analyze.net.attributes <- function(g, out.folder)
 				# edifices
 				COL_EDIF_DATE_FRST_OCC, COL_EDIF_DATE_BUILD_START, COL_EDIF_DATE_BUILD_END, COL_EDIF_DATE_DESTR,
 				# villages
-				COL_VILG_SURF, COL_VILG_PERIM, COL_VILG_DATE_FRST_OCC, COL_VILG_DATE_CREATED,
+				COL_VILG_SURF, COL_VILG_PERIM, COL_VILG_DATE_FRST_OCC, #COL_VILG_DATE_CREATED,
 				# gates
 				COL_GATE_DATE_FRST_OCC, COL_GATE_DATE_BUILD_START1, COL_GATE_DATE_BUILD_END1, COL_GATE_DATE_DESTR1, 
 				COL_GATE_DATE_BUILD_START2, COL_GATE_DATE_BUILD_END2, COL_GATE_DATE_DESTR2,
@@ -1086,7 +1087,7 @@ analyze.net.attributes <- function(g, out.folder)
 		write.csv(tt, file=table.file, row.names=FALSE)
 		
 		# add to matrix
-		if(all(is.na(num.data)))
+		if(is.null(num.data))
 			num.data <- matrix(tmp,ncol=1)
 		else
 			num.data <- cbind(num.data, tmp)
@@ -1104,8 +1105,8 @@ analyze.net.attributes <- function(g, out.folder)
 		V(gg)$label <- rep(NA, gorder(gg))
 		plot.folder <- file.path(attr.folder, attr)
 		plot.file <- file.path(plot.folder, paste0(attr,"_graph"))
-		custom.gplot(gg,col.att=attr,cat.att=FALSE,color.isolates=TRUE,file=plot.file)
-#		custom.gplot(gg,col.att=attr,cat.att=FALSE,color.isolates=TRUE)
+		custom.gplot(g=gg, col.att=attr, cat.att=FALSE, color.isolates=TRUE, file=plot.file)
+#		custom.gplot(g=gg, col.att=attr, cat.att=FALSE, color.isolates=TRUE)
 	}
 	
 	#############################
@@ -1178,8 +1179,8 @@ analyze.net.articulation <- function(g, out.folder)
 	
 	# plot graph using color for articulation level
 	g <- update.node.labels(g, vals, best.low=TRUE)
-	custom.gplot(g,col.att="articulation",file=file.path(articulation.folder,"articulation_graph"))
-	#custom.gplot(g,col.att="articulation")
+	custom.gplot(g=g, col.att="articulation", file=file.path(articulation.folder,"articulation_graph"))
+	#custom.gplot(g=g, col.att="articulation")
 	
 	# export CSV with number of articulation points
 	write.csv(stats, file=stat.file, row.names=TRUE)
@@ -1238,8 +1239,8 @@ analyze.net.distance <- function(g, out.folder)
 			
 			# plot graph using color for average distance
 			g <- update.node.labels(g, avg.vals)
-			custom.gplot(g,col.att=paste0(fname,"_avg"),file=file.path(distance.folder,paste0(fname,"_avg_graph")))
-			#custom.gplot(g,col.att=paste0(fname,"_avg"))
+			custom.gplot(g=g, col.att=paste0(fname,"_avg"), file=file.path(distance.folder,paste0(fname,"_avg_graph")))
+			#custom.gplot(g=g, col.att=paste0(fname,"_avg"))
 		}
 		
 		# for each node, plot graph using color for distance
@@ -1260,7 +1261,8 @@ analyze.net.distance <- function(g, out.folder)
 				else
 				{	tlog(4,"Plotting graph for node #",id," (",nname, ", ",n,"/",gorder(g),")")
 					g <- update.node.labels(g, vals[n,])
-					custom.gplot(g,col.att=fname,v.hl=n,file=file.path(mode.folder,paste0("n",id,"_",nname)))
+					custom.gplot(g=g, col.att=fname, v.hl=n, file=file.path(mode.folder,paste0("n",id,"_",nname)))
+					#custom.gplot(g=g, col.att=fname, v.hl=n)
 				}
 				g <- delete_vertex_attr(graph=g, name=fname)
 			}
@@ -1340,8 +1342,8 @@ analyze.net.connectivity <- function(g, out.folder)
 			
 			# plot graph using color for average connectivity
 			g <- update.node.labels(g, avg.vals)
-			custom.gplot(g,col.att=paste0(fname,"_avg"),file=file.path(connectivity.folder,paste0(fname,"_avg_graph")))
-			#custom.gplot(g,col.att=paste0(fname,"_avg"))
+			custom.gplot(g=g, col.att=paste0(fname,"_avg"), file=file.path(connectivity.folder,paste0(fname,"_avg_graph")))
+			#custom.gplot(g=g, col.att=paste0(fname,"_avg"))
 		}
 		
 		# for each node, plot graph using color for connectivity
@@ -1362,7 +1364,8 @@ analyze.net.connectivity <- function(g, out.folder)
 				else
 				{	tlog(4,"Plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),")")
 					g <- update.node.labels(g, vals[n,])
-					custom.gplot(g,col.att=fname,v.hl=n,file=file.path(mode.folder,paste0("n",id,"_",nname)))
+					custom.gplot(g=g, col.att=fname, v.hl=n, file=file.path(mode.folder,paste0("n",id,"_",nname)))
+					#custom.gplot(g=g, col.att=fname, v.hl=n)
 				}
 				g <- delete_vertex_attr(graph=g, name=fname)
 			}
@@ -1437,8 +1440,8 @@ analyze.net.components <- function(g, out.folder)
 		
 		# plot graph using color for components
 		V(g)$label <- rep(NA, gorder(g))
-		custom.gplot(g,col.att=fname,cat.att=TRUE,file=file.path(components.folder,paste0(fname,"_graph")))
-		#custom.gplot(g,col.att=fname,cat.att=TRUE)
+		custom.gplot(g=g, col.att=fname, cat.att=TRUE, file=file.path(components.folder,paste0(fname,"_graph")))
+		#custom.gplot(g=g, col.att=fname, cat.att=TRUE)
 		g <- set_vertex_attr(graph=g, name=fname, value=cmp$membership)
 	
 		# plot components separately
@@ -1447,8 +1450,10 @@ analyze.net.components <- function(g, out.folder)
 		for(i in idx)
 		{	# plot subgraph
 			g2 <- induced_subgraph(graph=g, vids=which(mbrs==i))
-			V(g2)$label <- rep(NA, gorder(g2))
-			custom.gplot(g2,file=file.path(mode.folder,paste0("component_",i)))
+			#V(g2)$label <- rep(NA, gorder(g2))
+			V(g2)$label <- get.names(g2)
+			custom.gplot(g=g2, file=file.path(mode.folder,paste0("component_",i)))
+			#custom.gplot(g=g2)
 			
 			# export subgraph
 			graph.file <- file.path(mode.folder,paste0("component_",i,".graphml"))
@@ -1484,48 +1489,50 @@ analyze.network <- function(gname, out.folder)
 	file.path <- file.path(out.folder, gname, FILE_GRAPH)
 	g <- load.graphml.file(file=file.path)
 	
-	# compute attribute stats 
-	# (must be done first, before other results are added as attributes)
-	g <- analyze.net.attributes(g, out.folder)
+	if(gsize(g)>=30)
+	{	# compute attribute stats 
+		# (must be done first, before other results are added as attributes)
+		g <- analyze.net.attributes(g, out.folder)
+			
+		# compute diameters, eccentricity, radius
+		g <- analyze.net.eccentricity(g, out.folder)
+			
+		# compute degree
+		g <- analyze.net.degree(g, out.folder)
+			
+		# compute eigencentrality
+		g <- analyze.net.eigencentrality(g, out.folder)
 		
-	# compute diameters, eccentricity, radius
-	g <- analyze.net.eccentricity(g, out.folder)
+		# compute betweenness
+		g <- analyze.net.betweenness(g, out.folder)
 		
-	# compute degree
-	g <- analyze.net.degree(g, out.folder)
+		# compute closeness
+		g <- analyze.net.closeness(g, out.folder)
 		
-	# compute eigencentrality
-	g <- analyze.net.eigencentrality(g, out.folder)
-	
-	# compute betweenness
-	g <- analyze.net.betweenness(g, out.folder)
-	
-	# compute closeness
-	g <- analyze.net.closeness(g, out.folder)
-	
-	# compute harmonic closeness
-	g <- analyze.net.harmonic.closeness(g, out.folder)
-	
-	# compute distances
-	g <- analyze.net.distance(g, out.folder)
-	
-	# compute articulation points
-	g <- analyze.net.articulation(g, out.folder)
-	
-	# detect communities
-	g <- analyze.net.comstruct(g, out.folder)
-	
-	# compute transitivity
-	g <- analyze.net.transitivity(g, out.folder)
-	
-	# compute vertex connectivity
-	g <- analyze.net.connectivity(g, out.folder)
-	
-	# compute components
-	g <- analyze.net.components(g, out.folder)
-	
-	# compute assortativity
-	g <- analyze.net.assortativity(g, out.folder)
+		# compute harmonic closeness
+		g <- analyze.net.harmonic.closeness(g, out.folder)
+		
+		# compute distances
+		g <- analyze.net.distance(g, out.folder)
+		
+		# compute articulation points
+		g <- analyze.net.articulation(g, out.folder)
+		
+		# detect communities
+		g <- analyze.net.comstruct(g, out.folder)
+		
+		# compute transitivity
+		g <- analyze.net.transitivity(g, out.folder)
+		
+		# compute vertex connectivity
+		g <- analyze.net.connectivity(g, out.folder)
+		
+		# compute components
+		g <- analyze.net.components(g, out.folder)
+		
+		# compute assortativity
+		g <- analyze.net.assortativity(g, out.folder)
+	}
 	
 	return(g)
 }

@@ -35,8 +35,9 @@ FORMAT <- c("png")#,"pdf")	# plot file format: pdf png
 # e.hl: edges to highlight (these are represented as thick lines).
 # color.isolates: force isolates to be colored (by default they are not)
 # file: (optional) file name, to record the plot.
+# ...: parameters sent directly to the plot function.
 #############################################################
-custom.gplot <- function(g, paths, col.att, cat.att=FALSE, v.hl, e.hl, color.isolates=FALSE, file)
+custom.gplot <- function(g, paths, col.att, cat.att=FALSE, v.hl, e.hl, color.isolates=FALSE, file, ...)
 {	pie.values <- NA
 	lgd.col <- NA
 	
@@ -51,7 +52,7 @@ custom.gplot <- function(g, paths, col.att, cat.att=FALSE, v.hl, e.hl, color.iso
 	ecols <- rep("BLACK", gsize(g))						# default color
 	nature <- edge_attr(g, LK_TYPE)
 	if(length(nature)>0)
-	{	if(length(intersect(nature,c(LK_TYPE_FAM, LK_TYPE_PRO))))
+	{	if(graph_attr(g, GR_TYPE)==GR_TYPE_SOC)
 		{	ecols[nature==LK_TYPE_PRO] <- "#1A8F39"			# green
 			ecols[nature==LK_TYPE_FAM] <- "#9C1699"			# purple
 #			ecols[nature==LK_TYPE_XXX] <- "#C27604"			# orange
@@ -173,9 +174,25 @@ custom.gplot <- function(g, paths, col.att, cat.att=FALSE, v.hl, e.hl, color.iso
 	for(fformat in FORMAT)
 	{	if(hasArg(file))
 		{	if(fformat=="pdf")
-				pdf(paste0(file,".pdf"), width=25, height=25)
+			{	if(graph_attr(g, GR_TYPE)==GR_TYPE_SOC)
+					pdf(paste0(file,".pdf"), width=25, height=25)
+				else
+					pdf(paste0(file,".pdf"), width=50, height=25)
+			}
 			else if(fformat=="png")
-				png(paste0(file,".png"), width=1024, height=1024)
+			{	if(graph_attr(g, GR_TYPE)==GR_TYPE_SOC)
+					png(paste0(file,".png"), width=1024, height=1024)
+				else
+					png(paste0(file,".png"), width=2048, height=1024)
+			}
+		}
+		if(graph_attr(g, GR_TYPE)==GR_TYPE_SOC)
+		{	par(mar=c(5,4,4,2)+.1)						# 5, 4, 4, 2 (B L T R)
+			arrow.param <- 0.75
+		}
+		else
+		{	par(mar=c(0,7,0,7)+.1)						# 5, 4, 4, 2 (B L T R)
+			arrow.param <- 0.5
 		}
 		plot(g,										# graph to plot
 			#axes=TRUE,								# whether to draw axes or not
@@ -195,9 +212,13 @@ custom.gplot <- function(g, paths, col.att, cat.att=FALSE, v.hl, e.hl, color.iso
 			vertex.label.color="BLACK",				# label color
 			edge.color=ecols,						# link color
 			edge.lty=elty,							# link type
-			edge.width=ewidth						# link thickness
+			edge.width=ewidth,						# link thickness
+			edge.arrow.size=arrow.param,			# arrow size
+			edge.arrow.width=arrow.param,			# arrow size
+			frame=FALSE, 							# frame around the plot (useful when debugging)
+			...										# other parameters
 		)
-		if(length(intersect(nature,c(LK_TYPE_FAM, LK_TYPE_PRO))))
+		if(graph_attr(g, GR_TYPE)==GR_TYPE_SOC)
 		{	legend(
 				title="Link type",								# title of the legend box
 				x="topright",									# position
@@ -238,7 +259,7 @@ custom.gplot <- function(g, paths, col.att, cat.att=FALSE, v.hl, e.hl, color.iso
 				else
 				{	width <- 0.05
 					height <- 0.3
-					x1 <- -1
+					x1 <- -1.25
 					x2 <- x1 + width
 					y2 <- -1
 					y1 <- y2 + height

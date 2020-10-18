@@ -103,41 +103,46 @@ complete.names <- function(g, vs=1:gorder(g), att.name, result)
 get.location.names <- function(g, vs=1:gorder(g))
 {	result <- rep(NA, length(vs))
 	
-	att.names <- c(
-		# current name
-		COL_STREET_NAME_CURR,
-		# translated name
-		COL_GATE_NAME_FRE, COL_AREA_NAME_FRE, COL_WALL_NAME_FRE, 
-		# name
-#		COL_FIX_NAME, 
-		COL_EDIF_NAME, COL_VILG_NAME, COL_CARD_NAME, COL_LDMRK_NAME, COL_STREET_NAME, 
-		# latin name
-		COL_GATE_NAME_LAT, COL_AREA_NAME_LAT, COL_WALL_NAME_LAT, 
-		
-		# normalized qualification
-		COL_EST_QUALIF_NORM,
-		# latin qualification
-		COL_EST_QUALIF_LAT,
-		
-		# translated type
-		COL_EST_TYPE_FRE,
-		# type
-#		COL_FIX_TYPE, 
-		COL_EDIF_TYPE, COL_VILG_TYPE, COL_CARD_TYPE, COL_GATE_TYPE, COL_WALL_TYPE, COL_LDMRK_TYPE, COL_STREET_TYPE, 
-		# latin type
-		COL_EST_TYPE_LAT,
-		
-		# detail
-		COL_EST_DETAIL,
-		
-		# id
-		COL_EST_ID, #COL_FIX_ID, 
-		COL_EDIF_ID, COL_VILG_ID, COL_CARD_ID, COL_GATE_ID, COL_AREA_ID, COL_WALL_ID, COL_LDMRK_ID, COL_STREET_ID
-	)
+	att.names <- intersect(
+		c(
+			# current name
+			COL_STREET_NAME_CURR,
+			# translated name
+			COL_GATE_NAME_FRE, COL_AREA_NAME_FRE, COL_WALL_NAME_FRE, 
+			# name
+#			COL_FIX_NAME, 
+			COL_EDIF_NAME, COL_VILG_NAME, COL_CARD_NAME, COL_LDMRK_NAME, COL_STREET_NAME, 
+			# latin name
+			COL_GATE_NAME_LAT, COL_AREA_NAME_LAT, COL_WALL_NAME_LAT, 
+			
+			# normalized qualification
+			COL_EST_QUALIF_NORM,
+			# latin qualification
+			COL_EST_QUALIF_LAT,
+			
+			# translated type
+			COL_EST_TYPE_FRE,
+			# type
+#			COL_FIX_TYPE, 
+			COL_EDIF_TYPE, COL_VILG_TYPE, COL_CARD_TYPE, COL_GATE_TYPE, COL_WALL_TYPE, COL_LDMRK_TYPE, COL_STREET_TYPE, 
+			# latin type
+			COL_EST_TYPE_LAT,
+			
+			# detail
+			COL_EST_DETAIL,
+			
+			# id
+			COL_EST_ID, #COL_FIX_ID, 
+			COL_EDIF_ID, COL_VILG_ID, COL_CARD_ID, COL_GATE_ID, COL_AREA_ID, COL_WALL_ID, COL_LDMRK_ID, COL_STREET_ID
+		), 
+		vertex_attr_names(g))
 	
 	# complete with various graph attributes
 	for(att.name in att.names)
+	{	#print(att.name)
 		result <- complete.names(g=g, vs=vs, att.name=att.name, result=result)
+		#print(result)
+	}
 	
 	return(result)
 }
@@ -156,7 +161,7 @@ get.location.names <- function(g, vs=1:gorder(g))
 get.names <- function(g, vs=1:gorder(g))
 {	link.types <- edge_attr(g, LK_TYPE)
 	
-	if(length(intersect(link.types,c(LK_TYPE_FAM, LK_TYPE_PRO))))
+	if(graph_attr(g, GR_TYPE)==GR_TYPE_SOC)
 		result <- get.person.names(g, vs)
 	else
 		result <- get.location.names(g, vs)
@@ -190,6 +195,7 @@ extract.social.networks <- function()
 	tlog(2,"Building graph")
 	edge.list <- cbind(as.character(data[,COL_SOC_SRC]), as.character(data[,COL_SOC_TGT]))
 	g <- graph_from_edgelist(el=edge.list, directed=TRUE)
+	g <- set_graph_attr(graph=g, name=GR_TYPE, value=GR_TYPE_SOC)
 	g <- set_edge_attr(graph=g, name=LK_TYPE, value=MAP_TABLE2GRAPH[data[,COL_SOC_TYPE]])
 	g <- set_edge_attr(graph=g, name=LK_DESCR, value=data[,COL_SOC_DESCR])
 	tlog(4,"Number of edges: ",gsize(g),"/",nrow(data))
@@ -320,8 +326,8 @@ extract.social.networks <- function()
 		# plot full graph
 		plot.file <- file.path(graph.folder, "graph")
 		tlog(4,"Plotting graph in \"",plot.file,"\"")
-		custom.gplot(g1, file=plot.file)
-		#custom.gplot(g1)
+		custom.gplot(g=g1, file=plot.file)
+		#custom.gplot(g=g1)
 		
 		# record graph as a graphml file
 		graph.file <- file.path(graph.folder, FILE_GRAPH)
@@ -400,8 +406,8 @@ extract.social.networks <- function()
 			# plot full graph
 			plot.file <- file.path(graph.folder, "graph")
 			tlog(6,"Plotting graph in \"",plot.file,"\"")
-			custom.gplot(g1, file=plot.file)
-			#custom.gplot(g1)
+			custom.gplot(g=g1, file=plot.file)
+			#custom.gplot(g=g1)
 			
 			# record graph as a graphml file
 			graph.file <- file.path(graph.folder, FILE_GRAPH)
@@ -462,41 +468,53 @@ extract.estate.networks <- function()
 	tlog(0,"Extracting various versions of the estate graph")
 	
 	# load estate information
+	tlog(2,"Loading estate information")
 	info.estate <- load.location.table(FILE_IN_ANAL_ESTATE_NODES,"estate")
 info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID, COL_EST_STREET_ID, COL_EST_VILLAGE_ID))]
+	info.estate <- cbind(paste("Bien:",info.estate[,COL_EST_ID],sep=""),info.estate); colnames(info.estate)[1] <- COL_LOC_ID
 	cols <- colnames(info.estate)
 	total.nbr <- nrow(info.estate)
 	# load area information
 	info.area <- load.location.table(FILE_IN_ANAL_AREA_NODES,"area", last=)
+	info.area <- cbind(paste("Quartier:",info.area[,COL_AREA_ID],sep=""),info.area); colnames(info.area)[1] <- COL_LOC_ID
 	cols <- c(cols, colnames(info.area))
-	total.nbr <- total.nbr + nrow(info.estate)
+	total.nbr <- total.nbr + nrow(info.area)
 	# load fix information
 #	info.fix <- load.location.table(FILE_IN_ANAL_FIX_NODES,"fix")
+#	info.fix <- cbind(paste("In",info.fix[,COL_FIX_ID],sep=""),info.fix); colnames(info.fix)[1] <- COL_LOC_ID
 #	cols <- c(cols, colnames(info.fix))
 #	total.nbr <- total.nbr + nrow(info.fix)
 	info.village <- load.location.table(FILE_IN_ANAL_VILG_NODES,"village")
+	info.village <- cbind(paste("Bourg:",info.village[,COL_VILG_ID],sep=""),info.village); colnames(info.village)[1] <- COL_LOC_ID
 	cols <- c(cols, colnames(info.village))
 	total.nbr <- total.nbr + nrow(info.village)
 	info.edifice <- load.location.table(FILE_IN_ANAL_EDIFICE_NODES,"edifice")
+	info.edifice <- cbind(paste("Edifice:",info.edifice[,COL_EDIF_ID],sep=""),info.edifice); colnames(info.edifice)[1] <- COL_LOC_ID
 	cols <- c(cols, colnames(info.edifice))
 	total.nbr <- total.nbr + nrow(info.edifice)
 	info.cardinal <- load.location.table(FILE_IN_ANAL_CARD_NODES,"cardinal")
+	info.cardinal <- cbind(paste("Livree:",info.cardinal[,COL_CARD_ID],sep=""),info.cardinal); colnames(info.cardinal)[1] <- COL_LOC_ID
 	cols <- c(cols, colnames(info.cardinal))
 	total.nbr <- total.nbr + nrow(info.cardinal)
 	info.gate <- load.location.table(FILE_IN_ANAL_GATE_NODES,"gate")
+	info.gate <- cbind(paste("Porte:",info.gate[,COL_GATE_ID],sep=""),info.gate); colnames(info.gate)[1] <- COL_LOC_ID
 	cols <- c(cols, colnames(info.gate))
 	total.nbr <- total.nbr + nrow(info.gate)
 	info.wall <- load.location.table(FILE_IN_ANAL_WALL_NODES,"wall")
+	info.wall <- cbind(paste("Rempart:",info.wall[,COL_WALL_ID],sep=""),info.wall); colnames(info.wall)[1] <- COL_LOC_ID
 	cols <- c(cols, colnames(info.wall))
 	total.nbr <- total.nbr + nrow(info.wall)
 	info.landmark <- load.location.table(FILE_IN_ANAL_LDMRK_NODES,"landmark")
+	info.landmark <- cbind(paste("Repere:",info.landmark[,COL_LDMRK_ID],sep=""),info.landmark); colnames(info.landmark)[1] <- COL_LOC_ID
 	cols <- c(cols, colnames(info.landmark))
 	total.nbr <- total.nbr + nrow(info.landmark)
 	info.street <- load.location.table(FILE_IN_ANAL_STREET_NODES,"street")
+	info.street <- cbind(paste("Rue:",info.street[,COL_STREET_ID],sep=""),info.street); colnames(info.street)[1] <- COL_LOC_ID
 	cols <- c(cols, colnames(info.street))
 	total.nbr <- total.nbr + nrow(info.street)
 	
 	# merge these tables
+	tlog(4,"Merging estate information tables")
 	cols <- unique(cols)
 	info.all <- data.frame(matrix(NA, nrow=total.nbr, ncol=length(cols), dimnames=list(c(), cols)),stringsAsFactors=F)
 	last <- 0
@@ -533,6 +551,11 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 	com.cols <- intersect(cols,colnames(info.street))
 	info.all[(last+1):(last+nrow(info.street)),com.cols] <- info.street[,com.cols]
 	last <- last + nrow(info.street)
+	
+	# remove empty columns
+	empty.cols <- which(apply(info.all, 2, function(col) all(is.na(col))))
+	tlog(4,"Found ",length(empty.cols)," all-NA columns: removing them")
+	info.all <- info.all[,-empty.cols]
 	
 	# load relationships
 	tlog(2,"Loading relational information")
@@ -582,13 +605,16 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 		if(is.na(tgt.id))
 			stop(paste0("ERROR: could not match the destination id in row #",r))
 		
-		result <- as.character(c(src.id, tgt.id))
+		src.ext.id <- info.all[src.id, COL_LOC_ID]
+		tgt.ext.id <- info.all[tgt.id, COL_LOC_ID]
+		result <- as.character(c(src.ext.id, tgt.ext.id))
 		return(result)
 	}))
 	
 	# build graph
 	tlog(2,"Building graph")
 	g <- graph_from_edgelist(el=edge.list, directed=TRUE)
+	g <- set_graph_attr(graph=g, name=GR_TYPE, value=GR_TYPE_EST)
 	g <- set_edge_attr(graph=g, name=LK_TYPE, value=data[,COL_CONF_LOC_LAT])
 	g <- set_edge_attr(graph=g, name=COL_CONF_AREA_ID, value=data[,COL_CONF_AREA_ID])
 	g <- set_edge_attr(graph=g, name=COL_CONF_LOC_NORM, value=data[,COL_CONF_LOC_NORM])
@@ -599,7 +625,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 	
 	# complete graph with individual information
 	tlog(2,"Adding to graph")
-	idx <- as.integer(V(g)$name)
+	idx <- match(V(g)$name, info.all[,COL_LOC_ID])
 	atts <- colnames(info.all)
 	for(i in 1:length(atts))
 	{	att <- atts[i]
@@ -631,39 +657,55 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 #	V(g)$x <- layout[,1]
 #	V(g)$y <- layout[,2]
 #	#V(g)$label <- NA
-#	#custom.gplot(g)
+#	#custom.gplot(=gg)
 	
 	# use spatial coordinates for layout
+	tlog(2,"Using spatial coordinates to define layout")
 	V(g)$x <- vertex_attr(g, name=COL_LOC_X)
 	V(g)$y <- vertex_attr(g, name=COL_LOC_Y)
 	# missing coordinates: use the average of the neighbors
-	idx <- which(is.na(V(g)$x))
-	if(length(idx)>0)
-	{	neighs <- ego(graph=g, order=1, nodes=idx, mode="all", mindist=1)
-		rx <- range(V(g)$x, na.rm=TRUE)
-		ry <- range(V(g)$y, na.rm=TRUE)
-		tmp <- sapply(1:length(idx), function(v)
-		{	ns <- as.integer(neighs[[v]])
-			vals.x <- V(g)$x[ns]
-			vals.y <- V(g)$y[ns]
-			vals.x <- vals.x[!is.na(vals.x)]
-			vals.y <- vals.y[!is.na(vals.y)]
-			if(length(vals.x)>1)
-				res <- c(mean(vals.x), mean(vals.y))
-			else if(length(vals.x)==1)
-				res <- c(vals.x+runif(1,0,0.1), vals.y+runif(1,0,0.1))
-			else
-				res <- c(runif(1,rx[1],rx[2]), runif(1,ry[1],ry[2]))
-			
-		})
-		V(g)$x[idx] <- tmp[1,]
-		V(g)$y[idx] <- tmp[2,]
+	changed <- TRUE
+	while(changed)
+	{	changed <- FALSE
+		idx <- which(is.na(V(g)$x))
+		tlog(4,"Nodes without position: ",length(idx),"/",gorder(g))
+		if(length(idx)>0)
+		{	neighs <- ego(graph=g, order=1, nodes=idx, mode="all", mindist=1)
+			rx <- range(V(g)$x, na.rm=TRUE)
+			gapx <- 2*(rx[2]-rx[1])/100
+			ry <- range(V(g)$y, na.rm=TRUE)
+			gapy <- 2*(ry[2]-ry[1])/100
+			tmp <- sapply(1:length(idx), function(v)
+			{	ns <- as.integer(neighs[[v]])
+				vals.x <- V(g)$x[ns]
+				vals.y <- V(g)$y[ns]
+				vals.x <- vals.x[!is.na(vals.x)]
+				vals.y <- vals.y[!is.na(vals.y)]
+				if(length(vals.x)>1)
+				{	res <- c(mean(vals.x), mean(vals.y))
+					changed <<- TRUE
+				}
+				else if(length(vals.x)==1)
+				{	res <- c(vals.x+runif(1,0,gapx), vals.y+runif(1,0,gapy))
+					changed <<- TRUE
+				}
+				else
+				{	#res <- c(runif(1,rx[1],rx[2]), runif(1,ry[1],ry[2]))
+					res <- c(NA, NA)
+				}
+				return(res)
+			})
+			V(g)$x[idx] <- tmp[1,]
+			V(g)$y[idx] <- tmp[2,]
+		}
 	}
 	##V(g)$x[which(is.na(V(g)$x))] <- min(V(g)$x, na.rm=TRUE)
 	##V(g)$y[which(is.na(V(g)$y))] <- min(V(g)$y, na.rm=TRUE)
-	#V(g)$label <- NA
-	#custom.gplot(g)
-
+	V(g)$label <- NA
+	#custom.gplot(g=g)
+	#custom.gplot(g=g, col.att="x", cat.att=FALSE, color.isolates=TRUE)
+	#custom.gplot(g=g, col.att=COL_LOC_X, cat.att=FALSE, color.isolates=TRUE, file="temp.png")
+	
 	# extract several versions
 	tlog(2,"Extracting several variants of the graph")
 	link.types <- c(LK_TYPE_ALL, link.types)
@@ -690,8 +732,10 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 			idx.loop <- which(count_multiple(g1)<1)
 			tlog(6,"Loops: ",length(idx.loop))
 			if(length(idx.loop)>0)
-			{	tab <- cbind(V(g1)$name[el[idx.loop,1]], V(g1)$name[el[idx.loop,2]], count_multiple(g1)[idx.loop], 
-					sapply(1:length(idx.loop), function(j) 
+			{	tab <- cbind(V(g1)$name[el[idx.loop,1]], 
+						V(g1)$name[el[idx.loop,2]], 
+						count_multiple(g1)[idx.loop], 
+						sapply(1:length(idx.loop), function(j) 
 								edge_attr(g1, LK_TYPE, E(g1)[el[idx.loop[j],1] %->% el[idx.loop[j],2]])))
 				colnames(tab) <- c("Source","Target","Multiplicity","Type")
 				print(tab)
@@ -708,8 +752,10 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 				{	lids <- E(g1)[el[idx.mult[j],1] %->% el[idx.mult[j],2]]
 					descr <- edge_attr(g1,LK_TYPE, E(g1)[lids])
 					if(length(descr)>length(unique(descr)))
-					{	row <- c(V(g1)$name[el[idx.mult[j],1]], V(g1)$name[el[idx.mult[j],2]], 
-								count_multiple(g1)[idx.mult[j]], paste(descr, collapse=":"))
+					{	row <- c(V(g1)$name[el[idx.mult[j],1]], 
+								V(g1)$name[el[idx.mult[j],2]], 
+								count_multiple(g1)[idx.mult[j]], 
+								paste(descr, collapse=":"))
 						tab <- rbind(tab, row)
 					}
 				}
@@ -738,8 +784,8 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 		# plot full graph
 		plot.file <- file.path(graph.folder, "graph")
 		tlog(4,"Plotting graph in \"",plot.file,"\"")
-		custom.gplot(g1, file=plot.file)
-		#custom.gplot(g1)
+		custom.gplot(g=g1, file=plot.file)
+		#custom.gplot(g=g1)
 		
 		# record graph as a graphml file
 		graph.file <- file.path(graph.folder, FILE_GRAPH)
@@ -751,4 +797,3 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 }
 
 # TODO lien entre la taille du composant et les différents attributs ?
-# TODO rajouter les noms systématiquement dans les graphes de composants

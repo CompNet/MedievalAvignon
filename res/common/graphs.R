@@ -22,14 +22,20 @@ load.graphml.file <- function(file)
 	# clean vertex attributes
 	for(att in vertex_attr_names(g))
 	{	vals <- vertex_attr(graph=g, name=att)
-		vals[vals=="NA"] <- NA
+		if(is.numeric(vals))
+			vals[vals==-666] <- NA
+		else
+			vals[vals=="NA"] <- NA
 		g <- set_vertex_attr(graph=g, name=att, value=vals)
 	}
 	
 	# clean edge attributes
 	for(att in edge_attr_names(g))
 	{	vals <- edge_attr(graph=g, name=att)
-		vals[vals=="NA"] <- NA
+		if(is.numeric(vals))
+			vals[vals==-666] <- NA
+		else
+			vals[vals=="NA"] <- NA
 		g <- set_edge_attr(graph=g, name=att, value=vals)
 	}
 	
@@ -51,7 +57,7 @@ write.graphml.file <- function(g, file)
 	for(att in vertex_attr_names(g))
 	{	vals <- vertex_attr(graph=g, name=att)
 		if(is.numeric(vals) && any(is.na(vals)))
-		{	vals[is.na(vals)] <- -1
+		{	vals[is.na(vals)] <- -666
 			g <- set_vertex_attr(graph=g, name=att, value=vals)
 		}
 	}
@@ -60,7 +66,7 @@ write.graphml.file <- function(g, file)
 	for(att in edge_attr_names(g))
 	{	vals <- edge_attr(graph=g, name=att)
 		if(is.numeric(vals) && any(is.na(vals)))
-		{	vals[is.na(vals)] <- -1
+		{	vals[is.na(vals)] <- -666
 			g <- set_edge_attr(graph=g, name=att, value=vals)
 		}
 	}
@@ -98,10 +104,10 @@ update.node.labels <- function(g, vals, best.low=FALSE)
 		bottom.idx <- 1:gorder(g)
 	else
 		bottom.idx <- order(vals, decreasing=TRUE)[1:lim]
-	if(COL_PERS_ID %in% vertex_attr_names(g))
+	if(graph_attr(g, GR_TYPE)==GR_TYPE_SOC)
 		V(g)$label[bottom.idx] <- get.person.names(g, vs=bottom.idx)
 	else
-		V(g)$label[bottom.idx] <- get.estate.names(g, vs=bottom.idx)
+		V(g)$label[bottom.idx] <- get.location.names(g, vs=bottom.idx)
 	return(g)
 }
 
