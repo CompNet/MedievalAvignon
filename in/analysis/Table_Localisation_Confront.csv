@@ -2299,7 +2299,7 @@ idConfront,localisation,idBien1,idBien2,idInvariant,idQuartierParoisse,localisat
 2367,a-occident,1161,NULL,487,NULL,confronte a l ouest avec
 2368,ab-una-part,1161,NULL,205,NULL,confronte avec
 2369,super,1162,NULL,205,NULL,sur
-2370,inter,1162,NULL,487,NULL,entre (un bien se situe entre deux entites donc on trouve deux fois inter : le bien se trouve entre)
+2370,inter,1162,NULL,487,NULL,entre
 2371,a-occident,1162,NULL,487,NULL,confronte a l ouest avec
 2372,a-meridie,1162,NULL,205,NULL,confronte au sud avec
 2373,super,1163,NULL,205,NULL,sur
@@ -4130,7 +4130,7 @@ idConfront,localisation,idBien1,idBien2,idInvariant,idQuartierParoisse,localisat
 4206,in,7027,NULL,24,NULL,dans
 4207,ab-una-part,7027,NULL,24,NULL,confronte avec
 4208,ante,7028,NULL,490,NULL,devant
-4209,inter,7028,NULL,226,NULL,entre (un bien se situe entre deux entites donc on trouve deux fois inter : le bien se trouve entre)
+4209,inter,7028,NULL,226,NULL,entre
 4210,prope,7029,NULL,540,NULL,a cote de
 4211,ante,7030,NULL,490,NULL,devant
 4212,a-parte-lateris,7030,NULL,712,NULL,confronte du cote lateral avec
@@ -4437,8 +4437,8 @@ idConfront,localisation,idBien1,idBien2,idInvariant,idQuartierParoisse,localisat
 4513,in,7212,NULL,52,NULL,dans
 4514,ab-una-part,7212,NULL,646,NULL,confronte avec
 4515,ab-una-part,7212,NULL,52,NULL,confronte avec
-4516,inter,7213,NULL,250,NULL,entre (un bien se situe entre deux entites donc on trouve deux fois inter : le bien se trouve entre)
-4517,inter,7213,NULL,251,NULL,entre (un bien se situe entre deux entites donc on trouve deux fois inter : le bien se trouve entre)
+4516,inter,7213,NULL,250,NULL,entre
+4517,inter,7213,NULL,251,NULL,entre
 4518,retro,7213,NULL,402,NULL,derriere
 4519,retro,7213,NULL,487,NULL,derriere
 4520,extra,7213,NULL,250,NULL,est a l exterieur de
@@ -5716,4 +5716,4 @@ idConfront,localisation,idBien1,idBien2,idInvariant,idQuartierParoisse,localisat
 5793,prope,7305,NULL,243,NULL,a cote de
 5794,prope,447,NULL,74,NULL,a cote de
 5795,juxta,7248,NULL,667,NULL,a cote de
-5796,inter,7028,NULL,483,NULL,entre (un bien se situe entre deux entites donc on trouve deux fois inter : le bien se trouve entre)
+5796,inter,7028,NULL,483,NULL,entre

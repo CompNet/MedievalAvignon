@@ -613,14 +613,16 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 	
 	# build graph
 	tlog(2,"Building graph")
+	link.type.attr <- COL_CONF_LOC_NORM	# COL_CONF_LOC_LAT
+	alt.link.type.attr <- COL_CONF_LOC_LAT	# COL_CONF_LOC_NORM 
 	g <- graph_from_edgelist(el=edge.list, directed=TRUE)
 	g <- set_graph_attr(graph=g, name=GR_TYPE, value=GR_TYPE_EST)
-	g <- set_edge_attr(graph=g, name=LK_TYPE, value=data[,COL_CONF_LOC_LAT])
+	g <- set_edge_attr(graph=g, name=LK_TYPE, value=data[,link.type.attr])
 	g <- set_edge_attr(graph=g, name=COL_CONF_AREA_ID, value=data[,COL_CONF_AREA_ID])
-	g <- set_edge_attr(graph=g, name=COL_CONF_LOC_NORM, value=data[,COL_CONF_LOC_NORM])
+	g <- set_edge_attr(graph=g, name=alt.link.type.attr, value=data[,alt.link.type.attr])
 	tlog(4,"Number of edges: ",gsize(g),"/",nrow(data))
 	tlog(4,"Edge attributes (",length(edge_attr_names(g)),"): ",paste(edge_attr_names(g),collapse=", "))
-	link.types <- sort(unique(data[,COL_CONF_LOC_LAT]))
+	link.types <- sort(unique(data[,link.type.attr]))
 	tlog(4,"Link types (",length(link.types),"): ",paste(link.types,collapse=", "))
 	
 	# complete graph with individual information
@@ -701,7 +703,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 	}
 	##V(g)$x[which(is.na(V(g)$x))] <- min(V(g)$x, na.rm=TRUE)
 	##V(g)$y[which(is.na(V(g)$y))] <- min(V(g)$y, na.rm=TRUE)
-	V(g)$label <- NA
+	#V(g)$label <- NA
 	#custom.gplot(g=g)
 	#custom.gplot(g=g, col.att="x", cat.att=FALSE, color.isolates=TRUE)
 	#custom.gplot(g=g, col.att=COL_LOC_X, cat.att=FALSE, color.isolates=TRUE, file="temp.png")
@@ -797,3 +799,4 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 }
 
 # TODO lien entre la taille du composant et les différents attributs ?
+# TODO liens de type "égale" >> fusionner les entités concernées ?
