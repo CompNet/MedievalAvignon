@@ -611,6 +611,84 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 		return(result)
 	}))
 	
+	# manual corrections and simplifications
+	# VAL_CONF_TYPE_COTE
+	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_COTE, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
+	# VAL_CONF_TYPE_ANGLE
+	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_ANGLE & !startsWith(edge.list[,2], "Livree:"), COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
+	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_ANGLE & startsWith(edge.list[,2], "Livree:"), COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_INTERIEUR
+	# VAL_CONF_TYPE_ENTREE
+	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_ENTREE, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_DEBUT
+	# VAL_CONF_TYPE_INTERIEUR
+	# VAL_CONF_TYPE_OPPOSE
+	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_OPPOSE, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
+	# VAL_CONF_TYPE_DEBUT
+	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_DEBUT & startsWith(edge.list[,2], "Rue:"), COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
+	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_DEBUT & startsWith(edge.list[,2], "Livree:"), COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_INTERIEUR
+	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_DEBUT & startsWith(edge.list[,2], "Bourg:"), COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_INTERIEUR
+	# VAL_CONF_TYPE_MILIEU
+	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_MILIEU, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
+	# VAL_CONF_TYPE_EST
+	# VAL_CONF_TYPE_OUEST
+	# VAL_CONF_TYPE_NORD
+	# VAL_CONF_TYPE_SUD
+	# VAL_CONF_TYPE_MISC
+	# VAL_CONF_TYPE_MULT2
+	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_MULT2, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
+	# VAL_CONF_TYPE_MULT3
+	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_MULT3, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
+	# VAL_CONF_TYPE_ARRIERE
+	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_ARRIERE, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
+	# VAL_CONF_TYPE_AVANT
+	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_AVANT, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
+	# VAL_CONF_TYPE_INFERIEUR
+	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_INFERIEUR, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
+	# VAL_CONF_TYPE_LATERAL
+	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_LATERAL, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
+	# VAL_CONF_TYPE_POSTERIEUR
+	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_POSTERIEUR, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
+	# VAL_CONF_TYPE_POSSIBLE
+	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_POSSIBLE, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
+	# VAL_CONF_TYPE_CONTIGU
+	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_CONTIGU, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
+	# VAL_CONF_TYPE_DANS
+	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_DANS & startsWith(edge.list[,2], "Bien:"), COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
+	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_DANS & startsWith(edge.list[,2], "Edifice:"), COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
+	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_DANS & startsWith(edge.list[,2], "Rempart:"), COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
+	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_DANS & startsWith(edge.list[,2], "Repere:"), COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
+	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_DANS & startsWith(edge.list[,2], "Rue:"), COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
+	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_DANS & startsWith(edge.list[,2], "Bourg:"), COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_INTERIEUR
+	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_DANS & startsWith(edge.list[,2], "Livree:"), COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_INTERIEUR
+	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_DANS & startsWith(edge.list[,2], "Quartier:"), COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_INTERIEUR
+	# VAL_CONF_TYPE_DERRIERE
+	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_DERRIERE, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
+	# VAL_CONF_TYPE_DEVANT
+	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_DEVANT, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
+	# VAL_CONF_TYPE_EGALE
+	tmp <- data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_EGALE,,drop=FALSE]
+	for(r in nrow(tmp))
+	{	old.id <- tmp[r,1]
+		new.id <- tmp[r,2]
+		data[data[,1]==old.id,1] <- new.id
+		data[data[,2]==old.id,2] <- new.id
+	}
+	# VAL_CONF_TYPE_ENTRE
+	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_ENTRE, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
+	# VAL_CONF_TYPE_EXTERIEUR
+	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_EXTERIEUR, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
+	# VAL_CONF_TYPE_SOUS
+	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_SOUS, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
+	# VAL_CONF_TYPE_SUR
+	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_SUR, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
+	# VAL_CONF_TYPE_VERS
+	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_VERS, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
+	
+				"entre /BD_2135 et /M_402" >> "confronte avec" (pq pas "entre" sur cette relation ?)
+	# ii <- which(E(g)$type==VAL_CONF_TYPE_EGALE); cbind(get.edgelist(g)[ii,], E(g)$type[ii])
+	# sort(unique(data[,COL_CONF_LOC_NORM]))
+	# ii <- match(sort(unique(data[,COL_CONF_LOC_NORM])), data[,COL_CONF_LOC_NORM]); data[ii,c(COL_CONF_LOC_LAT,COL_CONF_LOC_NORM)]
+	# TODO rajouter la liste des types de liens restant	
+
 	# build graph
 	tlog(2,"Building graph")
 	link.type.attr <- COL_CONF_LOC_NORM	# COL_CONF_LOC_LAT
@@ -800,3 +878,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 
 # TODO lien entre la taille du composant et les différents attributs ?
 # TODO liens de type "égale" >> fusionner les entités concernées ?
+
+# TODO que veut-on exprimer avec le réseau de confronts ? la proximité spatiale ?
+#      donc peut-être transformer rues en lien si deux biens sont localisés au même niveau, 
+# 	   et possiblement appliquer le même principe à d'autres relations.

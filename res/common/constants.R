@@ -284,10 +284,41 @@ FILE_GRAPH <- "graph.graphml"
 	# social links
 	VAL_SOC_TYPE_FAMILY <- "LIFAM"
 	VAL_SOC_TYPE_WORK <- "LITRA"
+	#confront links
+	VAL_CONF_TYPE_COTE <- "a cote de"
+	VAL_CONF_TYPE_ANGLE <- "a l angle de"
+	VAL_CONF_TYPE_ENTREE <- "a l entree de"
+	VAL_CONF_TYPE_INTERIEUR <- "a l interieur de"
+	VAL_CONF_TYPE_OPPOSE <- "a l oppose de"
+	VAL_CONF_TYPE_DEBUT <- "au debut de"
+	VAL_CONF_TYPE_MILIEU <- "au milieu"
+	VAL_CONF_TYPE_EST <- "confronte a l est avec"
+	VAL_CONF_TYPE_OUEST <- "confronte a l ouest avec"
+	VAL_CONF_TYPE_NORD <- "confronte au nord avec"
+	VAL_CONF_TYPE_SUD <- "confronte au sud avec"
+	VAL_CONF_TYPE_MISC <- "confronte avec"
+	VAL_CONF_TYPE_MULT2 <- "confronte de deux cotes avec"
+	VAL_CONF_TYPE_MULT3 <- "confronte de trois cotes avec"
+	VAL_CONF_TYPE_ARRIERE <- "confronte du cote arriere avec"
+	VAL_CONF_TYPE_AVANT <- "confronte du cote avant avec"
+	VAL_CONF_TYPE_INFERIEUR <- "confronte du cote inferieur avec"
+	VAL_CONF_TYPE_LATERAL <- "confronte du cote lateral avec"
+	VAL_CONF_TYPE_POSTERIEUR <- "confronte du cote posterieur avec"
+	VAL_CONF_TYPE_POSSIBLE <- "confronte peut-etre avec"
+	VAL_CONF_TYPE_CONTIGU <- "contigu"
+	VAL_CONF_TYPE_DANS <- "dans"
+	VAL_CONF_TYPE_DERRIERE <- "derriere"
+	VAL_CONF_TYPE_DEVANT <- "devant"
+	VAL_CONF_TYPE_EGALE <- "egale"
+	VAL_CONF_TYPE_ENTRE <- "entre"
+	VAL_CONF_TYPE_EXTERIEUR <- "est a l exterieur de"
+	VAL_CONF_TYPE_SOUS <- "sous"
+	VAL_CONF_TYPE_SUR <- "sur"
+	VAL_CONF_TYPE_VERS <- "vers"
 
-	
-	
-	
+
+
+
 #############################################################################################
 # graph-related values
 
@@ -302,17 +333,20 @@ ND_NAME <- "name"
 # types of links 
 LK_TYPE <- "type"
 	LK_TYPE_ALL <- "Full"
+	# social
 	LK_TYPE_FAM <- "Familial"
 	LK_TYPE_PRO <- "Professional"
 	LK_TYPE_SOC_LST <- c(LK_TYPE_ALL, LK_TYPE_FAM, LK_TYPE_PRO)
-#	LK_TYPE_EST_LST <- c(LK_TYPE_ALL, LK_TYPE_FAM, LK_TYPE_PRO)
+	# confront
+# link description
 LK_DESCR <- "description"
 	
-# map to convert link attribute names
+# map to convert link attribute values
 MAP_TABLE2GRAPH <- c()
 	# social links
 	MAP_TABLE2GRAPH[VAL_SOC_TYPE_FAMILY] <- LK_TYPE_FAM
 	MAP_TABLE2GRAPH[VAL_SOC_TYPE_WORK] <- LK_TYPE_PRO
+	# confront links
 
 # misc
 VAL_OTHER <- "Other"
