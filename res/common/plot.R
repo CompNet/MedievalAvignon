@@ -31,13 +31,15 @@ FORMAT <- c("png")#,"pdf")	# plot file format: pdf png
 #		   case the plot will use piecharts to represent nodes.
 # cat.att: (optional) if there is a vertex attribute, indicates whether
 #		   it is categorical or not.
+# size.att: (optional) name of a vertex attribute used to determine
+#		    node size. It has to be numerical, cannot be categorical. 
 # v.hl: vertices to highlight (these are represented as squares).
 # e.hl: edges to highlight (these are represented as thick lines).
 # color.isolates: force isolates to be colored (by default they are not)
 # file: (optional) file name, to record the plot.
 # ...: parameters sent directly to the plot function.
 #############################################################
-custom.gplot <- function(g, paths, col.att, cat.att=FALSE, v.hl, e.hl, color.isolates=FALSE, file, ...)
+custom.gplot <- function(g, paths, col.att, size.att, cat.att=FALSE, v.hl, e.hl, color.isolates=FALSE, file)
 {	pie.values <- NA
 	lgd.col <- NA
 	
@@ -69,8 +71,14 @@ custom.gplot <- function(g, paths, col.att, cat.att=FALSE, v.hl, e.hl, color.iso
 	if(is.null(E(g)$weight))							# if no weight:
 		E(g)$weight <- rep(1,gsize(g))					# same edge width
 	ewidth <- E(g)$weight
-	# set edge line type
-	elty <- rep(1,gsize(g))								# solid
+	# set edge transparency
+#	idx <- as.integer(E(g)[from(1)])	# edges attached to Trajan
+#	if(length(idx)>0)
+#	{	ecols[idx] <- sapply(ecols[idx],function(color) 
+#		{	vals <- col2rgb(color)
+#			rgb(vals[1],vals[2],vals[3],alpha=50,maxColorValue=255)
+#		})
+#	}
 	
 	# possibly change the color of the highlighted path
 	if(hasArg(paths))
@@ -168,7 +176,39 @@ custom.gplot <- function(g, paths, col.att, cat.att=FALSE, v.hl, e.hl, color.iso
 		}
 	}
 	else
-		vcols <- rep("GREY", gorder(g))
+		vcols <- rep("GREY",gorder(g))
+	
+	# vertex size
+	if(hasArg(size.att))
+	{	# get the attribute values
+		vvals <- get.vertex.attribute(graph=g, name=size.att)
+		
+		# init limit sizes
+		vsizes <- rep(NA, gorder(g))
+		min.size <- if(min(vvals,na.rm=TRUE)==0) 0 else 2
+		max.size <- 20
+		cut.nbr <- 4
+		
+		# define cuts
+		must.round <- all(vvals%%1==0)	# check if values are integers
+		step <- (max(vvals,na.rm=TRUE)-min(vvals,na.rm=TRUE))/cut.nbr
+		if(must.round)
+			step <- ceiling(step)
+		cuts <- seq(from=step, to=cut.nbr*step, by=step)
+		
+		# NA, NaN, Inf are set to a zero size
+		nosize <- is.infinite(vvals) | is.nan(vvals) | is.na(vvals)
+		vsizes[nosize] <- 0
+		
+		# TODO how to deal with isolates?
+		
+		# regular values
+		tmp <- vvals[!nosize]
+		vsizes[!nosize] <- (tmp-min(tmp))/(max(tmp)-min(tmp))*(max.size-min.size)+min.size
+		cuts.scale <- (cuts-min(tmp))/(max(tmp)-min(tmp))*(max.size-min.size)+min.size
+	}
+	else
+		vsizes <- 5
 	
 	# main plot
 	for(fformat in FORMAT)
@@ -197,7 +237,7 @@ custom.gplot <- function(g, paths, col.att, cat.att=FALSE, v.hl, e.hl, color.iso
 		plot(g,										# graph to plot
 			#axes=TRUE,								# whether to draw axes or not
 			layout=cbind(V(g)$x,V(g)$y),			# predefined layout
-			vertex.size=2, 							# node size
+			vertex.size=vsizes,						# node size
 			vertex.color=vcols,						# node color
 			vertex.pie=pie.values,					# node pie proportions
 			vertex.pie.color=list(lgd.col),			# node pie colors
@@ -277,6 +317,25 @@ custom.gplot <- function(g, paths, col.att, cat.att=FALSE, v.hl, e.hl, color.iso
 		}
 		# legend for vertex sizes, if required: 
 		# https://stackoverflow.com/questions/38451431/add-legend-in-igraph-to-annotate-difference-vertices-size
+		if(hasArg(size.att))
+		{	legend.bubble(
+				x="topleft",					# position of the legend
+				title=LONG_NAME[size.att],		# title of the legend box
+				z=max(cuts),					# largest size
+				maxradius=max(cuts.scale/200),	# scaled radius of the largest bubble
+				n=cut.nbr,						# number of bubbles
+				round=if(must.round) 0 else 2,	# number of decimal places
+				bty="n",						# box (o=default, n=none)
+				mab=1.2,						# margin between largest bubble and box
+				bg=NULL, 						# background color of the box
+				inset=0, 						# inset distance from margin
+				pch=21, 						# symbol used to plot
+				pt.bg=NULL, 					# symbol background color
+				txt.cex=0.5, 					# text size
+				txt.col=NULL, 					# text color
+				font = NULL						# text font
+			)
+		}
 		if(hasArg(file))
 			dev.off()
 	}
@@ -524,4 +583,90 @@ plot.circos <- function(g, att, sign.order=FALSE, alt=FALSE, file)
 		if(hasArg(file))
 			dev.off()
 	}
+}
+
+
+
+
+#############################################################################################
+# Function taken from
+# https://rdrr.io/github/AtlanticR/bio.utilities/src/R/legend.bubble.r
+#############################################################################################
+legend.bubble  <- function (x, y = NULL, title, z, maxradius = 1, n = 3, round = 0, bty = "o", 
+		mab = 1.2, bg = NULL, inset = 0, pch = 21, pt.bg = NULL, 
+		txt.cex = 1, txt.col = NULL, font = NULL, ...) 
+{
+	if (length(z) == 1) 
+		legend <- round((seq(0, sqrt(z), length.out = n + 1)^2)[-1], 
+				round)
+	else legend <- round(sort(z), round)
+	radius <- maxradius * sqrt(legend)/sqrt(max(legend))
+	cex <- 2 * radius/par("cxy")[2]/0.375
+	box <- legend.box(x, y, maxradius, mab, inset)
+	if (bty == "o") 
+		rect(box[1], box[2], box[3], box[4], col = bg)
+	x <- (box[1] + box[3])/2
+	if(hasArg(title))
+		text(x=x, y=box[2]+0.03, labels=title, col=txt.col, font=font)
+	y <- box[2] - mab * maxradius + maxradius
+	for (i in length(radius):1) {
+		ri <- radius[i]
+		cex <- 2 * ri/par("cxy")[2]/0.375
+		points(x, y - ri, cex = cex, pch = pch, bg = pt.bg, ...)
+		text(x, y - ri * 2, legend[i], adj = c(0.5, -0.5), cex = txt.cex, 
+				col = txt.col, font = font)
+	}
+}
+
+
+
+
+#############################################################################################
+# Function taken from
+# https://rdrr.io/github/AtlanticR/bio.utilities/src/R/legend.box.r
+#############################################################################################
+legend.box <- function (x, y = NULL, maxradius, mab = 1.2, inset = 0, double = F) 
+{
+	auto <- if (is.character(x)) 
+				match.arg(x, c("bottomright", "bottom", "bottomleft", 
+								"left", "topleft", "top", "topright", "right", "center"))
+			else NA
+	asp <- get.asp()
+	h <- mab * 2 * maxradius
+	w <- h * asp
+	if (double) 
+		h <- h * 2
+	usr <- par("usr")
+	inset <- rep(inset, length.out = 2)
+	if (!is.na(auto)) {
+		insetx <- inset[1L] * (usr[2L] - usr[1L])
+		left <- switch(auto, bottomright = , topright = , right = usr[2L] - 
+						w - insetx, bottomleft = , left = , topleft = usr[1L] + 
+						insetx, bottom = , top = , center = (usr[1L] + usr[2L] - 
+							w)/2)
+		insety <- inset[2L] * (usr[4L] - usr[3L])
+		top <- switch(auto, bottomright = , bottom = , bottomleft = usr[3L] + 
+						h + insety, topleft = , top = , topright = usr[4L] - 
+						insety, left = , right = , center = (usr[3L] + usr[4L] + 
+							h)/2)
+	}
+	else {
+		left <- x - 1.2 * asp * maxradius
+		top <- y + 1.2 * maxradius
+	}
+	return(c(left, top, left + w, top - h))
+}
+
+
+
+
+#############################################################################################
+# Function taken from
+# https://rdrr.io/github/AtlanticR/bio.utilities/src/R/get.asp.r
+#############################################################################################
+get.asp <- function() 
+{	pin <- par("pin")
+	usr <- par("usr")
+	asp <- (pin[2]/(usr[4] - usr[3]))/(pin[1]/(usr[2] - usr[1]))
+	return(asp)
 }
