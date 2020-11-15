@@ -665,12 +665,16 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 	# VAL_CONF_TYPE_DEVANT
 	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_DEVANT, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
 	# VAL_CONF_TYPE_EGALE
-	tmp <- data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_EGALE,,drop=FALSE]
-	for(r in nrow(tmp))
-	{	old.id <- tmp[r,1]
-		new.id <- tmp[r,2]
-		data[data[,1]==old.id,1] <- new.id
-		data[data[,2]==old.id,2] <- new.id
+	idx <- which(data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_EGALE)
+	if(length(idx>0))
+	{	for(r in 1:length(idx))
+		{	old.id <- edge.list[r,1]
+			new.id <- edge.list[r,2]
+			edge.list[edge.list[,1]==old.id,1] <- new.id
+			edge.list[edge.list[,2]==old.id,2] <- new.id
+		}
+		data <- data[-idx,]
+		edge.list <- edge.list[-idx,]
 	}
 	# VAL_CONF_TYPE_ENTRE
 	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_ENTRE, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
@@ -683,12 +687,10 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 	# VAL_CONF_TYPE_VERS
 	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_VERS, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
 	
-				"entre /BD_2135 et /M_402" >> "confronte avec" (pq pas "entre" sur cette relation ?)
-	# ii <- which(E(g)$type==VAL_CONF_TYPE_EGALE); cbind(get.edgelist(g)[ii,], E(g)$type[ii])
 	# sort(unique(data[,COL_CONF_LOC_NORM]))
+	# ii <- which(E(g)$type==VAL_CONF_TYPE_EGALE); cbind(get.edgelist(g)[ii,], E(g)$type[ii])
 	# ii <- match(sort(unique(data[,COL_CONF_LOC_NORM])), data[,COL_CONF_LOC_NORM]); data[ii,c(COL_CONF_LOC_LAT,COL_CONF_LOC_NORM)]
-	# TODO rajouter la liste des types de liens restant	
-
+	
 	# build graph
 	tlog(2,"Building graph")
 	link.type.attr <- COL_CONF_LOC_NORM	# COL_CONF_LOC_LAT
@@ -786,15 +788,35 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 	#custom.gplot(g=g, col.att="x", cat.att=FALSE, color.isolates=TRUE)
 	#custom.gplot(g=g, col.att=COL_LOC_X, cat.att=FALSE, color.isolates=TRUE, file="temp.png")
 	
-	# extract several versions
+	# get additional info on the streets and other stuff
+	short.tab <- read.table(
+		file=FILE_IN_ANAL_STRT_SHORT,
+		sep=",",
+		header=TRUE,
+		stringsAsFactors=FALSE,
+		na.strings="NULL",
+		quote='"',
+		check.names=FALSE
+	)
+	short.street.flag <- vertex_attr(graph=g, name=COL_LOC_ID) %in% paste("Rue:",short.tab[,COL_STREET_ID],sep="")
+	
+	# extract one graph for each type of relation
 	tlog(2,"Extracting several variants of the graph")
-	link.types <- c(LK_TYPE_ALL, link.types)
+	link.types <- c(LK_TYPE_ALL, LV_ESTATE, link.types)
 	for(i in 1:length(link.types))
 	{	tlog(4,"Extracting graph \"",link.types[i],"\" (",i,"/",length(link.types),")")
 		
 		# keep only the targeted type of links
 		if(link.types[i]==LK_TYPE_ALL)
 			g1 <- g
+		else if(link.types[i]==LV_ESTATE)
+		{	# remove nodes of innapropriate type (areas, villages, walls, streets
+			idx <- startsWith(V(g1)$name,"Quartier:") | startsWith(V(g1)$name,"Bourg:")	# "Rempart:"
+			g1 <- delete_vertices(graph=g1, v=idx)
+			# remove streets not considered as short
+			idx <-  startsWith(V(g1)$name,"Rue:") & short.street.flag
+			g1 <- delete_vertices(graph=g1, v=idx)
+		}
 		else
 		{	g1 <- delete_edges(graph=g, edges=which(E(g)$type!=link.types[i]))
 			#g1 <- delete_vertices(graph=g1, v=which(degree(g, mode="all")==0))
@@ -806,7 +828,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 		dir.create(path=graph.folder, showWarnings=FALSE, recursive=TRUE)
 		
 		# check graph validity
-		if(link.types[i]!=LK_TYPE_ALL && any_multiple(graph=g1))
+		if(link.types[i]!=LK_TYPE_ALL && link.types[i]!=LV_ESTATE && any_multiple(graph=g1))
 		{	el <- as_edgelist(graph=g1, names=FALSE)
 			# loops
 			idx.loop <- which(count_multiple(g1)<1)
@@ -876,8 +898,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 	return(link.types)
 }
 
-# TODO lien entre la taille du composant et les différents attributs ?
-# TODO liens de type "égale" >> fusionner les entités concernées ?
+# TODO y a t il une correlation entre la taille du composant et les différents attributs ?
 
 # TODO que veut-on exprimer avec le réseau de confronts ? la proximité spatiale ?
 #      donc peut-être transformer rues en lien si deux biens sont localisés au même niveau, 

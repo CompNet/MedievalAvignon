@@ -418,7 +418,7 @@ analyze.net.harmonic.closeness <- function(g, out.folder)
 		
 		# harmonic closeness distribution: only giant component
 		vals <- rep(NA, vcount(g))
-		vals <- harmonic_centrality(x=g, mode=if(mode=="undirected") "all" else mode)
+		vals <- harmonic_centrality(x=g, mode=if(mode=="undirected") "all" else mode)/(length(which(igraph::degree(g)>0))-1)
 		vals[is.nan(vals)] <- NA
 		custom.hist(vals, name=paste(long.names[i],"Harmonic Closeness"), file=file.path(closeness.folder,paste0(fname,"_histo")))
 		
@@ -674,7 +674,7 @@ analyze.net.assortativity <- function(g, out.folder)
 			if(any(is.na(cat.data[,i])))
 			{	# explicitly represent them as a class
 				cd <- cat.data[,i]
-				cd[is.na(cd)] <- max(cd,na.rm=TRUE) + 1
+				cd[is.na(cd)] <- "NA"
 				ass <- assortativity_nominal(graph=g, types=cd, directed=mode=="directed")
 				tlog(6,"Assortativity for attribute \"",attr,"\" (mode=",mode,") when representing NAs by 0: ",ass)
 				vals <- c(vals, ass)
@@ -1450,8 +1450,10 @@ analyze.net.components <- function(g, out.folder)
 		for(i in idx)
 		{	# plot subgraph
 			g2 <- induced_subgraph(graph=g, vids=which(mbrs==i))
-			#V(g2)$label <- rep(NA, gorder(g2))
-			V(g2)$label <- get.names(g2)
+			if(gorder(g2)>20)
+				V(g2)$label <- rep(NA, gorder(g2))
+			else
+				V(g2)$label <- get.names(g2)
 			custom.gplot(g=g2, file=file.path(mode.folder,paste0("component_",i)))
 			#custom.gplot(g=g2)
 			

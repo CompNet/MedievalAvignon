@@ -30,6 +30,9 @@ FOLDER_IN <- "in"
 		FILE_IN_ANAL_LDMRK_NODES <- file.path(FOLDER_IN_ANAL,"Table_RepereGeo.csv")
 		FILE_IN_ANAL_STREET_NODES <- file.path(FOLDER_IN_ANAL,"Table_Rue.csv")
 		FILE_IN_ANAL_SRC_NODES <- file.path(FOLDER_IN_ANAL,"Table_Source.csv")
+		#
+		FILE_IN_ANAL_STRT_SHORT <- file.path(FOLDER_IN_ANAL,"Rue_Courte.csv")
+		FILE_IN_ANAL_STRT_MULTI <- file.path(FOLDER_IN_ANAL,"Point_Rue.csv")
 	FOLDER_OUT <- "out"
 		FOLDER_OUT_POS <- file.path(FOLDER_OUT,"positioning")
 		FOLDER_OUT_ANAL <- file.path(FOLDER_OUT,"analysis")
@@ -291,8 +294,9 @@ FILE_GRAPH <- "graph.graphml"
 	VAL_CONF_TYPE_INTERIEUR <- "a l interieur de"
 	VAL_CONF_TYPE_OPPOSE <- "a l oppose de"
 	VAL_CONF_TYPE_DEBUT <- "au debut de"
-	VAL_CONF_TYPE_MILIEU <- "au milieu"
+#	VAL_CONF_TYPE_MILIEU <- "au milieu"
 	VAL_CONF_TYPE_EST <- "confronte a l est avec"
+#"confronte a l occident avec"
 	VAL_CONF_TYPE_OUEST <- "confronte a l ouest avec"
 	VAL_CONF_TYPE_NORD <- "confronte au nord avec"
 	VAL_CONF_TYPE_SUD <- "confronte au sud avec"
@@ -310,12 +314,12 @@ FILE_GRAPH <- "graph.graphml"
 	VAL_CONF_TYPE_DERRIERE <- "derriere"
 	VAL_CONF_TYPE_DEVANT <- "devant"
 	VAL_CONF_TYPE_EGALE <- "egale"
-	VAL_CONF_TYPE_ENTRE <- "entre"
+#	VAL_CONF_TYPE_ENTRE <- "entre"
 	VAL_CONF_TYPE_EXTERIEUR <- "est a l exterieur de"
 	VAL_CONF_TYPE_SOUS <- "sous"
 	VAL_CONF_TYPE_SUR <- "sur"
 	VAL_CONF_TYPE_VERS <- "vers"
-
+	
 
 
 
@@ -340,7 +344,10 @@ LK_TYPE <- "type"
 	# confront
 # link description
 LK_DESCR <- "description"
-	
+
+# levels
+LV_ESTATE <- "lv_estate"
+
 # map to convert link attribute values
 MAP_TABLE2GRAPH <- c()
 	# social links
