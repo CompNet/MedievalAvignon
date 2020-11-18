@@ -39,7 +39,7 @@ FORMAT <- c("png")#,"pdf")	# plot file format: pdf png
 # file: (optional) file name, to record the plot.
 # ...: parameters sent directly to the plot function.
 #############################################################
-custom.gplot <- function(g, paths, col.att, size.att, cat.att=FALSE, v.hl, e.hl, color.isolates=FALSE, file)
+custom.gplot <- function(g, paths, col.att, size.att, cat.att=FALSE, v.hl, e.hl, color.isolates=FALSE, file, ...)
 {	pie.values <- NA
 	lgd.col <- NA
 	
@@ -71,6 +71,8 @@ custom.gplot <- function(g, paths, col.att, size.att, cat.att=FALSE, v.hl, e.hl,
 	if(is.null(E(g)$weight))							# if no weight:
 		E(g)$weight <- rep(1,gsize(g))					# same edge width
 	ewidth <- E(g)$weight
+	# set edge line type
+	elty <- rep(1,gsize(g))								# solid
 	# set edge transparency
 #	idx <- as.integer(E(g)[from(1)])	# edges attached to Trajan
 #	if(length(idx)>0)

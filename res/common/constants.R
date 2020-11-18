@@ -32,7 +32,6 @@ FOLDER_IN <- "in"
 		FILE_IN_ANAL_SRC_NODES <- file.path(FOLDER_IN_ANAL,"Table_Source.csv")
 		#
 		FILE_IN_ANAL_STRT_SHORT <- file.path(FOLDER_IN_ANAL,"Rue_Courte.csv")
-		FILE_IN_ANAL_STRT_MULTI <- file.path(FOLDER_IN_ANAL,"Point_Rue.csv")
 	FOLDER_OUT <- "out"
 		FOLDER_OUT_POS <- file.path(FOLDER_OUT,"positioning")
 		FOLDER_OUT_ANAL <- file.path(FOLDER_OUT,"analysis")

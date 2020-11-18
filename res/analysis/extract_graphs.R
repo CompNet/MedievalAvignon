@@ -611,7 +611,23 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 		return(result)
 	}))
 	
+	
 	# manual corrections and simplifications
+	# VAL_CONF_TYPE_EGALE
+	idx <- which(data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_EGALE)
+	if(length(idx>0))
+	{	for(r in 1:length(idx))
+		{	old.id <- edge.list[r,1]
+			new.id <- edge.list[r,2]
+			edge.list[edge.list[,1]==old.id,1] <- new.id
+			edge.list[edge.list[,2]==old.id,2] <- new.id
+		}
+		data <- data[-idx,]
+		edge.list <- edge.list[-idx,]
+	}
+	# keep relations targetting parts of streets
+	street.angles <- which(data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_ANGLE & startsWith(edge.list[,2], "Rue:"))
+	street.starts <- which(data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_DEBUT & startsWith(edge.list[,2], "Rue:"))
 	# VAL_CONF_TYPE_COTE
 	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_COTE, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
 	# VAL_CONF_TYPE_ANGLE
@@ -627,7 +643,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_DEBUT & startsWith(edge.list[,2], "Livree:"), COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_INTERIEUR
 	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_DEBUT & startsWith(edge.list[,2], "Bourg:"), COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_INTERIEUR
 	# VAL_CONF_TYPE_MILIEU
-	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_MILIEU, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
+	#data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_MILIEU, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
 	# VAL_CONF_TYPE_EST
 	# VAL_CONF_TYPE_OUEST
 	# VAL_CONF_TYPE_NORD
@@ -664,20 +680,8 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_DERRIERE, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
 	# VAL_CONF_TYPE_DEVANT
 	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_DEVANT, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
-	# VAL_CONF_TYPE_EGALE
-	idx <- which(data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_EGALE)
-	if(length(idx>0))
-	{	for(r in 1:length(idx))
-		{	old.id <- edge.list[r,1]
-			new.id <- edge.list[r,2]
-			edge.list[edge.list[,1]==old.id,1] <- new.id
-			edge.list[edge.list[,2]==old.id,2] <- new.id
-		}
-		data <- data[-idx,]
-		edge.list <- edge.list[-idx,]
-	}
 	# VAL_CONF_TYPE_ENTRE
-	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_ENTRE, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
+	#data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_ENTRE, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
 	# VAL_CONF_TYPE_EXTERIEUR
 	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_EXTERIEUR, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
 	# VAL_CONF_TYPE_SOUS
@@ -728,16 +732,16 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 ##	layout <- layout_nicely(g)
 ##	layout <- layout_with_dh(g)		# very slow
 ##	layout <- layout_with_gem(g)		# extremely slow
-#	layout <- layout_with_kk(g, kkconst=gorder(g)/16)
+	layout <- layout_with_kk(g, kkconst=gorder(g)/16)
 ##	layout <- layout_with_mds(g)
 ##	layout <- layout_with_lgl(g)
 #	layout <- layout_with_graphopt(g, charge=0.01, spring.length=3)
 #	# old code used to manually refine the layout
 ##		tkplot(g, layout=layout)
 ##		layout <- tk_coords(3)
-#	# update graph
-#	V(g)$x <- layout[,1]
-#	V(g)$y <- layout[,2]
+	# update graph
+	V(g)$x2 <- layout[,1]
+	V(g)$y2 <- layout[,2]
 #	#V(g)$label <- NA
 #	#custom.gplot(=gg)
 	
@@ -802,7 +806,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 	
 	# extract one graph for each type of relation
 	tlog(2,"Extracting several variants of the graph")
-	link.types <- c(LK_TYPE_ALL, LV_ESTATE, link.types)
+	link.types <- LV_ESTATE # c(LK_TYPE_ALL, LV_ESTATE, link.types)
 	for(i in 1:length(link.types))
 	{	tlog(4,"Extracting graph \"",link.types[i],"\" (",i,"/",length(link.types),")")
 		
@@ -810,11 +814,21 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 		if(link.types[i]==LK_TYPE_ALL)
 			g1 <- g
 		else if(link.types[i]==LV_ESTATE)
-		{	# remove nodes of innapropriate type (areas, villages, walls, streets
-			idx <- startsWith(V(g1)$name,"Quartier:") | startsWith(V(g1)$name,"Bourg:")	# "Rempart:"
-			g1 <- delete_vertices(graph=g1, v=idx)
+		{	g1 <- g
+			# change the name of certain streets whose only a part is targeted in the confronts
+			streets.all <- union(street.angles, street.starts)
+			strts <- sort(unique(edge.list[streets.all,2]))						# concerned parts of streets
+			tlog(6,"Detected ",length(streets.all)," confronts with ",length(strts), " parts of streets")
+			streets.all.flag <- V(g1)$name %in% strts							# mark them for later (to not remove them)
+			rem.idx <- setdiff(which(edge.list[,2] %in% strts), streets.all)	# relations with these streets (but as complete streets)
+			g1 <- delete_edges(g1, edges=rem.idx)								# remove these links
+			V(g1)$name[match(strts,V(g1)$name)] <- 								# change the name of the remaining streets
+				paste(V(g1)$name[match(strts,V(g1)$name)], "_part", sep="")
 			# remove streets not considered as short
-			idx <-  startsWith(V(g1)$name,"Rue:") & short.street.flag
+			idx <-  startsWith(V(g1)$name,"Rue:") & short.street.flag & !streets.all.flag
+			g1 <- delete_vertices(graph=g1, v=idx)
+			# remove nodes of innapropriate type (areas, villages, walls)
+			idx <- startsWith(V(g1)$name,"Quartier:") | startsWith(V(g1)$name,"Bourg:")	 | startsWith(V(g1)$name,"Rempart:")
 			g1 <- delete_vertices(graph=g1, v=idx)
 		}
 		else
@@ -883,11 +897,18 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 		# keep the labels of only top hubs 
 		g1 <- update.node.labels(g1, vals=degree(g1))
 		
-		# plot full graph
+		# plot full graph using the specified (x,y)
 		plot.file <- file.path(graph.folder, "graph")
 		tlog(4,"Plotting graph in \"",plot.file,"\"")
 		custom.gplot(g=g1, file=plot.file)
 		#custom.gplot(g=g1)
+		#
+		# and plot using a spatialization method 
+		plot.file <- file.path(graph.folder, "graph_kk")
+		tlog(4,"Plotting graph in \"",plot.file,"\"")
+		g2 <- g1; V(g2)$x <- V(g2)$x2; V(g2)$y <- V(g2)$y2
+		custom.gplot(g=g2, file=plot.file)
+		#custom.gplot(g=g2)
 		
 		# record graph as a graphml file
 		graph.file <- file.path(graph.folder, FILE_GRAPH)
