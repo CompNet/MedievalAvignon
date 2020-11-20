@@ -48,11 +48,12 @@ analyze.net.eccentricity <- function(g, out.folder)
 	for(mode in modes)
 	{	tlog(2,"Computing diameter: mode=",mode)
 		diam <- diameter(g, directed=mode=="directed")						# get the network diameter
-		tlog(4,"Diameter=",diam)
+		tlog(4,"Diameter: ",diam)
 		dd <- distances(graph=g, mode=if(mode=="directed") "in" else "all")	# compute all inter-node distances
 		idx <- which(dd==diam, arr.ind=TRUE)								# retrieve pairs of nodes matching the diameter
 		if(mode=="undirected")
 			idx <- idx[idx[,1]<idx[,2],,drop=FALSE]							# filter (each pair appears twice due to symmetric matrix)
+		tlog(4,"Number of diameter paths: ",nrow(idx))
 		
 		# possibly create folder
 		fname <- paste0("diameter_",mode)
@@ -60,8 +61,15 @@ analyze.net.eccentricity <- function(g, out.folder)
 		dir.create(path=diameter.folder, showWarnings=FALSE, recursive=TRUE)
 		
 		# plot diameter
-		diam.paths <- lapply(1:nrow(idx), function(r) 
-			all_shortest_paths(graph=g, from=idx[r,1], to=idx[r,2], mode=if(mode=="directed") "in" else "all")$res)
+		diam.paths <- future_lapply(1:nrow(idx), function(r) 
+			if(g$name!=LV_ESTATE)
+				# looking for all the paths
+				all_shortest_paths(graph=g, from=idx[r,1], to=idx[r,2], mode=if(mode=="directed") "in" else "all")$res
+			else
+				# too long to find all the paths...
+				shortest_paths(graph=g, from=idx[r,1], to=idx[r,2], mode=if(mode=="directed") "in" else "all")$vpath
+		)
+		tlog(4,"Found ",length(diam.paths)," distinct diameters, plotting them")
 		for(pp in 1:length(diam.paths))
 		{	tlog(6,"Plotting diameter path ",pp,"/",length(diam.paths))
 			V(g)$label <- rep(NA, gorder(g))
@@ -69,9 +77,10 @@ analyze.net.eccentricity <- function(g, out.folder)
 			#custom.gplot(g=g, paths=diam.paths[[pp]])
 			
 			if(length(diam.paths[[pp]])<=20)
-			{	q <- 1
+			{	tlog(8,"Plotting the ",length(diam.paths[[pp]])," variants of this diameter")			
+				q <- 1
 				for(p in 1:length(diam.paths[[pp]]))
-				{	tlog(8,"Plotting variant ",p,"/",length(diam.paths[[pp]]))
+				{	tlog(10,"Plotting variant ",p,"/",length(diam.paths[[pp]]))
 					if(p==1 || !all(diam.paths[[pp]][[p]]==diam.paths[[pp]][[p-1]]))
 					{	V(g)$label <- rep(NA,gorder(g))
 						vstart <- diam.paths[[pp]][[p]][1]
@@ -83,6 +92,8 @@ analyze.net.eccentricity <- function(g, out.folder)
 					}
 				}
 			}
+			else
+				tlog(8,"Too many variants of the diameter, not plotting them")			
 		}
 		
 		# add value to graph and table
@@ -663,40 +674,49 @@ analyze.net.assortativity <- function(g, out.folder)
 		}
 	}
 	
+	tlog(6,"Computing undirected vs. directed links")
 	modes <- c("undirected", "directed")
 	for(mode in modes)
-	{	# compute the assortativity for all categorical attributes
+	{	tlog(8,"Computing mode=",mode)
+		
+		# compute the assortativity for all categorical attributes
 		for(i in 1:ncol(cat.data))
 		{	# compute the assortativity
 			attr <- colnames(cat.data)[i]
+			tlog(10,"Computing attribute ",attr," (",i,"/",ncol(cat.data),")")
 			
 			# if there are some NAs
 			if(any(is.na(cat.data[,i])))
-			{	# explicitly represent them as a class
-				cd <- cat.data[,i]
-				cd[is.na(cd)] <- "NA"
-				ass <- assortativity_nominal(graph=g, types=cd, directed=mode=="directed")
-				tlog(6,"Assortativity for attribute \"",attr,"\" (mode=",mode,") when representing NAs by 0: ",ass)
+			{	# explicitly represent NAs as a class
+				cd <- as.integer(cat.data[,i])
+				if(all(is.na(cd)))
+					ass <- NA
+				else
+				{	cd[is.na(cd)] <- max(cd,na.rm=TRUE) + 1
+					ass <- assortativity_nominal(graph=g, types=cd, directed=mode=="directed")
+				}
+				tlog(12,"Assortativity for attribute \"",attr,"\" (mode=",mode,") when representing NAs explicitly: ",ass)
 				vals <- c(vals, ass)
 				names(vals)[length(vals)] <- paste0(attr,"_expNA_",mode)
-				# ignore them
-				cd <- cat.data[,i]
-				cd <- cd[!is.na(cd)]
-				if(length(cd)>1)
-				{	gg <- delete_vertices(g, which(is.na(cat.data[,i])))
+				# just ignore NAs
+				cd <- as.integer(cat.data[,i])
+				if(all(is.na(cd)))
+					ass <- NA
+				else
+				{	cd <- cd[!is.na(cd)]
+					gg <- delete_vertices(g, which(is.na(cat.data[,i])))
 					ass <- assortativity_nominal(graph=gg, types=cd, directed=mode=="directed")
 				}
-				else
-					ass <- NA
-				tlog(6,"Assortativity for attribute \"",attr,"\" (mode=",mode,") when ignoring NAs: ",ass)
+				tlog(12,"Assortativity for attribute \"",attr,"\" (mode=",mode,") when ignoring NAs: ",ass)
 				vals <- c(vals, ass)
 				names(vals)[length(vals)] <- paste0(attr,"_noNA_",mode)
 			}
 			
 			# no NA at all
 			else
-			{	ass <- assortativity_nominal(graph=g, types=cat.data[,i], directed=mode=="directed")
-				tlog(6,"Assortativity for attribute \"",attr,"\" (mode=",mode,"): ",ass)
+			{	cd <- as.integer(cat.data[,i])
+				ass <- assortativity_nominal(graph=g, types=cd, directed=mode=="directed")
+				tlog(12,"Assortativity for attribute \"",attr,"\" (mode=",mode,"): ",ass)
 				vals <- c(vals, ass)
 				names(vals)[length(vals)] <- paste0(attr,"_",mode)
 			}
@@ -741,38 +761,46 @@ analyze.net.assortativity <- function(g, out.folder)
 	}
 	
 	# compute the assortativity for all numerical attributes
+	tlog(6,"Computing undirected vs. directed links")
 	modes <- c("undirected", "directed")
 	for(mode in modes)
-	{	for(i in 1:ncol(num.data))
+	{	tlog(8,"Computing mode=",mode)
+		
+		for(i in 1:ncol(num.data))
 		{	# compute the assortativity
 			attr <- colnames(num.data)[i]
+			tlog(10,"Computing attribute ",attr," (",i,"/",ncol(num.data),")")
 			
 			# if there are some NAs
 			if(any(is.na(num.data[,i])))
 			{	# explicitly represent them as zeroes
 				cd <- num.data[,i]
-				cd[is.na(cd)] <- 0
-				ass <- assortativity(graph=g, types1=cd, directed=mode=="directed")
-				tlog(6,"Assortativity for attribute \"",attr,"\" (mode=",mode,") when replacing NAs by 0: ",ass)
+				if(all(is.na(cd)))
+					ass <- NA
+				else
+				{	cd[is.na(cd)] <- 0
+					ass <- assortativity(graph=g, types1=cd, directed=mode=="directed")
+				}
+				tlog(12,"Assortativity for attribute \"",attr,"\" (mode=",mode,") when replacing NAs by 0: ",ass)
 				vals <- c(vals, ass)
 				names(vals)[length(vals)] <- paste0(attr,"_expxNA_",mode)
 				# ignore them
 				cd <- num.data[,i]
-				cd <- cd[!is.na(cd)]
-				if(length(cd)>1)
-				{	gg <- delete_vertices(g, which(is.na(num.data[,i])))
+				if(all(is.na(cd)))
+					ass <- NA
+				else
+				{	cd <- cd[!is.na(cd)]
+					gg <- delete_vertices(g, which(is.na(num.data[,i])))
 					ass <- assortativity(graph=gg, types1=cd, directed=mode=="directed")
 				}
-				else
-					ass <- NA
-				tlog(6,"Assortativity for attribute \"",attr,"\" (mode=",mode,") when ignoring NAs: ",ass)
+				tlog(12,"Assortativity for attribute \"",attr,"\" (mode=",mode,") when ignoring NAs: ",ass)
 				vals <- c(vals, ass)
 				names(vals)[length(vals)] <- paste0(attr,"_noNA_",mode)
 			}
 			# no NA at all
 			else
 			{	ass <- assortativity(graph=g, types1=num.data[,i], directed=mode=="directed")
-				tlog(6,"Assortativity for attribute \"",attr,"\" (mode=",mode,"): ",ass)
+				tlog(12,"Assortativity for attribute \"",attr,"\" (mode=",mode,"): ",ass)
 				vals <- c(vals, ass)
 				names(vals)[length(vals)] <- paste0(attr, "_", mode)
 			}

@@ -24,6 +24,7 @@ options(warn=2)				# as errors
 library("igraph")			# graphs
 library("SDMTools")			# colors
 library("CINNA")			# additional centrality measures
+library("future.apply")		# parallel processing
 
 
 
