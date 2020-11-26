@@ -1,7 +1,7 @@
-id,type,nom,dateDeriv,dateCouv,sources,biblio,date,idsave,longitude,latitude
-483,Rocher,Rocher des Doms,,,,,,,4.8076937,43.9520242
-767,Rive,riperia rodani,,,,,,,,
-205,Canal,Canal de Vaucluse1400,1099,1316,,,1400,7,,
-665,Douve,Douve,1355,,,,,,,
-185,Fleuve,Rhône1400,,,,,1400,21,,
-195,Canal,Durançole1400,1229,,,,1400,31,,
+id,type,nom,dateDeriv,dateCouv,sources,biblio,date,idsave,longitude,latitude,longitudeHypo,latitudeHypo
+483,Rocher,Rocher des Doms,,,,,,,4.8076937,43.9520242,,
+767,Rive,riperia rodani,,,,,,,,,,
+205,Canal,Canal de Vaucluse1400,1099,1316,,,1400,7,,,,
+665,Douve,Douve,1355,,,,,,,,,
+185,Fleuve,Rhône1400,,,,,1400,21,,,,
+195,Canal,Durançole1400,1229,,,,1400,31,,,,
