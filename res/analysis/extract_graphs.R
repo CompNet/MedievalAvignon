@@ -267,6 +267,13 @@ extract.social.networks <- function()
 		}
 		g1$name <- LK_TYPE_SOC_LST[i]
 		
+		# remove isolated nodes
+		idx <- igraph::degree(g1) < 1
+		tlog(6,"Removing ",length(which(idx))," isolated nodes")
+		g1 <- delete_vertices(graph=g1, v=idx)
+		#
+		tlog(6,"Remaining: n=",gorder(g1)," m=",gsize(g1))
+		
 		# init folder
 		graph.folder <- file.path(FOLDER_OUT_ANAL_SOC, g1$name)
 		dir.create(path=graph.folder, showWarnings=FALSE, recursive=TRUE)
@@ -560,7 +567,8 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 	# load relationships
 	tlog(2,"Loading relational information")
 	data <- read.table(
-		file=FILE_IN_ANAL_CONFR_LINKS,
+#		file=FILE_IN_ANAL_CONFR_LINKS_ALL,
+		file=FILE_IN_ANAL_CONFR_LINKS_14c,
 		sep=",",
 		header=TRUE,
 		stringsAsFactors=FALSE,
@@ -572,7 +580,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 	
 	# collapse the ids from 3 to 2 columns and convert them to internal ids
 	edge.list <- t(sapply(1:nrow(data), function(r)
-	{	print(r)
+	{	#print(r)
 		# get the source id
 		if(is.na(data[r,COL_CONF_EST1_ID]))
 			stop(paste0("ERROR: found no source id in row #",r))
@@ -599,18 +607,23 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 			tgt.id <- c(tgt.id, which(info.all[,COL_AREA_ID]==data[r,COL_CONF_AREA_ID]))		
 		
 		if(length(tgt.id)==0)
-			stop(paste0("ERROR: found no destinations id in row #",r))
-		if(length(tgt.id)>1)
-			stop(paste0("ERROR: found several destinations ids in row #",r))
-		if(is.na(tgt.id))
-			stop(paste0("ERROR: could not match the destination id in row #",r))
-		
-		src.ext.id <- info.all[src.id, COL_LOC_ID]
-		tgt.ext.id <- info.all[tgt.id, COL_LOC_ID]
-		result <- as.character(c(src.ext.id, tgt.ext.id))
+		{	print(data[r,])		
+			result <- c(NA,NA)
+#			stop(paste0("ERROR: found no destinations id in row #",r))
+		}
+		else if(length(tgt.id)>1)
+		{	stop(paste0("ERROR: found several destinations ids in row #",r))
+		}
+		else if(is.na(tgt.id))
+		{	stop(paste0("ERROR: could not match the destination id in row #",r))
+		}
+		else
+		{	src.ext.id <- info.all[src.id, COL_LOC_ID]
+			tgt.ext.id <- info.all[tgt.id, COL_LOC_ID]
+			result <- as.character(c(src.ext.id, tgt.ext.id))
+		}
 		return(result)
 	}))
-	
 	
 	# manual corrections and simplifications
 	# VAL_CONF_TYPE_EGALE
@@ -642,8 +655,10 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_DEBUT & startsWith(edge.list[,2], "Rue:"), COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
 	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_DEBUT & startsWith(edge.list[,2], "Livree:"), COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_INTERIEUR
 	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_DEBUT & startsWith(edge.list[,2], "Bourg:"), COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_INTERIEUR
+	# VAL_CONF_TYPE_DELA
+	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_DELA, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
 	# VAL_CONF_TYPE_MILIEU
-	#data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_MILIEU, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
+#	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_MILIEU, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
 	# VAL_CONF_TYPE_EST
 	# VAL_CONF_TYPE_OUEST
 	# VAL_CONF_TYPE_NORD
@@ -681,18 +696,22 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 	# VAL_CONF_TYPE_DEVANT
 	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_DEVANT, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
 	# VAL_CONF_TYPE_ENTRE
-	#data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_ENTRE, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
+#	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_ENTRE, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
 	# VAL_CONF_TYPE_EXTERIEUR
 	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_EXTERIEUR, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
+	# VAL_CONF_TYPE_DESSOUS
+	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_DESSOUS, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
 	# VAL_CONF_TYPE_SOUS
 	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_SOUS, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
+	# VAL_CONF_TYPE_DESSUS
+	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_DESSUS, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
 	# VAL_CONF_TYPE_SUR
 	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_SUR, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
 	# VAL_CONF_TYPE_VERS
 	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_VERS, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
 	
 	# sort(unique(data[,COL_CONF_LOC_NORM]))
-	# ii <- which(E(g)$type==VAL_CONF_TYPE_EGALE); cbind(get.edgelist(g)[ii,], E(g)$type[ii])
+	# ii <- which(E(g)$type==VAL_CONF_TYPE_INTERIEUR); cbind(get.edgelist(g)[ii,], E(g)$type[ii])
 	# ii <- match(sort(unique(data[,COL_CONF_LOC_NORM])), data[,COL_CONF_LOC_NORM]); data[ii,c(COL_CONF_LOC_LAT,COL_CONF_LOC_NORM)]
 	
 	# build graph
@@ -747,8 +766,8 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 	
 	# use spatial coordinates for layout
 	tlog(2,"Using spatial coordinates to define layout")
-	V(g)$x <- vertex_attr(g, name=COL_LOC_X)
-	V(g)$y <- vertex_attr(g, name=COL_LOC_Y)
+	V(g)$x <- vertex_attr(g, name=COL_LOC_HYP_LON)	# COL_LOC_X	COL_LOC_HYP_LON
+	V(g)$y <- vertex_attr(g, name=COL_LOC_HYP_LAT)	# COL_LOC_Y	COL_LOC_HYP_LAT
 	# missing coordinates: use the average of the neighbors
 	changed <- TRUE
 	while(changed)
@@ -785,12 +804,17 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 			V(g)$y[idx] <- tmp[2,]
 		}
 	}
-	##V(g)$x[which(is.na(V(g)$x))] <- min(V(g)$x, na.rm=TRUE)
-	##V(g)$y[which(is.na(V(g)$y))] <- min(V(g)$y, na.rm=TRUE)
+	# completely disconnected nodes
+	V(g)$x[which(is.na(V(g)$x))] <- min(V(g)$x, na.rm=TRUE)
+	V(g)$y[which(is.na(V(g)$y))] <- min(V(g)$y, na.rm=TRUE)
+	# copy in new attribute
+	V(g)$lonEst <- V(g)$x
+	V(g)$latEst <- V(g)$y
+	# test plots
 	#V(g)$label <- NA
 	#custom.gplot(g=g)
 	#custom.gplot(g=g, col.att="x", cat.att=FALSE, color.isolates=TRUE)
-	#custom.gplot(g=g, col.att=COL_LOC_X, cat.att=FALSE, color.isolates=TRUE, file="temp.png")
+	#custom.gplot(g=g, col.att=COL_LOC_HYP_LON, cat.att=FALSE, color.isolates=TRUE, file="temp.png")
 	
 	# get additional info on the streets and other stuff
 	short.tab <- read.table(
@@ -806,43 +830,67 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 	
 	# extract one graph for each type of relation
 	tlog(2,"Extracting several variants of the graph")
-	link.types <- LV_ESTATE # c(LK_TYPE_ALL, LV_ESTATE, link.types)
+	link.types <- c(LV_ESTATE, LK_TYPE_FLATREL)		# c(LK_TYPE_ALL, LV_ESTATE, LK_TYPE_FLATREL, link.types)
 	for(i in 1:length(link.types))
 	{	tlog(4,"Extracting graph \"",link.types[i],"\" (",i,"/",length(link.types),")")
 		
-		# keep only the targeted type of links
+		# keep all links and nodes
 		if(link.types[i]==LK_TYPE_ALL)
 			g1 <- g
+		# keep only the estate level
 		else if(link.types[i]==LV_ESTATE)
-		{	g1 <- g
+		{	tlog(6,"Cleaning the graph (n=",gorder(g1),", m=",gsize(g1),")")
+			g1 <- g
 			# change the name of certain streets whose only a part is targeted in the confronts
 			streets.all <- union(street.angles, street.starts)
 			strts <- sort(unique(edge.list[streets.all,2]))						# concerned parts of streets
-			tlog(6,"Detected ",length(streets.all)," confronts with ",length(strts), " parts of streets")
+			tlog(8,"Detected ",length(streets.all)," confronts with ",length(strts), " parts of streets")
 			streets.all.flag <- V(g1)$name %in% strts							# mark them for later (to not remove them)
 			rem.idx <- setdiff(which(edge.list[,2] %in% strts), streets.all)	# relations with these streets (but as complete streets)
 			g1 <- delete_edges(g1, edges=rem.idx)								# remove these links
 			V(g1)$name[match(strts,V(g1)$name)] <- 								# change the name of the remaining streets
 				paste(V(g1)$name[match(strts,V(g1)$name)], "_part", sep="")
 			# remove streets not considered as short
+			tlog(8,"Detected ",length(which(short.street.flag))," short streets")
 			idx <-  startsWith(V(g1)$name,"Rue:") & short.street.flag & !streets.all.flag
+			tlog(8,"Removing ",length(which(idx))," street nodes")
 			g1 <- delete_vertices(graph=g1, v=idx)
-			# remove nodes of innapropriate type (areas, villages, walls)
+			# remove nodes of higher type (areas, villages, walls)
 			idx <- startsWith(V(g1)$name,"Quartier:") | startsWith(V(g1)$name,"Bourg:")	 | startsWith(V(g1)$name,"Rempart:")
+			tlog(8,"Removing ",length(which(idx))," areas/villages/walls")
+			g1 <- delete_vertices(graph=g1, v=idx)
+			# remove certain geological objects
+			idx <-  startsWith(V(g1)$name,"Repere:") & vertex_attr(g1,COL_LDMRK_TYPE)!="Rocher"
+			tlog(8,"Removing ",length(which(idx))," geological object")
 			g1 <- delete_vertices(graph=g1, v=idx)
 		}
+		# keep everything but the membership relations
+		else if(link.types[i]==LK_TYPE_FLATREL)
+		{	idx <- which(E(g1)$type==VAL_CONF_TYPE_INTERIEUR)
+			tlog(8,"Removing ",length(idx)," \"inside\" confronts")
+			g1 <- delete_edges(graph=g1, edges=idx)
+		}
+		# keep only one type of link
 		else
-		{	g1 <- delete_edges(graph=g, edges=which(E(g)$type!=link.types[i]))
+		{	# delete the links of the other types
+			g1 <- delete_edges(graph=g, edges=which(E(g)$type!=link.types[i]))
 			#g1 <- delete_vertices(graph=g1, v=which(degree(g, mode="all")==0))
 		}
 		g1$name <- link.types[i]
+		
+		# remove isolated nodes
+		idx <- igraph::degree(g1) < 1
+		tlog(6,"Removing ",length(which(idx))," isolated nodes")
+		g1 <- delete_vertices(graph=g1, v=idx)
+		#
+		tlog(6,"Remaining: n=",gorder(g1)," m=",gsize(g1))
 		
 		# init folder
 		graph.folder <- file.path(FOLDER_OUT_ANAL_EST, g1$name)
 		dir.create(path=graph.folder, showWarnings=FALSE, recursive=TRUE)
 		
 		# check graph validity
-		if(link.types[i]!=LK_TYPE_ALL && link.types[i]!=LV_ESTATE && any_multiple(graph=g1))
+		if(!(link.types[i] %in% c(LK_TYPE_ALL, LV_ESTATE, LK_TYPE_FLATREL)) && any_multiple(graph=g1))
 		{	el <- as_edgelist(graph=g1, names=FALSE)
 			# loops
 			idx.loop <- which(count_multiple(g1)<1)
@@ -919,8 +967,15 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 	return(link.types)
 }
 
-# TODO y a t il une correlation entre la taille du composant et les différents attributs ?
+# TODO nommage des noeuds immobiliers >> utiliser les préfixes rajoutés depuis
 
-# TODO que veut-on exprimer avec le réseau de confronts ? la proximité spatiale ?
-#      donc peut-être transformer rues en lien si deux biens sont localisés au même niveau, 
-# 	   et possiblement appliquer le même principe à d'autres relations.
+# TODO comparer le réseau avec ou sans les longues rues
+# garder les rues/bourgs quand ils sont en confront (pas les autres relations)
+
+# TODO correlation entre distance euclidienne et distance géodésique pr valider 
+# le fait que le réseau de confront est une bonne approximation des relations de proximité spatiale
+
+# TODO plusieurs terriers représentant les mêmes biens à des époques différentes
+# >> extraire autant de graphes (en intégrant les noeuds issus des autres terriers, constants)
+# >> faire du matching de noeud pr mettre les biens en correspondance 
+#	 similarité structurelle + similarité d'attributs ?

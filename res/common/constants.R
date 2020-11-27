@@ -22,7 +22,8 @@ FOLDER_IN <- "in"
 		FILE_IN_ANAL_FIX_NODES <- file.path(FOLDER_IN_ANAL,"Table_Invariant_Renvoi_Table.csv")
 		FILE_IN_ANAL_SOCIAL_LINKS <- file.path(FOLDER_IN_ANAL,"Table_LienIndividu.csv")
 		FILE_IN_ANAL_CARD_NODES <- file.path(FOLDER_IN_ANAL,"Table_LivreeCardinalice.csv")
-		FILE_IN_ANAL_CONFR_LINKS <- file.path(FOLDER_IN_ANAL,"Table_Localisation_Confront.csv")
+		FILE_IN_ANAL_CONFR_LINKS_ALL <- file.path(FOLDER_IN_ANAL,"Table_Localisation_Confront_tout.csv")
+		FILE_IN_ANAL_CONFR_LINKS_14c <- file.path(FOLDER_IN_ANAL,"Table_Localisation_Confront_XIV.csv")
 		FILE_IN_ANAL_GATE_NODES <- file.path(FOLDER_IN_ANAL,"Table_PortePortail.csv")
 		FILE_IN_ANAL_AREA_NODES <- file.path(FOLDER_IN_ANAL,"Table_QuartierParoisse.csv")
 		FILE_IN_ANAL_ESTATE_FEE <- file.path(FOLDER_IN_ANAL,"Table_Redevance.csv")
@@ -102,10 +103,14 @@ FILE_GRAPH <- "graph.graphml"
 	COL_SOC_DESCR <- "descriptionLien"
 	COL_SOC_TYPE <- "typeLien"
 
-# location
+# locations
+	COL_LOC_ID <- "idExterne"
+	# coordinates
 	COL_LOC_X <- "xcoord"
 	COL_LOC_Y <- "ycoord"
-	COL_LOC_ID <- "idExterne"
+	# estimated coordinates
+	COL_LOC_HYP_LAT <- "latitudeHypo"
+	COL_LOC_HYP_LON <- "longitudeHypo"
 	
 # estate table
 	# ids
@@ -293,9 +298,12 @@ FILE_GRAPH <- "graph.graphml"
 	VAL_CONF_TYPE_INTERIEUR <- "a l interieur de"
 	VAL_CONF_TYPE_OPPOSE <- "a l oppose de"
 	VAL_CONF_TYPE_DEBUT <- "au debut de"
+	VAL_CONF_TYPE_DELA <- "au dela de"
+	VAL_CONF_TYPE_DESSOUS <- "en dessous de"
+	VAL_CONF_TYPE_DESSUS <- "au dessus de"
 #	VAL_CONF_TYPE_MILIEU <- "au milieu"
 	VAL_CONF_TYPE_EST <- "confronte a l est avec"
-#"confronte a l occident avec"
+#	VAL_CONF_TYPE_OCC <- "confronte a l occident avec"
 	VAL_CONF_TYPE_OUEST <- "confronte a l ouest avec"
 	VAL_CONF_TYPE_NORD <- "confronte au nord avec"
 	VAL_CONF_TYPE_SUD <- "confronte au sud avec"
@@ -341,6 +349,7 @@ LK_TYPE <- "type"
 	LK_TYPE_PRO <- "Professional"
 	LK_TYPE_SOC_LST <- c(LK_TYPE_ALL, LK_TYPE_FAM, LK_TYPE_PRO)
 	# confront
+	LK_TYPE_FLATREL <- "Flat_rel"
 # link description
 LK_DESCR <- "description"
 
@@ -532,3 +541,67 @@ LONG_NAME[COL_FEE_AMOUNT_RAW1] <- "Fee amount 1 (raw)"
 LONG_NAME[COL_FEE_AMOUNT_NORM1] <- "Fee amount 1 (normalized)"
 LONG_NAME[COL_FEE_AMOUNT_RAW2] <- "Fee amount 2 (raw)"
 LONG_NAME[COL_FEE_AMOUNT_INCR] <- "Fee increment"
+
+
+
+
+#############################################################################################
+# list of categorical attributes
+COL_CAT <- c(
+	# social
+	COL_PERS_NAME_LAST, COL_PERS_NAME_NICK, COL_PERS_NAME_TYPE,
+	COL_PERS_GENDER, COL_PERS_IDENTIFICATION, COL_PERS_RESIDENCE,
+	COL_PERS_ECCL_NORM, #COL_PERS_ECCL_LAT, COL_PERS_ECCL_FRE,
+	COL_PERS_HEALTH_FRE, #COL_PERS_HEALTH_LAT,
+	COL_PERS_CITY_FRE, #COL_PERS_CITY_LAT,
+	COL_PERS_DIOC_FRE, #COL_PERS_DIOC_LAT,
+	COL_PERS_OCC_CAT, COL_PERS_OCC_THEME,
+	COL_PERS_STATUS_NORM, #COL_PERS_STATUS_LAT, COL_PERS_STATUS_FRE,
+	
+	# estates
+	COL_EST_AREA_ID, COL_EST_STREET_ID, COL_EST_VILLAGE_ID, COL_EST_LORDSHIP_ID,
+	COL_EST_TYPE_FRE, #COL_EST_TYPE_LAT
+	COL_EST_QUALIF_NORM, #COL_EST_QUALIF_LAT
+	#COL_EST_DETAIL, COL_EST_MEASURE, COL_EST_MATERIALS,
+	# edifices
+	COL_EDIF_TYPE, COL_EDIF_STATUS, COL_EDIF_LOC, #COL_EDIF_SRC,
+	# villages
+	COL_VILG_TYPE,
+	# palaces
+	COL_CARD_TYPE,
+	# gates
+	COL_GATE_NAME_FRE, #COL_GATE_NAME_LAT, 
+	COL_GATE_TYPE,
+	# areas
+	COL_AREA_NAME_FRE, #COL_AREA_NAME_LAT,
+	# walls
+	COL_WALL_NAME_FRE, #COL_WALL_NAME_LAT, 
+	COL_WALL_TYPE, 
+	# landmarks
+	COL_LDMRK_TYPE,
+	# streets
+	COL_STREET_TYPE
+)
+
+# list of numerical attributes
+COL_NUM <- c(
+	COL_LOC_X, COL_LOC_Y,
+	# estates
+	COL_EST_COMP_NBR1, COL_EST_COMP_NBR2,
+	# edifices
+	COL_EDIF_DATE_FRST_OCC, COL_EDIF_DATE_BUILD_START, COL_EDIF_DATE_BUILD_END, COL_EDIF_DATE_DESTR,
+	# villages
+	COL_VILG_SURF, COL_VILG_PERIM, COL_VILG_DATE_FRST_OCC, #COL_VILG_DATE_CREATED,
+	# gates
+	COL_GATE_DATE_FRST_OCC, COL_GATE_DATE_BUILD_START1, COL_GATE_DATE_BUILD_END1, COL_GATE_DATE_DESTR1, 
+	COL_GATE_DATE_BUILD_START2, COL_GATE_DATE_BUILD_END2, COL_GATE_DATE_DESTR2,
+	# areas
+	COL_AREA_SURF, COL_AREA_PERIM,
+	# walls
+	COL_WALL_DATE_FRST_OCC, COL_WALL_DATE_BUILD_START1, COL_WALL_DATE_BUILD_END1, COL_WALL_DATE_DESTR1, 
+	COL_WALL_DATE_BUILD_START2, COL_WALL_DATE_BUILD_END2, COL_WALL_DATE_DESTR2, 
+	# landmarks
+	COL_LDMRK_DATE_DERIV, COL_LDMRK_DATE_COUV, COL_LDMRK_DATE,
+	# streets
+	COL_STREET_LENGTH
+)

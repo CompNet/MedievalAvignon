@@ -12,8 +12,8 @@
 #############################################################################################
 # handling of warnings
 
-#options(warn=1)			# as they happen
-options(warn=2)				# as errors
+options(warn=1)			# as they happen
+#options(warn=2)				# as errors
 #options(error=recover)		# debug
 
 
@@ -25,6 +25,7 @@ library("igraph")			# graphs
 library("SDMTools")			# colors
 library("CINNA")			# additional centrality measures
 library("future.apply")		# parallel processing
+library("sjstats")			# eta correlation ratio
 
 
 

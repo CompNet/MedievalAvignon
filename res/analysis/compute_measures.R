@@ -600,7 +600,10 @@ analyze.net.assortativity <- function(g, out.folder)
 	
 	# retrieve the list of vertex attributes
 	att.list <- list.vertex.attributes(g)
-	vals <- c()
+	
+	# init result table
+	val.tab <- matrix(nrow=0,ncol=2)
+	colnames(val.tab) <- c("undirected","directed")
 	
 	#############################
 	# deal with categorical attributes
@@ -608,42 +611,7 @@ analyze.net.assortativity <- function(g, out.folder)
 	cat.data <- NA
 	
 	# gather regular categorical attributes 
-	attrs <- intersect(c(
-				# social
-				COL_PERS_NAME_LAST, COL_PERS_NAME_NICK, COL_PERS_NAME_TYPE,
-				COL_PERS_GENDER, COL_PERS_IDENTIFICATION, COL_PERS_RESIDENCE,
-				COL_PERS_ECCL_NORM, #COL_PERS_ECCL_LAT, COL_PERS_ECCL_FRE,
-				COL_PERS_HEALTH_FRE, #COL_PERS_HEALTH_LAT,
-				COL_PERS_CITY_FRE, #COL_PERS_CITY_LAT,
-				COL_PERS_DIOC_FRE, #COL_PERS_DIOC_LAT,
-				COL_PERS_OCC_CAT, COL_PERS_OCC_THEME,
-				COL_PERS_STATUS_NORM, #COL_PERS_STATUS_LAT, COL_PERS_STATUS_FRE,
-						
-				# estates
-				COL_EST_AREA_ID, COL_EST_STREET_ID, COL_EST_VILLAGE_ID, COL_EST_LORDSHIP_ID,
-				COL_EST_TYPE_FRE, #COL_EST_TYPE_LAT
-				COL_EST_QUALIF_NORM, #COL_EST_QUALIF_LAT
-				#COL_EST_DETAIL, COL_EST_MEASURE, COL_EST_MATERIALS,
-				# edifices
-				COL_EDIF_TYPE, COL_EDIF_STATUS, COL_EDIF_LOC, #COL_EDIF_SRC,
-				# villages
-				COL_VILG_TYPE,
-				# palaces
-				COL_CARD_TYPE,
-				# gates
-				COL_GATE_NAME_FRE, #COL_GATE_NAME_LAT, 
-				COL_GATE_TYPE,
-				# areas
-				COL_AREA_NAME_FRE, #COL_AREA_NAME_LAT,
-				# walls
-				COL_WALL_NAME_FRE, #COL_WALL_NAME_LAT, 
-				COL_WALL_TYPE, 
-				# landmarks
-				COL_LDMRK_TYPE,
-				# streets
-				COL_STREET_TYPE
-			), 
-			vertex_attr_names(g))
+	attrs <- intersect(COL_CAT, vertex_attr_names(g))
 	for(attr in attrs)
 	{	tmp <- vertex_attr(g, attr)
 		if(all(is.na(cat.data)))
@@ -696,8 +664,12 @@ analyze.net.assortativity <- function(g, out.folder)
 					ass <- assortativity_nominal(graph=g, types=cd, directed=mode=="directed")
 				}
 				tlog(12,"Assortativity for attribute \"",attr,"\" (mode=",mode,") when representing NAs explicitly: ",ass)
-				vals <- c(vals, ass)
-				names(vals)[length(vals)] <- paste0(attr,"_expNA_",mode)
+				name <- paste0(attr,"_expNA")
+				if(!(name %in% rownames(val.tab)))
+				{	val.tab <- rbind(val.tab, c(NA,NA))
+					rownames(val.tab)[nrow(val.tab)] <- name
+				}
+				val.tab[name,mode] <- ass
 				# just ignore NAs
 				cd <- as.integer(cat.data[,i])
 				if(all(is.na(cd)))
@@ -708,8 +680,12 @@ analyze.net.assortativity <- function(g, out.folder)
 					ass <- assortativity_nominal(graph=gg, types=cd, directed=mode=="directed")
 				}
 				tlog(12,"Assortativity for attribute \"",attr,"\" (mode=",mode,") when ignoring NAs: ",ass)
-				vals <- c(vals, ass)
-				names(vals)[length(vals)] <- paste0(attr,"_noNA_",mode)
+				name <- paste0(attr,"_noNA")
+				if(!(name %in% rownames(val.tab)))
+				{	val.tab <- rbind(val.tab, c(NA,NA))
+					rownames(val.tab)[nrow(val.tab)] <- name
+				}
+				val.tab[name,mode] <- ass
 			}
 			
 			# no NA at all
@@ -717,8 +693,12 @@ analyze.net.assortativity <- function(g, out.folder)
 			{	cd <- as.integer(cat.data[,i])
 				ass <- assortativity_nominal(graph=g, types=cd, directed=mode=="directed")
 				tlog(12,"Assortativity for attribute \"",attr,"\" (mode=",mode,"): ",ass)
-				vals <- c(vals, ass)
-				names(vals)[length(vals)] <- paste0(attr,"_",mode)
+				name <- paste0(attr)
+				if(!(name %in% rownames(val.tab)))
+				{	val.tab <- rbind(val.tab, c(NA,NA))
+					rownames(val.tab)[nrow(val.tab)] <- name
+				}
+				val.tab[name,mode] <- ass
 			}
 		}
 	}
@@ -729,28 +709,7 @@ analyze.net.assortativity <- function(g, out.folder)
 	num.data <- NA
 	
 	# gather regular numerical attributes
-	attrs <- intersect(c(
-					COL_LOC_X, COL_LOC_Y,
-					# estates
-					COL_EST_COMP_NBR1, COL_EST_COMP_NBR2,
-					# edifices
-					COL_EDIF_DATE_FRST_OCC, COL_EDIF_DATE_BUILD_START, COL_EDIF_DATE_BUILD_END, COL_EDIF_DATE_DESTR,
-					# villages
-					COL_VILG_SURF, COL_VILG_PERIM, COL_VILG_DATE_FRST_OCC, #COL_VILG_DATE_CREATED,
-					# gates
-					COL_GATE_DATE_FRST_OCC, COL_GATE_DATE_BUILD_START1, COL_GATE_DATE_BUILD_END1, COL_GATE_DATE_DESTR1, 
-					COL_GATE_DATE_BUILD_START2, COL_GATE_DATE_BUILD_END2, COL_GATE_DATE_DESTR2,
-					# areas
-					COL_AREA_SURF, COL_AREA_PERIM,
-					# walls
-					COL_WALL_DATE_FRST_OCC, COL_WALL_DATE_BUILD_START1, COL_WALL_DATE_BUILD_END1, COL_WALL_DATE_DESTR1, 
-					COL_WALL_DATE_BUILD_START2, COL_WALL_DATE_BUILD_END2, COL_WALL_DATE_DESTR2, 
-					# landmarks
-					COL_LDMRK_DATE_DERIV, COL_LDMRK_DATE_COUV, COL_LDMRK_DATE,
-					# streets
-					COL_STREET_LENGTH
-				),
-			vertex_attr_names(g))
+	attrs <- intersect(COL_NUM, vertex_attr_names(g))
 	for(attr in attrs)
 	{	tmp <- vertex_attr(g, attr)
 		if(all(is.na(num.data)))
@@ -761,70 +720,72 @@ analyze.net.assortativity <- function(g, out.folder)
 	}
 	
 	# compute the assortativity for all numerical attributes
-	tlog(6,"Computing undirected vs. directed links")
-	modes <- c("undirected", "directed")
-	for(mode in modes)
-	{	tlog(8,"Computing mode=",mode)
-		
-		for(i in 1:ncol(num.data))
-		{	# compute the assortativity
-			attr <- colnames(num.data)[i]
-			tlog(10,"Computing attribute ",attr," (",i,"/",ncol(num.data),")")
+	if(!is.null(ncol(num.data)))
+	{	tlog(6,"Computing undirected vs. directed links")
+		modes <- c("undirected", "directed")
+		for(mode in modes)
+		{	tlog(8,"Computing mode=",mode)
 			
-			# if there are some NAs
-			if(any(is.na(num.data[,i])))
-			{	# explicitly represent them as zeroes
-				cd <- num.data[,i]
-				if(all(is.na(cd)))
-					ass <- NA
-				else
-				{	cd[is.na(cd)] <- 0
-					ass <- assortativity(graph=g, types1=cd, directed=mode=="directed")
+			for(i in 1:ncol(num.data))
+			{	# compute the assortativity
+				attr <- colnames(num.data)[i]
+				tlog(10,"Computing attribute ",attr," (",i,"/",ncol(num.data),")")
+				
+				# if there are some NAs
+				if(any(is.na(num.data[,i])))
+				{	# explicitly represent them as zeroes
+					cd <- num.data[,i]
+					if(all(is.na(cd)))
+						ass <- NA
+					else
+					{	cd[is.na(cd)] <- 0
+						ass <- assortativity(graph=g, types1=cd, directed=mode=="directed")
+					}
+					tlog(12,"Assortativity for attribute \"",attr,"\" (mode=",mode,") when replacing NAs by 0: ",ass)
+					name <- paste0(attr,"_expNA")
+					if(!(name %in% rownames(val.tab)))
+					{	val.tab <- rbind(val.tab, c(NA,NA))
+						rownames(val.tab)[nrow(val.tab)] <- name
+					}
+					val.tab[name,mode] <- ass
+					# ignore them
+					cd <- num.data[,i]
+					if(all(is.na(cd)))
+						ass <- NA
+					else
+					{	cd <- cd[!is.na(cd)]
+						gg <- delete_vertices(g, which(is.na(num.data[,i])))
+						ass <- assortativity(graph=gg, types1=cd, directed=mode=="directed")
+					}
+					tlog(12,"Assortativity for attribute \"",attr,"\" (mode=",mode,") when ignoring NAs: ",ass)
+					name <- paste0(attr,"_noNA")
+					if(!(name %in% rownames(val.tab)))
+					{	val.tab <- rbind(val.tab, c(NA,NA))
+						rownames(val.tab)[nrow(val.tab)] <- name
+					}
+					val.tab[name,mode] <- ass
 				}
-				tlog(12,"Assortativity for attribute \"",attr,"\" (mode=",mode,") when replacing NAs by 0: ",ass)
-				vals <- c(vals, ass)
-				names(vals)[length(vals)] <- paste0(attr,"_expxNA_",mode)
-				# ignore them
-				cd <- num.data[,i]
-				if(all(is.na(cd)))
-					ass <- NA
+				# no NA at all
 				else
-				{	cd <- cd[!is.na(cd)]
-					gg <- delete_vertices(g, which(is.na(num.data[,i])))
-					ass <- assortativity(graph=gg, types1=cd, directed=mode=="directed")
+				{	ass <- assortativity(graph=g, types1=num.data[,i], directed=mode=="directed")
+					tlog(12,"Assortativity for attribute \"",attr,"\" (mode=",mode,"): ",ass)
+					name <- paste0(attr)
+					if(!(name %in% rownames(val.tab)))
+					{	val.tab <- rbind(val.tab, c(NA,NA))
+						rownames(val.tab)[nrow(val.tab)] <- name
+					}
+					val.tab[name,mode] <- ass
 				}
-				tlog(12,"Assortativity for attribute \"",attr,"\" (mode=",mode,") when ignoring NAs: ",ass)
-				vals <- c(vals, ass)
-				names(vals)[length(vals)] <- paste0(attr,"_noNA_",mode)
-			}
-			# no NA at all
-			else
-			{	ass <- assortativity(graph=g, types1=num.data[,i], directed=mode=="directed")
-				tlog(12,"Assortativity for attribute \"",attr,"\" (mode=",mode,"): ",ass)
-				vals <- c(vals, ass)
-				names(vals)[length(vals)] <- paste0(attr, "_", mode)
 			}
 		}
 	}
+	else
+		tlog(6,"No numerical attribute detected")
 	
 	#############################
 	# record the results
-
-	# get the stat table
-	stat.file <- file.path(out.folder, g$name, "stats.csv")
-	stats <- retrieve.stats(stat.file)
-
-	# add results to the graph (as attributes) and record
-	for(i in 1:length(vals))
-	{	attr <- names(vals)[i]
-		g <- set_vertex_attr(graph=g, name=attr, value=vals[i])
-		stats[attr, ] <- list(Value=vals[i], Mean=NA, Stdv=NA)
-	}
-	graph.file <- file.path(out.folder, g$name, FILE_GRAPH)
-	write.graphml.file(g=g, file=graph.file)
-	
-	# record table
-	write.csv(stats, file=stat.file, row.names=TRUE)
+	res.file <- file.path(out.folder, g$name, "assortativity.csv")
+	write.csv(val.tab, file=res.file, row.names=TRUE)
 	
 	#############################
 	# assortativity over
@@ -859,42 +820,7 @@ analyze.net.attributes <- function(g, out.folder)
 	cat.data <- NA
 	
 	# gather regular categorical attributes
-	attrs <- intersect(c(
-				# social
-				COL_PERS_NAME_LAST, COL_PERS_NAME_NICK, COL_PERS_NAME_TYPE,
-				COL_PERS_GENDER, COL_PERS_IDENTIFICATION, COL_PERS_RESIDENCE,
-				COL_PERS_ECCL_NORM, #COL_PERS_ECCL_LAT, COL_PERS_ECCL_FRE,
-				COL_PERS_HEALTH_FRE, #COL_PERS_HEALTH_LAT,
-				COL_PERS_CITY_FRE, #COL_PERS_CITY_LAT,
-				COL_PERS_DIOC_FRE, #COL_PERS_DIOC_LAT,
-				COL_PERS_OCC_CAT, COL_PERS_OCC_THEME,
-				COL_PERS_STATUS_NORM, #COL_PERS_STATUS_LAT, COL_PERS_STATUS_FRE,
-				
-				# estates
-				COL_EST_AREA_ID, COL_EST_STREET_ID, COL_EST_VILLAGE_ID, COL_EST_LORDSHIP_ID,
-				COL_EST_TYPE_FRE, #COL_EST_TYPE_LAT
-				COL_EST_QUALIF_NORM, #COL_EST_QUALIF_LAT
-				#COL_EST_DETAIL, COL_EST_MEASURE, COL_EST_MATERIALS,
-				# edifices
-				COL_EDIF_TYPE, COL_EDIF_STATUS, COL_EDIF_LOC, #COL_EDIF_SRC,
-				# villages
-				COL_VILG_TYPE,
-				# palaces
-				COL_CARD_TYPE,
-				# gates
-				COL_GATE_NAME_FRE, #COL_GATE_NAME_LAT, 
-				COL_GATE_TYPE,
-				# areas
-				COL_AREA_NAME_FRE, #COL_AREA_NAME_LAT,
-				# walls
-				COL_WALL_NAME_FRE, #COL_WALL_NAME_LAT, 
-				COL_WALL_TYPE, 
-				# landmarks
-				COL_LDMRK_TYPE,
-				# streets
-				COL_STREET_TYPE
-			), 
-			vertex_attr_names(g))
+	attrs <- intersect(COL_CAT, vertex_attr_names(g))
 	for(attr in attrs)
 	{	# get values
 		tmp <- vertex_attr(g, attr)
@@ -1071,28 +997,7 @@ analyze.net.attributes <- function(g, out.folder)
 	num.data <- NULL
 	
 	# gather regular numerical attributes
-	attrs <- intersect(c(
-				COL_LOC_X, COL_LOC_Y,
-				# estates
-				COL_EST_COMP_NBR1, COL_EST_COMP_NBR2,
-				# edifices
-				COL_EDIF_DATE_FRST_OCC, COL_EDIF_DATE_BUILD_START, COL_EDIF_DATE_BUILD_END, COL_EDIF_DATE_DESTR,
-				# villages
-				COL_VILG_SURF, COL_VILG_PERIM, COL_VILG_DATE_FRST_OCC, #COL_VILG_DATE_CREATED,
-				# gates
-				COL_GATE_DATE_FRST_OCC, COL_GATE_DATE_BUILD_START1, COL_GATE_DATE_BUILD_END1, COL_GATE_DATE_DESTR1, 
-				COL_GATE_DATE_BUILD_START2, COL_GATE_DATE_BUILD_END2, COL_GATE_DATE_DESTR2,
-				# areas
-				COL_AREA_SURF, COL_AREA_PERIM,
-				# walls
-				COL_WALL_DATE_FRST_OCC, COL_WALL_DATE_BUILD_START1, COL_WALL_DATE_BUILD_END1, COL_WALL_DATE_DESTR1, 
-				COL_WALL_DATE_BUILD_START2, COL_WALL_DATE_BUILD_END2, COL_WALL_DATE_DESTR2, 
-				# landmarks
-				COL_LDMRK_DATE_DERIV, COL_LDMRK_DATE_COUV, COL_LDMRK_DATE,
-				# streets
-				COL_STREET_LENGTH
-			),
-			vertex_attr_names(g))
+	attrs <- intersect(COL_NUM, vertex_attr_names(g))
 	for(attr in attrs)
 	{	# get values
 		tmp <- vertex_attr(g, attr)
@@ -1126,16 +1031,20 @@ analyze.net.attributes <- function(g, out.folder)
 #	num.data[which(is.na(num.data))] <- VAL_UNK
 	
 	# plot the graph using colors for attribute values
-	for(i in 1:ncol(num.data))
-	{	attr <- colnames(num.data)[i]
-		tlog(4,"Plotting attribute \"",attr,"\"")
-		gg <- set_vertex_attr(graph=g, name=attr, value=num.data[,i])
-		V(gg)$label <- rep(NA, gorder(gg))
-		plot.folder <- file.path(attr.folder, attr)
-		plot.file <- file.path(plot.folder, paste0(attr,"_graph"))
-		custom.gplot(g=gg, col.att=attr, cat.att=FALSE, color.isolates=TRUE, file=plot.file)
-#		custom.gplot(g=gg, col.att=attr, cat.att=FALSE, color.isolates=TRUE)
+	if(!is.null(num.data))
+	{	for(i in 1:ncol(num.data))
+		{	attr <- colnames(num.data)[i]
+			tlog(4,"Plotting attribute \"",attr,"\"")
+			gg <- set_vertex_attr(graph=g, name=attr, value=num.data[,i])
+			V(gg)$label <- rep(NA, gorder(gg))
+			plot.folder <- file.path(attr.folder, attr)
+			plot.file <- file.path(plot.folder, paste0(attr,"_graph"))
+			custom.gplot(g=gg, col.att=attr, cat.att=FALSE, color.isolates=TRUE, file=plot.file)
+#			custom.gplot(g=gg, col.att=attr, cat.att=FALSE, color.isolates=TRUE)
+		}
 	}
+	else
+		tlog(4,"No numerical attribute detected")
 	
 	#############################
 	# attributes over
@@ -1504,6 +1413,251 @@ analyze.net.components <- function(g, out.folder)
 
 
 #############################################################
+# Compute the correlation between component size and attribute values.
+#
+# g: original graph to process.
+# out.folder: main output folder.
+# 
+# returns: same graph, updated with the results.
+#############################################################
+analyze.net.components.corr <- function(g, out.folder)
+{	# get the stat table
+	stat.file <- file.path(out.folder, g$name, "stats.csv")
+	stats <- retrieve.stats(stat.file)
+	
+	# retrieve the list of vertex attributes
+	att.list <- list.vertex.attributes(g)
+	
+	# init result table
+	val.tab <- matrix(nrow=0,ncol=2)
+	colnames(val.tab) <- c("undirected","directed")
+vals <- c()
+	
+	#############################
+	# gathering categorical attributes
+	tlog(4,"Gathering categorical attributes")
+	cat.data <- NA
+	
+	# gather regular categorical attributes 
+	attrs <- intersect(COL_CAT, vertex_attr_names(g))
+	for(attr in attrs)
+	{	tmp <- vertex_attr(g, attr)
+		if(all(is.na(cat.data)))
+			cat.data <- matrix(as.integer(factor(tmp)),ncol=1)
+		else
+			cat.data <- cbind(cat.data, as.integer(factor(tmp)))
+		colnames(cat.data)[ncol(cat.data)] <- attr
+	}
+	
+	# convert tag-type attributes
+	attrs.lst <- list()
+	#attrs.lst[[COL_PERS_TITLE_LAT1]] <- c(COL_PERS_TITLE_LAT1, COL_PERS_TITLE_LAT2)
+	#attrs.lst[[COL_PERS_TITLE_FRE1]] <- c(COL_PERS_TITLE_FRE1, COL_PERS_TITLE_FRE2)
+	attrs.lst[[COL_PERS_TITLE_NORM1]] <- c(COL_PERS_TITLE_NORM1, COL_PERS_TITLE_NORM2)
+	#attrs.lst[[COL_PERS_OCC_LAT1]] <- c(COL_PERS_OCC_LAT1, COL_PERS_OCC_LAT2)
+	#attrs.lst[[COL_PERS_OCC_FRE1]] <- c(COL_PERS_OCC_FRE1, COL_PERS_OCC_FRE2)
+	attrs.lst[[COL_PERS_OCC_NORM1]] <- c(COL_PERS_OCC_NORM1, COL_PERS_OCC_NORM2)
+	attrs.lst[[COL_EST_COMP_LAB1]] <- intersect(c(COL_EST_COMP_LAB1, COL_EST_COMP_LAB2, COL_EST_COMP_LAB3, COL_EST_COMP_LAB4, COL_EST_COMP_LAB5, COL_EST_COMP_LAB6),
+			vertex_attr_names(g))
+	attrs <- intersect(names(attrs.lst), vertex_attr_names(g))
+	for(attr in attrs)
+	{	tmp <- attrs.lst[[attr]]
+		m <- sapply(tmp, function(att) vertex_attr(g, att))
+		uvals <- sort(unique(c(m)))
+		for(uval in uvals)
+		{	cat.data <- cbind(cat.data, as.integer(factor(apply(m, 1, function(v) uval %in% v[!is.na(v)]))))
+			colnames(cat.data)[ncol(cat.data)] <- paste(attr,uval,sep="_")
+		}
+	}
+	
+	#############################
+	# gathering numerical attributes
+	tlog(4,"Gathering numerical attributes")
+	num.data <- NA
+	
+	# gather regular numerical attributes
+	attrs <- intersect(COL_NUM, vertex_attr_names(g))
+	for(attr in attrs)
+	{	tmp <- vertex_attr(g, attr)
+		if(all(is.na(num.data)))
+			num.data <- matrix(tmp,ncol=1)
+		else
+			num.data <- cbind(num.data, tmp)
+		colnames(num.data)[ncol(num.data)] <- attr
+	}
+	
+	#############################
+	# computing correlation between component size and attribute values
+	modes <- c("undirected", "directed")
+	for(mode in modes)
+	{	tlog(2,"Computing components: mode=",mode)
+		
+		# detect components
+		cmp <- components(graph=g, mode=if(mode=="undirected") "weak" else "strong")
+		mbrs <- cmp$membership
+		comp.sizes <- cmp$csize[mbrs]
+		
+		# deal with categorical attributes
+		tlog(4,"Dealing with categorical attributes")
+		for(i in 1:ncol(cat.data))
+		{	# compute the correlation
+			attr <- colnames(cat.data)[i]
+			tlog(6,"Computing attribute ",attr," (",i,"/",ncol(cat.data),")")
+			
+			# if there are some NAs
+			if(any(is.na(cat.data[,i])))
+			{	# explicitly represent NAs as a class
+				cd <- as.integer(cat.data[,i])
+				if(all(is.na(cd)))
+					cor <- NA
+				else
+				{	cd[is.na(cd)] <- max(cd,na.rm=TRUE) + 1
+					fit <- aov(comp.sizes~as.factor(cd))
+					cor <- eta_sq(fit)$etasq
+				}
+				tlog(8,"Association for attribute \"",attr,"\" (mode=",mode,") when representing NAs explicitly: ",cor)
+				name <- paste0(attr,"_expNA")
+				if(!(name %in% rownames(val.tab)))
+				{	val.tab <- rbind(val.tab, c(NA,NA))
+					rownames(val.tab)[nrow(val.tab)] <- name
+				}
+				val.tab[name,mode] <- cor
+				# just ignore NAs
+				cd <- as.integer(cat.data[,i])
+				if(all(is.na(cd)))
+					cor <- NA
+				else
+				{	cs <- comp.sizes[!is.na(cd)]
+					cd <- cd[!is.na(cd)]
+					fit <- aov(cs~as.factor(cd))
+					cor <- eta_sq(fit)$etasq
+				}
+				tlog(8,"Association for attribute \"",attr,"\" (mode=",mode,") when ignoring NAs: ",cor)
+				name <- paste0(attr,"_noNA")
+				if(!(name %in% rownames(val.tab)))
+				{	val.tab <- rbind(val.tab, c(NA,NA))
+					rownames(val.tab)[nrow(val.tab)] <- name
+				}
+				val.tab[name,mode] <- cor
+				# do NA vs. the rest
+				cd <- as.integer(cat.data[,i])
+				if(all(is.na(cd)))
+					cor <- NA
+				else
+				{	cd[!is.na(cd)] <- 1
+					cd[is.na(cd)] <- 2
+					fit <- aov(comp.sizes~as.factor(cd))
+					cor <- eta_sq(fit)$etasq
+				}
+				tlog(8,"Association for attribute \"",attr,"\" (mode=",mode,") when considering NAs vs the rest: ",cor)
+				name <- paste0(attr,"_NAvsRest")
+				if(!(name %in% rownames(val.tab)))
+				{	val.tab <- rbind(val.tab, c(NA,NA))
+					rownames(val.tab)[nrow(val.tab)] <- name
+				}
+				val.tab[name,mode] <- cor
+			}
+			
+			# no NA at all
+			else
+			{	cd <- as.integer(cat.data[,i])
+				fit <- aov(comp.sizes~as.factor(cd))
+				cor <- eta_sq(fit)$etasq
+				tlog(8,"Association for attribute \"",attr,"\" (mode=",mode,"): ",cor)
+				name <- paste0(attr)
+				if(!(name %in% rownames(val.tab)))
+				{	val.tab <- rbind(val.tab, c(NA,NA))
+					rownames(val.tab)[nrow(val.tab)] <- name
+				}
+				val.tab[name,mode] <- cor
+			}
+		}
+		
+		# deal with numerical attributes
+		tlog(4,"Dealing with numerical attributes")
+		if(!is.null(ncol(num.data)))
+		{	for(i in 1:ncol(num.data))
+			{	# compute the correlation
+				attr <- colnames(num.data)[i]
+				tlog(10,"Computing attribute ",attr," (",i,"/",ncol(num.data),")")
+				
+				# if there are some NAs
+				if(any(is.na(num.data[,i])))
+				{	# explicitly represent them as zeroes
+					cd <- num.data[,i]
+					if(all(is.na(cd)))
+						cor <- NA
+					else
+					{	cd[is.na(cd)] <- 0
+						cor <- cor(cd, comp.sizes)
+					}
+					tlog(12,"Correlation for attribute \"",attr,"\" (mode=",mode,") when replacing NAs by 0: ",cor)
+					name <- paste0(attr,"_expNA")
+					if(!(name %in% rownames(val.tab)))
+					{	val.tab <- rbind(val.tab, c(NA,NA))
+						rownames(val.tab)[nrow(val.tab)] <- name
+					}
+					val.tab[name,mode] <- cor
+					# ignore them
+					cd <- num.data[,i]
+					if(all(is.na(cd)))
+						cor <- NA
+					else
+					{	cs <- comp.sizes[!is.na(cd)]
+						cd <- cd[!is.na(cd)]
+						cor <- cor(cd, cs)
+					}
+					tlog(12,"Correlation for attribute \"",attr,"\" (mode=",mode,") when ignoring NAs: ",cor)
+					name <- paste0(attr,"_noNA")
+					if(!(name %in% rownames(val.tab)))
+					{	val.tab <- rbind(val.tab, c(NA,NA))
+						rownames(val.tab)[nrow(val.tab)] <- name
+					}
+					val.tab[name,mode] <- cor
+					# do NA vs. the rest
+					cd <- num.data[,i]
+					if(all(is.na(cd)))
+						cor <- NA
+					else
+					{	cd[!is.na(cd)] <- 1
+						cd[is.na(cd)] <- 2
+						fit <- aov(comp.sizes~as.factor(cd))
+						cor <- eta_sq(fit)$etasq
+					}
+					tlog(12,"Correlation for attribute \"",attr,"\" (mode=",mode,") when considering NAs vs the rest: ",cor)
+					name <- paste0(attr,"_NAvsRest")
+					if(!(name %in% rownames(val.tab)))
+					{	val.tab <- rbind(val.tab, c(NA,NA))
+						rownames(val.tab)[nrow(val.tab)] <- name
+					}
+					val.tab[name,mode] <- cor
+				}
+				# no NA at all
+				else
+				{	cor <- cor(num.data[,i], comp.sizes)
+					tlog(12,"Correlation for attribute \"",attr,"\" (mode=",mode,"): ",cor)
+					name <- paste0(attr)
+					if(!(name %in% rownames(val.tab)))
+					{	val.tab <- rbind(val.tab, c(NA,NA))
+						rownames(val.tab)[nrow(val.tab)] <- name
+					}
+					val.tab[name,mode] <- cor
+				}
+			}
+		}
+	}
+	
+	# record the results
+	res.file <- file.path(out.folder, g$name, "component-size_attribute_corr.csv")
+	write.csv(val.tab, file=res.file, row.names=TRUE)
+	
+	return(g)
+}
+
+
+
+
+#############################################################
 # Main method for the graph analysis. Generates a bunch of plots 
 # and CSV files to store the results. Also updates the graphml
 # file with the results whenever possible, for later external
@@ -1523,13 +1677,13 @@ analyze.network <- function(gname, out.folder)
 	{	# compute attribute stats 
 		# (must be done first, before other results are added as attributes)
 		g <- analyze.net.attributes(g, out.folder)
-			
+		
 		# compute diameters, eccentricity, radius
 		g <- analyze.net.eccentricity(g, out.folder)
-			
+		
 		# compute degree
 		g <- analyze.net.degree(g, out.folder)
-			
+		
 		# compute eigencentrality
 		g <- analyze.net.eigencentrality(g, out.folder)
 		
@@ -1559,6 +1713,9 @@ analyze.network <- function(gname, out.folder)
 		
 		# compute components
 		g <- analyze.net.components(g, out.folder)
+
+		# correlation between component size and attributes
+		g <- analyze.net.components.corr(g, out.folder)
 		
 		# compute assortativity
 		g <- analyze.net.assortativity(g, out.folder)
