@@ -103,8 +103,9 @@ FILE_GRAPH <- "graph.graphml"
 	COL_SOC_DESCR <- "descriptionLien"
 	COL_SOC_TYPE <- "typeLien"
 
-# locations
+# locations in general
 	COL_LOC_ID <- "idExterne"
+	COL_LOC_TYPE <- "typeExterne"
 	# coordinates
 	COL_LOC_X <- "xcoord"
 	COL_LOC_Y <- "ycoord"

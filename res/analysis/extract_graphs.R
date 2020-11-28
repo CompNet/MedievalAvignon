@@ -267,12 +267,12 @@ extract.social.networks <- function()
 		}
 		g1$name <- LK_TYPE_SOC_LST[i]
 		
-		# remove isolated nodes
-		idx <- igraph::degree(g1) < 1
-		tlog(6,"Removing ",length(which(idx))," isolated nodes")
-		g1 <- delete_vertices(graph=g1, v=idx)
-		#
-		tlog(6,"Remaining: n=",gorder(g1)," m=",gsize(g1))
+#		# remove isolated nodes
+#		idx <- igraph::degree(g1) < 1
+#		tlog(6,"Removing ",length(which(idx))," isolated nodes")
+#		g1 <- delete_vertices(graph=g1, v=idx)
+#		#
+#		tlog(6,"Remaining: n=",gorder(g1)," m=",gsize(g1))
 		
 		# init folder
 		graph.folder <- file.path(FOLDER_OUT_ANAL_SOC, g1$name)
@@ -479,44 +479,54 @@ extract.estate.networks <- function()
 	info.estate <- load.location.table(FILE_IN_ANAL_ESTATE_NODES,"estate")
 info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID, COL_EST_STREET_ID, COL_EST_VILLAGE_ID))]
 	info.estate <- cbind(paste("Bien:",info.estate[,COL_EST_ID],sep=""),info.estate); colnames(info.estate)[1] <- COL_LOC_ID
+	info.estate <- cbind(rep("Bien",nrow(info.estate)),info.estate); colnames(info.estate)[1] <- COL_LOC_TYPE
 	cols <- colnames(info.estate)
 	total.nbr <- nrow(info.estate)
 	# load area information
 	info.area <- load.location.table(FILE_IN_ANAL_AREA_NODES,"area", last=)
 	info.area <- cbind(paste("Quartier:",info.area[,COL_AREA_ID],sep=""),info.area); colnames(info.area)[1] <- COL_LOC_ID
+	info.area <- cbind(rep("Quartier",nrow(info.area)),info.area); colnames(info.area)[1] <- COL_LOC_TYPE
 	cols <- c(cols, colnames(info.area))
 	total.nbr <- total.nbr + nrow(info.area)
 	# load fix information
 #	info.fix <- load.location.table(FILE_IN_ANAL_FIX_NODES,"fix")
 #	info.fix <- cbind(paste("In",info.fix[,COL_FIX_ID],sep=""),info.fix); colnames(info.fix)[1] <- COL_LOC_ID
+#	info.fix <- cbind(rep("In",nrow(info.fix)),info.fix); colnames(info.fix)[1] <- COL_LOC_TYPE
 #	cols <- c(cols, colnames(info.fix))
 #	total.nbr <- total.nbr + nrow(info.fix)
 	info.village <- load.location.table(FILE_IN_ANAL_VILG_NODES,"village")
 	info.village <- cbind(paste("Bourg:",info.village[,COL_VILG_ID],sep=""),info.village); colnames(info.village)[1] <- COL_LOC_ID
+	info.village <- cbind(rep("Bourg",nrow(info.village)),info.village); colnames(info.village)[1] <- COL_LOC_TYPE
 	cols <- c(cols, colnames(info.village))
 	total.nbr <- total.nbr + nrow(info.village)
 	info.edifice <- load.location.table(FILE_IN_ANAL_EDIFICE_NODES,"edifice")
 	info.edifice <- cbind(paste("Edifice:",info.edifice[,COL_EDIF_ID],sep=""),info.edifice); colnames(info.edifice)[1] <- COL_LOC_ID
+	info.edifice <- cbind(rep("Edifice",nrow(info.edifice)),info.edifice); colnames(info.edifice)[1] <- COL_LOC_TYPE
 	cols <- c(cols, colnames(info.edifice))
 	total.nbr <- total.nbr + nrow(info.edifice)
 	info.cardinal <- load.location.table(FILE_IN_ANAL_CARD_NODES,"cardinal")
 	info.cardinal <- cbind(paste("Livree:",info.cardinal[,COL_CARD_ID],sep=""),info.cardinal); colnames(info.cardinal)[1] <- COL_LOC_ID
+	info.cardinal <- cbind(rep("Livree",nrow(info.cardinal)),info.cardinal); colnames(info.cardinal)[1] <- COL_LOC_TYPE
 	cols <- c(cols, colnames(info.cardinal))
 	total.nbr <- total.nbr + nrow(info.cardinal)
 	info.gate <- load.location.table(FILE_IN_ANAL_GATE_NODES,"gate")
 	info.gate <- cbind(paste("Porte:",info.gate[,COL_GATE_ID],sep=""),info.gate); colnames(info.gate)[1] <- COL_LOC_ID
+	info.gate <- cbind(rep("Porte",nrow(info.gate)),info.gate); colnames(info.gate)[1] <- COL_LOC_TYPE
 	cols <- c(cols, colnames(info.gate))
 	total.nbr <- total.nbr + nrow(info.gate)
 	info.wall <- load.location.table(FILE_IN_ANAL_WALL_NODES,"wall")
 	info.wall <- cbind(paste("Rempart:",info.wall[,COL_WALL_ID],sep=""),info.wall); colnames(info.wall)[1] <- COL_LOC_ID
+	info.wall <- cbind(rep("Rempart",nrow(info.wall)),info.wall); colnames(info.wall)[1] <- COL_LOC_TYPE
 	cols <- c(cols, colnames(info.wall))
 	total.nbr <- total.nbr + nrow(info.wall)
 	info.landmark <- load.location.table(FILE_IN_ANAL_LDMRK_NODES,"landmark")
 	info.landmark <- cbind(paste("Repere:",info.landmark[,COL_LDMRK_ID],sep=""),info.landmark); colnames(info.landmark)[1] <- COL_LOC_ID
+	info.landmark <- cbind(rep("Repere",nrow(info.landmark)),info.landmark); colnames(info.landmark)[1] <- COL_LOC_TYPE
 	cols <- c(cols, colnames(info.landmark))
 	total.nbr <- total.nbr + nrow(info.landmark)
 	info.street <- load.location.table(FILE_IN_ANAL_STREET_NODES,"street")
 	info.street <- cbind(paste("Rue:",info.street[,COL_STREET_ID],sep=""),info.street); colnames(info.street)[1] <- COL_LOC_ID
+	info.street <- cbind(rep("Rue",nrow(info.street)),info.street); colnames(info.street)[1] <- COL_LOC_TYPE
 	cols <- c(cols, colnames(info.street))
 	total.nbr <- total.nbr + nrow(info.street)
 	
@@ -828,7 +838,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 	)
 	short.street.flag <- vertex_attr(graph=g, name=COL_LOC_ID) %in% paste("Rue:",short.tab[,COL_STREET_ID],sep="")
 	
-	# extract one graph for each type of relation
+	# extract one graph for each predefined modality
 	tlog(2,"Extracting several variants of the graph")
 	link.types <- c(LV_ESTATE, LK_TYPE_FLATREL)		# c(LK_TYPE_ALL, LV_ESTATE, LK_TYPE_FLATREL, link.types)
 	for(i in 1:length(link.types))
@@ -852,7 +862,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 				paste(V(g1)$name[match(strts,V(g1)$name)], "_part", sep="")
 			# remove streets not considered as short
 			tlog(8,"Detected ",length(which(short.street.flag))," short streets")
-			idx <-  startsWith(V(g1)$name,"Rue:") & short.street.flag & !streets.all.flag
+			idx <-  startsWith(V(g1)$name,"Rue:") & !short.street.flag & !streets.all.flag
 			tlog(8,"Removing ",length(which(idx))," street nodes")
 			g1 <- delete_vertices(graph=g1, v=idx)
 			# remove nodes of higher type (areas, villages, walls)
@@ -866,7 +876,10 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 		}
 		# keep everything but the membership relations
 		else if(link.types[i]==LK_TYPE_FLATREL)
-		{	idx <- which(E(g1)$type==VAL_CONF_TYPE_INTERIEUR)
+		{	tlog(6,"Cleaning the graph (n=",gorder(g1),", m=",gsize(g1),")")
+			g1 <- g
+			# removing membership relations
+			idx <- which(E(g1)$type==VAL_CONF_TYPE_INTERIEUR)
 			tlog(8,"Removing ",length(idx)," \"inside\" confronts")
 			g1 <- delete_edges(graph=g1, edges=idx)
 		}
@@ -979,3 +992,6 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 # >> extraire autant de graphes (en intégrant les noeuds issus des autres terriers, constants)
 # >> faire du matching de noeud pr mettre les biens en correspondance 
 #	 similarité structurelle + similarité d'attributs ?
+
+# TODO problème à résoudre :
+# il semblerait que les rues longues ne soient pas retirées, par ex. Rue:2

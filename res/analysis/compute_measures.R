@@ -1421,11 +1421,7 @@ analyze.net.components <- function(g, out.folder)
 # returns: same graph, updated with the results.
 #############################################################
 analyze.net.components.corr <- function(g, out.folder)
-{	# get the stat table
-	stat.file <- file.path(out.folder, g$name, "stats.csv")
-	stats <- retrieve.stats(stat.file)
-	
-	# retrieve the list of vertex attributes
+{	# retrieve the list of vertex attributes
 	att.list <- list.vertex.attributes(g)
 	
 	# init result table
@@ -1463,6 +1459,10 @@ vals <- c()
 	for(attr in attrs)
 	{	tmp <- attrs.lst[[attr]]
 		m <- sapply(tmp, function(att) vertex_attr(g, att))
+		# create a NA vs. rest attribute
+		cat.data <- cbind(cat.data, apply(m, 1, function(v) if(all(is.na(v))) 1 else 2))
+		colnames(cat.data)[ncol(cat.data)] <- paste0(attr,"_NAvsRest")
+		# decompose into a set of boolean attributes
 		uvals <- sort(unique(c(m)))
 		for(uval in uvals)
 		{	cat.data <- cbind(cat.data, as.integer(factor(apply(m, 1, function(v) uval %in% v[!is.na(v)]))))

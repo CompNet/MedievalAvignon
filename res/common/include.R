@@ -12,9 +12,9 @@
 #############################################################################################
 # handling of warnings
 
-options(warn=1)			# as they happen
+#options(warn=1)			# as they happen
 #options(warn=2)				# as errors
-#options(error=recover)		# debug
+options(error=recover)		# debug
 
 
 
