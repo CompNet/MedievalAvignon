@@ -294,7 +294,7 @@ extract.social.networks <- function()
 				write.table(tab, file=tab.file, quote=FALSE, sep="\t", row.names=FALSE, col.names=TRUE)
 			}
 			# multiple links
-			idx.mult <- which(count_multiple(g1)>1)
+			idx.mult <- which(count_multiple(as.undirected(g1))>1)
 			tlog(6,"Multiple links: ",length(idx.mult))
 			if(length(idx.mult)>0)
 			{	tab <- matrix(nrow=0, ncol=4)

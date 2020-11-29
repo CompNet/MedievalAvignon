@@ -292,6 +292,7 @@ FILE_GRAPH <- "graph.graphml"
 	# social links
 	VAL_SOC_TYPE_FAMILY <- "LIFAM"
 	VAL_SOC_TYPE_WORK <- "LITRA"
+	VAL_SOC_TYPE_ECCL <- "LIECCL"
 	#confront links
 	VAL_CONF_TYPE_COTE <- "a cote de"
 	VAL_CONF_TYPE_ANGLE <- "a l angle de"
@@ -348,7 +349,8 @@ LK_TYPE <- "type"
 	# social
 	LK_TYPE_FAM <- "Familial"
 	LK_TYPE_PRO <- "Professional"
-	LK_TYPE_SOC_LST <- c(LK_TYPE_ALL, LK_TYPE_FAM, LK_TYPE_PRO)
+	LK_TYPE_ECCL <- "Ecclesiastical"
+	LK_TYPE_SOC_LST <- c(LK_TYPE_ALL, LK_TYPE_FAM, LK_TYPE_PRO, LK_TYPE_ECCL)
 	# confront
 	LK_TYPE_FLATREL <- "Flat_rel"
 # link description
@@ -362,6 +364,7 @@ MAP_TABLE2GRAPH <- c()
 	# social links
 	MAP_TABLE2GRAPH[VAL_SOC_TYPE_FAMILY] <- LK_TYPE_FAM
 	MAP_TABLE2GRAPH[VAL_SOC_TYPE_WORK] <- LK_TYPE_PRO
+	MAP_TABLE2GRAPH[VAL_SOC_TYPE_ECCL] <- LK_TYPE_ECCL
 	# confront links
 
 # misc

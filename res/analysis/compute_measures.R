@@ -1529,8 +1529,12 @@ vals <- c()
 				else
 				{	cs <- comp.sizes[!is.na(cd)]
 					cd <- cd[!is.na(cd)]
-					fit <- aov(cs~as.factor(cd))
-					cor <- eta_sq(fit)$etasq
+					if(length(unique(cd))==1)
+						cor <- NA
+					else
+					{	fit <- aov(cs~as.factor(cd))
+						cor <- eta_sq(fit)$etasq
+					}
 				}
 				tlog(8,"Association for attribute \"",attr,"\" (mode=",mode,") when ignoring NAs: ",cor)
 				name <- paste0(attr,"_noNA")
