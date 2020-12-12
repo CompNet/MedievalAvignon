@@ -12,7 +12,7 @@
 ###############################################################################
 # Colors used in the plots.
 ###############################################################################
-CAT_COLORS_8 <- c(								# basic color brewer palette, see http://colorbrewer2.org/#type=qualitative&scheme=Set1&n=9
+CAT_COLORS_8 <- c(							# basic color brewer palette, see http://colorbrewer2.org/#type=qualitative&scheme=Set1&n=9
 	rgb(228,26,28,maxColorValue=255),		# red
 	rgb(55,126,184,maxColorValue=255),		# blue
 	rgb(77,175,74,maxColorValue=255),		# green
@@ -24,7 +24,7 @@ CAT_COLORS_8 <- c(								# basic color brewer palette, see http://colorbrewer2.
 )
 
 # variant with more colors
-CAT_COLORS_12 <- c(								# manually extended color brewer palette
+CAT_COLORS_12 <- c(							# manually extended color brewer palette
 	rgb(228,26,28,maxColorValue=255),		# red
 	rgb(55,126,184,maxColorValue=255),		# light blue
 	rgb(113,219,110,maxColorValue=255),		# light green
@@ -59,7 +59,7 @@ CAT_COLORS_18 <- c(							# manual extension of the color brewer palette
 	rgb(0,255,0,maxColorValue=255)			# straight green
 )
 CAT_COLORS_22 <- c(	# kelly.colors(22) from package Polychrome
-	"#f2f3f4", 		# white 
+	"#B0B0B0", 		# lightgray 
 	"#222222", 		# black 
 	"#f3c300", 		# yellow 
 	"#875692", 		# purple 
@@ -67,7 +67,7 @@ CAT_COLORS_22 <- c(	# kelly.colors(22) from package Polychrome
 	"#a1caf1", 		# lightblue 
 	"#be0032", 		# red 
 	"#c2b280", 		# buff 
-	"#848482", 		# gray 
+	"#808080", 		# gray 
 	"#008856", 		# green 
 	"#e68fac", 		# purplishpink 
 	"#0067a5", 		# blue 

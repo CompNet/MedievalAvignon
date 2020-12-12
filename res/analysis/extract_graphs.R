@@ -253,6 +253,17 @@ extract.social.networks <- function()
 	V(g)$y <- layout[,2]
 	layoutC <- matrix(nrow=0,ncol=2)
 	
+	# display types of edge
+	tlog(4,"Types of edges:")
+	etypes <- sort(unique(edge_attr(graph=g, name=LK_TYPE)))
+	for(etype in etypes)
+	{	tlog(6, "Type \"",etype,"\"")
+		idx <- which(edge_attr(graph=g, name=LK_TYPE)==etype)
+		edescrs <- sort(unique(edge_attr(graph=g, name=LK_DESCR, index=idx)))
+		for(edescr in edescrs)
+			tlog(8, edescr)
+	}
+	
 	# extract several versions
 	tlog(2,"Extracting several variants of the graph")
 	for(i in 1:length(LK_TYPE_SOC_LST))
@@ -264,6 +275,7 @@ extract.social.networks <- function()
 		else
 		{	g1 <- delete_edges(graph=g, edges=which(E(g)$type!=LK_TYPE_SOC_LST[i]))
 			#g1 <- delete_vertices(graph=g1, v=which(degree(g, mode="all")==0))
+			#sort(unique(edge_attr(g1,LK_TYPE)))
 		}
 		g1$name <- LK_TYPE_SOC_LST[i]
 		
@@ -294,7 +306,8 @@ extract.social.networks <- function()
 				write.table(tab, file=tab.file, quote=FALSE, sep="\t", row.names=FALSE, col.names=TRUE)
 			}
 			# multiple links
-			idx.mult <- which(count_multiple(as.undirected(g1))>1)
+			#sort(unique(edge_attr(g1,LK_DESCR)))
+			idx.mult <- which(count_multiple(g1)>1)
 			tlog(6,"Multiple links: ",length(idx.mult))
 			if(length(idx.mult)>0)
 			{	tab <- matrix(nrow=0, ncol=4)
@@ -982,9 +995,6 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 
 # TODO nommage des noeuds immobiliers >> utiliser les préfixes rajoutés depuis
 
-# TODO comparer le réseau avec ou sans les longues rues
-# garder les rues/bourgs quand ils sont en confront (pas les autres relations)
-
 # TODO correlation entre distance euclidienne et distance géodésique pr valider 
 # le fait que le réseau de confront est une bonne approximation des relations de proximité spatiale
 
@@ -993,5 +1003,23 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 # >> faire du matching de noeud pr mettre les biens en correspondance 
 #	 similarité structurelle + similarité d'attributs ?
 
-# TODO problème à résoudre :
-# il semblerait que les rues longues ne soient pas retirées, par ex. Rue:2
+# TODO régler le pb de relations symétriques dans les données au moins pour les relations ecclésiastiques
+
+# TODO voir comment gérer les relations familiales
+# - doit représenter les relations symétriques (père vs. fils) ? 
+#   >> pluto non
+# - doit on représenter les relations indirectes ?
+#   >> celles de famille proche : frère/soeur, peut être grand-père/petits-fils
+# - doit on déduire toutes les relations manquantes ?
+#   - voire rajouter des noeuds pour représenter une relation indirecte dont un noeud intermédiaire manque ou est inconnu ?
+#   >> pareil, plutot pour la famille proche
+
+# TODO recalculer tout pour chaque communauté ?
+# >> suffit de rajouter ça à la fin de la dernière fonction, en utilisant les données stockées dans le graphe
+# >> tout ça à enregistrer dans le graphe de coms
+
+# TODO simplifications 
+# - décomposer le script de calcul des mesures en plusieurs fichiers
+# - pareil pour les constantes
+#   et constantiser les noms de mesures
+# - rendre générique le calcul de mesure (rien de spécifique au pb dedans, en particulier constantes)

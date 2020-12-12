@@ -26,6 +26,8 @@ library("SDMTools")			# colors
 library("CINNA")			# additional centrality measures
 library("future.apply")		# parallel processing
 library("sjstats")			# eta correlation ratio
+library("GoodmanKruskal")	# Goodman-Kruskal tau
+library("DescTools")		# Cramér's V
 
 
 

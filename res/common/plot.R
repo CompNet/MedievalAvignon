@@ -36,10 +36,11 @@ FORMAT <- c("png")#,"pdf")	# plot file format: pdf png
 # v.hl: vertices to highlight (these are represented as squares).
 # e.hl: edges to highlight (these are represented as thick lines).
 # color.isolates: force isolates to be colored (by default they are not)
+# col.att.cap: caption of the node colors, to be used for certain pie-charts. 
 # file: (optional) file name, to record the plot.
 # ...: parameters sent directly to the plot function.
 #############################################################
-custom.gplot <- function(g, paths, col.att, size.att, cat.att=FALSE, v.hl, e.hl, color.isolates=FALSE, file, ...)
+custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE, v.hl, e.hl, color.isolates=FALSE, file, ...)
 {	pie.values <- NA
 	lgd.col <- NA
 	
@@ -126,7 +127,9 @@ custom.gplot <- function(g, paths, col.att, size.att, cat.att=FALSE, v.hl, e.hl,
 		# get the attribute values
 		vvals <- get.vertex.attribute(graph=g, name=col.att[1])
 		if(!all(!connected))
-		{	# just one attribute
+		{	leg.cap <- LONG_NAME[col.att[1]]
+			
+			# just one attribute
 			if(length(col.att)==1)
 			{	# check if all the attribute values are not NA
 				if(!all(is.na(vvals)))
@@ -152,31 +155,52 @@ custom.gplot <- function(g, paths, col.att, size.att, cat.att=FALSE, v.hl, e.hl,
 					}
 				}
 			}
-			# several attributes, supposedly binary ones
+			# several attributes
 			else
 			{	cat.att <- TRUE
-				m <- sapply(col.att, function(att) vertex_attr(g, att))			# get attribute values as a matrix
-				are.nas <- apply(m,1,function(r) all(is.na(r)))					# detect individuals with only NAs
-				are.pie <- apply(m,1,function(r) length(r[!is.na(r)])>1)		# detect individuals with several non-NA values
-				uvals <- sort(unique(c(m)))										# get unique attribute values
-				pie.matrix <- NA
-				for(uval in uvals)												# build a column for each of them
-				{	vals <- as.integer(apply(m, 1, function(v) uval %in% v[!is.na(v)]))
-					if(all(is.na(pie.matrix)))
-						pie.matrix <- as.matrix(vals, ncol=1)
-					else
-						pie.matrix <- cbind(pie.matrix, vals)
-					colnames(pie.matrix)[ncol(pie.matrix)] <- uval
+				if(hasArg(col.att.cap))
+					leg.cap <- col.att.cap
+				# get attribute values as a matrix
+				m <- sapply(col.att, function(att) vertex_attr(g, att))
+				
+				# several boolean attributes, to combine (like multiple tags)
+				if(is.logical(vvals))
+				{	are.nas <- apply(m,1,function(r) all(is.na(r)))					# detect individuals with only NAs
+					are.pie <- apply(m,1,function(r) length(r[!is.na(r)])>1)		# detect individuals with several non-NA values
+					uvals <- sort(unique(c(m)))										# get unique attribute values
+					pie.matrix <- NA
+					for(uval in uvals)												# build a column for each of them
+					{	vals <- as.integer(apply(m, 1, function(v) uval %in% v[!is.na(v)]))
+						if(all(is.na(pie.matrix)))
+							pie.matrix <- as.matrix(vals, ncol=1)
+						else
+							pie.matrix <- cbind(pie.matrix, vals)
+						colnames(pie.matrix)[ncol(pie.matrix)] <- uval
+					}
+					lgd.txt <- colnames(pie.matrix)
+					colcols <- get.palette(length(lgd.txt))
+					lgd.col <- colcols[(1:length(lgd.txt)-1) %% length(colcols) + 1]
+					pie.values <- unlist(apply(pie.matrix, 1, function(v) list(v)), recursive=FALSE)
+					pie.values[!are.pie | !connected] <- NA
+					vshapes[are.pie & connected] <- rep("pie",length(which(are.pie & connected)))
+					vcols[are.pie & connected] <- NA
+					vcols[!are.nas & !are.pie & connected] <- apply(pie.matrix[!are.nas & !are.pie & connected,,drop=FALSE], 1, 
+							function(v) lgd.col[which(v>0)])
 				}
-				lgd.txt <- colnames(pie.matrix)
-				colcols <- get.palette(length(lgd.txt))
-				lgd.col <- colcols[(1:length(lgd.txt)-1) %% length(colcols) + 1]
-				pie.values <- unlist(apply(pie.matrix, 1, function(v) list(v)), recursive=FALSE)
-				pie.values[!are.pie | !connected] <- NA
-				vshapes[are.pie & connected] <- rep("pie",length(which(are.pie)))
-				vcols[are.pie & connected] <- NA
-				vcols[!are.nas & !are.pie & connected] <- apply(pie.matrix[!are.nas & !are.pie & connected,,drop=FALSE], 1, 
-						function(v) lgd.col[which(v>0)])
+				# counts of categorical attributes inside a community
+				else
+				{	are.pie <- apply(m,1,function(r) length(which(r>0))>1)				# detect individuals with several non-zero values
+					lgd.txt <- col.att
+					colcols <- get.palette(length(lgd.txt))
+					lgd.col <- colcols[(1:length(lgd.txt)-1) %% length(colcols) + 1]
+					lgd.col[which(is.na(lgd.txt) | lgd.txt=="NA")] <- "#F0F0F0"			# force NA to white
+					pie.values <- split(m,1:nrow(m))
+					pie.values[!are.pie | !connected] <- NA
+					vshapes[are.pie & connected] <- rep("pie",length(which(are.pie & connected)))
+					vcols[are.pie & connected] <- NA
+					vcols[!are.pie & connected] <- apply(m[!are.pie & connected,,drop=FALSE], 1, 
+							function(v) lgd.col[which(v>0)])
+				}
 			}
 		}
 	}
@@ -185,35 +209,42 @@ custom.gplot <- function(g, paths, col.att, size.att, cat.att=FALSE, v.hl, e.hl,
 	
 	# vertex size
 	if(hasArg(size.att))
-	{	# get the attribute values
-		vvals <- get.vertex.attribute(graph=g, name=size.att)
+	{	# one size fits all
+		if(length(size.att)==1 && is.numeric(size.att))
+			vsizes <- size.att
 		
-		# init limit sizes
-		vsizes <- rep(NA, gorder(g))
-		min.size <- if(min(vvals,na.rm=TRUE)==0) 0 else 2
-		max.size <- 20
-		cut.nbr <- 4
-		
-		# define cuts
-		must.round <- all(vvals%%1==0)	# check if values are integers
-		step <- (max(vvals,na.rm=TRUE)-min(vvals,na.rm=TRUE))/cut.nbr
-		if(must.round)
-			step <- ceiling(step)
-		cuts <- seq(from=step, to=cut.nbr*step, by=step)
-		
-		# NA, NaN, Inf are set to a zero size
-		nosize <- is.infinite(vvals) | is.nan(vvals) | is.na(vvals)
-		vsizes[nosize] <- 0
-		
-		# TODO how to deal with isolates?
-		
-		# regular values
-		tmp <- vvals[!nosize]
-		vsizes[!nosize] <- (tmp-min(tmp))/(max(tmp)-min(tmp))*(max.size-min.size)+min.size
-		cuts.scale <- (cuts-min(tmp))/(max(tmp)-min(tmp))*(max.size-min.size)+min.size
+		# attribute name
+		else
+		{	# get the attribute values
+			vvals <- get.vertex.attribute(graph=g, name=size.att)
+			
+			# init limit sizes
+			vsizes <- rep(NA, gorder(g))
+			min.size <- if(min(vvals,na.rm=TRUE)==0) 0 else 2
+			max.size <- 20
+			cut.nbr <- 4
+			
+			# define cuts
+			must.round <- all(vvals%%1==0)	# check if values are integers
+			step <- (max(vvals,na.rm=TRUE)-min(vvals,na.rm=TRUE))/cut.nbr
+			if(must.round)
+				step <- ceiling(step)
+			cuts <- seq(from=step, to=cut.nbr*step, by=step)
+			
+			# NA, NaN, Inf are set to a zero size
+			nosize <- is.infinite(vvals) | is.nan(vvals) | is.na(vvals)
+			vsizes[nosize] <- 0
+			
+			# TODO how to deal with isolates?
+			
+			# regular values
+			tmp <- vvals[!nosize]
+			vsizes[!nosize] <- (tmp-min(tmp))/(max(tmp)-min(tmp))*(max.size-min.size)+min.size
+			cuts.scale <- (cuts-min(tmp))/(max(tmp)-min(tmp))*(max.size-min.size)+min.size
+		}
 	}
 	else
-		vsizes <- 5
+		vsizes <- 3
 	
 	# main plot
 	for(fformat in FORMAT)
@@ -292,7 +323,7 @@ custom.gplot <- function(g, paths, col.att, size.att, cat.att=FALSE, v.hl, e.hl,
 			{	# categorical attributes
 				if(cat.att)
 				{	legend(
-						title=LONG_NAME[col.att[1]],			# title of the legend box
+						title=leg.cap,							# title of the legend box
 						x="bottomleft",							# position
 						legend=lgd.txt,							# text of the legend
 						fill=lgd.col,							# color of the nodes
@@ -314,7 +345,7 @@ custom.gplot <- function(g, paths, col.att, size.att, cat.att=FALSE, v.hl, e.hl,
 						cols=pal(25),
 						#limits=format(range(vvals[connected],na.rm=TRUE), digits=2, nsmall=2),	# pb: uses scientific notation when numbers too small
 						limits=sprintf("%.2f", range(vvals[connected & finite],na.rm=TRUE)),
-						title=LONG_NAME[col.att], 
+						title=leg.cap, 
 						cex=0.8
 					)
 				}
