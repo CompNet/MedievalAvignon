@@ -1,0 +1,348 @@
+#############################################################################################
+# Functions used during network analysis.
+# 
+# 09/2019 Vincent Labatut
+#############################################################################################
+
+
+
+
+#############################################################
+# measure name
+MEAS_COMPONENTS <- "components"
+MEAS_NBR_NODES <- "node_nbr"
+MEAS_NBR_LINKS <- "link_nbr"
+MEAS_LONG_NAMES[MEAS_COMPONENTS] <- "Components"
+MEAS_LONG_NAMES[MEAS_NBR_NODES] <- "Node number"
+MEAS_LONG_NAMES[MEAS_NBR_LINKS] <- "Link number"
+
+
+
+
+#############################################################
+# Identifies the weak and strong components of the graph.
+#
+# g: original graph to process.
+# out.folder: main output folder.
+# 
+# returns: same graph, updated with the results.
+#############################################################
+analyze.net.components <- function(g, out.folder)
+{	# get the stat table
+	stat.file <- file.path(out.folder, g$name, "stats.csv")
+	stats <- retrieve.stats(stat.file)
+	
+	# numbers of nodes and edges
+	stats[paste0(MEAS_NBR_NODES), ] <- list(Value=gorder(g), Mean=NA, Stdv=NA)
+	stats[paste0(MEAS_NBR_LINKS), ] <- list(Value=gsize(g), Mean=NA, Stdv=NA)
+	
+	# computing components
+	modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
+	for(mode in modes)
+	{	tlog(2,"Computing components: mode=",mode)
+		
+		# possibly create folder
+		fname <- paste0(MEAS_COMPONENTS,"_",mode)
+		components.folder <- file.path(out.folder,g$name,MEAS_COMPONENTS)
+		dir.create(path=components.folder, showWarnings=FALSE, recursive=TRUE)
+		
+		# detect components
+		cmp <- components(graph=g, mode=if(mode==MEAS_MODE_UNDIR) "weak" else "strong")
+		mbrs <- cmp$membership
+		comp.nbr <- cmp$no
+		tlog(4,"Number of components: ",comp.nbr)
+		
+		# component size distribution
+		sizes <- table(mbrs,useNA="ifany")
+		custom.barplot(sizes, text=names(sizes), xlab="Component", ylab="Size", file=file.path(components.folder,paste0(fname,"_size_bars")))
+		
+		# export CSV with component membership
+		df <- data.frame(vertex_attr(g, ND_NAME), get.names(g), mbrs)
+		colnames(df) <- c("Id","Name","Component") 
+		write.csv(df, file=file.path(components.folder,paste0(fname,"_membership.csv")), row.names=FALSE)
+		
+		# add results to the graph (as attributes) and stats table
+		g <- set_vertex_attr(graph=g, name=fname, value=mbrs)
+		g <- set_graph_attr(graph=g, name=paste0(fname,"_nbr"), value=comp.nbr)
+		stats[paste0(fname,"_nbr"), ] <- list(Value=comp.nbr, Mean=NA, Stdv=NA)
+		
+		# continue with only the largest components
+#		idx <- which(cmp$csize >= 0.1*gorder(g))	# keep only the components containing at least 10% of the nodes
+		idx <- which(cmp$csize >= 10)				# too strict: switched to 10 nodes
+		tlog(4,"Number of large components: ",length(idx))
+		mbrs[is.na(match(mbrs,idx))] <- NA
+		g <- set_vertex_attr(graph=g, name=fname, value=mbrs)
+		
+		# plot graph using color for components
+		V(g)$label <- rep(NA, gorder(g))
+		custom.gplot(g=g, col.att=fname, cat.att=TRUE, file=file.path(components.folder,paste0(fname,"_graph")))
+		#custom.gplot(g=g, col.att=fname, cat.att=TRUE)
+		g <- set_vertex_attr(graph=g, name=fname, value=cmp$membership)
+	
+		# plot components separately
+		mode.folder <- file.path(components.folder, mode)
+		dir.create(path=mode.folder, showWarnings=FALSE, recursive=TRUE)
+		for(i in idx)
+		{	# plot subgraph
+			g2 <- induced_subgraph(graph=g, vids=which(mbrs==i))
+			if(gorder(g2)>20)
+				V(g2)$label <- rep(NA, gorder(g2))
+			else
+				V(g2)$label <- get.names(g2)
+			custom.gplot(g=g2, file=file.path(mode.folder,paste0("component_",i)))
+			#custom.gplot(g=g2)
+			
+			# export subgraph
+			graph.file <- file.path(mode.folder,paste0("component_",i,".graphml"))
+			write.graphml.file(g=g, file=graph.file)
+		}
+	}
+	
+	# export CSV with results
+	write.csv(stats, file=stat.file, row.names=TRUE)
+	
+	# record graph and return it
+	graph.file <- file.path(out.folder, g$name, FILE_GRAPH)
+	write.graphml.file(g=g, file=graph.file)
+	return(g)
+}
+
+
+
+
+#############################################################
+# Compute the correlation between component size and attribute values.
+#
+# g: original graph to process.
+# out.folder: main output folder.
+# 
+# returns: same graph, updated with the results.
+#############################################################
+analyze.net.components.corr <- function(g, out.folder)
+{	# retrieve the list of vertex attributes
+	att.list <- list.vertex.attributes(g)
+	modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
+	
+	# init result table
+	val.tab <- matrix(nrow=0,ncol=2)
+	colnames(val.tab) <- modes
+vals <- c()
+	
+	#############################
+	# gathering categorical attributes
+	tlog(4,"Gathering categorical attributes")
+	cat.data <- NA
+	
+	# gather regular categorical attributes 
+	attrs <- intersect(COL_CAT, vertex_attr_names(g))
+	for(attr in attrs)
+	{	tmp <- vertex_attr(g, attr)
+		if(all(is.na(cat.data)))
+			cat.data <- matrix(as.integer(factor(tmp)),ncol=1)
+		else
+			cat.data <- cbind(cat.data, as.integer(factor(tmp)))
+		colnames(cat.data)[ncol(cat.data)] <- attr
+	}
+	
+	# convert tag-type attributes
+	attrs <- intersect(names(COL_TAG), vertex_attr_names(g))
+	for(attr in attrs)
+	{	tmp <- intersect(COL_TAG[[attr]], vertex_attr_names(g))
+		m <- sapply(tmp, function(att) vertex_attr(g, att))
+		# create a NA vs. rest attribute
+		cat.data <- cbind(cat.data, apply(m, 1, function(v) if(all(is.na(v))) 1 else 2))
+		colnames(cat.data)[ncol(cat.data)] <- paste0(attr,"_NAvsRest")
+		# decompose into a set of boolean attributes
+		uvals <- sort(unique(c(m)))
+		for(uval in uvals)
+		{	cat.data <- cbind(cat.data, as.integer(factor(apply(m, 1, function(v) uval %in% v[!is.na(v)]))))
+			colnames(cat.data)[ncol(cat.data)] <- paste(attr,uval,sep="_")
+		}
+	}
+	
+	#############################
+	# gathering numerical attributes
+	tlog(4,"Gathering numerical attributes")
+	num.data <- NA
+	
+	# gather regular numerical attributes
+	attrs <- intersect(COL_NUM, vertex_attr_names(g))
+	for(attr in attrs)
+	{	tmp <- vertex_attr(g, attr)
+		if(all(is.na(num.data)))
+			num.data <- matrix(tmp,ncol=1)
+		else
+			num.data <- cbind(num.data, tmp)
+		colnames(num.data)[ncol(num.data)] <- attr
+	}
+	
+	#############################
+	# computing correlation between component size and attribute values
+	for(mode in modes)
+	{	tlog(2,"Computing components: mode=",mode)
+		
+		# detect components
+		cmp <- components(graph=g, mode=if(mode==MEAS_MODE_UNDIR) "weak" else "strong")
+		mbrs <- cmp$membership
+		comp.sizes <- cmp$csize[mbrs]
+		
+		# deal with categorical attributes
+		tlog(4,"Dealing with categorical attributes")
+		for(i in 1:ncol(cat.data))
+		{	# compute the correlation
+			attr <- colnames(cat.data)[i]
+			tlog(6,"Computing attribute ",attr," (",i,"/",ncol(cat.data),")")
+			
+			# if there are some NAs
+			if(any(is.na(cat.data[,i])))
+			{	# explicitly represent NAs as a class
+				cd <- as.integer(cat.data[,i])
+				if(all(is.na(cd)))
+					cor <- NA
+				else
+				{	cd[is.na(cd)] <- max(cd,na.rm=TRUE) + 1
+					fit <- aov(comp.sizes~as.factor(cd))
+					cor <- eta_sq(fit)$etasq
+				}
+				tlog(8,"Association for attribute \"",attr,"\" (mode=",mode,") when representing NAs explicitly: ",cor)
+				name <- paste0(attr,"_expNA")
+				if(!(name %in% rownames(val.tab)))
+				{	val.tab <- rbind(val.tab, c(NA,NA))
+					rownames(val.tab)[nrow(val.tab)] <- name
+				}
+				val.tab[name,mode] <- cor
+				# just ignore NAs
+				cd <- as.integer(cat.data[,i])
+				if(all(is.na(cd)))
+					cor <- NA
+				else
+				{	cs <- comp.sizes[!is.na(cd)]
+					cd <- cd[!is.na(cd)]
+					if(length(unique(cd))==1)
+						cor <- NA
+					else
+					{	fit <- aov(cs~as.factor(cd))
+						cor <- eta_sq(fit)$etasq
+					}
+				}
+				tlog(8,"Association for attribute \"",attr,"\" (mode=",mode,") when ignoring NAs: ",cor)
+				name <- paste0(attr,"_noNA")
+				if(!(name %in% rownames(val.tab)))
+				{	val.tab <- rbind(val.tab, c(NA,NA))
+					rownames(val.tab)[nrow(val.tab)] <- name
+				}
+				val.tab[name,mode] <- cor
+				# do NA vs. the rest
+				cd <- as.integer(cat.data[,i])
+				if(all(is.na(cd)))
+					cor <- NA
+				else
+				{	cd[!is.na(cd)] <- 1
+					cd[is.na(cd)] <- 2
+					fit <- aov(comp.sizes~as.factor(cd))
+					cor <- eta_sq(fit)$etasq
+				}
+				tlog(8,"Association for attribute \"",attr,"\" (mode=",mode,") when considering NAs vs the rest: ",cor)
+				name <- paste0(attr,"_NAvsRest")
+				if(!(name %in% rownames(val.tab)))
+				{	val.tab <- rbind(val.tab, c(NA,NA))
+					rownames(val.tab)[nrow(val.tab)] <- name
+				}
+				val.tab[name,mode] <- cor
+			}
+			
+			# no NA at all
+			else
+			{	cd <- as.integer(cat.data[,i])
+				fit <- aov(comp.sizes~as.factor(cd))
+				cor <- eta_sq(fit)$etasq
+				tlog(8,"Association for attribute \"",attr,"\" (mode=",mode,"): ",cor)
+				name <- paste0(attr)
+				if(!(name %in% rownames(val.tab)))
+				{	val.tab <- rbind(val.tab, c(NA,NA))
+					rownames(val.tab)[nrow(val.tab)] <- name
+				}
+				val.tab[name,mode] <- cor
+			}
+		}
+		
+		# deal with numerical attributes
+		tlog(4,"Dealing with numerical attributes")
+		if(!is.null(ncol(num.data)))
+		{	for(i in 1:ncol(num.data))
+			{	# compute the correlation
+				attr <- colnames(num.data)[i]
+				tlog(10,"Computing attribute ",attr," (",i,"/",ncol(num.data),")")
+				
+				# if there are some NAs
+				if(any(is.na(num.data[,i])))
+				{	# explicitly represent them as zeroes
+					cd <- num.data[,i]
+					if(all(is.na(cd)))
+						cor <- NA
+					else
+					{	cd[is.na(cd)] <- 0
+						cor <- cor(cd, comp.sizes)
+					}
+					tlog(12,"Correlation for attribute \"",attr,"\" (mode=",mode,") when replacing NAs by 0: ",cor)
+					name <- paste0(attr,"_expNA")
+					if(!(name %in% rownames(val.tab)))
+					{	val.tab <- rbind(val.tab, c(NA,NA))
+						rownames(val.tab)[nrow(val.tab)] <- name
+					}
+					val.tab[name,mode] <- cor
+					# ignore them
+					cd <- num.data[,i]
+					if(all(is.na(cd)))
+						cor <- NA
+					else
+					{	cs <- comp.sizes[!is.na(cd)]
+						cd <- cd[!is.na(cd)]
+						cor <- cor(cd, cs)
+					}
+					tlog(12,"Correlation for attribute \"",attr,"\" (mode=",mode,") when ignoring NAs: ",cor)
+					name <- paste0(attr,"_noNA")
+					if(!(name %in% rownames(val.tab)))
+					{	val.tab <- rbind(val.tab, c(NA,NA))
+						rownames(val.tab)[nrow(val.tab)] <- name
+					}
+					val.tab[name,mode] <- cor
+					# do NA vs. the rest
+					cd <- num.data[,i]
+					if(all(is.na(cd)))
+						cor <- NA
+					else
+					{	cd[!is.na(cd)] <- 1
+						cd[is.na(cd)] <- 2
+						fit <- aov(comp.sizes~as.factor(cd))
+						cor <- eta_sq(fit)$etasq
+					}
+					tlog(12,"Correlation for attribute \"",attr,"\" (mode=",mode,") when considering NAs vs the rest: ",cor)
+					name <- paste0(attr,"_NAvsRest")
+					if(!(name %in% rownames(val.tab)))
+					{	val.tab <- rbind(val.tab, c(NA,NA))
+						rownames(val.tab)[nrow(val.tab)] <- name
+					}
+					val.tab[name,mode] <- cor
+				}
+				# no NA at all
+				else
+				{	cor <- cor(num.data[,i], comp.sizes)
+					tlog(12,"Correlation for attribute \"",attr,"\" (mode=",mode,"): ",cor)
+					name <- paste0(attr)
+					if(!(name %in% rownames(val.tab)))
+					{	val.tab <- rbind(val.tab, c(NA,NA))
+						rownames(val.tab)[nrow(val.tab)] <- name
+					}
+					val.tab[name,mode] <- cor
+				}
+			}
+		}
+	}
+	
+	# record the results
+	res.file <- file.path(out.folder, g$name, "component-size_attribute_corr.csv")
+	write.csv(val.tab, file=res.file, row.names=TRUE)
+	
+	return(g)
+}

@@ -1007,7 +1007,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 
 # TODO voir comment gérer les relations familiales
 # - doit représenter les relations symétriques (père vs. fils) ? 
-#   >> pluto non
+#   >> plutôt non
 # - doit on représenter les relations indirectes ?
 #   >> celles de famille proche : frère/soeur, peut être grand-père/petits-fils
 # - doit on déduire toutes les relations manquantes ?
@@ -1017,9 +1017,3 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 # TODO recalculer tout pour chaque communauté ?
 # >> suffit de rajouter ça à la fin de la dernière fonction, en utilisant les données stockées dans le graphe
 # >> tout ça à enregistrer dans le graphe de coms
-
-# TODO simplifications 
-# - décomposer le script de calcul des mesures en plusieurs fichiers
-# - pareil pour les constantes
-#   et constantiser les noms de mesures
-# - rendre générique le calcul de mesure (rien de spécifique au pb dedans, en particulier constantes)
