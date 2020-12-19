@@ -32,7 +32,7 @@ analyze.net.assortativity <- function(g, out.folder)
 	
 	# init result table
 	val.tab <- matrix(nrow=0,ncol=2)
-	colnames(val.tab) <- MEAS_LONG_NAMES[modes]
+	colnames(val.tab) <- modes
 	
 	#############################
 	# deal with categorical attributes

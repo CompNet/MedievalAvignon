@@ -61,7 +61,7 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 #			ecols[nature==LK_TYPE_XXX] <- "#C27604"			# orange
 #			ecols[nature==LK_TYPE_UNK] <- "#222222"			# dark grey
 		}
-		else
+		else if(graph_attr(g, GR_TYPE)==GR_TYPE_EST)
 		{	nats <- sort(unique(nature))
 			epal <- get.palette(length(nats))
 			for(i in 1:length(nats))
@@ -164,7 +164,7 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 				m <- sapply(col.att, function(att) vertex_attr(g, att))
 				
 				# several boolean attributes, to combine (like multiple tags)
-				if(is.logical(vvals))
+				if(!is.numeric(vvals))
 				{	are.nas <- apply(m,1,function(r) all(is.na(r)))					# detect individuals with only NAs
 					are.pie <- apply(m,1,function(r) length(r[!is.na(r)])>1)		# detect individuals with several non-NA values
 					uvals <- sort(unique(c(m)))										# get unique attribute values
@@ -294,29 +294,31 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 			frame=FALSE, 							# frame around the plot (useful when debugging)
 			...										# other parameters
 		)
-		if(graph_attr(g, GR_TYPE)==GR_TYPE_SOC)
-		{	legend(
-				title="Link type",								# title of the legend box
-				x="topright",									# position
-				legend=c(LK_TYPE_FAM, LK_TYPE_PRO),				# text of the legend
-				col=c("#9C1699","#1A8F39"),						# color of the lines
-				lty=1,											# type of lines
-				lwd=4,											# line thickness
-				bty="n",										# no box around the legend
-				cex=0.8
-			)
-		}
-		else
-		{	legend(
-				title="Link type",								# title of the legend box
-				x="topright",									# position
-				legend=nats,									# text of the legend
-				col=epal,										# color of the lines
-				lty=1,											# type of lines
-				lwd=4,											# line thickness
-				bty="n",										# no box around the legend
-				cex=0.8
-			)
+		if(length(nature)>0)
+		{	if(graph_attr(g, GR_TYPE)==GR_TYPE_SOC)
+			{	legend(
+					title="Link type",								# title of the legend box
+					x="topright",									# position
+					legend=c(LK_TYPE_FAM, LK_TYPE_PRO),				# text of the legend
+					col=c("#9C1699","#1A8F39"),						# color of the lines
+					lty=1,											# type of lines
+					lwd=4,											# line thickness
+					bty="n",										# no box around the legend
+					cex=0.8
+				)
+			}
+			else
+			{	legend(
+					title="Link type",								# title of the legend box
+					x="topright",									# position
+					legend=nats,									# text of the legend
+					col=epal,										# color of the lines
+					lty=1,											# type of lines
+					lwd=4,											# line thickness
+					bty="n",										# no box around the legend
+					cex=0.8
+				)
+			}
 		}
 		if(hasArg(col.att))
 		{	if(!all(!connected) && !all(is.na(vvals)))

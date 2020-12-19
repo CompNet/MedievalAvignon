@@ -451,7 +451,7 @@ extract.social.networks <- function()
 #
 # returns: corresponding table.
 ########################################################################
-load.location.table <- function(tab.file, type, last)
+load.location.table <- function(tab.file, type)
 {	# load table
 	tlog(2,"Loading ",type," information")
 	tab <- read.table(
@@ -478,6 +478,75 @@ load.location.table <- function(tab.file, type, last)
 
 
 ########################################################################
+# Converts amount of money using the smaller available currency unit.
+#
+# vals: vector of money amounts.
+#
+# returns: converted amounts.
+########################################################################
+convert.currency <- function(vals)
+{	# conversion map
+	# 1 lb = 20 sol.
+	# 1 flor. = 12 sol.
+	# 1 sol. = 12 den.
+	# 1 den. = 2 ob.
+	# 1 ob. = 2 pict.
+	conv.map <- c(
+		"lb"=20*12*2*2, 
+		"flor"=12*12*2*2, 
+		"sol"=12*2*2, 
+"gross"=2*2*20,
+		"den"=2*2, 
+		"ob"=2,
+		"pict"=1
+	)
+
+#	vals <- sort(unique(info.fees[,"montantN"]))
+	vals <- info.fees[,"montantN"]
+	total.vals <- rep(0, length(vals))
+	
+	tlog(0,"Converting the currency values")
+	for(currency in names(conv.map))
+	{	currency <- paste0(currency,".")
+		tlog(2,"Treating currency \"",currency,"\"")
+		vals <- trimws(vals)
+		
+		pos <- str_locate(vals,paste0(" ",currency))
+		num.vals <- rep(0,nrow(pos))
+		for(r in 1:nrow(pos))
+		{	if(!is.na(vals[r]))
+			{	old.val <- vals[r]
+				if(!is.na(pos[r,1]))
+				{	str <- substr(vals[r], 1, pos[r,1]-1)
+					value <- suppressWarnings(as.numeric(str))
+					if(is.na(value))
+					{	#tlog(6,"WARNING: Could not convert \"",str,"\" into numerical a ",currency," values")
+					}
+					else
+					{	num.vals[r] <- value
+						if(pos[r,2]==nchar(vals[r]))
+							vals[r] <- ""
+						else
+							vals[r] <- substr(vals[r], pos[r,2]+1, nchar(vals[r]))
+					}
+				}
+				if(old.val==vals[r])
+					tlog(4,"row ",r,": ",old.val," >>(",num.vals[r],")>> no change")
+				else
+					tlog(4,"row ",r,": ",old.val," >>(",num.vals[r],")>> ",vals[r])
+			}
+		}
+		
+		total.vals <- total.vals + num.vals
+	}
+print(vals)
+	
+	return(total.vals)
+}
+
+
+
+########################################################################
 # Loads the raw data, extracts the different types of estate networks,
 # records them as graphml files, and plots them.
 #
@@ -493,6 +562,11 @@ extract.estate.networks <- function()
 info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID, COL_EST_STREET_ID, COL_EST_VILLAGE_ID))]
 	info.estate <- cbind(paste("Bien:",info.estate[,COL_EST_ID],sep=""),info.estate); colnames(info.estate)[1] <- COL_LOC_ID
 	info.estate <- cbind(rep("Bien",nrow(info.estate)),info.estate); colnames(info.estate)[1] <- COL_LOC_TYPE
+#		# complete estate information
+#		info.fees <- load.location.table(FILE_IN_ANAL_ESTATE_FEE,"fee")
+#		mids <- match(info.estate[,COL_EST_FEE_ID], info.fees[,COL_FEE_ID])
+#		info.estate <- cbind(info.estate, info.fees[mids, COL_FEE_AMOUNT_NORM])
+#		colnames(info.estate)[ncol(info.estate)] <- COL_FEE_AMOUNT_NORM	# TODO ajouter aux listes d'attributs concernées
 	cols <- colnames(info.estate)
 	total.nbr <- nrow(info.estate)
 	# load area information
@@ -862,8 +936,8 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 			g1 <- g
 		# keep only the estate level
 		else if(link.types[i]==LV_ESTATE)
-		{	tlog(6,"Cleaning the graph (n=",gorder(g1),", m=",gsize(g1),")")
-			g1 <- g
+		{	g1 <- g
+			tlog(6,"Cleaning the graph (n=",gorder(g1),", m=",gsize(g1),")")
 			# change the name of certain streets whose only a part is targeted in the confronts
 			streets.all <- union(street.angles, street.starts)
 			strts <- sort(unique(edge.list[streets.all,2]))						# concerned parts of streets
@@ -889,8 +963,8 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 		}
 		# keep everything but the membership relations
 		else if(link.types[i]==LK_TYPE_FLATREL)
-		{	tlog(6,"Cleaning the graph (n=",gorder(g1),", m=",gsize(g1),")")
-			g1 <- g
+		{	g1 <- g
+			tlog(6,"Cleaning the graph (n=",gorder(g1),", m=",gsize(g1),")")
 			# removing membership relations
 			idx <- which(E(g1)$type==VAL_CONF_TYPE_INTERIEUR)
 			tlog(8,"Removing ",length(idx)," \"inside\" confronts")
@@ -1014,6 +1088,4 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 #   - voire rajouter des noeuds pour représenter une relation indirecte dont un noeud intermédiaire manque ou est inconnu ?
 #   >> pareil, plutot pour la famille proche
 
-# TODO recalculer tout pour chaque communauté ?
-# >> suffit de rajouter ça à la fin de la dernière fonction, en utilisant les données stockées dans le graphe
-# >> tout ça à enregistrer dans le graphe de coms
+# TODO simplifier les relations genrées
