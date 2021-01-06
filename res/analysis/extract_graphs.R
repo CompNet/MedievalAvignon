@@ -471,6 +471,12 @@ load.location.table <- function(tab.file, type)
 		tab[which(tab[,i]==""), i] <- NA
 	}
 	
+	# remove unbreakable spaces (does not work)
+#	for(i in 1:ncol(tab))
+#	{	idx <- which(grepl(" ", tab[, i], fixed=TRUE))
+#		tab[idx, i] <- gsub(" ", " ", tab[idx, i])
+#	}
+	
 	return(tab)
 }
 
@@ -495,7 +501,7 @@ convert.currency <- function(vals)
 		"lb"=20*12*2*2, 
 		"flor"=12*12*2*2, 
 		"sol"=12*2*2, 
-"gross"=2*2*20,
+#"gross"=2*2*20,
 		"den"=2*2, 
 		"ob"=2,
 		"pict"=1
@@ -509,7 +515,7 @@ convert.currency <- function(vals)
 	for(currency in names(conv.map))
 	{	currency <- paste0(currency,".")
 		tlog(2,"Treating currency \"",currency,"\"")
-		vals <- trimws(vals)
+		vals <- trimws(vals, whitespace="[\\h\\v]")
 		
 		pos <- str_locate(vals,paste0(" ",currency))
 		num.vals <- rep(0,nrow(pos))
@@ -539,7 +545,12 @@ convert.currency <- function(vals)
 		
 		total.vals <- total.vals + num.vals
 	}
-print(vals)
+	
+	# if text remains, then no (usable) monetary value
+	vals <- trimws(vals, whitespace="[\\h\\v]")
+	print(vals)
+	idx <- which(vals!="")
+	total.vals[idx] <- NA
 	
 	return(total.vals)
 }
@@ -565,7 +576,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 #		# complete estate information
 #		info.fees <- load.location.table(FILE_IN_ANAL_ESTATE_FEE,"fee")
 #		mids <- match(info.estate[,COL_EST_FEE_ID], info.fees[,COL_FEE_ID])
-#		info.estate <- cbind(info.estate, info.fees[mids, COL_FEE_AMOUNT_NORM])
+#		info.estate <- cbind(info.estate, info.fees[mids, COL_FEE_AMOUNT_NORM1])
 #		colnames(info.estate)[ncol(info.estate)] <- COL_FEE_AMOUNT_NORM	# TODO ajouter aux listes d'attributs concernées
 	cols <- colnames(info.estate)
 	total.nbr <- nrow(info.estate)
