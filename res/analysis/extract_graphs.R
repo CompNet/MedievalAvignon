@@ -507,8 +507,8 @@ convert.currency <- function(vals)
 		"pict"=1
 	)
 
-#	vals <- sort(unique(info.fees[,"montantN"]))
-	vals <- info.fees[,"montantN"]
+#	vals <- sort(unique(info.fees[,"montantN"]))	# debug
+#	vals <- info.fees[,"montantN"]					# debug
 	total.vals <- rep(0, length(vals))
 	
 	tlog(0,"Converting the currency values")
@@ -576,11 +576,12 @@ extract.estate.networks <- function()
 info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID, COL_EST_STREET_ID, COL_EST_VILLAGE_ID))]
 	info.estate <- cbind(paste("Bien:",info.estate[,COL_EST_ID],sep=""),info.estate); colnames(info.estate)[1] <- COL_LOC_ID
 	info.estate <- cbind(rep("Bien",nrow(info.estate)),info.estate); colnames(info.estate)[1] <- COL_LOC_TYPE
-#		# complete estate information
-#		info.fees <- load.location.table(FILE_IN_ANAL_ESTATE_FEE,"fee")
-#		mids <- match(info.estate[,COL_EST_FEE_ID], info.fees[,COL_FEE_ID])
-#		info.estate <- cbind(info.estate, info.fees[mids, COL_FEE_AMOUNT_NORM1])
-#		colnames(info.estate)[ncol(info.estate)] <- COL_FEE_AMOUNT_NORM	# TODO ajouter aux listes d'attributs concernées
+		# complete estate information
+		info.fees <- load.location.table(FILE_IN_ANAL_ESTATE_FEE,"fee")
+		mids <- match(info.estate[,COL_EST_FEE_ID], info.fees[,COL_FEE_ID])
+		taxes <- convert.currency(info.fees[mids,COL_FEE_AMOUNT_NORM1])
+		info.estate <- cbind(info.estate, taxes)
+		colnames(info.estate)[ncol(info.estate)] <- COL_FEE_AMOUNT_NORM1	# TODO ajouter aux listes d'attributs concernées
 	cols <- colnames(info.estate)
 	total.nbr <- nrow(info.estate)
 	# load area information
