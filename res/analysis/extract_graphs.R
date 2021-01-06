@@ -495,7 +495,7 @@ convert.currency <- function(vals)
 		"lb"=20*12*2*2, 
 		"flor"=12*12*2*2, 
 		"sol"=12*2*2, 
-"gross"=2*2*20,
+#"gross"=2*2*20,	# mentioned in the text, but actually not always true
 		"den"=2*2, 
 		"ob"=2,
 		"pict"=1
