@@ -486,11 +486,11 @@ load.location.table <- function(tab.file, type)
 ########################################################################
 # Converts amount of money using the smaller available currency unit.
 #
-# vals: vector of money amounts.
+# values: vector of money amounts.
 #
 # returns: converted amounts.
 ########################################################################
-convert.currency <- function(vals)
+convert.currency <- function(values)
 {	# conversion map
 	# 1 lb = 20 sol.
 	# 1 flor. = 12 sol.
@@ -509,16 +509,17 @@ convert.currency <- function(vals)
 
 #	vals <- sort(unique(info.fees[,"montantN"]))	# debug
 #	vals <- info.fees[,"montantN"]					# debug
+	vals <- values
 	total.vals <- rep(0, length(vals))
 	
 	tlog(0,"Converting the currency values")
 	for(currency in names(conv.map))
-	{	currency <- paste0(currency,".")
+	{	curr <- paste0(currency,".")
 		tlog(2,"Treating currency \"",currency,"\"")
 		#vals <- trimws(vals, whitespace="[\\h\\v]")
 		vals <- trimws(vals)
 		
-		pos <- str_locate(vals,paste0(" ",currency))
+		pos <- str_locate(vals,paste0(" ",curr))
 		num.vals <- rep(0,nrow(pos))
 		for(r in 1:nrow(pos))
 		{	if(!is.na(vals[r]))
@@ -538,13 +539,13 @@ convert.currency <- function(vals)
 					}
 				}
 				if(old.val==vals[r])
-					tlog(4,"row ",r,": ",old.val," >>(",num.vals[r],")>> no change")
+					tlog(4,"row ",r,": \"",old.val,"\" >>(",num.vals[r],")>> no change")
 				else
-					tlog(4,"row ",r,": ",old.val," >>(",num.vals[r],")>> ",vals[r])
+					tlog(4,"row ",r,": \"",old.val,"\" >>(",num.vals[r],")>> \"",vals[r],"\"")
 			}
 		}
 		
-		total.vals <- total.vals + num.vals
+		total.vals <- total.vals + num.vals*conv.map[currency]
 	}
 	#print(vals)
 	
@@ -552,7 +553,7 @@ convert.currency <- function(vals)
 	vals <- trimws(vals)
 	#vals <- trimws(vals, whitespace="[\\h\\v]")
 	print(vals)
-	idx <- which(vals!="")
+	idx <- which(vals!="" | is.na(values))
 	total.vals[idx] <- NA
 	
 	return(total.vals)
@@ -585,7 +586,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 	cols <- colnames(info.estate)
 	total.nbr <- nrow(info.estate)
 	# load area information
-	info.area <- load.location.table(FILE_IN_ANAL_AREA_NODES,"area", last=)
+	info.area <- load.location.table(FILE_IN_ANAL_AREA_NODES,"area")
 	info.area <- cbind(paste("Quartier:",info.area[,COL_AREA_ID],sep=""),info.area); colnames(info.area)[1] <- COL_LOC_ID
 	info.area <- cbind(rep("Quartier",nrow(info.area)),info.area); colnames(info.area)[1] <- COL_LOC_TYPE
 	cols <- c(cols, colnames(info.area))
@@ -1063,7 +1064,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 		# plot full graph using the specified (x,y)
 		plot.file <- file.path(graph.folder, "graph")
 		tlog(4,"Plotting graph in \"",plot.file,"\"")
-		custom.gplot(g=g1, file=plot.file)
+		custom.gplot(g=g1, file=plot.file, asp=1)
 		#custom.gplot(g=g1)
 		#
 		# and plot using a spatialization method 

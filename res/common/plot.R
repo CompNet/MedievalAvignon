@@ -13,7 +13,7 @@
 
 #############################################################
 # constants
-FORMAT <- c("png")#,"pdf")	# plot file format: pdf png
+FORMAT <- c("pdf")#,"png")	# plot file format: pdf png
 
 
 
@@ -29,6 +29,7 @@ FORMAT <- c("png")#,"pdf")	# plot file format: pdf png
 # col.att: (optional) name of a vertex attribute, used to determine node color.
 #          It is also possible to pass several comparable attributes, in which 
 #		   case the plot will use piecharts to represent nodes.
+# col.att.cap: legend of the caption for attribute-based colors.
 # cat.att: (optional) if there is a vertex attribute, indicates whether
 #		   it is categorical or not.
 # size.att: (optional) name of a vertex attribute used to determine
@@ -355,7 +356,7 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 		}
 		# legend for vertex sizes, if required: 
 		# https://stackoverflow.com/questions/38451431/add-legend-in-igraph-to-annotate-difference-vertices-size
-		if(hasArg(size.att))
+		if(hasArg(size.att) && (length(size.att)>1 || !is.numeric(size.att)))
 		{	legend.bubble(
 				x="topleft",					# position of the legend
 				title=LONG_NAME[size.att],		# title of the legend box
