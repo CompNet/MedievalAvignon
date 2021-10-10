@@ -6,7 +6,7 @@
 #
 # setwd("C:/users/Vincent/Eclipse/workspaces/Extraction/MedievalAvignon")
 # setwd("~/eclipse/workspaces/Extraction/MedievalAvignon")
-# source("res/analysis/main.R")
+# source("res/main.R")
 ########################################################################
 # load other scripts
 source("res/common/include.R")

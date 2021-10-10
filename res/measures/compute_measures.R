@@ -37,6 +37,7 @@ source("res/measures/degree.R")
 source("res/measures/distance.R")
 source("res/measures/eccentricity.R")
 source("res/measures/eigencentrality.R")
+source("res/measures/structsim.R")
 source("res/measures/transitivity.R")
 
 
@@ -123,6 +124,9 @@ analyze.network <- function(gname, out.folder)
 		
 		# compute assortativity
 		g <- analyze.net.assortativity(g, out.folder)
+		
+		# compute structural similarity
+		g <- analyze.net.structsim(g, out.folder)			
 	}
 	
 	return(g)

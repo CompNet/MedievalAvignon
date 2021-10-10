@@ -13,7 +13,7 @@
 
 #############################################################
 # constants
-FORMAT <- c("pdf")#,"png")	# plot file format: pdf png
+FORMAT <- c("pdf", "png")	# plot file format: pdf png
 
 
 

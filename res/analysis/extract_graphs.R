@@ -70,7 +70,7 @@ get.person.names <- function(g, vs=1:gorder(g))
 
 
 #############################################################################################
-# Function used by get.location.names to update only the names still NA.
+# Function used by get.location.names to update only the names that are still NA.
 #
 # g: considered graph.
 # vs: ids of the vertices (default: all of them).
@@ -501,7 +501,7 @@ convert.currency <- function(values)
 		"lb"=20*12*2*2, 
 		"flor"=12*12*2*2, 
 		"sol"=12*2*2, 
-#"gross"=2*2*20,	# mentioned in the text, but actually not always true
+#"gross"=2*2*20,	# mentioned in the text, but this conversion rule is not always true
 		"den"=2*2, 
 		"ob"=2,
 		"pict"=1
@@ -827,7 +827,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 	# ii <- which(E(g)$type==VAL_CONF_TYPE_INTERIEUR); cbind(get.edgelist(g)[ii,], E(g)$type[ii])
 	# ii <- match(sort(unique(data[,COL_CONF_LOC_NORM])), data[,COL_CONF_LOC_NORM]); data[ii,c(COL_CONF_LOC_LAT,COL_CONF_LOC_NORM)]
 	
-	# build graph
+	# build whole graph
 	tlog(2,"Building graph")
 	link.type.attr <- COL_CONF_LOC_NORM	# COL_CONF_LOC_LAT
 	alt.link.type.attr <- COL_CONF_LOC_LAT	# COL_CONF_LOC_NORM 
@@ -839,9 +839,9 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 	tlog(4,"Number of edges: ",gsize(g),"/",nrow(data))
 	tlog(4,"Edge attributes (",length(edge_attr_names(g)),"): ",paste(edge_attr_names(g),collapse=", "))
 	link.types <- sort(unique(data[,link.type.attr]))
-	tlog(4,"Link types (",length(link.types),"): ",paste(link.types,collapse=", "))
+	tlog(4,"Edge types (",length(link.types),"): ",paste(link.types,collapse=", "))
 	
-	# complete graph with individual information
+	# complete graph with nodal information
 	tlog(2,"Adding to graph")
 	idx <- match(V(g)$name, info.all[,COL_LOC_ID])
 	atts <- colnames(info.all)
@@ -850,7 +850,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 		tlog(4,"Processing attribute ",att," (",i,"/",length(atts),")")
 		g <- set_vertex_attr(graph=g, name=att, value=info.all[idx,att])
 	}
-	tlog(4,"Number of nodes: ",gorder(g),"/",nrow(info.all))
+	tlog(4,"Number of vertices: ",gorder(g),"/",nrow(info.all))
 	tlog(4,"Vertex attributes (",length(vertex_attr_names(g)),"): ",paste(vertex_attr_names(g),collapse=", "))
 	
 	# add composite name as label
@@ -1083,18 +1083,33 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 	return(link.types)
 }
 
-# TODO nommage des noeuds immobiliers >> utiliser les préfixes rajoutés depuis
+###### GÉNÉRAL ######
+# TODO moyenne harmonique pour la distance ?
+#
+# TODO similarité structurelle : généraliser en tenant compte des labels des liens?
 
+
+
+###### IMMOBILIER ######
+# TODO nommage des noeuds immobiliers >> utiliser les préfixes rajoutés depuis
+#
 # TODO correlation entre distance euclidienne et distance géodésique pr valider 
 # le fait que le réseau de confront est une bonne approximation des relations de proximité spatiale
-
+#
+# TODO utiliser MDS pour positionner sur la base de la distance géodésique 
+# les noeuds dont on ne connait pas la position spatiale exacte 
+#
 # TODO plusieurs terriers représentant les mêmes biens à des époques différentes
 # >> extraire autant de graphes (en intégrant les noeuds issus des autres terriers, constants)
 # >> faire du matching de noeud pr mettre les biens en correspondance 
 #	 similarité structurelle + similarité d'attributs ?
 
-# TODO régler le pb de relations symétriques dans les données au moins pour les relations ecclésiastiques
 
+
+###### SOCIAL ######
+#
+# TODO régler le pb de relations symétriques dans les données au moins pour les relations ecclésiastiques
+#
 # TODO voir comment gérer les relations familiales
 # - doit représenter les relations symétriques (père vs. fils) ? 
 #   >> plutôt non
@@ -1103,5 +1118,5 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 # - doit on déduire toutes les relations manquantes ?
 #   - voire rajouter des noeuds pour représenter une relation indirecte dont un noeud intermédiaire manque ou est inconnu ?
 #   >> pareil, plutot pour la famille proche
-
+#
 # TODO simplifier les relations genrées

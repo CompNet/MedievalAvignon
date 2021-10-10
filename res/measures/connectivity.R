@@ -89,7 +89,7 @@ analyze.net.connectivity <- function(g, out.folder)
 			nname <- trimws(gsub("?", "", nname, fixed=TRUE))
 			
 			# only for significant nodes
-			if(degree(g, v=n, mode="all"))
+			if(degree(g, v=n, mode="all")<3)
 				tlog(4,"NOT plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),"), as its degree is <3")
 			else
 			{	g <- set_vertex_attr(graph=g, name=fname, value=vals[n,])
@@ -98,7 +98,9 @@ analyze.net.connectivity <- function(g, out.folder)
 				else
 				{	tlog(4,"Plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),")")
 					g <- update.node.labels(g, vals[n,])
-					custom.gplot(g=g, col.att=fname, v.hl=n, file=file.path(mode.folder,paste0("n",id,"_",nname)))
+					shrt.nm <- substr(nname,1,30)		# to avoid long file names
+					id.cln <- gsub(":", "-", nname, fixed=TRUE)
+					custom.gplot(g=g, col.att=fname, v.hl=n, file=file.path(mode.folder,paste0("n",id.cln,"_",shrt.nm)))
 					#custom.gplot(g=g, col.att=fname, v.hl=n)
 				}
 				g <- delete_vertex_attr(graph=g, name=fname)

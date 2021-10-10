@@ -357,7 +357,7 @@ LK_TYPE <- "type"
 LK_DESCR <- "description"
 
 # levels
-LV_ESTATE <- "lv_estate"	# basically only keeps real estate
+LV_ESTATE <- "lv_estate"	# basically only keeps real estate entities
 
 # map to convert link attribute values
 MAP_TABLE2GRAPH <- c()

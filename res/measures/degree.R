@@ -35,7 +35,7 @@ analyze.net.degree <- function(g, out.folder)
 		
 		# possibly create folder
 		fname <- paste0(MEAS_DEGREE,"_",mode)
-		degree.folder <- file.path(out.folder, g$name, "degree")
+		degree.folder <- file.path(out.folder, g$name, MEAS_DEGREE)
 		dir.create(path=degree.folder, showWarnings=FALSE, recursive=TRUE)
 		
 		# degree distribution
