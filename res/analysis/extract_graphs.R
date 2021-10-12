@@ -1084,7 +1084,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 }
 
 ###### GÉNÉRAL ######
-# TODO moyenne harmonique pour la distance ?
+# TODO calculer plutot la moyenne harmonique pour la distance ?
 #
 # TODO similarité structurelle : généraliser en tenant compte des labels des liens?
 
@@ -1103,15 +1103,40 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 # >> extraire autant de graphes (en intégrant les noeuds issus des autres terriers, constants)
 # >> faire du matching de noeud pr mettre les biens en correspondance 
 #	 similarité structurelle + similarité d'attributs ?
-
+#
+# TODO la closeness semble distribuée de façon gaussienne : est-ce dû à une contrainte spatiale ?
+#      comparer avec la distrib du degré (et autres centralités)
+#
+# TODO besoin de tenir compte du degré pour interpréter sim struct (et trans)
+#      plus facile pour petits noeuds d'avoir des valeurs élevées pour ces mesures
+#
+# TODO la transitivité pourrait-elle permettre de gagner de l'information spatiale ?
+#      > si deux noeuds sont proches (connectés ?) et ont une transitivité élevée, sont ils proches spatialement ?
+#      > différence avec sim structurelle ?
+#
+# TODO générer les stats par attributs pr les composants, comme on le fait déjà pr les communautés
+#
+# TODO dans les graphes de communautés, supprimer les boucles (car sans l'épaisseur, elles ne servent à rien)
+#
+# TODO pq y a t il des montants négatifs ?
+#
+# TODO insérer des valeurs par défaut, table-dépendnat, pour les colonnes qui n'existent pas pr un type de bien, lors de la fusion
+#
+# TODO pb avec les quartiers: pas traités comme les seigneries. ids vs entier ?
+# 
+# TODO manque la pureté pour les var catégorielles
+#
+# XXXX TODO similarité structurelle : manque les id dans la table
+# 
 
 
 ###### SOCIAL ######
 #
-# TODO régler le pb de relations symétriques dans les données au moins pour les relations ecclésiastiques
+# TODO régler le pb de relations symétriques dans les données 
+#      (au moins pour les relations ecclésiastiques)
 #
 # TODO voir comment gérer les relations familiales
-# - doit représenter les relations symétriques (père vs. fils) ? 
+# - doit-on représenter les relations symétriques (père vs. fils) ? 
 #   >> plutôt non
 # - doit on représenter les relations indirectes ?
 #   >> celles de famille proche : frère/soeur, peut être grand-père/petits-fils

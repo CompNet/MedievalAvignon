@@ -42,9 +42,10 @@ analyze.net.structsim <- function(g, out.folder)
 		# record table of node pairs ranked by decreasing similarity
 		unique.vals <- vals[upper.tri(vals)]
 		idx <- which(upper.tri(vals),arr.ind=T)
+		nids <- cbind(V(g)$idExterne[idx[,1]], V(g)$idExterne[idx[,2]])
 		nnames <- cbind(get.names(g)[idx[,1]], get.names(g)[idx[,2]])
-		df <- data.frame(nnames, unique.vals, check.rows=FALSE, check.names=FALSE, stringsAsFactors=FALSE)
-		colnames(df) <- c("Node1","Node2", "Similarity")
+		df <- data.frame(nids, nnames, unique.vals, check.rows=FALSE, check.names=FALSE, stringsAsFactors=FALSE)
+		colnames(df) <- c("Id1", "Id2", "Name1", "Name2", "Similarity")
 		df <- df[order(unique.vals,decreasing=TRUE),]
 		write.csv(df, file=file.path(sim.folder,paste0(fname,"_sim_ordered_values.csv")), row.names=FALSE)
 		
