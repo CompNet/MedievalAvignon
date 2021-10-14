@@ -36,6 +36,10 @@ analyze.net.components <- function(g, out.folder)
 	stats[paste0(MEAS_NBR_NODES), ] <- list(Value=gorder(g), Mean=NA, Stdv=NA)
 	stats[paste0(MEAS_NBR_LINKS), ] <- list(Value=gsize(g), Mean=NA, Stdv=NA)
 	
+	# retrieve the list of vertex attributes
+	nodal.atts <- list.vertex.attributes(g)
+	att.list <- nodal.atts[!startsWith(nodal.atts,"_")]
+	
 	# computing components
 	modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
 	for(mode in modes)
@@ -43,8 +47,8 @@ analyze.net.components <- function(g, out.folder)
 		
 		# possibly create folder
 		fname <- paste0(MEAS_COMPONENTS,"_",mode)
-		components.folder <- file.path(out.folder,g$name,MEAS_COMPONENTS)
-		dir.create(path=components.folder, showWarnings=FALSE, recursive=TRUE)
+		comp.folder <- file.path(out.folder, g$name, MEAS_COMPONENTS, mode)
+		dir.create(path=comp.folder, showWarnings=FALSE, recursive=TRUE)
 		
 		# detect components
 		cmp <- components(graph=g, mode=if(mode==MEAS_MODE_UNDIR) "weak" else "strong")
@@ -54,12 +58,12 @@ analyze.net.components <- function(g, out.folder)
 		
 		# component size distribution
 		sizes <- table(mbrs,useNA="ifany")
-		custom.barplot(sizes, text=names(sizes), xlab="Component", ylab="Size", file=file.path(components.folder,paste0(fname,"_size_bars")))
+		custom.barplot(sizes, text=names(sizes), xlab="Component", ylab="Size", file=file.path(comp.folder,paste0(fname,"_size_bars")))
 		
 		# export CSV with component membership
 		df <- data.frame(vertex_attr(g, ND_NAME), get.names(g), mbrs)
 		colnames(df) <- c("Id","Name","Component") 
-		write.csv(df, file=file.path(components.folder,paste0(fname,"_membership.csv")), row.names=FALSE)
+		write.csv(df, file=file.path(comp.folder,paste0(fname,"_membership.csv")), row.names=FALSE)
 		
 		# add results to the graph (as attributes) and stats table
 		g <- set_vertex_attr(graph=g, name=fname, value=mbrs)
@@ -70,32 +74,36 @@ analyze.net.components <- function(g, out.folder)
 #		idx <- which(cmp$csize >= 0.1*gorder(g))	# keep only the components containing at least 10% of the nodes
 		idx <- which(cmp$csize >= 10)				# too strict: switched to 10 nodes
 		tlog(4,"Number of large components: ",length(idx))
-		mbrs[is.na(match(mbrs,idx))] <- NA
-		g <- set_vertex_attr(graph=g, name=fname, value=mbrs)
+		mbrs.big <- mbrs
+		mbrs.big[is.na(match(mbrs.big,idx))] <- NA
+		g <- set_vertex_attr(graph=g, name=fname, value=mbrs.big)
 		
 		# plot graph using color for components
 		V(g)$label <- rep(NA, gorder(g))
-		custom.gplot(g=g, col.att=fname, cat.att=TRUE, file=file.path(components.folder,paste0(fname,"_graph")))
+		custom.gplot(g=g, col.att=fname, cat.att=TRUE, file=file.path(comp.folder,paste0(fname,"_graph")))
 		#custom.gplot(g=g, col.att=fname, cat.att=TRUE)
 		g <- set_vertex_attr(graph=g, name=fname, value=cmp$membership)
 	
 		# plot components separately
-		mode.folder <- file.path(components.folder, mode)
-		dir.create(path=mode.folder, showWarnings=FALSE, recursive=TRUE)
+		sep.folder <- file.path(comp.folder, "_comps")
+		dir.create(path=sep.folder, showWarnings=FALSE, recursive=TRUE)
 		for(i in idx)
 		{	# plot subgraph
-			g2 <- induced_subgraph(graph=g, vids=which(mbrs==i))
+			g2 <- induced_subgraph(graph=g, vids=which(mbrs.big==i))
 			if(gorder(g2)>20)
 				V(g2)$label <- rep(NA, gorder(g2))
 			else
 				V(g2)$label <- get.names(g2)
-			custom.gplot(g=g2, file=file.path(mode.folder,paste0("component_",i)))
+			custom.gplot(g=g2, file=file.path(sep.folder,paste0("component_",i)))
 			#custom.gplot(g=g2)
 			
 			# export subgraph
-			graph.file <- file.path(mode.folder,paste0("component_",i,".graphml"))
+			graph.file <- file.path(sep.folder,paste0("component_",i,".graphml"))
 			write.graphml.file(g=g, file=graph.file)
 		}
+		
+		# assess component purity for all attributes
+		g <- analyze.net.comstruct.attributes(g, comp.folder, mbrs)
 	}
 	
 	# export CSV with results

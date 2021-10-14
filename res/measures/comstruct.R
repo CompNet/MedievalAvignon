@@ -28,53 +28,130 @@ analyze.net.comstruct <- function(g, out.folder)
 	stat.file <- file.path(out.folder, g$name, "stats.csv")
 	stats <- retrieve.stats(stat.file)
 	
+	# community detection algorithms
+	algos <- list()
+	algos[["edgebetweenness"]] <- list(
+		fun=function(g, mode) 
+			cluster_edge_betweenness(graph=g,
+					weights=NULL,
+					directed=mode==MEAS_MODE_DIR,
+					edge.betweenness=FALSE,
+					merges=FALSE,
+					bridges=FALSE,
+					modularity=TRUE,
+					membership=TRUE),
+		modes=c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
+	)
+	algos[["fastgreedy"]] <- list(
+		fun=function(g, mode) 
+			cluster_fast_greedy(graph=as.undirected(g),
+					merges=FALSE,
+					modularity=TRUE,
+					membership=TRUE,
+					weights=NULL),
+		modes=c(MEAS_MODE_UNDIR)
+	)
+	algos[["infomap"]] <- list(
+			fun=function(g, mode) 
+				cluster_infomap(graph=if(mode==MEAS_MODE_UNDIR) as.undirected(g) else g,
+					e.weights=NULL,
+					v.weights=NULL,
+					nb.trials=10,
+					modularity=TRUE),
+			modes=c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
+	)
+	algos[["labelprop"]] <- list(
+			fun=function(g, mode) 
+				cluster_label_prop(graph=as.undirected(g),
+					weights=NA, 
+					initial=NULL, 
+					fixed=NULL),
+			modes=c(MEAS_MODE_UNDIR)
+	)
+	algos[["leadingeigen"]] <- list(
+			fun=function(g, mode) 
+				cluster_leading_eigen(graph=as.undirected(g),
+						weights=NULL,
+						start=NULL),
+			modes=c(MEAS_MODE_UNDIR)
+	)
+	algos[["louvain"]] <- list(
+			fun=function(g, mode) 
+				cluster_louvain(graph=as.undirected(g),
+						weights=NULL),
+			modes=c(MEAS_MODE_UNDIR)
+	)
+#	algos[["spinglass"]] <- list(	# does not work with disconnected graphs
+#			fun=function(g, mode) 
+#				cluster_spinglass(graph=if(mode==MEAS_MODE_UNDIR) as.undirected(g) else g,
+#						weights=NA),
+#			modes=c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
+#	)
+	algos[["walktrap"]] <- list(
+			fun=function(g, mode) 
+				cluster_walktrap(graph=if(mode==MEAS_MODE_UNDIR) as.undirected(g) else g,
+						weights=NULL,
+						steps=4,
+						merges=TRUE,
+						modularity=TRUE,
+						membership=TRUE),
+			modes=c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
+	)
+	
 	modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
 	for(i in 1:length(modes))
 	{	mode <- modes[i]
 		tlog(2,"Detecting community structure: mode=",mode)
 		
-		# possibly create folder
-		fname <- paste0(MEAS_COMMUNITIES,"_",mode)
-		communities.folder <- file.path(out.folder,g$name,MEAS_COMMUNITIES,mode)
-		dir.create(path=communities.folder, showWarnings=FALSE, recursive=TRUE)
-		
-		# detect communities
-		#coms <- cluster_optimal(graph=simplify(g))		# much slower, obviously
-		#coms <- cluster_spinglass(graph=simplify(g))
-		#coms <- cluster_infomap(graph=simplify(g))
-		coms <- cluster_edge_betweenness(graph=simplify(g), directed=mode)
-		mod <- modularity(coms)
-		mbrs <- as.integer(membership(coms))
-		com.nbr <- length(unique(mbrs))
-		tlog(4,"Number of communities: ",com.nbr)
-		tlog(4,"Modularity: ",mod)
-		
-		# community size distribution
-		sizes <- table(mbrs,useNA="ifany")
-		custom.barplot(sizes, text=names(sizes), xlab="Community", ylab="Size", file=file.path(communities.folder,paste0(fname,"_size_bars")))
-		
-		# export CSV with community membership
-		df <- data.frame(vertex_attr(g, ND_NAME), get.names(g), mbrs)
-		colnames(df) <- c("Id","Name","Community") 
-		write.csv(df, file=file.path(communities.folder,paste0(fname,"_membership.csv")), row.names=FALSE)
-		
-		# add results to the graph (as attributes) and stats table
-		g <- set_vertex_attr(graph=g, name=fname, value=mbrs)
-		g <- set_graph_attr(graph=g, name=paste0(fname,"_nbr"), value=com.nbr)
-		g <- set_graph_attr(graph=g, name=paste0(fname,"_mod"), value=mod)
-		stats[paste0(fname,"_nbr"), ] <- list(Value=com.nbr, Mean=NA, Stdv=NA)
-		stats[paste0(fname,"_mod"), ] <- list(Value=mod, Mean=NA, Stdv=NA)
-		
-		# plot graph using color for communities
-		V(g)$label <- rep(NA, gorder(g))
-		custom.gplot(g=g, col.att=fname,cat.att=TRUE, file=file.path(communities.folder,paste0(fname,"_graph")))
-		#custom.gplot(g=g, col.att=fname,cat.att=TRUE)
-		
-		# assess community purity for all attributes
-		g <- analyze.net.comstruct.attributes(g, mode, out.folder)
+		# apply each appropriate algo
+		for(a in 1:length(algos))
+		{	algo.name <- names(algos)[a]
+			if(mode %in% algos[[a]]$modes)
+			{	# possibly create folder
+				fname <- paste0("coms_",mode,"_",algo.name)
+				coms.folder <- file.path(out.folder, g$name, MEAS_COMMUNITIES, mode, algo.name)
+				dir.create(path=coms.folder, showWarnings=FALSE, recursive=TRUE)
+				
+				# detect communities
+				##coms <- cluster_optimal(graph=simplify(g))		# much slower, obviously
+				##coms <- cluster_spinglass(graph=simplify(g))
+				##coms <- cluster_infomap(graph=simplify(g))
+				#coms <- cluster_edge_betweenness(graph=simplify(g), directed=mode)
+				coms <- algos[[a]]$fun(simplify(g), mode)
+				mod <- modularity(coms)
+				mbrs <- as.integer(membership(coms))
+				com.nbr <- length(unique(mbrs))
+				tlog(4,"Number of communities: ",com.nbr)
+				tlog(4,"Modularity: ",mod)
+				
+				# community size distribution
+				sizes <- table(mbrs,useNA="ifany")
+				custom.barplot(sizes, text=names(sizes), xlab="Community", ylab="Size", file=file.path(coms.folder,paste0(fname,"_size_bars")))
+				
+				# export CSV with community membership
+				df <- data.frame(vertex_attr(g, ND_NAME), get.names(g), mbrs)
+				colnames(df) <- c("Id","Name","Community") 
+				write.csv(df, file=file.path(coms.folder,paste0(fname,"_membership.csv")), row.names=FALSE)
+				
+				# add results to the graph (as attributes) and stats table
+				g <- set_vertex_attr(graph=g, name=fname, value=mbrs)
+				g <- set_graph_attr(graph=g, name=paste0(fname,"_nbr"), value=com.nbr)
+				g <- set_graph_attr(graph=g, name=paste0(fname,"_mod"), value=mod)
+				stats[paste0(fname,"_nbr"), ] <- list(Value=com.nbr, Mean=NA, Stdv=NA)
+				stats[paste0(fname,"_mod"), ] <- list(Value=mod, Mean=NA, Stdv=NA)
+				
+				# plot graph using color for communities
+				V(g)$label <- rep(NA, gorder(g))
+				custom.gplot(g=g, col.att=fname,cat.att=TRUE, file=file.path(coms.folder,paste0(fname,"_graph")))
+				#custom.gplot(g=g, col.att=fname,cat.att=TRUE)
+				
+				# assess community purity for all attributes
+				g <- analyze.net.comstruct.attributes(g, coms.folder, mbrs)
+			}
+		}
 	}
 	
-	# export CSV with average degree
+	# export CSV stat file
 	write.csv(stats, file=stat.file, row.names=TRUE)
 	
 	# record graph and return it
@@ -87,33 +164,29 @@ analyze.net.comstruct <- function(g, out.folder)
 
 
 #############################################################
-# Compares the previously detected community structure and
-# the attributes of the nodes.
+# Compares the previously detected groupes (communites, components)
+# and the attributes of the nodes.
 #
 # g: original graph to process.
-# mode: directed or undirected.
-# out.folder: main output folder.
+# coms.folder: folder to write the group-related files.
+# membership: group membership vector.
 # 
 # returns: same graph, updated with the results.
 #############################################################
-analyze.net.comstruct.attributes <- function(g, mode, out.folder)
-{	tlog(2,"Comparing nodal attributes and communities")
-	# possibly create folders
-	coms.folder <- file.path(out.folder,g$name,"communities",mode)
-	dir.create(path=coms.folder, showWarnings=FALSE, recursive=TRUE)
+analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
+{	tlog(2,"Comparing nodal attributes and groups")
 	
 	# retrieve the list of vertex attributes
 	nodal.atts <- list.vertex.attributes(g)
 	att.list <- nodal.atts[!startsWith(nodal.atts,"_")]
 	
-	# retrieve community
-	membership <- vertex_attr(graph=g, name=paste0(MEAS_COMMUNITIES,"_",mode))
+	# retrieve group membership
 	coms <- sort(unique(membership))
 	
-	# build community graph
+	# build group graph
 	cg <- contract.vertices(g, mapping=membership)	# TODO we could keep edges of different types separted (familial, professional, etc.)
 	E(cg)$weight <- 1
-	cg <- simplify(cg, remove.loops=FALSE)
+	cg <- simplify(cg, remove.loops=TRUE)	# keeping the loops makes the plot difficult to read
 	for(eattr in edge_attr_names(graph=cg))
 		cg <- delete_edge_attr(graph=cg, name=eattr)
 	# setup its attributes
@@ -124,12 +197,12 @@ analyze.net.comstruct.attributes <- function(g, mode, out.folder)
 	V(cg)$y <- sapply(coms, function(i) mean(V(g)$y[membership==i]))
 	cg2 <- cg
 	
-	# only one community
+	# only one group
 	if(length(unique(coms))==1)
-	{	tlog(4,"Single community: nothing to do")
+	{	tlog(4,"Single group: nothing to do")
 	}
 	
-	# several communities
+	# several groups
 	else
 	{	#############################
 		# deal with categorical attributes
@@ -144,8 +217,8 @@ analyze.net.comstruct.attributes <- function(g, mode, out.folder)
 			# get values
 			tmp <- vertex_attr(g, attr)
 			
-			# export community-wise distributions as csv
-			tlog(4,"Exporting community-wise distribution for attribute \"",attr,"\"")
+			# export group-wise distributions as csv
+			tlog(4,"Exporting group-wise distribution for attribute \"",attr,"\"")
 			tmp <- factor(tmp)
 			tt <- t(sapply(coms, function(i) table(tmp[membership==i], useNA="always"), simplify="array"))
 			colnames(tt)[which(is.na(colnames(tt)))] <- "NA"
@@ -156,25 +229,25 @@ analyze.net.comstruct.attributes <- function(g, mode, out.folder)
 			}
 			tab <- as.data.frame(tt)
 			tab <- cbind(coms, tab)
-			colnames(tab)[1] <- "Community"
+			colnames(tab)[1] <- "Group"
 			tab.file <- file.path(attr.folder, paste0(attr,"_distribution.csv"))
 			write.csv(tab, file=tab.file, row.names=FALSE)
 			
 			# plot as graph with pie-charts as nodes
-			tlog(4,"Plotting community graph with the distribution of \"",attr,"\"")
+			tlog(4,"Plotting group graph with the distribution of \"",attr,"\"")
 			for(c in 1:ncol(tt))
 				cg2 <- set_vertex_attr(graph=cg2, name=colnames(tt)[c], value=tt[,c])
 			plot.file <- file.path(attr.folder, paste0(attr,"_comgraph"))
 			V(cg2)$label <- rep(NA, gorder(cg2))
 			#plot(cg2, vertex.shape="pie", vertex.pie=split(tt,1:nrow(tt)), vertex.pie.color=list(colors))
-			custom.gplot(cg2, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=plot.file)
+			custom.gplot(cg2, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=plot.file, color.isolates=TRUE)
 			#custom.gplot(cg2, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE)
 			
-			# compute purity for each community
+			# compute purity for each group
 			pur.tab <- apply(tt, 1, function(row) max(row)/sum(row))
 			tab <- as.data.frame(pur.tab)
 			tab <- cbind(coms, tab)
-			colnames(tab) <- c("Community", "Purity")
+			colnames(tab) <- c("Group", "Purity")
 			tab.file <- file.path(attr.folder, paste0(attr,"_purity.csv"))
 			write.csv(tab, file=tab.file, row.names=FALSE)
 			
@@ -189,7 +262,7 @@ analyze.net.comstruct.attributes <- function(g, mode, out.folder)
 				if(all(is.na(tmp)) || length(unique(tmp))==1 || any(is.na(tmp)) && length(unique(tmp))==2)
 					chisq <- NA
 				else
-					chisq <- suppressWarnings(chisq.test(tmp, membership, correct=FALSE))$p.value # warning=communities too small
+					chisq <- suppressWarnings(chisq.test(tmp, membership, correct=FALSE))$p.value # warning=groups too small
 				vals <- c(vals, chisq)
 				meas <- c(meas, "Chi2_pval")
 				# Cramér's V
@@ -226,7 +299,7 @@ analyze.net.comstruct.attributes <- function(g, mode, out.folder)
 			uvals <- sort(unique(c(m)))
 			
 			# processing all values at once
-			tlog(6,"Exporting community-wise distribution for attribute-tag \"",attr,"\"")
+			tlog(6,"Exporting group-wise distribution for attribute-tag \"",attr,"\"")
 			all.nas <- apply(m, 1, function(row) all(is.na(row)))
 			tt <- t(sapply(coms, function(i) 
 			{	idx <- which(membership==i & !all.nas)
@@ -241,20 +314,28 @@ analyze.net.comstruct.attributes <- function(g, mode, out.folder)
 			}
 			tab <- as.data.frame(tt)
 			tab <- cbind(coms, tab)
-			colnames(tab)[1] <- "Community"
+			colnames(tab)[1] <- "Group"
 			tab.file <- file.path(attr.folder, paste0(attr,"_distribution.csv"))
 			write.csv(tab, file=tab.file, row.names=FALSE)
 			
 			# plot as graph with pie-charts as nodes
-			tlog(6,"Plotting community graph with the distribution of \"",attr,"\"")
+			tlog(6,"Plotting group graph with the distribution of \"",attr,"\"")
 			for(c in 1:ncol(tt))
 				cg2 <- set_vertex_attr(graph=cg2, name=colnames(tt)[c], value=tt[,c])
 			plot.file <- file.path(attr.folder, paste0(attr,"_comgraph"))
 			V(cg2)$label <- rep(NA, gorder(cg2))
 			#plot(cg2, vertex.shape="pie", vertex.pie=split(tt,1:nrow(tt)), vertex.pie.color=list(colors))
-			custom.gplot(cg2, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=plot.file)
+			custom.gplot(cg2, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=plot.file, color.isolates=TRUE)
 			#custom.gplot(cg2, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE)
 			
+			# compute purity for each group
+			pur.tab <- apply(tt, 1, function(row) max(row)/sum(row))
+			tab <- as.data.frame(pur.tab)
+			tab <- cbind(coms, tab)
+			colnames(tab) <- c("Group", "Purity")
+			tab.file <- file.path(attr.folder, paste0(attr,"_purity.csv"))
+			write.csv(tab, file=tab.file, row.names=FALSE)
+
 			# processing each value separately
 			for(uval in uvals)
 			{	# binarize tags
@@ -271,8 +352,8 @@ analyze.net.comstruct.attributes <- function(g, mode, out.folder)
 				attrval.folder <- file.path(attr.folder, short_val)
 				dir.create(path=attrval.folder, showWarnings=FALSE, recursive=TRUE)
 				
-				# export community-wise distributions as csv
-				tlog(6,"Exporting community-wise distribution for attribute-value \"",attr_val,"\"")
+				# export group-wise distributions as csv
+				tlog(6,"Exporting group-wise distribution for attribute-value \"",attr_val,"\"")
 				tmp <- factor(tmp)
 				tt <- t(sapply(coms, function(i) table(tmp[membership==i], useNA="always")))
 				colnames(tt)[which(is.na(colnames(tt)))] <- "NA"
@@ -283,25 +364,25 @@ analyze.net.comstruct.attributes <- function(g, mode, out.folder)
 				}
 				tab <- as.data.frame(tt)
 				tab <- cbind(coms, tab)
-				colnames(tab)[1] <- "Community"
+				colnames(tab)[1] <- "Group"
 				tab.file <- file.path(attrval.folder, paste0("distribution.csv"))
 				write.csv(tab, file=tab.file, row.names=FALSE)
 				
 				# plot as graph with pie-charts as nodes
-				tlog(6,"Plotting community graph with the distribution of \"",attr_val,"\"")
+				tlog(6,"Plotting group graph with the distribution of \"",attr_val,"\"")
 				for(c in 1:ncol(tt))
 					cg2 <- set_vertex_attr(graph=cg2, name=colnames(tt)[c], value=tt[,c])
 				plot.file <- file.path(attrval.folder, paste0("comgraph"))
 				V(cg2)$label <- rep(NA, gorder(cg2))
 				#plot(cg2, vertex.shape="pie", vertex.pie=split(tt,1:nrow(tt)), vertex.pie.color=list(colors))
-				custom.gplot(cg2, col.att=colnames(tt), col.att.cap=paste0(attr," : ",uval), size.att="size", cat.att=TRUE, file=plot.file)
+				custom.gplot(cg2, col.att=colnames(tt), col.att.cap=paste0(attr," : ",uval), size.att="size", cat.att=TRUE, file=plot.file, color.isolates=TRUE)
 				#custom.gplot(cg2, col.att=colnames(tt), col.att.cap=attr_val, size.att="size", cat.att=TRUE)
 				
-				# compute purity for each community
+				# compute purity for each group
 				pur.tab <- apply(tt, 1, function(row) max(row)/sum(row))
 				tab <- as.data.frame(pur.tab)
 				tab <- cbind(coms, tab)
-				colnames(tab) <- c("Community", "Purity")
+				colnames(tab) <- c("Group", "Purity")
 				tab.file <- file.path(attrval.folder, paste0("purity.csv"))
 				write.csv(tab, file=tab.file, row.names=FALSE)
 				
@@ -313,7 +394,7 @@ analyze.net.comstruct.attributes <- function(g, mode, out.folder)
 				vals <- c(vals, pur.total)
 				meas <- c(meas, "Purity")
 				# chi-squared test of independence (dpt if p<0.05)
-				chisq <- suppressWarnings(chisq.test(tmp, membership, correct=FALSE))$p.value # warning=communities too small
+				chisq <- suppressWarnings(chisq.test(tmp, membership, correct=FALSE))$p.value # warning=groups too small
 				vals <- c(vals, chisq)
 				meas <- c(meas, "Chi2_pval")
 				# Cramér's V
@@ -351,43 +432,66 @@ analyze.net.comstruct.attributes <- function(g, mode, out.folder)
 				tlog(4,"Only NAs: nothing to do")
 			# non-NA values
 			else
-			{	# exports basic stats for each community
+			{	# exports basic stats for each group
 				tab <- t(sapply(coms, function(i) quantile(att.vals[membership==i], na.rm=TRUE)))
 				tab <- cbind(tab, sapply(coms, function(i) mean(att.vals[membership==i])))
 				colnames(tab)[ncol(tab)] <- "Mean"
 				tab <- cbind(tab, sapply(coms, function(i) sd(att.vals[membership==i], na.rm=TRUE)))
 				colnames(tab)[ncol(tab)] <- "Stdev"
 				tab <- cbind(coms, tab)
-				colnames(tab)[1] <- "Community"
+				colnames(tab)[1] <- "Group"
 				tab.file <- file.path(attr.folder, paste0(attr,"_stats.csv"))
 				write.csv(tab, file=tab.file, row.names=FALSE)
 				
-				# export community-wise distributions as csv
-				tlog(6,"Exporting community-wise distribution for attribute \"",attr,"\"")
-				tmp <- cut(att.vals, 5)
-				tt <- t(sapply(coms, function(i) table(tmp[membership==i], useNA="always")))
+				# export group-wise distributions as csv
+				tlog(6,"Exporting group-wise distribution for attribute \"",attr,"\"")
+				if(length(unique(att.vals[!is.na(att.vals)]))==1)
+				{	tmp<-factor(att.vals)
+					tt <- t(sapply(coms, function(i) table(tmp[membership==i], useNA="always")))
+				}
+				else	
+				{	qt <- seq(from=0, to=1, by=0.2)
+					quant <- quantile(att.vals, probs=qt, na.rm=TRUE)													# compute quantiles
+					if(length(unique(quant))<length(qt))
+						quant <- seq(from=min(att.vals,na.rm=T), to=max(att.vals,na.rm=T), length.out=length(qt))
+					quant <- cbind(quant[1:(length(quant)-1)], quant[2:length(quant)])									# build intervales
+					rownames(quant) <- NULL
+					prec <- 2
+					goOn <- TRUE
+					while(goOn) 
+					{	qlabs <- apply(quant, 1, function(row) paste0("]",sprintf(paste0("%.",prec,"f"),row[1]),";",sprintf(paste0("%.",prec,"f"),row[2]),"]"))	# define labels
+						prec <- prec + 1
+						goOn <- length(unique(qlabs))<length(qlabs)
+					}
+					qlabs[1] <- paste0("[",substr(qlabs[1], start=2, stop=nchar(qlabs[1])))
+					quant[1,1] <- quant[1,1] - 1
+					tmp <- sapply(att.vals, function(val) if(is.na(val)) NA else which(quant[,1]<val & quant[,2]>=val)[1])
+					tmp <- factor(qlabs[tmp], levels=qlabs)
+					#tmp <- cut(att.vals, breaks=5, include.lowest=TRUE, dig.lab=2)										# old version, less control
+					tt <- t(sapply(coms, function(i) table(tmp[membership==i], useNA="always")))
+				}
 				colnames(tt)[which(is.na(colnames(tt)))] <- "NA"
 				tab <- as.data.frame(tt)
 				tab <- cbind(coms, tab)
-				colnames(tab)[1] <- "Community"
+				colnames(tab)[1] <- "Group"
 				tab.file <- file.path(attr.folder, paste0(attr,"_distribution.csv"))
 				write.csv(tab, file=tab.file, row.names=FALSE)
 				
 				# plot as graph with pie-charts as nodes
-				tlog(6,"Plotting community graph with the distribution of \"",attr,"\"")
+				tlog(6,"Plotting group graph with the distribution of \"",attr,"\"")
 				for(c in 1:ncol(tt))
 					cg2 <- set_vertex_attr(graph=cg2, name=colnames(tt)[c], value=tt[,c])
 				plot.file <- file.path(attr.folder, paste0(attr,"_comgraph"))
 				V(cg2)$label <- rep(NA, gorder(cg2))
 				#plot(cg, vertex.shape="pie", vertex.pie=split(tt,1:nrow(tt)), vertex.pie.color=list(colors))
-				custom.gplot(cg2, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=plot.file)
+				custom.gplot(cg2, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=plot.file, color.isolates=TRUE)
 				#custom.gplot(cg, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE)
 			
-#				# compute purity for each community
+#				# compute purity for each group
 #				pur.tab <- apply(tt, 1, function(row) max(row)/sum(row))
 #				tab <- as.data.frame(pur.tab)
 #				tab <- cbind(coms, tab)
-#				colnames(tab) <- c("Community", "Purity")
+#				colnames(tab) <- c("Group", "Purity")
 #				tab.file <- file.path(attr.folder, paste0(attr,"_purity.csv"))
 #				write.csv(tab, file=tab.file, row.names=FALSE)
 				
@@ -416,8 +520,8 @@ analyze.net.comstruct.attributes <- function(g, mode, out.folder)
 		}
 		
 		#############################
-		# compute nodal topological measures for each community
-		tlog(4,"Average nodal topological measures for each community")
+		# compute nodal topological measures for each group
+		tlog(4,"Average nodal topological measures for each group")
 		meas.list <- nodal.atts[startsWith(nodal.atts,"_")]
 		meas.starts <- c(MEAS_ARTICULATION, MEAS_BETWEENNESS, MEAS_CLOSENESS, MEAS_CLOSENESS_HARMO, MEAS_CONNECTIVITY, MEAS_DEGREE, MEAS_ECCENTRICITY, MEAS_EIGENCENTR, MEAS_TRANSITIVITY)
 		
@@ -428,9 +532,9 @@ analyze.net.comstruct.attributes <- function(g, mode, out.folder)
 		
 		# init stat table
 		tab <- matrix(coms, ncol=1)
-		colnames(tab)[ncol(tab)] <- "Community"
+		colnames(tab)[ncol(tab)] <- "Group"
 		
-		# compute average/stdev for each community
+		# compute average/stdev for each group
 		for(meas in meass)
 		{	# average
 			avg <- sapply(coms, function(i) mean(vertex_attr(graph=g, name=meas, index=which(membership==i)), na.rm=TRUE))
@@ -444,13 +548,13 @@ analyze.net.comstruct.attributes <- function(g, mode, out.folder)
 			tab <- cbind(tab, stdev); colnames(tab)[ncol(tab)] <- mn 
 		}
 		
-		# measures that need to be computed again (by community, this time)
-		tlog(4,"Compute certain nodal topological measures for each community")
+		# measures that need to be computed again (by group, this time)
+		tlog(4,"Compute certain nodal topological measures for each group")
 		for(i in 1:length(coms))
 		{	com <- coms[i]
 			gcom <- induced_subgraph(graph=g, vids=which(membership==com))
 			
-			# TODO assortativity by community
+			# TODO assortativity by group
 			#gcom <- analyze.net.assortativity(gcom)
 			
 			# number of nodes
@@ -508,9 +612,9 @@ analyze.net.comstruct.attributes <- function(g, mode, out.folder)
 	}
 	
 	#############################
-	# community attributes over
+	# group attributes over
 	
-	# record community graph
+	# record group graph
 	graph.file <- file.path(coms.folder, "comgraph.graphml")
 	write.graphml.file(g=cg, file=graph.file)
 	

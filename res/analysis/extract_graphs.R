@@ -574,7 +574,7 @@ extract.estate.networks <- function()
 	# load estate information
 	tlog(2,"Loading estate information")
 	info.estate <- load.location.table(FILE_IN_ANAL_ESTATE_NODES,"estate")
-info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID, COL_EST_STREET_ID, COL_EST_VILLAGE_ID))]
+info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_ID))] # COL_EST_AREA_ID, COL_EST_VILLAGE_ID were in this list, but we can use them as attributes too (in addition to membership relation)
 	info.estate <- cbind(paste("Bien:",info.estate[,COL_EST_ID],sep=""),info.estate); colnames(info.estate)[1] <- COL_LOC_ID
 	info.estate <- cbind(rep("Bien",nrow(info.estate)),info.estate); colnames(info.estate)[1] <- COL_LOC_TYPE
 		# complete estate information
@@ -697,35 +697,35 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 		# get the source id
 		if(is.na(data[r,COL_CONF_EST1_ID]))
 			stop(paste0("ERROR: found no source id in row #",r))
-		src.id <- which(info.all[,COL_EST_ID]==data[r,COL_CONF_EST1_ID])
+		src.id <- which(info.all[,COL_LOC_ID]==paste0("Bien:",data[r,COL_CONF_EST1_ID]))
 		if(is.na(src.id))
 			stop(paste0("ERROR: could not find an estate matching source id in row #",r))
 		
 		# get the second estate id
 		tgt.id <- c()
 		if(!is.na(data[r,COL_CONF_EST2_ID]))
-			tgt.id <- c(tgt.id, which(info.all[,COL_EST_ID]==data[r,COL_CONF_EST2_ID]))
+			tgt.id <- c(tgt.id, which(info.all[,COL_LOC_ID]==paste0("Bien:",data[r,COL_CONF_EST2_ID])))
 		if(!is.na(data[r,COL_CONF_FIX_ID]))
 			tgt.id <- c(tgt.id, which(
-#								info.all[,COL_FIX_ID]==data[r,COL_CONF_FIX_ID]))
-								info.all[,COL_VILG_ID]==data[r,COL_CONF_FIX_ID]
-								| info.all[,COL_EDIF_ID]==data[r,COL_CONF_FIX_ID]
-								| info.all[,COL_CARD_ID]==data[r,COL_CONF_FIX_ID]
-								| info.all[,COL_GATE_ID]==data[r,COL_CONF_FIX_ID]
-								| info.all[,COL_WALL_ID]==data[r,COL_CONF_FIX_ID]
-								| info.all[,COL_LDMRK_ID]==data[r,COL_CONF_FIX_ID]
-								| info.all[,COL_STREET_ID]==data[r,COL_CONF_FIX_ID]
+#								info.all[,COL_LOC_ID]==paste0("In",data[r,COL_CONF_FIX_ID])
+								info.all[,COL_LOC_ID]==paste0("Bourg:",data[r,COL_CONF_FIX_ID])
+								| info.all[,COL_LOC_ID]==paste0("Edifice:",data[r,COL_CONF_FIX_ID])
+								| info.all[,COL_LOC_ID]==paste0("Livree:",data[r,COL_CONF_FIX_ID])
+								| info.all[,COL_LOC_ID]==paste0("Porte:",data[r,COL_CONF_FIX_ID])
+								| info.all[,COL_LOC_ID]==paste0("Rempart:",data[r,COL_CONF_FIX_ID])
+								| info.all[,COL_LOC_ID]==paste0("Repere:",data[r,COL_CONF_FIX_ID])
+								| info.all[,COL_LOC_ID]==paste0("Rue:",data[r,COL_CONF_FIX_ID])
 							))
-		if(!is.na(data[r,COL_CONF_AREA_ID]))
-			tgt.id <- c(tgt.id, which(info.all[,COL_AREA_ID]==data[r,COL_CONF_AREA_ID]))		
+		if(length(tgt.id)==0 && !is.na(data[r,COL_CONF_AREA_ID]))
+			tgt.id <- c(tgt.id, which(info.all[,COL_LOC_ID]==paste0("Quartier:",data[r,COL_CONF_AREA_ID])))	
 		
 		if(length(tgt.id)==0)
 		{	print(data[r,])		
 			result <- c(NA,NA)
-#			stop(paste0("ERROR: found no destinations id in row #",r))
+#			stop(paste0("ERROR: found no destination id in row #",r))
 		}
 		else if(length(tgt.id)>1)
-		{	stop(paste0("ERROR: found several destinations ids in row #",r))
+		{	stop(paste0("ERROR: found several destination ids in row #",r))
 		}
 		else if(is.na(tgt.id))
 		{	stop(paste0("ERROR: could not match the destination id in row #",r))
@@ -1114,18 +1114,14 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_AREA_ID,
 #      > si deux noeuds sont proches (connectés ?) et ont une transitivité élevée, sont ils proches spatialement ?
 #      > différence avec sim structurelle ?
 #
-# TODO générer les stats par attributs pr les composants, comme on le fait déjà pr les communautés
-#
-# TODO dans les graphes de communautés, supprimer les boucles (car sans l'épaisseur, elles ne servent à rien)
-#
-# TODO pq y a t il des montants négatifs ?
-#
-# TODO insérer des valeurs par défaut, table-dépendnat, pour les colonnes qui n'existent pas pr un type de bien, lors de la fusion
-#
-# TODO pb avec les quartiers: pas traités comme les seigneries. ids vs entier ?
+# XXXX TODO tester plusieurs algos de détection de communautés
 # 
-# TODO manque la pureté pour les var catégorielles
-#
+# XXXX TODO insérer des valeurs par défaut, table-dépendant, pour les colonnes qui n'existent pas pr un type de bien, lors de la fusion
+# XXXX TODO générer les stats par attributs pr les composants, comme on le fait déjà pr les communautés
+# XXXX TODO pq y a t il des montants négatifs ?
+# XXXX TODO pb avec les quartiers: pas traités comme les seigneries. ids vs entiers ?
+# XXXX TODO dans les graphes de communautés, supprimer les boucles (car sans l'épaisseur, elles ne servent à rien)
+# XXXX TODO manque la pureté pour les variables de type tag
 # XXXX TODO similarité structurelle : manque les id dans la table
 # 
 
