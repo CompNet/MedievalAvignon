@@ -134,12 +134,24 @@ FILE_GRAPH <- "graph.graphml"
 	# components
 	COL_EST_COMP_LAB1 <- "composant1"
 	COL_EST_COMP_NBR1 <- "nbrComposant1"
+	COL_EST_COMP_TYPE1 <- "typeComposant1"
+	COL_EST_COMP_TYPE_S1 <- "typeSimpleComposant1"
 	COL_EST_COMP_LAB2 <- "composant2"
 	COL_EST_COMP_NBR2 <- "nbrComposant2"
+	COL_EST_COMP_TYPE2 <- "typeComposant2"
+	COL_EST_COMP_TYPE_S2 <- "typeSimpleComposant2"
 	COL_EST_COMP_LAB3 <- "composant3"
+	COL_EST_COMP_TYPE3 <- "typeComposant3"
+	COL_EST_COMP_TYPE_S3 <- "typeSimpleComposant3"
 	COL_EST_COMP_LAB4 <- "composant4"
+	COL_EST_COMP_TYPE4 <- "typeComposant4"
+	COL_EST_COMP_TYPE_S4 <- "typeSimpleComposant4"
 	COL_EST_COMP_LAB5 <- "composant5"
+	COL_EST_COMP_TYPE5 <- "typeComposant5"
+	COL_EST_COMP_TYPE_S5 <- "typeSimpleComposant5"
 	COL_EST_COMP_LAB6 <- "composant6"
+	COL_EST_COMP_TYPE6 <- "typeComposant6"
+	COL_EST_COMP_TYPE_S6 <- "typeSimpleComposant6"
 	# NOTE: declared estate = COL_EST_DECLARATION_ID | COL_EST_FEE_ID
 
 # fixes table
@@ -436,13 +448,25 @@ LONG_NAME[COL_EST_MEASURE] <- "Estate mesure"
 LONG_NAME[COL_EST_MATERIALS] <- "Estate materials"
 LONG_NAME[COL_EST_GEOMETRY] <- "Estate geom"
 LONG_NAME[COL_EST_COMP_LAB1] <- "Estate component 1"
-LONG_NAME[COL_EST_COMP_NBR1] <- "Estate component number 1"
+LONG_NAME[COL_EST_COMP_NBR1] <- "Estate component 1 number"
+LONG_NAME[COL_EST_COMP_TYPE1] <- "Estate component 1 type"
+LONG_NAME[COL_EST_COMP_TYPE_S1] <- "Estate component 1 simple type"
 LONG_NAME[COL_EST_COMP_LAB2] <- "Estate component 2"
-LONG_NAME[COL_EST_COMP_NBR2] <- "Estate component number 1"
+LONG_NAME[COL_EST_COMP_NBR2] <- "Estate component 2 number"
+LONG_NAME[COL_EST_COMP_TYPE2] <- "Estate component 2 type"
+LONG_NAME[COL_EST_COMP_TYPE_S2] <- "Estate component 2 simple type"
 LONG_NAME[COL_EST_COMP_LAB3] <- "Estate component 3"
+LONG_NAME[COL_EST_COMP_TYPE3] <- "Estate component 3 type"
+LONG_NAME[COL_EST_COMP_TYPE_S3] <- "Estate component 3 simple type"
 LONG_NAME[COL_EST_COMP_LAB4] <- "Estate component 4"
+LONG_NAME[COL_EST_COMP_TYPE4] <- "Estate component 4 type"
+LONG_NAME[COL_EST_COMP_TYPE_S4] <- "Estate component 4 simple type"
 LONG_NAME[COL_EST_COMP_LAB5] <- "Estate component 5"
+LONG_NAME[COL_EST_COMP_TYPE5] <- "Estate component 5 type"
+LONG_NAME[COL_EST_COMP_TYPE_S5] <- "Estate component 5 simple type"
 LONG_NAME[COL_EST_COMP_LAB6] <- "Estate component 6"
+LONG_NAME[COL_EST_COMP_TYPE6] <- "Estate component 6 type"
+LONG_NAME[COL_EST_COMP_TYPE_S6] <- "Estate component 6 simple type"
 LONG_NAME[COL_FIX_ID] <- "Fix ID"
 LONG_NAME[COL_FIX_TYPE] <- "Type"
 LONG_NAME[COL_FIX_NAME] <- "Name"
@@ -596,7 +620,9 @@ COL_TAG <- list()
 #	COL_TAG[[COL_PERS_OCC_FRE1]] <- c(COL_PERS_OCC_FRE1, COL_PERS_OCC_FRE2)
 	COL_TAG[[COL_PERS_OCC_NORM1]] <- c(COL_PERS_OCC_NORM1, COL_PERS_OCC_NORM2)
 	COL_TAG[[COL_EST_COMP_LAB1]] <- c(COL_EST_COMP_LAB1, COL_EST_COMP_LAB2, COL_EST_COMP_LAB3, COL_EST_COMP_LAB4, COL_EST_COMP_LAB5, COL_EST_COMP_LAB6)
-
+	COL_TAG[[COL_EST_COMP_TYPE1]] <- c(COL_EST_COMP_TYPE1, COL_EST_COMP_TYPE2, COL_EST_COMP_TYPE3, COL_EST_COMP_TYPE4, COL_EST_COMP_TYPE5, COL_EST_COMP_TYPE6)
+	COL_TAG[[COL_EST_COMP_TYPE_S1]] <- c(COL_EST_COMP_TYPE_S1, COL_EST_COMP_TYPE_S2, COL_EST_COMP_TYPE_S3, COL_EST_COMP_TYPE_S4, COL_EST_COMP_TYPE_S5, COL_EST_COMP_TYPE_S6)
+	
 # list of numerical attributes
 COL_NUM <- c(
 	COL_LOC_X, COL_LOC_Y,
