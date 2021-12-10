@@ -1114,16 +1114,19 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #      > si deux noeuds sont proches (connectés ?) et ont une transitivité élevée, sont ils proches spatialement ?
 #      > différence avec sim structurelle ?
 #
-# XXXX TODO tester plusieurs algos de détection de communautés
+#
+# TODO
+# - vérifier que les tags sont traités correctement dans le cas "tous NA"
+# - ne conserver que les biens sur les stats basées sur les attributs
 # 
-# XXXX TODO insérer des valeurs par défaut, table-dépendant, pour les colonnes qui n'existent pas pr un type de bien, lors de la fusion
-# XXXX TODO générer les stats par attributs pr les composants, comme on le fait déjà pr les communautés
-# XXXX TODO pq y a t il des montants négatifs ?
-# XXXX TODO pb avec les quartiers: pas traités comme les seigneries. ids vs entiers ?
-# XXXX TODO dans les graphes de communautés, supprimer les boucles (car sans l'épaisseur, elles ne servent à rien)
-# XXXX TODO manque la pureté pour les variables de type tag
-# XXXX TODO similarité structurelle : manque les id dans la table
+# - générer des visualisations faisant apparaître les composants (kk ou autre)
 # 
+# - pureté : calculer les versions asymétriques séparémment
+# 
+# - ordonner les noeuds selon l'attribut affiché (lors du tracé des graphiques de graphes)
+# 
+# - pb simstruct : noms de fichiers = numéros (+ nom comme actuellement)
+
 
 
 ###### SOCIAL ######
