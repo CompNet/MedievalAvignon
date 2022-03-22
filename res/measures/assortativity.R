@@ -30,6 +30,10 @@ analyze.net.assortativity <- function(g, out.folder)
 	# retrieve the list of vertex attributes
 	att.list <- list.vertex.attributes(g)
 	
+	# indices of real estate vertices
+	est.idx <- which(vertex_attr(g, name=COL_LOC_TYPE)=="Bien")
+	non.est.idx <- which(vertex_attr(g, name=COL_LOC_TYPE)!="Bien")
+	
 	# init result table
 	val.tab <- matrix(nrow=0,ncol=2)
 	colnames(val.tab) <- modes
@@ -72,52 +76,70 @@ analyze.net.assortativity <- function(g, out.folder)
 			attr <- colnames(cat.data)[i]
 			tlog(10,"Computing attribute ",attr," (",i,"/",ncol(cat.data),")")
 			
-			# if there are some NAs
-			if(any(is.na(cat.data[,i])))
-			{	# explicitly represent NAs as a class
-				cd <- as.integer(cat.data[,i])
-				if(all(is.na(cd)))
-					ass <- NA
+			# treat all vertices vs. only real estate
+			for(focus in c("all","realestate"))
+			{	# prepare data
+				if(focus=="all")
+				{	cdat <- cat.data[,i]
+					g0 <- g
+					txt <- "all vertices"
+					an <- "_all"
+				}
 				else
-				{	cd[is.na(cd)] <- max(cd,na.rm=TRUE) + 1
-					ass <- assortativity_nominal(graph=g, types=cd, directed=mode==MEAS_MODE_DIR)
+				{	cdat <- cat.data[est.idx,i]
+					g0 <- delete_vertices(graph=g, v=non.est.idx)
+					txt <- "real estate only"
+					an <- "_realEstOnly"
 				}
-				tlog(12,"Assortativity for attribute \"",attr,"\" (mode=",mode,") when representing NAs explicitly: ",ass)
-				name <- paste0(attr,"_expNA")
-				if(!(name %in% rownames(val.tab)))
-				{	val.tab <- rbind(val.tab, c(NA,NA))
-					rownames(val.tab)[nrow(val.tab)] <- name
+				
+				# if there are some NAs
+				if(any(is.na(cdat)))
+				{	# explicitly represent NAs as a class
+					cd <- as.integer(cdat)
+					if(all(is.na(cd)))
+						ass <- NA
+					else
+					{	cd[is.na(cd)] <- max(cd,na.rm=TRUE) + 1
+						ass <- assortativity_nominal(graph=g0, types=cd, directed=mode==MEAS_MODE_DIR)
+					}
+					tlog(12,"Assortativity for attribute \"",attr,"\" (mode=",mode," -- ",txt,") when representing NAs explicitly: ",ass)
+					name <- paste0(attr,"_",an,"_expNA")
+					if(!(name %in% rownames(val.tab)))
+					{	val.tab <- rbind(val.tab, c(NA,NA))
+						rownames(val.tab)[nrow(val.tab)] <- name
+					}
+					val.tab[name,mode] <- ass
+					
+					# just ignore NAs
+					cd <- as.integer(cdat)
+					if(all(is.na(cd)))
+						ass <- NA
+					else
+					{	cd <- cd[!is.na(cd)]
+						g00 <- delete_vertices(g0, which(is.na(cdat)))
+						ass <- assortativity_nominal(graph=g00, types=cd, directed=mode==MEAS_MODE_DIR)
+					}
+					tlog(12,"Assortativity for attribute \"",attr,"\" (mode=",mode," -- ",txt,") when ignoring NAs: ",ass)
+					name <- paste0(attr,"_",an,"_noNA")
+					if(!(name %in% rownames(val.tab)))
+					{	val.tab <- rbind(val.tab, c(NA,NA))
+						rownames(val.tab)[nrow(val.tab)] <- name
+					}
+					val.tab[name,mode] <- ass
 				}
-				val.tab[name,mode] <- ass
-				# just ignore NAs
-				cd <- as.integer(cat.data[,i])
-				if(all(is.na(cd)))
-					ass <- NA
+				
+				# no NA at all
 				else
-				{	cd <- cd[!is.na(cd)]
-					gg <- delete_vertices(g, which(is.na(cat.data[,i])))
-					ass <- assortativity_nominal(graph=gg, types=cd, directed=mode==MEAS_MODE_DIR)
+				{	cd <- as.integer(cdat)
+					ass <- assortativity_nominal(graph=g0, types=cd, directed=mode==MEAS_MODE_DIR)
+					tlog(12,"Assortativity for attribute \"",attr,"\" (mode=",mode," -- ",txt,"): ",ass)
+					name <- paste0(attr,"_",an)
+					if(!(name %in% rownames(val.tab)))
+					{	val.tab <- rbind(val.tab, c(NA,NA))
+						rownames(val.tab)[nrow(val.tab)] <- name
+					}
+					val.tab[name,mode] <- ass
 				}
-				tlog(12,"Assortativity for attribute \"",attr,"\" (mode=",mode,") when ignoring NAs: ",ass)
-				name <- paste0(attr,"_noNA")
-				if(!(name %in% rownames(val.tab)))
-				{	val.tab <- rbind(val.tab, c(NA,NA))
-					rownames(val.tab)[nrow(val.tab)] <- name
-				}
-				val.tab[name,mode] <- ass
-			}
-			
-			# no NA at all
-			else
-			{	cd <- as.integer(cat.data[,i])
-				ass <- assortativity_nominal(graph=g, types=cd, directed=mode==MEAS_MODE_DIR)
-				tlog(12,"Assortativity for attribute \"",attr,"\" (mode=",mode,"): ",ass)
-				name <- paste0(attr)
-				if(!(name %in% rownames(val.tab)))
-				{	val.tab <- rbind(val.tab, c(NA,NA))
-					rownames(val.tab)[nrow(val.tab)] <- name
-				}
-				val.tab[name,mode] <- ass
 			}
 		}
 	}
@@ -149,50 +171,67 @@ analyze.net.assortativity <- function(g, out.folder)
 				attr <- colnames(num.data)[i]
 				tlog(10,"Computing attribute ",attr," (",i,"/",ncol(num.data),")")
 				
-				# if there are some NAs
-				if(any(is.na(num.data[,i])))
-				{	# explicitly represent them as zeroes
-					cd <- num.data[,i]
-					if(all(is.na(cd)))
-						ass <- NA
+				# treat all vertices vs. only real estate
+				for(focus in c("all","realestate"))
+				{	# prepare data
+					if(focus=="all")
+					{	ndat <- num.data[,i]
+						g0 <- g
+						txt <- "all vertices"
+						an <- "_all"
+					}
 					else
-					{	cd[is.na(cd)] <- 0
-						ass <- assortativity(graph=g, types1=cd, directed=mode==MEAS_MODE_DIR)
+					{	ndat <- num.data[est.idx,i]
+						g0 <- delete_vertices(graph=g, v=non.est.idx)
+						txt <- "real estate only"
+						an <- "_realEstOnly"
 					}
-					tlog(12,"Assortativity for attribute \"",attr,"\" (mode=",mode,") when replacing NAs by 0: ",ass)
-					name <- paste0(attr,"_expNA")
-					if(!(name %in% rownames(val.tab)))
-					{	val.tab <- rbind(val.tab, c(NA,NA))
-						rownames(val.tab)[nrow(val.tab)] <- name
+					
+					# if there are some NAs
+					if(any(is.na(ndat)))
+					{	# explicitly represent them as zeroes
+						cd <- ndat
+						if(all(is.na(cd)))
+							ass <- NA
+						else
+						{	cd[is.na(cd)] <- 0
+							ass <- assortativity(graph=g0, types1=cd, directed=mode==MEAS_MODE_DIR)
+						}
+						tlog(12,"Assortativity for attribute \"",attr,"\" (mode=",mode," - ",txt,") when replacing NAs by 0: ",ass)
+						name <- paste0(attr,"_",an,"_expNA")
+						if(!(name %in% rownames(val.tab)))
+						{	val.tab <- rbind(val.tab, c(NA,NA))
+							rownames(val.tab)[nrow(val.tab)] <- name
+						}
+						val.tab[name,mode] <- ass
+						# ignore them
+						cd <- ndat
+						if(all(is.na(cd)))
+							ass <- NA
+						else
+						{	cd <- cd[!is.na(cd)]
+							g00 <- delete_vertices(g0, which(is.na(ndat)))
+							ass <- assortativity(graph=g00, types1=cd, directed=mode==MEAS_MODE_DIR)
+						}
+						tlog(12,"Assortativity for attribute \"",attr,"\" (mode=",mode," - ",txt,") when ignoring NAs: ",ass)
+						name <- paste0(attr,"_",an,"_noNA")
+						if(!(name %in% rownames(val.tab)))
+						{	val.tab <- rbind(val.tab, c(NA,NA))
+							rownames(val.tab)[nrow(val.tab)] <- name
+						}
+						val.tab[name,mode] <- ass
 					}
-					val.tab[name,mode] <- ass
-					# ignore them
-					cd <- num.data[,i]
-					if(all(is.na(cd)))
-						ass <- NA
+					# no NA at all
 					else
-					{	cd <- cd[!is.na(cd)]
-						gg <- delete_vertices(g, which(is.na(num.data[,i])))
-						ass <- assortativity(graph=gg, types1=cd, directed=mode==MEAS_MODE_DIR)
+					{	ass <- assortativity(graph=g0, types1=ndat, directed=mode==MEAS_MODE_DIR)
+						tlog(12,"Assortativity for attribute \"",attr,"\" (mode=",mode," - ",txt,"): ",ass)
+						name <- paste0(attr,"_",an)
+						if(!(name %in% rownames(val.tab)))
+						{	val.tab <- rbind(val.tab, c(NA,NA))
+							rownames(val.tab)[nrow(val.tab)] <- name
+						}
+						val.tab[name,mode] <- ass
 					}
-					tlog(12,"Assortativity for attribute \"",attr,"\" (mode=",mode,") when ignoring NAs: ",ass)
-					name <- paste0(attr,"_noNA")
-					if(!(name %in% rownames(val.tab)))
-					{	val.tab <- rbind(val.tab, c(NA,NA))
-						rownames(val.tab)[nrow(val.tab)] <- name
-					}
-					val.tab[name,mode] <- ass
-				}
-				# no NA at all
-				else
-				{	ass <- assortativity(graph=g, types1=num.data[,i], directed=mode==MEAS_MODE_DIR)
-					tlog(12,"Assortativity for attribute \"",attr,"\" (mode=",mode,"): ",ass)
-					name <- paste0(attr)
-					if(!(name %in% rownames(val.tab)))
-					{	val.tab <- rbind(val.tab, c(NA,NA))
-						rownames(val.tab)[nrow(val.tab)] <- name
-					}
-					val.tab[name,mode] <- ass
 				}
 			}
 		}

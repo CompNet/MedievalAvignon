@@ -707,15 +707,15 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			tgt.id <- c(tgt.id, which(info.all[,COL_LOC_ID]==paste0("Bien:",data[r,COL_CONF_EST2_ID])))
 		if(!is.na(data[r,COL_CONF_FIX_ID]))
 			tgt.id <- c(tgt.id, which(
-#								info.all[,COL_LOC_ID]==paste0("In",data[r,COL_CONF_FIX_ID])
-								info.all[,COL_LOC_ID]==paste0("Bourg:",data[r,COL_CONF_FIX_ID])
-								| info.all[,COL_LOC_ID]==paste0("Edifice:",data[r,COL_CONF_FIX_ID])
-								| info.all[,COL_LOC_ID]==paste0("Livree:",data[r,COL_CONF_FIX_ID])
-								| info.all[,COL_LOC_ID]==paste0("Porte:",data[r,COL_CONF_FIX_ID])
-								| info.all[,COL_LOC_ID]==paste0("Rempart:",data[r,COL_CONF_FIX_ID])
-								| info.all[,COL_LOC_ID]==paste0("Repere:",data[r,COL_CONF_FIX_ID])
-								| info.all[,COL_LOC_ID]==paste0("Rue:",data[r,COL_CONF_FIX_ID])
-							))
+#				info.all[,COL_LOC_ID]==paste0("In",data[r,COL_CONF_FIX_ID])
+				info.all[,COL_LOC_ID]==paste0("Bourg:",data[r,COL_CONF_FIX_ID])
+				| info.all[,COL_LOC_ID]==paste0("Edifice:",data[r,COL_CONF_FIX_ID])
+				| info.all[,COL_LOC_ID]==paste0("Livree:",data[r,COL_CONF_FIX_ID])
+				| info.all[,COL_LOC_ID]==paste0("Porte:",data[r,COL_CONF_FIX_ID])
+				| info.all[,COL_LOC_ID]==paste0("Rempart:",data[r,COL_CONF_FIX_ID])
+				| info.all[,COL_LOC_ID]==paste0("Repere:",data[r,COL_CONF_FIX_ID])
+				| info.all[,COL_LOC_ID]==paste0("Rue:",data[r,COL_CONF_FIX_ID])
+			))
 		if(length(tgt.id)==0 && !is.na(data[r,COL_CONF_AREA_ID]))
 			tgt.id <- c(tgt.id, which(info.all[,COL_LOC_ID]==paste0("Quartier:",data[r,COL_CONF_AREA_ID])))	
 		
@@ -1116,16 +1116,16 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #
 #
 # TODO
-# - vérifier que les tags sont traités correctement dans le cas "tous NA"
-# - ne conserver que les biens sur les stats basées sur les attributs
-# 
-# - générer des visualisations faisant apparaître les composants (kk ou autre)
-# 
-# - pureté : calculer les versions asymétriques séparémment
-# 
-# - ordonner les noeuds selon l'attribut affiché (lors du tracé des graphiques de graphes)
-# 
-# - pb simstruct : noms de fichiers = numéros (+ nom comme actuellement)
+# - à implémenter
+#   - vérifier que les tags sont traités correctement dans le cas "tous NA" (? quand on n'a que des NA dans les plots, est-ce vraiment du à des labels tous NA ?)
+#   - générer des visualisations faisant apparaître les composants (kamada-kawaii ou autre)
+#   - pureté : calculer les versions asymétriques séparémment
+#   - ordonner les noeuds selon l'attribut affiché (lors du tracé des graphiques de graphes)
+#   - pb simstruct : noms de fichiers = numéros (+ nom comme actuellement)
+#
+# - à tester
+#   - ne conserver que les biens dans les stats basées sur les attributs
+
 
 
 

@@ -176,6 +176,10 @@ analyze.net.comstruct <- function(g, out.folder)
 analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 {	tlog(2,"Comparing nodal attributes and groups")
 	
+	# indices of real estate vertices
+	est.idx <- which(vertex_attr(g, name=COL_LOC_TYPE)=="Bien")
+	non.est.idx <- which(vertex_attr(g, name=COL_LOC_TYPE)!="Bien")
+	
 	# retrieve the list of vertex attributes
 	nodal.atts <- list.vertex.attributes(g)
 	att.list <- nodal.atts[!startsWith(nodal.atts,"_")]
@@ -214,13 +218,14 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 			attr.folder <- file.path(coms.folder, attr)
 			dir.create(path=attr.folder, showWarnings=FALSE, recursive=TRUE)
 			
-			# get values
-			tmp <- vertex_attr(g, attr)
+			# get values only for real-estate vertices
+			g0 <- delete_vertices(graph=g, v=non.est.idx)
+			tmp <- vertex_attr(g0, attr)
 			
 			# export group-wise distributions as csv
 			tlog(4,"Exporting group-wise distribution for attribute \"",attr,"\"")
 			tmp <- factor(tmp)
-			tt <- t(sapply(coms, function(i) table(tmp[membership==i], useNA="always"), simplify="array"))
+			tt <- t(sapply(coms, function(i) table(tmp[membership[est.idx]==i], useNA="always"), simplify="array"))
 			colnames(tt)[which(is.na(colnames(tt)))] <- "NA"
 			if(nrow(tt)==1 && ncol(tt)>1)
 			{	tt <- t(tt)
@@ -255,25 +260,25 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 			vals <- c()
 			meas <- c()
 				# purity
-				pur.total <- sum(rowSums(tt)/gorder(g)*pur.tab)
+				pur.total <- sum(rowSums(tt)/gorder(g0)*pur.tab)
 				vals <- c(vals, pur.total)
 				meas <- c(meas, "Purity")
 				# chi-squared test of independence (dpt if p<0.05)
 				if(all(is.na(tmp)) || length(unique(tmp))==1 || any(is.na(tmp)) && length(unique(tmp))==2)
 					chisq <- NA
 				else
-					chisq <- suppressWarnings(chisq.test(tmp, membership, correct=FALSE))$p.value # warning=groups too small
+					chisq <- suppressWarnings(chisq.test(tmp, membership[est.idx], correct=FALSE))$p.value # warning=groups too small
 				vals <- c(vals, chisq)
 				meas <- c(meas, "Chi2_pval")
 				# Cramér's V
 				if(all(is.na(tmp)) || length(unique(tmp))==1 || any(is.na(tmp)) && length(unique(tmp))==2)
 					cram <- NA
 				else
-					cram <- CramerV(x=tmp, y=membership)
+					cram <- CramerV(x=tmp, y=membership[est.idx])
 				vals <- c(vals, cram)
 				meas <- c(meas, "C_V")
 				# Goodman’s Kruskal Tau
-				tau <- GKtau(membership, tmp)
+				tau <- GKtau(membership[est.idx], tmp)
 				vals <- c(vals, tau$tauxy, tau$tauyx)
 				meas <- c(meas, "GK_tau_Com->Att", "GK_tau_Att->Com")
 			# record as a table
@@ -288,13 +293,16 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 		for(attr in attrs)
 		{	tlog(4,"Processing attribute-tag \"",attr,"\"")
 			
+			# get values only for real-estate vertices
+			g0 <- delete_vertices(graph=g, v=non.est.idx)
+			
 			# attribute folder
 			attr.folder <- file.path(coms.folder, attr)
 			dir.create(path=attr.folder, showWarnings=FALSE, recursive=TRUE)
 			
 			# compute values
 			attrc <- intersect(COL_TAG[[attr]], vertex_attr_names(g))
-			m <- sapply(attrc, function(att) vertex_attr(g, att))
+			m <- sapply(attrc, function(att) vertex_attr(g0, att))
 			idx.nas <- which(apply(m,1,function(r) all(is.na(r))))	# detect individuals with only NAs
 			uvals <- sort(unique(c(m)))
 			
@@ -302,8 +310,8 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 			tlog(6,"Exporting group-wise distribution for attribute-tag \"",attr,"\"")
 			all.nas <- apply(m, 1, function(row) all(is.na(row)))
 			tt <- t(sapply(coms, function(i) 
-			{	idx <- which(membership==i & !all.nas)
-				tmp <- factor(c(m[idx,], rep(NA, length(which(membership==i & all.nas)))), levels=uvals)
+			{	idx <- which(membership[est.idx]==i & !all.nas)
+				tmp <- factor(c(m[idx,], rep(NA, length(which(membership[est.idx]==i & all.nas)))), levels=uvals)
 				table(tmp, useNA="always")
 			}))
 			colnames(tt)[which(is.na(colnames(tt)))] <- "NA"
@@ -355,7 +363,7 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 				# export group-wise distributions as csv
 				tlog(6,"Exporting group-wise distribution for attribute-value \"",attr_val,"\"")
 				tmp <- factor(tmp)
-				tt <- t(sapply(coms, function(i) table(tmp[membership==i], useNA="always")))
+				tt <- t(sapply(coms, function(i) table(tmp[membership[est.idx]==i], useNA="always")))
 				colnames(tt)[which(is.na(colnames(tt)))] <- "NA"
 				if(nrow(tt)==1 && ncol(tt)>1)
 				{	tt <- t(tt)
@@ -394,15 +402,15 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 				vals <- c(vals, pur.total)
 				meas <- c(meas, "Purity")
 				# chi-squared test of independence (dpt if p<0.05)
-				chisq <- suppressWarnings(chisq.test(tmp, membership, correct=FALSE))$p.value # warning=groups too small
+				chisq <- suppressWarnings(chisq.test(tmp, membership[est.idx], correct=FALSE))$p.value # warning=groups too small
 				vals <- c(vals, chisq)
 				meas <- c(meas, "Chi2_pval")
 				# Cramér's V
-				cram <- CramerV(x=tmp, y=membership)
+				cram <- CramerV(x=tmp, y=membership[est.idx])
 				vals <- c(vals, cram)
 				meas <- c(meas, "C_V")
 				# Goodman’s Kruskal Tau
-				tau <- GKtau(membership, tmp)
+				tau <- GKtau(membership[est.idx], tmp)
 				vals <- c(vals, tau$tauxy, tau$tauyx)
 				meas <- c(meas, "GK_tau_Com->Att", "GK_tau_Att->Com")
 				# record as a table
@@ -425,18 +433,20 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 			attr.folder <- file.path(coms.folder, attr)
 			dir.create(path=attr.folder, showWarnings=FALSE, recursive=TRUE)
 			
-			# get values
-			att.vals <- vertex_attr(g, attr)
+			# get values only for real-estate vertices
+			g0 <- delete_vertices(graph=g, v=non.est.idx)
+			att.vals <- vertex_attr(g0, attr)
+			
 			# only NAs, nothing to do
 			if(all(is.na(att.vals)))
 				tlog(4,"Only NAs: nothing to do")
 			# non-NA values
 			else
 			{	# exports basic stats for each group
-				tab <- t(sapply(coms, function(i) quantile(att.vals[membership==i], na.rm=TRUE)))
-				tab <- cbind(tab, sapply(coms, function(i) mean(att.vals[membership==i])))
+				tab <- t(sapply(coms, function(i) quantile(att.vals[membership[est.idx]==i], na.rm=TRUE)))
+				tab <- cbind(tab, sapply(coms, function(i) mean(att.vals[membership[est.idx]==i])))
 				colnames(tab)[ncol(tab)] <- "Mean"
-				tab <- cbind(tab, sapply(coms, function(i) sd(att.vals[membership==i], na.rm=TRUE)))
+				tab <- cbind(tab, sapply(coms, function(i) sd(att.vals[membership[est.idx]==i], na.rm=TRUE)))
 				colnames(tab)[ncol(tab)] <- "Stdev"
 				tab <- cbind(coms, tab)
 				colnames(tab)[1] <- "Group"
@@ -447,7 +457,7 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 				tlog(6,"Exporting group-wise distribution for attribute \"",attr,"\"")
 				if(length(unique(att.vals[!is.na(att.vals)]))==1)
 				{	tmp<-factor(att.vals)
-					tt <- t(sapply(coms, function(i) table(tmp[membership==i], useNA="always")))
+					tt <- t(sapply(coms, function(i) table(tmp[membership[est.idx]==i], useNA="always")))
 				}
 				else	
 				{	qt <- seq(from=0, to=1, by=0.2)
@@ -468,7 +478,7 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 					tmp <- sapply(att.vals, function(val) if(is.na(val)) NA else which(quant[,1]<val & quant[,2]>=val)[1])
 					tmp <- factor(qlabs[tmp], levels=qlabs)
 					#tmp <- cut(att.vals, breaks=5, include.lowest=TRUE, dig.lab=2)										# old version, less control
-					tt <- t(sapply(coms, function(i) table(tmp[membership==i], useNA="always")))
+					tt <- t(sapply(coms, function(i) table(tmp[membership[est.idx]==i], useNA="always")))
 				}
 				colnames(tt)[which(is.na(colnames(tt)))] <- "NA"
 				tab <- as.data.frame(tt)
@@ -499,7 +509,7 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 				vals <- c()
 				meas <- c()
 					# anova
-					if(length(unique(membership[!is.na(membership)]))<2 || length(unique(membership[!is.na(att.vals)]))<2)
+					if(length(unique(membership[!is.na(membership[est.idx])]))<2 || length(unique(membership[!is.na(att.vals)]))<2)
 						pval <- NA
 					else
 					{	fit <- suppressWarnings(aov(att.vals[!is.na(att.vals)]~as.factor(membership[!is.na(att.vals)])))	# warning=perfect fit
@@ -537,12 +547,12 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 		# compute average/stdev for each group
 		for(meas in meass)
 		{	# average
-			avg <- sapply(coms, function(i) mean(vertex_attr(graph=g, name=meas, index=which(membership==i)), na.rm=TRUE))
+			avg <- sapply(coms, function(i) mean(vertex_attr(graph=g, name=meas, index=which(membership[est.idx]==i)), na.rm=TRUE))
 			mn <- paste0(meas,"_avg")
 			cg <- set_vertex_attr(graph=cg, name=mn, value=avg)
 			tab <- cbind(tab, avg); colnames(tab)[ncol(tab)] <- mn 
 			# standard-deviation
-			stdev <- sapply(coms, function(i) sd(vertex_attr(graph=g, name=meas, index=which(membership==i)), na.rm=TRUE))
+			stdev <- sapply(coms, function(i) sd(vertex_attr(graph=g, name=meas, index=which(membership[est.idx]==i)), na.rm=TRUE))
 			mn <- paste0(meas,"_stdv")
 			cg <- set_vertex_attr(graph=cg, name=mn, value=stdev)
 			tab <- cbind(tab, stdev); colnames(tab)[ncol(tab)] <- mn 

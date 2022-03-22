@@ -19,7 +19,7 @@ FORMAT <- c("pdf", "png")	# plot file format: pdf png
 
 
 #############################################################
-# Displays the specified graph in an appropraite way, taking
+# Displays the specified graph in an appropriate way, taking
 # into account the previously set link and node attributes.
 #
 # g: graph to plot.

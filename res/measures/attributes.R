@@ -35,6 +35,11 @@ analyze.net.attributes <- function(g, out.folder)
 	# retrieve the list of vertex attributes
 	att.list <- list.vertex.attributes(g)
 	
+	# indices of real estate vertices
+	est.idx <- which(vertex_attr(g, name=COL_LOC_TYPE)=="Bien")
+	non.est.idx <- which(vertex_attr(g, name=COL_LOC_TYPE)!="Bien")
+	
+	
 	#############################
 	# deal with categorical attributes
 	cat.data <- NA
@@ -42,8 +47,10 @@ analyze.net.attributes <- function(g, out.folder)
 	# gather regular categorical attributes
 	attrs <- intersect(COL_CAT, vertex_attr_names(g))
 	for(attr in attrs)
-	{	# get values
-		tmp <- vertex_attr(g, attr)
+	{	# get values only for real-estate vertices
+		g0 <- delete_vertices(graph=g, v=non.est.idx)
+		tmp <- vertex_attr(g0, attr)
+		g00 <- set_vertex_attr(graph=g, name=attr, index=non.est.idx, value=rep(NA,length(non.est.idx)))
 		
 		# plot the attribute distribution as a barplot
 		tlog(4,"Bar-plotting attribute \"",attr,"\"")
@@ -64,8 +71,8 @@ analyze.net.attributes <- function(g, out.folder)
 		# plot the graph using colors for attribute values
 		tlog(4,"Graph-plotting attribute \"",attr,"\"")
 		plot.file <- file.path(plot.folder, paste0(attr,"_graph"))
-		V(g)$label <- rep(NA, gorder(g))
-		custom.gplot(g=g, col.att=attr, cat.att=TRUE, color.isolates=TRUE, file=plot.file)
+		V(g00)$label <- rep(NA, gorder(g00))
+		custom.gplot(g=g00, col.att=attr, cat.att=TRUE, color.isolates=TRUE, file=plot.file)
 		#custom.gplot(g=g, col.att=attr, cat.att=TRUE, color.isolates=TRUE)
 		
 		# add to matrix
@@ -80,8 +87,13 @@ analyze.net.attributes <- function(g, out.folder)
 	# convert tag-type attributes
 	attrs <- intersect(names(COL_TAG), vertex_attr_names(g))
 	for(attr in attrs)
-	{	attrc <- intersect(COL_TAG[[attr]], vertex_attr_names(g))
-		m <- sapply(attrc, function(att) vertex_attr(g, att))
+	{	# get values only for real-estate vertices
+		g0 <- delete_vertices(graph=g, v=non.est.idx)
+		tmp <- vertex_attr(g0, attr)
+		g00 <- set_vertex_attr(graph=g, name=attr, index=non.est.idx, value=rep(NA,length(non.est.idx)))
+		
+		attrc <- intersect(COL_TAG[[attr]], vertex_attr_names(g))
+		m <- sapply(attrc, function(att) vertex_attr(g0, att))
 		
 		# count tag distribution
 		idx.nas <- which(apply(m,1,function(r) all(is.na(r))))	# detect individuals with only NAs
@@ -94,7 +106,7 @@ analyze.net.attributes <- function(g, out.folder)
 			na.nbr <- tt[is.na(names(tt))]
 		else
 			na.nbr <- 0
-		tmp <- sapply(tt, function(x) gorder(g)-x-na.nbr)
+		tmp <- sapply(tt, function(x) gorder(g0)-x-na.nbr)
 		ymax <- max(tmp,na.nbr)
 		# identify least frequent values
 		unfrequent <- names(tt)[which(tt<=2)]
@@ -113,20 +125,17 @@ analyze.net.attributes <- function(g, out.folder)
 		table.file <- file.path(plot.folder, paste0(attr,"_vals.csv"))
 		write.csv(tt, file=table.file, row.names=FALSE)
 		# plot tags on a graph
-#		if(attr==ATT_NODE_TRAV_DEST)
-		{	gg <- g
-			for(a in colnames(m))
-			{	vals <- vertex_attr(g,a)
-				vals[which(!is.na(match(vals,unfrequent)))] <- paste0(" ",VAL_OTHER) # represent all unfrequent value under an umbrella name
-				g <- set_vertex_attr(g, a, value=vals)
-			}
+		g00 <- g
+		for(a in colnames(m))
+		{	vals <- vertex_attr(g0,a)
+			vals[which(!is.na(match(vals,unfrequent)))] <- paste0(" ",VAL_OTHER) # represent all unfrequent values under an umbrella name
+			g00 <- set_vertex_attr(graph=g00, name=a, index=non.est.idx, value=rep(NA,length(non.est.idx)))
+			g00 <- set_vertex_attr(graph=g00, name=a, index=est.idx, value=vals)
 		}
 		plot.file <- file.path(plot.folder, paste0(attr,"_graph"))
-		V(g)$label <- rep(NA, gorder(g))
-		custom.gplot(g=g, col.att=attrc, cat.att=TRUE, color.isolates=TRUE, file=plot.file)
-		#custom.gplot(g=g, col.att=attrc, cat.att=TRUE, color.isolates=TRUE)
-#		if(attr==ATT_NODE_TRAV_DEST)
-			g <- gg
+		V(g)$label <- rep(NA, gorder(g00))
+		custom.gplot(g=g00, col.att=attrc, cat.att=TRUE, color.isolates=TRUE, file=plot.file)
+		#custom.gplot(g=g00, col.att=attrc, cat.att=TRUE, color.isolates=TRUE)
 			
 		# add to matrix
 		tlog(4,"Adding attribute \"",attr,"\" to data matrix")
@@ -166,10 +175,11 @@ analyze.net.attributes <- function(g, out.folder)
 			# plot the graph using colors for attribute values
 			tlog(6,"Graph-plotting attribute \"",att_name,"\"")
 			plot.file <- file.path(plot.folder2, "graphs")
-			gg <- set_vertex_attr(graph=g, name=att_name, value=vals)
-			V(gg)$label <- rep(NA, gorder(gg))
-			custom.gplot(g=gg, col.att=att_name, col.att.cap=paste0(LONG_NAME[attr]," : ",uval), cat.att=TRUE, color.isolates=TRUE, file=plot.file)
-			#custom.gplot(g=gg, col.att=att_name, col.att.cap=paste0(LONG_NAME[attr]," : ",uval), cat.att=TRUE, color.isolates=TRUE)
+			g00 <- set_vertex_attr(graph=g, name=att_name, index=non.est.idx, value=rep(NA,length(non.est.idx)))
+			g00 <- set_vertex_attr(graph=g00, name=att_name, index=est.idx, value=vals)
+			V(g00)$label <- rep(NA, gorder(g00))
+			custom.gplot(g=g00, col.att=att_name, col.att.cap=paste0(LONG_NAME[attr]," : ",uval), cat.att=TRUE, color.isolates=TRUE, file=plot.file)
+			#custom.gplot(g=g00, col.att=att_name, col.att.cap=paste0(LONG_NAME[attr]," : ",uval), cat.att=TRUE, color.isolates=TRUE)
 		}
 	}
 	
@@ -203,6 +213,7 @@ analyze.net.attributes <- function(g, out.folder)
 		}
 	}
 	
+	
 	#############################
 	# deal with numerical attributes
 	num.data <- NULL
@@ -210,8 +221,9 @@ analyze.net.attributes <- function(g, out.folder)
 	# gather regular numerical attributes
 	attrs <- intersect(COL_NUM, vertex_attr_names(g))
 	for(attr in attrs)
-	{	# get values
-		tmp <- vertex_attr(g, attr)
+	{	# get values only for real-estate vertices
+		g0 <- delete_vertices(graph=g, v=non.est.idx)
+		tmp <- vertex_attr(g0, attr)
 		
 		# plot the attribute distribution as a histogram 
 		# (actually a barplot, for now, as the only numeric attribute is an integer)
@@ -246,16 +258,18 @@ analyze.net.attributes <- function(g, out.folder)
 	{	for(i in 1:ncol(num.data))
 		{	attr <- colnames(num.data)[i]
 			tlog(4,"Plotting attribute \"",attr,"\"")
-			gg <- set_vertex_attr(graph=g, name=attr, value=num.data[,i])
-			V(gg)$label <- rep(NA, gorder(gg))
+			g00 <- set_vertex_attr(graph=g, name=attr, index=non.est.idx, value=rep(NA,length(non.est.idx)))
+			g00 <- set_vertex_attr(graph=g00, name=attr, value=num.data[,i])
+			V(g00)$label <- rep(NA, gorder(g00))
 			plot.folder <- file.path(attr.folder, attr)
 			plot.file <- file.path(plot.folder, paste0(attr,"_graph"))
-			custom.gplot(g=gg, col.att=attr, cat.att=FALSE, color.isolates=TRUE, file=plot.file)
-#			custom.gplot(g=gg, col.att=attr, cat.att=FALSE, color.isolates=TRUE)
+			custom.gplot(g=g00, col.att=attr, cat.att=FALSE, color.isolates=TRUE, file=plot.file)
+#			custom.gplot(g=g00, col.att=attr, cat.att=FALSE, color.isolates=TRUE)
 		}
 	}
 	else
 		tlog(4,"No numerical attribute detected")
+	
 	
 	#############################
 	# attributes over

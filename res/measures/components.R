@@ -127,7 +127,11 @@ analyze.net.components <- function(g, out.folder)
 # returns: same graph, updated with the results.
 #############################################################
 analyze.net.components.corr <- function(g, out.folder)
-{	# retrieve the list of vertex attributes
+{	# indices of real estate vertices
+	est.idx <- which(vertex_attr(g, name=COL_LOC_TYPE)=="Bien")
+	non.est.idx <- which(vertex_attr(g, name=COL_LOC_TYPE)!="Bien")
+	
+	# retrieve the list of vertex attributes
 	att.list <- list.vertex.attributes(g)
 	modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
 	
@@ -144,7 +148,11 @@ vals <- c()
 	# gather regular categorical attributes 
 	attrs <- intersect(COL_CAT, vertex_attr_names(g))
 	for(attr in attrs)
-	{	tmp <- vertex_attr(g, attr)
+	{	# get values only for real-estate vertices
+		g0 <- delete_vertices(graph=g, v=non.est.idx)
+		tmp <- vertex_attr(g0, attr)
+		
+		# add to matrix
 		if(all(is.na(cat.data)))
 			cat.data <- matrix(as.integer(factor(tmp)),ncol=1)
 		else
@@ -155,8 +163,9 @@ vals <- c()
 	# convert tag-type attributes
 	attrs <- intersect(names(COL_TAG), vertex_attr_names(g))
 	for(attr in attrs)
-	{	tmp <- intersect(COL_TAG[[attr]], vertex_attr_names(g))
-		m <- sapply(tmp, function(att) vertex_attr(g, att))
+	{	g0 <- delete_vertices(graph=g, v=non.est.idx)
+		tmp <- intersect(COL_TAG[[attr]], vertex_attr_names(g))
+		m <- sapply(tmp, function(att) vertex_attr(g0, att))
 		# create a NA vs. rest attribute
 		cat.data <- cbind(cat.data, apply(m, 1, function(v) if(all(is.na(v))) 1 else 2))
 		colnames(cat.data)[ncol(cat.data)] <- paste0(attr,"_NAvsRest")
@@ -176,7 +185,11 @@ vals <- c()
 	# gather regular numerical attributes
 	attrs <- intersect(COL_NUM, vertex_attr_names(g))
 	for(attr in attrs)
-	{	tmp <- vertex_attr(g, attr)
+	{	# get values only for real-estate vertices
+		g0 <- delete_vertices(graph=g, v=non.est.idx)
+		tmp <- vertex_attr(g0, attr)
+		
+		# add to matrix
 		if(all(is.na(num.data)))
 			num.data <- matrix(tmp,ncol=1)
 		else
@@ -191,7 +204,7 @@ vals <- c()
 		
 		# detect components
 		cmp <- components(graph=g, mode=if(mode==MEAS_MODE_UNDIR) "weak" else "strong")
-		mbrs <- cmp$membership
+		mbrs <- cmp$membership[est.idx]
 		comp.sizes <- cmp$csize[mbrs]
 		
 		# deal with categorical attributes
