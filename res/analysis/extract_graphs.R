@@ -858,25 +858,45 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	#print(which(is.na(comp.names)))
 	V(g)$label <- comp.names
 	
-#	# init layout
+	# init layout
+	tlog(2,"Set up layout")
+	lay.file <- file.path(FOLDER_OUT_ANAL_EST,"layout.txt")
+	# compute layout directly from igraph
 ##	layout <- layout_with_fr(g)
 ##	layout <- layout_with_fr(g, kkconst=0)
 ##	layout <- layout_nicely(g)
 ##	layout <- layout_with_dh(g)		# very slow
 ##	layout <- layout_with_gem(g)		# extremely slow
-	layout <- layout_with_kk(g, kkconst=gorder(g)/16)
+#	layout <- layout_with_kk(g, kkconst=gorder(g)/16)
 ##	layout <- layout_with_mds(g)
 ##	layout <- layout_with_lgl(g)
 #	layout <- layout_with_graphopt(g, charge=0.01, spring.length=3)
 #	# old code used to manually refine the layout
 ##		tkplot(g, layout=layout)
 ##		layout <- tk_coords(3)
+	######
+#	# export to graphml and use gephi, then import back
+#	file <- file.path(FOLDER_OUT_ANAL_EST,"graph_kk.graphml")
+#	write.graphml.file(g=g, file=file)
+#	# <do your magic with gephi, then record graph with new layout>
+#	g0 <- read.graph(file, format="graphml")
+#	layout <- cbind(V(g0)$x,V(g0)$y)
+#	write.table(x=layout, file=lay.fime, sep="\t", row.names=F, col.names=F)
+	######
 	# update graph
-	V(g)$x2 <- layout[,1]
-	V(g)$y2 <- layout[,2]
-#	#V(g)$label <- NA
-#	#custom.gplot(=gg)
-	
+	tlog(4,"Reading layout from file ",lay.file)
+	layout <- read.table(file=lay.file, sep="\t", header=F)
+	V(g)$x2 <- layout[,1]; V(g)$y2 <- layout[,2]
+	# plot graph
+	plot.file <- file.path(FOLDER_OUT_ANAL_EST,"graph_kk")
+	tlog(4,"Plotting in file ",plot.file)
+	g0 <- g
+	V(g0)$x <- layout[,1]; V(g0)$y <- layout[,2]
+	V(g0)$label <- NA
+	idx <- which(degree(g)>5)
+	V(g0)[idx]$label <- comp.names[idx]
+	custom.gplot(g=g0, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g0)$x), ylim=range(V(g0)$y), edge.arrow.mode=0, vertex.label.cex=0.1)
+
 	# use spatial coordinates for layout
 	tlog(2,"Using spatial coordinates to define layout")
 	V(g)$x <- vertex_attr(g, name=COL_LOC_HYP_LON)	# COL_LOC_X	COL_LOC_HYP_LON
@@ -1125,6 +1145,8 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #
 # - à tester
 #   - ne conserver que les biens dans les stats basées sur les attributs
+#
+# - pb observés: 
 
 
 

@@ -364,12 +364,12 @@ LK_TYPE <- "type"
 	LK_TYPE_ECCL <- "Ecclesiastical"
 	LK_TYPE_SOC_LST <- c(LK_TYPE_ALL, LK_TYPE_FAM, LK_TYPE_PRO, LK_TYPE_ECCL)
 	# confront
-	LK_TYPE_FLATREL <- "Flat_rel"	# keeps everything but the membership relations
+	LK_TYPE_FLATREL <- "Flat_rel"		# keeps everything but the membership relations
 # link description
 LK_DESCR <- "description"
 
 # levels
-LV_ESTATE <- "lv_estate"	# basically only keeps real estate entities
+LV_ESTATE <- "lv_estate"				# basically only keeps real estate entities
 
 # map to convert link attribute values
 MAP_TABLE2GRAPH <- c()

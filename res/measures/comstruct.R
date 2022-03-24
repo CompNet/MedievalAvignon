@@ -146,7 +146,7 @@ analyze.net.comstruct <- function(g, out.folder)
 				#custom.gplot(g=g, col.att=fname,cat.att=TRUE)
 				
 				# assess community purity for all attributes
-				g <- analyze.net.comstruct.attributes(g, coms.folder, mbrs)
+				g <- analyze.net.comstruct.attributes(g=g, coms.folder=coms.folder, membership=mbrs)
 			}
 		}
 	}
@@ -512,7 +512,7 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 					if(length(unique(membership[!is.na(membership[est.idx])]))<2 || length(unique(membership[!is.na(att.vals)]))<2)
 						pval <- NA
 					else
-					{	fit <- suppressWarnings(aov(att.vals[!is.na(att.vals)]~as.factor(membership[!is.na(att.vals)])))	# warning=perfect fit
+					{	fit <- suppressWarnings(aov(att.vals[!is.na(att.vals)]~as.factor(membership[est.idx][!is.na(att.vals)])))	# warning=perfect fit
 						pval <- summary(fit)[[1]][["Pr(>F)"]][1]	# dirty workaround to get the p-value, see https://stackoverflow.com/questions/3366506/extract-p-value-from-aov
 					}
 					vals <- c(vals, pval)
