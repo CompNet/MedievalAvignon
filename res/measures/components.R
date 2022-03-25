@@ -218,12 +218,13 @@ vals <- c()
 			if(any(is.na(cat.data[,i])))
 			{	# explicitly represent NAs as a class
 				cd <- as.integer(cat.data[,i])
-				if(all(is.na(cd)))
+				if(all(is.na(cd)) || length(unique(cd))==1)
 					cor <- NA
 				else
 				{	cd[is.na(cd)] <- max(cd,na.rm=TRUE) + 1
 					fit <- aov(comp.sizes~as.factor(cd))
 					cor <- eta_sq(fit)$etasq
+					if(is.null(cor)) cor <- NA
 				}
 				tlog(8,"Association for attribute \"",attr,"\" (mode=",mode,") when representing NAs explicitly: ",cor)
 				name <- paste0(attr,"_expNA")
@@ -234,7 +235,7 @@ vals <- c()
 				val.tab[name,mode] <- cor
 				# just ignore NAs
 				cd <- as.integer(cat.data[,i])
-				if(all(is.na(cd)))
+				if(all(is.na(cd)) || length(unique(cd))==1)
 					cor <- NA
 				else
 				{	cs <- comp.sizes[!is.na(cd)]
@@ -244,6 +245,7 @@ vals <- c()
 					else
 					{	fit <- aov(cs~as.factor(cd))
 						cor <- eta_sq(fit)$etasq
+						if(is.null(cor)) cor <- NA
 					}
 				}
 				tlog(8,"Association for attribute \"",attr,"\" (mode=",mode,") when ignoring NAs: ",cor)
@@ -255,13 +257,14 @@ vals <- c()
 				val.tab[name,mode] <- cor
 				# do NA vs. the rest
 				cd <- as.integer(cat.data[,i])
-				if(all(is.na(cd)))
+				if(all(is.na(cd)) || length(unique(cd))==1)
 					cor <- NA
 				else
 				{	cd[!is.na(cd)] <- 1
 					cd[is.na(cd)] <- 2
 					fit <- aov(comp.sizes~as.factor(cd))
 					cor <- eta_sq(fit)$etasq
+					if(is.null(cor)) cor <- NA
 				}
 				tlog(8,"Association for attribute \"",attr,"\" (mode=",mode,") when considering NAs vs the rest: ",cor)
 				name <- paste0(attr,"_NAvsRest")
@@ -275,8 +278,13 @@ vals <- c()
 			# no NA at all
 			else
 			{	cd <- as.integer(cat.data[,i])
-				fit <- aov(comp.sizes~as.factor(cd))
-				cor <- eta_sq(fit)$etasq
+				if(length(unique(cd))==1)
+					cor <- NA
+				else
+				{	fit <- aov(comp.sizes~as.factor(cd))
+					cor <- eta_sq(fit)$etasq
+					if(is.null(cor)) cor <- NA
+				}
 				tlog(8,"Association for attribute \"",attr,"\" (mode=",mode,"): ",cor)
 				name <- paste0(attr)
 				if(!(name %in% rownames(val.tab)))
@@ -337,6 +345,7 @@ vals <- c()
 						cd[is.na(cd)] <- 2
 						fit <- aov(comp.sizes~as.factor(cd))
 						cor <- eta_sq(fit)$etasq
+						if(is.null(cor)) cor <- NA
 					}
 					tlog(12,"Correlation for attribute \"",attr,"\" (mode=",mode,") when considering NAs vs the rest: ",cor)
 					name <- paste0(attr,"_NAvsRest")

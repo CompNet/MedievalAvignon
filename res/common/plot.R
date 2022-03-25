@@ -199,8 +199,8 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 					pie.values[!are.pie | !connected] <- NA
 					vshapes[are.pie & connected] <- rep("pie",length(which(are.pie & connected)))
 					vcols[are.pie & connected] <- NA
-					vcols[!are.pie & connected] <- apply(m[!are.pie & connected,,drop=FALSE], 1, 
-							function(v) lgd.col[which(v>0)])
+					if(any(!are.pie & connected))
+						vcols[!are.pie & connected] <- apply(m[!are.pie & connected,,drop=FALSE], 1, function(v) if(any(v>0)) lgd.col[which(v>0)] else "#F0F0F0")
 				}
 			}
 		}
