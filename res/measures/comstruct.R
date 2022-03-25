@@ -248,21 +248,32 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 			custom.gplot(cg2, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=plot.file, color.isolates=TRUE)
 			#custom.gplot(cg2, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE)
 			
-			# compute purity for each group
-			pur.tab <- apply(tt, 1, function(row) max(row)/sum(row))
-			tab <- as.data.frame(pur.tab)
+			# compute group purity for each group
+			grp.pur.tab <- apply(tt, 1, function(row) max(row)/sum(row))
+			tab <- as.data.frame(grp.pur.tab)
 			tab <- cbind(coms, tab)
-			colnames(tab) <- c("Group", "Purity")
-			tab.file <- file.path(attr.folder, paste0(attr,"_purity.csv"))
+			colnames(tab) <- c("Group", "GrpPurity")
+			tab.file <- file.path(attr.folder, paste0(attr,"_grp-purity.csv"))
 			write.csv(tab, file=tab.file, row.names=FALSE)
+			# compute attribute purity for each attribute value (ignoring NAs)
+			if(ncol(tt)>1)
+			{	att.pur.tab <- apply(tt[,colnames(tt)!="NA",drop=FALSE], 2, function(col) max(col)/sum(col))
+				tab <- as.data.frame(att.pur.tab)
+				tab <- cbind(colnames(tt[,colnames(tt)!="NA",drop=FALSE]), tab)
+				colnames(tab) <- c("Value", "ValPurity")
+				rownames(tab) <- NULL
+				tab.file <- file.path(attr.folder, paste0(attr,"_val-purity.csv"))
+				write.csv(tab, file=tab.file, row.names=FALSE)
+			}
 			
 			# compute global measures
 			vals <- c()
 			meas <- c()
-				# purity
-				pur.total <- sum(rowSums(tt)/gorder(g0)*pur.tab)
-				vals <- c(vals, pur.total)
-				meas <- c(meas, "Purity")
+				# purity measures
+				grp.pur.total <- sum(rowSums(tt)/gorder(g0)*grp.pur.tab)
+				att.pur.total <- sum(colSums(tt[,colnames(tt)!="NA",drop=FALSE])/gorder(g0)*att.pur.tab)
+				vals <- c(vals, grp.pur.total, att.pur.total)
+				meas <- c(meas, "GrpPurity", "ValPurity")
 				# chi-squared test of independence (dpt if p<0.05)
 				if(all(is.na(tmp)) || length(unique(tmp))==1 || any(is.na(tmp)) && length(unique(tmp))==2)
 					chisq <- NA
@@ -336,14 +347,24 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 			custom.gplot(cg2, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=plot.file, color.isolates=TRUE)
 			#custom.gplot(cg2, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE)
 			
-			# compute purity for each group
-			pur.tab <- apply(tt, 1, function(row) max(row)/sum(row))
-			tab <- as.data.frame(pur.tab)
+			# compute group purity for each group
+			grp.pur.tab <- apply(tt, 1, function(row) max(row)/sum(row))
+			tab <- as.data.frame(grp.pur.tab)
 			tab <- cbind(coms, tab)
-			colnames(tab) <- c("Group", "Purity")
-			tab.file <- file.path(attr.folder, paste0(attr,"_purity.csv"))
+			colnames(tab) <- c("Group", "GrpPurity")
+			tab.file <- file.path(attr.folder, paste0(attr,"_grp-purity.csv"))
 			write.csv(tab, file=tab.file, row.names=FALSE)
-
+			# compute attribute purity for each attribute value (ignoring NAs)
+			if(ncol(tt)>1)
+			{	att.pur.tab <- apply(tt[,colnames(tt)!="NA",drop=FALSE], 2, function(col) max(col)/sum(col))
+				tab <- as.data.frame(att.pur.tab)
+				tab <- cbind(colnames(tt[,colnames(tt)!="NA",drop=FALSE]), tab)
+				colnames(tab) <- c("Value", "ValPurity")
+				rownames(tab) <- NULL
+				tab.file <- file.path(attr.folder, paste0(attr,"_val-purity.csv"))
+				write.csv(tab, file=tab.file, row.names=FALSE)
+			}
+			
 			# processing each value separately
 			for(uval in uvals)
 			{	# binarize tags
@@ -386,21 +407,32 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 				custom.gplot(cg2, col.att=colnames(tt), col.att.cap=paste0(attr," : ",uval), size.att="size", cat.att=TRUE, file=plot.file, color.isolates=TRUE)
 				#custom.gplot(cg2, col.att=colnames(tt), col.att.cap=attr_val, size.att="size", cat.att=TRUE)
 				
-				# compute purity for each group
-				pur.tab <- apply(tt, 1, function(row) max(row)/sum(row))
-				tab <- as.data.frame(pur.tab)
+				# compute group purity for each group
+				grp.pur.tab <- apply(tt, 1, function(row) max(row)/sum(row))
+				tab <- as.data.frame(grp.pur.tab)
 				tab <- cbind(coms, tab)
-				colnames(tab) <- c("Group", "Purity")
-				tab.file <- file.path(attrval.folder, paste0("purity.csv"))
+				colnames(tab) <- c("Group", "GrpPurity")
+				tab.file <- file.path(attrval.folder, paste0(attr,"_grp-purity.csv"))
 				write.csv(tab, file=tab.file, row.names=FALSE)
+				# compute attribute purity for each attribute value (ignoring NAs)
+				if(ncol(tt)>1)
+				{	att.pur.tab <- apply(tt[,colnames(tt)!="NA",drop=FALSE], 2, function(col) max(col)/sum(col))
+					tab <- as.data.frame(att.pur.tab)
+					tab <- cbind(colnames(tt[,colnames(tt)!="NA",drop=FALSE]), tab)
+					colnames(tab) <- c("Value", "ValPurity")
+					rownames(tab) <- NULL
+					tab.file <- file.path(attrval.folder, paste0(attr,"_val-purity.csv"))
+					write.csv(tab, file=tab.file, row.names=FALSE)
+				}
 				
 				# compute global measures
 				vals <- c()
 				meas <- c()
-				# purity
-				pur.total <- sum(rowSums(tt)/gorder(g)*pur.tab)
-				vals <- c(vals, pur.total)
-				meas <- c(meas, "Purity")
+				# purity measures
+				grp.pur.total <- sum(rowSums(tt)/gorder(g0)*grp.pur.tab)
+				att.pur.total <- sum(colSums(tt[,colnames(tt)!="NA",drop=FALSE])/gorder(g0)*att.pur.tab)
+				vals <- c(vals, grp.pur.total, att.pur.total)
+				meas <- c(meas, "GrpPurity", "ValPurity")
 				# chi-squared test of independence (dpt if p<0.05)
 				chisq <- suppressWarnings(chisq.test(tmp, membership[est.idx], correct=FALSE))$p.value # warning=groups too small
 				vals <- c(vals, chisq)
