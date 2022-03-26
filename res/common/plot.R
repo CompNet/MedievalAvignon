@@ -39,30 +39,44 @@ FORMAT <- c("pdf", "png")	# plot file format: pdf png
 # color.isolates: force isolates to be colored (by default they are not)
 # col.att.cap: caption of the node colors, to be used for certain pie-charts. 
 # file: (optional) file name, to record the plot.
+# top.vertices: nodes to draw on top of the plot. If not specified and some nodes
+#				are highlighted, those are drawn on top.
+# top.edges: links to draw on top of the plot. If not specified and some paths
+# 			 are highlighted, the corresponding edges are drawn on top. Same thing
+#			 for e.hl (highlighted edges).
 # ...: parameters sent directly to the plot function.
 #############################################################
-custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE, v.hl, e.hl, color.isolates=FALSE, file, ...)
-{	pie.values <- NA
+custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE, v.hl, e.hl, color.isolates=FALSE, file, top.vertices=c(), top.edges=c(), ...)
+{	# init graph info
+	m <- gsize(g)						# number of edges
+	n <- gorder(g)						# number of nodes
+	directed <- is.directed(g)			# whether the graph is directed
+	layout <- cbind(V(g)$x, V(g)$y)		# predefined layout
+#	vlabels <- V(g)$label0				# node short labels
+	vlabels <- V(g)$label				# node long labels
+	gtype <- graph_attr(g, GR_TYPE)		# graph type social vs. spatial network (for the current application)
+	
+	pie.values <- NA
 	lgd.col <- NA
 	
 	# vertex shapes
-	vshapes <- rep("circle",gorder(g))
+	vshapes <- rep("circle",n)
 	if(hasArg(v.hl))
 		vshapes[v.hl] <- "csquare"
 	# vertex outline color
-	outline.cols <- rep("BLACK",gorder(g))
+	outline.cols <- rep("BLACK",n)
 	
 	# set edge colors
-	ecols <- rep("BLACK", gsize(g))						# default color
+	ecols <- rep("BLACK", m)						# default color
 	nature <- edge_attr(g, LK_TYPE)
 	if(length(nature)>0)
-	{	if(graph_attr(g, GR_TYPE)==GR_TYPE_SOC)
+	{	if(gtype==GR_TYPE_SOC)
 		{	ecols[nature==LK_TYPE_PRO] <- "#1A8F39"			# green
 			ecols[nature==LK_TYPE_FAM] <- "#9C1699"			# purple
 #			ecols[nature==LK_TYPE_XXX] <- "#C27604"			# orange
 #			ecols[nature==LK_TYPE_UNK] <- "#222222"			# dark grey
 		}
-		else if(graph_attr(g, GR_TYPE)==GR_TYPE_EST)
+		else if(gtype==GR_TYPE_EST)
 		{	nats <- sort(unique(nature))
 			epal <- get.palette(length(nats))
 			for(i in 1:length(nats))
@@ -70,11 +84,15 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 		}
 	}
 	# set edge width
-	if(is.null(E(g)$weight))							# if no weight:
-		E(g)$weight <- rep(1,gsize(g))					# same edge width
-	ewidth <- E(g)$weight
+	weights <- rep(1,m)
+	if(is.null(E(g)$weight))
+		# if no weight: same edge width
+		weights <- rep(1,m)
+	else
+		weights <- E(g)$weight
+	ewidth <- weights
 	# set edge line type
-	elty <- rep(1,gsize(g))								# solid
+	elty <- rep(1,m)								# solid
 	# set edge transparency
 #	idx <- as.integer(E(g)[from(1)])	# edges attached to Trajan
 #	if(length(idx)>0)
@@ -90,19 +108,19 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 			paths <- list(paths)
 		for(path in paths)
 		{	v <- NA
-			for(n in path)
+			for(p in path)
 			{	if(is.na(v))
-				{	v <- n
+				{	v <- p
 					outline.cols[v] <- "RED"
 					vshapes[v] <- "csquare"
 				}
 				else
 				{	u <- v
-					v <- n
+					v <- p
 					outline.cols[v] <- "RED"
 					idx <- as.integer(E(g)[u %--% v])
 					ecols[idx] <- "RED"
-					ewidth[idx] <- 2*E(g)$weight[idx]
+					ewidth[idx] <- 2*weights[idx]
 				}
 			}
 			outline.cols[v] <- "RED"
@@ -113,15 +131,15 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 	# possibly highlight certain links
 	if(hasArg(e.hl))
 	{	if(length(e.hl)>0)
-			ewidth[e.hl] <- E(g)$weight[e.hl]*3
+			ewidth[e.hl] <- weights[e.hl]*3
 	}
 	
 	# vertex color
 	if(hasArg(col.att))
 	{	# isolates have no color
-		vcols <- rep("WHITE",gorder(g))
+		vcols <- rep("WHITE",n)
 		if(color.isolates)
-			connected <- rep(TRUE, gorder(g))
+			connected <- rep(TRUE, n)
 		else
 			connected <- igraph::degree(g)>0
 		
@@ -162,16 +180,16 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 				if(hasArg(col.att.cap))
 					leg.cap <- col.att.cap
 				# get attribute values as a matrix
-				m <- sapply(col.att, function(att) vertex_attr(g, att))
+				mat <- sapply(col.att, function(att) vertex_attr(g, att))
 				
 				# several boolean attributes, to combine (like multiple tags)
 				if(!is.numeric(vvals))
-				{	are.nas <- apply(m,1,function(r) all(is.na(r)))					# detect individuals with only NAs
-					are.pie <- apply(m,1,function(r) length(r[!is.na(r)])>1)		# detect individuals with several non-NA values
-					uvals <- sort(unique(c(m)))										# get unique attribute values
+				{	are.nas <- apply(mat,1,function(r) all(is.na(r)))					# detect individuals with only NAs
+					are.pie <- apply(mat,1,function(r) length(r[!is.na(r)])>1)		# detect individuals with several non-NA values
+					uvals <- sort(unique(c(mat)))										# get unique attribute values
 					pie.matrix <- NA
 					for(uval in uvals)												# build a column for each of them
-					{	vals <- as.integer(apply(m, 1, function(v) uval %in% v[!is.na(v)]))
+					{	vals <- as.integer(apply(mat, 1, function(v) uval %in% v[!is.na(v)]))
 						if(all(is.na(pie.matrix)))
 							pie.matrix <- as.matrix(vals, ncol=1)
 						else
@@ -190,23 +208,23 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 				}
 				# counts of categorical attributes inside a community
 				else
-				{	are.pie <- apply(m,1,function(r) length(which(r>0))>1)				# detect individuals with several non-zero values
+				{	are.pie <- apply(mat,1,function(r) length(which(r>0))>1)				# detect individuals with several non-zero values
 					lgd.txt <- col.att
 					colcols <- get.palette(length(lgd.txt))
 					lgd.col <- colcols[(1:length(lgd.txt)-1) %% length(colcols) + 1]
 					lgd.col[which(is.na(lgd.txt) | lgd.txt=="NA")] <- "#F0F0F0"			# force NA to white
-					pie.values <- split(m,1:nrow(m))
+					pie.values <- split(mat,1:nrow(mat))
 					pie.values[!are.pie | !connected] <- NA
 					vshapes[are.pie & connected] <- rep("pie",length(which(are.pie & connected)))
 					vcols[are.pie & connected] <- NA
 					if(any(!are.pie & connected))
-						vcols[!are.pie & connected] <- apply(m[!are.pie & connected,,drop=FALSE], 1, function(v) if(any(v>0)) lgd.col[which(v>0)] else "#F0F0F0")
+						vcols[!are.pie & connected] <- apply(mat[!are.pie & connected,,drop=FALSE], 1, function(v) if(any(v>0)) lgd.col[which(v>0)] else "#F0F0F0")
 				}
 			}
 		}
 	}
 	else
-		vcols <- rep("GREY",gorder(g))
+		vcols <- rep("GREY",n)
 	
 	# vertex size
 	if(hasArg(size.att))
@@ -220,7 +238,7 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 			vvals <- get.vertex.attribute(graph=g, name=size.att)
 			
 			# init limit sizes
-			vsizes <- rep(NA, gorder(g))
+			vsizes <- rep(NA, n)
 			min.size <- if(min(vvals,na.rm=TRUE)==0) 0 else 2
 			max.size <- 20
 			cut.nbr <- 4
@@ -245,25 +263,98 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 		}
 	}
 	else
-		vsizes <- 3
+		vsizes <- rep(3,n)
+	
+	# possibly reorder vertices
+	if(length(top.vertices)>0 || hasArg(paths) || hasArg(v.hl))
+	{	# possibly use other parameters if no top vertex specified
+		if(length(top.vertices)==0)
+		{	if(hasArg(v.hl))
+				top.vertices <- v.hl
+			else if(hasArg(paths))
+				top.vertices <- unique(unlist(paths))
+		}
+		
+		# if we have some top vertices, then move them up
+		if(length(top.vertices)>0)
+		{	# revise vertex order
+			idx <- c((1:n)[-top.vertices], rev(top.vertices))
+			ord <- order(idx)
+			
+			# re-order vertex attributes
+			layout <- layout[idx,]
+			vsizes <- vsizes[idx]
+			vcols <- vcols[idx]
+			pie.values <- pie.values[idx]
+			vshapes <- vshapes[idx]
+			outline.cols <- outline.cols[idx]
+			vlabels <- vlabels[idx]
+			
+			# re-number edges
+			el <- as_edgelist(graph=g, names=FALSE)
+			el <- apply(el, 1:2, function(v) ord[v])
+			
+			# recreate graph
+			g <- graph_from_edgelist(el=el, directed=directed)
+			if(gorder(g)<n) # possibly add missing isolates
+				g <- add_vertices(graph=g, nv=n-gorder(g))
+		}
+	}
+	
+	# possibly reorder edges
+	if(length(top.edges)>0 || hasArg(paths) || hasArg(e.hl))
+	{	# possibly use other parameters if no top edge specified
+		if(length(top.edges)==0)
+		{	if(hasArg(e.hl))
+				top.edges <- e.hl
+			else if(hasArg(paths))
+				top.edges <- unlist(lapply(paths, function(p) c(t(cbind(p[1:(length(p)-1)],p[2:length(p)])))))
+		}
+		# if we have some top edges, then move them up
+		if(length(top.edges)>0)
+		{	# revise edge order
+			el <- as_edgelist(graph=g, names=FALSE)
+			lst <- lapply(1:(length(top.edges)/2), function(i) 
+			{	e <- top.edges[c(i,i+1)]
+				if(directed)
+					return(which(el[,1]==e[1] & el[,2]==e[2]))
+				else
+					return(which(el[,1]==e[1] & el[,2]==e[2]) | el[,1]==e[2] & el[,2]==e[1])
+			})
+			top.edges <- unlist(lst)
+			idx <- c((1:m)[-top.edges], rev(top.edges))
+			# re-order edges
+			el <- el[idx,,drop=FALSE]
+			
+			# re-order edge attributes
+			ecols <- ecols[idx]
+			elty <- elty[idx]
+			ewidth <- ewidth[idx]
+			
+			# recreate graph
+			g <- graph_from_edgelist(el=el, directed=directed)
+			if(gorder(g)<n) # possibly add missing isolates
+				g <- add_vertices(graph=g, nv=n-gorder(g))
+		}
+	}
 	
 	# main plot
 	for(fformat in FORMAT)
 	{	if(hasArg(file))
 		{	if(fformat=="pdf")
-			{	if(graph_attr(g, GR_TYPE)==GR_TYPE_SOC)
+			{	if(gtype==GR_TYPE_SOC)
 					pdf(paste0(file,".pdf"), width=25, height=25)
 				else
 					pdf(paste0(file,".pdf"), width=50, height=25)
 			}
 			else if(fformat=="png")
-			{	if(graph_attr(g, GR_TYPE)==GR_TYPE_SOC)
+			{	if(gtype==GR_TYPE_SOC)
 					png(paste0(file,".png"), width=1024, height=1024)
 				else
 					png(paste0(file,".png"), width=2048, height=1024)
 			}
 		}
-		if(graph_attr(g, GR_TYPE)==GR_TYPE_SOC)
+		if(gtype==GR_TYPE_SOC)
 		{	par(mar=c(5,4,4,2)+.1)						# 5, 4, 4, 2 (B L T R)
 			arrow.param <- 0.75
 		}
@@ -273,15 +364,14 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 		}
 		plot(g,										# graph to plot
 			#axes=TRUE,								# whether to draw axes or not
-			layout=cbind(V(g)$x,V(g)$y),			# predefined layout
+			layout=layout,							# predefined layout
 			vertex.size=vsizes,						# node size
 			vertex.color=vcols,						# node color
 			vertex.pie=pie.values,					# node pie proportions
 			vertex.pie.color=list(lgd.col),			# node pie colors
 			vertex.shape=vshapes,					# node shape
 			vertex.frame.color=outline.cols,		# node border color
-			#vertex.label=V(g)$label0,				# node short labels
-			vertex.label=V(g)$label,				# node long labels
+			vertex.label=vlabels,					# node labels
 #			vertex.label.cex=1.2,					# label size
 			vertex.label.family="sans",				# font type
 			vertex.label.font=1,					# 1 is plain text, 2 is bold face, 3 is italic, 4 is bold and italic
@@ -296,7 +386,7 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 			...										# other parameters
 		)
 		if(length(nature)>0)
-		{	if(graph_attr(g, GR_TYPE)==GR_TYPE_SOC)
+		{	if(gtype==GR_TYPE_SOC)
 			{	legend(
 					title="Link type",								# title of the legend box
 					x="topright",									# position
@@ -403,27 +493,27 @@ custom.hist <- function(vals, name, file)
 #			par(mar=c(5,3,1,2)+0.1)	# remove the title space Bottom Left Top Right
 			par(mar=c(5.1, 4.1, 4.1, 2.1))
 			hist(
-					vals,			# data
-					col="#ffd6d6",	# bar color
-					main=NA,		# no main title
-					prob=TRUE,		# frenquency density
-					breaks=20,		# number of bars
-					xlab=name,		# x-axis label
-					ylab="Densite"	# y-axis label
+				vals,			# data
+				col="#ffd6d6",	# bar color
+				main=NA,		# no main title
+				prob=TRUE,		# frenquency density
+				breaks=20,		# number of bars
+				xlab=name,		# x-axis label
+				ylab="Densite"	# y-axis label
 			)
 			lines(
-					density(vals), 	# density estimate
-					lwd=2, 			# line thickness
-					col="RED"		# line color
+				density(vals), 	# density estimate
+				lwd=2, 			# line thickness
+				col="RED"		# line color
 			)
 			stripchart(
-					vals, 			# data
-					at=0.02, 		# central position of points (y)
-					pch=21, 		# point shape
-					col="BLACK", 	# point color
-					method="jitter",# noise to avoid overlaps
-					jitter=0.02, 	# noise magnitude
-					add=TRUE		# add to current plot
+				vals, 			# data
+				at=0.02, 		# central position of points (y)
+				pch=21, 		# point shape
+				col="BLACK", 	# point color
+				method="jitter",# noise to avoid overlaps
+				jitter=0.02, 	# noise magnitude
+				add=TRUE		# add to current plot
 			)
 			if(hasArg(file))
 				dev.off()
@@ -700,8 +790,9 @@ legend.box <- function (x, y = NULL, maxradius, mab = 1.2, inset = 0, double = F
 
 
 #############################################################################################
+# Returns the current aspect ratio. 
 # Function taken from
-# https://rdrr.io/github/AtlanticR/bio.utilities/src/R/get.asp.r
+# 	https://rdrr.io/github/AtlanticR/bio.utilities/src/R/get.asp.r
 #############################################################################################
 get.asp <- function() 
 {	pin <- par("pin")
