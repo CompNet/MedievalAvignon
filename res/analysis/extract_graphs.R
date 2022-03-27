@@ -1137,11 +1137,11 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #
 # TODO
 # - à implémenter
-#   - vérifier que les tags sont traités correctement dans le cas "tous NA" (? quand on n'a que des NA dans les plots, est-ce vraiment dû à des labels tous NA ?)
+#   ? vérifier que les tags sont traités correctement dans le cas "tous NA" (? quand on n'a que des NA dans les plots, est-ce vraiment dû à des labels tous NA ?)
 #   x générer des visualisations faisant apparaître les composants (kamada-kawaii ou autre)
 #   x pureté : calculer les versions asymétriques séparémment
-#   - ordonner les noeuds selon l'attribut affiché (lors du tracé des graphiques de graphes)
-#   - pb simstruct : noms de fichiers = numéros (+ nom comme actuellement)
+#   x ordonner les noeuds selon l'attribut affiché (lors du tracé des graphiques de graphes)
+#   x pb simstruct : noms de fichiers = numéros (+ nom comme actuellement)
 #
 # - à tester
 #   - ne conserver que les biens dans les stats basées sur les attributs
