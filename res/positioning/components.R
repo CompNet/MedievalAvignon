@@ -7,7 +7,7 @@
 # source("res/positioning/components.R")
 ########################################################################
 # load other scripts
-source("res/common/include.R")
+source("res/common/_include.R")
 
 # possibly create folder
 dir.create(path=FOLDER_OUT_POS, showWarnings=FALSE, recursive=TRUE)

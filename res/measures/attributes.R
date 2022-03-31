@@ -265,7 +265,7 @@ analyze.net.attributes <- function(g, out.folder)
 		{	attr <- colnames(num.data)[i]
 			tlog(4,"Plotting attribute \"",attr,"\"")
 			g00 <- set_vertex_attr(graph=g, name=attr, index=non.est.idx, value=rep(NA,length(non.est.idx)))
-			g00 <- set_vertex_attr(graph=g00, name=attr, value=num.data[,i])
+			g00 <- set_vertex_attr(graph=g00, name=attr, index=est.idx, value=num.data[,i])
 			V(g00)$label <- rep(NA, gorder(g00))
 			plot.folder <- file.path(attr.folder, attr)
 			plot.file <- file.path(plot.folder, paste0(attr,"_graph"))

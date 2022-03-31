@@ -81,7 +81,7 @@ analyze.net.eccentricity <- function(g, out.folder)
 						
 						custom.gplot(g=g, paths=diam.paths[[pp]][[p]], file=file.path(diameter.folder,paste0(MEAS_DIAMETER,"_",mode,"_graph_",pp,"_",q)))
 						g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2
-						custom.gplot(g=g1, paths=diam.paths[[pp]][[p]], file=file.path(diameter.folder,paste0(MEAS_DIAMETER,"_",mode,"_graph_kk",pp,"_",q)), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y))
+						custom.gplot(g=g1, paths=diam.paths[[pp]][[p]], file=file.path(diameter.folder,paste0(MEAS_DIAMETER,"_",mode,"_graph_kk_",pp,"_",q)), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y))
 						
 						q <- q + 1
 					}
@@ -128,6 +128,8 @@ analyze.net.eccentricity <- function(g, out.folder)
 		g <- update.node.labels(g, vals)
 		custom.gplot(g=g, col.att=fname, file=file.path(eccentricity.folder,paste0(fname,"_graph")))
 		#custom.gplot(g=g, col.att=fname)
+		g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2
+		custom.gplot(g=g1, col.att=fname, file=file.path(eccentricity.folder,paste0(fname,"_graph_kk")))
 		
 		# compute radius
 		tlog(2,"Computing radius: mode=",mode)

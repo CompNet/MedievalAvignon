@@ -28,6 +28,8 @@ analyze.net.distance <- function(g, out.folder)
 	stat.file <- file.path(out.folder, g$name, "stats.csv")
 	stats <- retrieve.stats(stat.file)
 	
+	
+	###### deal with graph distance
 	modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_IN, MEAS_MODE_OUT)
 	for(i in 1:length(modes))
 	{	mode <- modes[i]
@@ -95,6 +97,82 @@ analyze.net.distance <- function(g, out.folder)
 	
 	# export CSV with average distance
 	write.csv(stats, file=stat.file, row.names=TRUE)
+	
+	
+	###### compare graph and spatial distances
+	tlog(2,"Comparing graph and spatial distances")
+	sdists <- c("reliable","estimate")	# only positions from the DB vs. all positions including estimates
+	fname <- paste0(MEAS_DISTANCE,"_undirected")
+	distance.folder <- file.path(out.folder,g$name,MEAS_DISTANCE)
+	
+	# init correlation table
+	cor.tab <- matrix(NA,nrow=2,ncol=3)	
+	cor.tab <- data.frame(cor.tab)
+	cor.tab <- cbind(c("Reliable","Estimate"), cor.tab)
+	colnames(cor.tab) <- c("Coordinates", "Pearson", "Spearman", "Kendall")
+	rownames(cor.tab) <- sdists
+	
+	# compute spatial distances
+	xlab <- c(reliable="Spatial distance (as defined)", estimate="Spatial distance (as estimated)")
+	for(sdist in sdists)
+	{	tlog(6,"Computing spatial distance (",sdist,")")
+		if(sdist=="reliable")
+			coords <- cbind(vertex_attr(g, name=COL_LOC_HYP_LON), vertex_attr(g, name=COL_LOC_HYP_LAT))
+		else
+			coords <- cbind(V(g)$x, V(g)$y)
+		idx <- which(!is.na(coords[,1]) & !is.na(coords[,2]))
+		rem <- which(is.na(coords[,1]) | is.na(coords[,2]))
+		svals <- as.matrix(dist(x=coords[idx,], method="euclidean", diag=TRUE, upper=TRUE))
+		svals <- svals[upper.tri(svals)]
+		
+		# compute distribution
+		plot.file <- file.path(distance.folder,paste0(fname,"_histo_spatial_",sdist))
+		tlog(8,"Plotting in \"",plot.file,"\"")
+		custom.hist(vals=svals, xlab[sdist], file=plot.file)
+		
+		# compute undirected graph distance
+		tlog(8,"Computing undirected graph distance")
+		if(length(rem)>0) 
+			gt <- delete_vertices(g,rem)
+		else
+			gt <- g
+		gvals <- distances(graph=gt, mode="all")
+		gvals <- gvals[upper.tri(gvals)]
+		idx <- !is.infinite(gvals)
+		gvals <- gvals[idx]
+		svals <- svals[idx]
+		
+		# compute correlations
+		tlog(8,"Computing correlation between graph and spatial distances")
+		cor.tab[sdist,"Pearson"] <- cor(x=gvals, y=svals, method="pearson")
+		cor.tab[sdist,"Spearman"] <- cor(x=gvals, y=svals, method="spearman")
+		cor.tab[sdist,"Kendall"] <- cor(x=gvals, y=svals, method="kendall")
+		
+		# plot the spatial measure as a function of the graph-based one
+		plot.file <- file.path(distance.folder, paste0(fname,"_vs_spatial_",sdist))
+		pdf(paste0(plot.file,".pdf"))
+			plot(
+				x=gvals, y=svals, 
+				xlab="Undirected graph distance", ylab=xlab[sdist],
+				#log="xy", 
+				las=1, col="RED",
+				#xlim=c(1,max(deg.vals)*1.1)
+			)
+			# mean
+			avg.dist <- sapply(min(gvals):max(gvals), function(deg) mean(svals[gvals==deg]))
+			lines(	
+				x=min(gvals):max(gvals), avg.dist,
+				col="BLACK"
+			)
+		dev.off()
+	}
+	
+	# record correlations
+	tab.file <- file.path(distance.folder, paste0(fname,"_correlations.csv"))
+	write.csv(cor.tab, file=tab.file, row.names=FALSE)
+
+	
+	###### finalize
 	
 	# record graph and return it
 	graph.file <- file.path(out.folder, g$name, FILE_GRAPH)

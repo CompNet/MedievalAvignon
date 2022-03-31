@@ -9,7 +9,7 @@
 # source("res/main.R")
 ########################################################################
 # load other scripts
-source("res/common/include.R")
+source("res/common/_include.R")
 source("res/analysis/extract_graphs.R")
 source("res/measures/_compute_measures.R")
 
@@ -69,6 +69,7 @@ for(i in 1:length(link.types))
 	
 	# compute all topological measures
 	g <- analyze.network(gname=link.types[i], out.folder=FOLDER_OUT_ANAL_EST)
+	# gname=LV_ESTATE; out.folder=FOLDER_OUT_ANAL_EST
 }
 tlog.end.loop("Measure computation over")
 

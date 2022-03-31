@@ -225,7 +225,7 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 			tmp <- vertex_attr(g0, attr)
 			
 			# only NAs, nothing to do
-			if(all(is.na(att.vals)))
+			if(all(is.na(tmp)))
 				tlog(4,"Only NAs: nothing to do (",attr,")")
 			# non-NA values
 			else

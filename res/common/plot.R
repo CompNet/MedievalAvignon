@@ -428,9 +428,9 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 				else
 				{	width <- 0.05
 					height <- 0.3
-					x1 <- -1.25 + min(layout[,"1"])
+					x1 <- -1.25 #+ min(layout[,1])
 					x2 <- x1 + width
-					y2 <- -1 + min(layout[,"2"])
+					y2 <- -1 #+ min(layout[,2])
 					y1 <- y2 + height
 					leg.loc <- cbind(x=c(x1, x2, x2, x1), y=c(y1, y1, y2, y2))
 					legend.gradient(
@@ -506,15 +506,15 @@ custom.hist <- function(vals, name, file)
 				lwd=2, 			# line thickness
 				col="RED"		# line color
 			)
-			stripchart(
-				vals, 			# data
-				at=0.02, 		# central position of points (y)
-				pch=21, 		# point shape
-				col="BLACK", 	# point color
-				method="jitter",# noise to avoid overlaps
-				jitter=0.02, 	# noise magnitude
-				add=TRUE		# add to current plot
-			)
+#			stripchart(
+#				vals, 			# data
+#				at=0.02, 		# central position of points (y)
+#				pch=21, 		# point shape
+#				col="BLACK", 	# point color
+#				method="jitter",# noise to avoid overlaps
+#				jitter=0.02, 	# noise magnitude
+#				add=TRUE		# add to current plot
+#			)
 			if(hasArg(file))
 				dev.off()
 		}

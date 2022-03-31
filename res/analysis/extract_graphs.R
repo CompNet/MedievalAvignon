@@ -1132,8 +1132,8 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		#custom.gplot(g=g2)
 		
 		# record graph as a graphml file
-		V(g1)$x <- V(g2)$x
-		V(g1)$y <- V(g2)$y
+		V(g1)$x2 <- V(g2)$x
+		V(g1)$y2 <- V(g2)$y
 		graph.file <- file.path(graph.folder, FILE_GRAPH)
 		tlog(4,"Recording graph in \"",graph.file,"\"")
 		write.graphml.file(g=g1, file=graph.file)
@@ -1178,8 +1178,10 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 # x spatialisation kk même pour les réseaux filtrés
 # x produire liste des noeuds qui ont un lien avec eux mêmes
 # - corr entre dist spatiale et dist graph (sur les noeuds dont la position est connue)
-# - vérif position vs. graphique (attributs x & y)
 # x ignorer les attributs non-pertinents
+#
+# - les plots de certains diamètres ne contiennent aucun lien
+# - problème de positionnement de la légende numérique
 
 
 
