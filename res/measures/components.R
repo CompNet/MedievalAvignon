@@ -82,6 +82,8 @@ analyze.net.components <- function(g, out.folder)
 		V(g)$label <- rep(NA, gorder(g))
 		custom.gplot(g=g, col.att=fname, cat.att=TRUE, file=file.path(comp.folder,paste0(fname,"_graph")))
 		#custom.gplot(g=g, col.att=fname, cat.att=TRUE)
+		g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2
+		custom.gplot(g=g1, col.att=fname, cat.att=TRUE, file=file.path(comp.folder,paste0(fname,"_graph_kk")), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y))
 		g <- set_vertex_attr(graph=g, name=fname, value=cmp$membership)
 	
 		# plot components separately
@@ -96,7 +98,9 @@ analyze.net.components <- function(g, out.folder)
 				V(g2)$label <- get.names(g2)
 			custom.gplot(g=g2, file=file.path(sep.folder,paste0("component_",i)))
 			#custom.gplot(g=g2)
-			
+			g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2
+			custom.gplot(g=g1, file=file.path(sep.folder,paste0("component_",i,"_kk")), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y))
+	
 			# export subgraph
 			graph.file <- file.path(sep.folder,paste0("component_",i,".graphml"))
 			write.graphml.file(g=g, file=graph.file)
@@ -146,7 +150,7 @@ vals <- c()
 	cat.data <- NA
 	
 	# gather regular categorical attributes 
-	attrs <- intersect(COL_CAT, vertex_attr_names(g))
+	attrs <- intersect(COL_CAT_SELECT, vertex_attr_names(g))
 	for(attr in attrs)
 	{	# get values only for real-estate vertices
 		g0 <- delete_vertices(graph=g, v=non.est.idx)
@@ -161,10 +165,10 @@ vals <- c()
 	}
 	
 	# convert tag-type attributes
-	attrs <- intersect(names(COL_TAG), vertex_attr_names(g))
+	attrs <- intersect(names(COL_TAG_SELECT), vertex_attr_names(g))
 	for(attr in attrs)
 	{	g0 <- delete_vertices(graph=g, v=non.est.idx)
-		tmp <- intersect(COL_TAG[[attr]], vertex_attr_names(g))
+		tmp <- intersect(COL_TAG_SELECT[[attr]], vertex_attr_names(g))
 		m <- sapply(tmp, function(att) vertex_attr(g0, att))
 		# create a NA vs. rest attribute
 		cat.data <- cbind(cat.data, apply(m, 1, function(v) if(all(is.na(v))) 1 else 2))
@@ -183,7 +187,7 @@ vals <- c()
 	num.data <- NA
 	
 	# gather regular numerical attributes
-	attrs <- intersect(COL_NUM, vertex_attr_names(g))
+	attrs <- intersect(COL_NUM_SELECT, vertex_attr_names(g))
 	for(attr in attrs)
 	{	# get values only for real-estate vertices
 		g0 <- delete_vertices(graph=g, v=non.est.idx)

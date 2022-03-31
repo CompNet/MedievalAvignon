@@ -74,18 +74,30 @@ get.person.names <- function(g, vs=1:gorder(g))
 #
 # g: considered graph.
 # vs: ids of the vertices (default: all of them).
-# att.name: attribute name to consider.
-# result: current names.
+# att.names: attribute names to consider.
+# cur.names: current names.
 #
 # returns: updated names.
 #############################################################################################
-complete.names <- function(g, vs=1:gorder(g), att.name, result)
+complete.names <- function(g, vs=1:gorder(g), att.names, cur.names)
 {	#print(att.name)
-	idx <- which(is.na(result))
+	g.atts <- vertex_attr_names(g)
+	idx <- which(is.na(cur.names))
 	if(length(idx)>0)
-		result[idx] <- vertex_attr(graph=g, name=att.name, index=vs[idx])
+	{	v.names <- rep(NA,length(idx))
+		for(att.name in att.names)
+		{	if(att.name %in% g.atts)
+			{	tmp <- vertex_attr(graph=g, name=att.name, index=vs[idx])
+				na.idx <- is.na(v.names)
+				val.idx <- !is.na(v.names) & !is.na(tmp)
+				v.names[na.idx] <- tmp[na.idx]
+				v.names[val.idx] <- paste0(v.names[val.idx], "_", tmp[val.idx])
+			}
+		}
+		cur.names[idx] <- v.names
+	}
 	
-	return(result)
+	return(cur.names)
 }
 
 
@@ -103,44 +115,54 @@ complete.names <- function(g, vs=1:gorder(g), att.name, result)
 get.location.names <- function(g, vs=1:gorder(g))
 {	result <- rep(NA, length(vs))
 	
-	att.names <- intersect(
-		c(
-			# current name
-			COL_STREET_NAME_CURR,
-			# translated name
-			COL_GATE_NAME_FRE, COL_AREA_NAME_FRE, COL_WALL_NAME_FRE, 
-			# name
-#			COL_FIX_NAME, 
-			COL_EDIF_NAME, COL_VILG_NAME, COL_CARD_NAME, COL_LDMRK_NAME, COL_STREET_NAME, 
-			# latin name
-			COL_GATE_NAME_LAT, COL_AREA_NAME_LAT, COL_WALL_NAME_LAT, 
-			
-			# normalized qualification
-			COL_EST_QUALIF_NORM,
-			# latin qualification
-			COL_EST_QUALIF_LAT,
-			
-			# translated type
-			COL_EST_TYPE_FRE,
-			# type
-#			COL_FIX_TYPE, 
-			COL_EDIF_TYPE, COL_VILG_TYPE, COL_CARD_TYPE, COL_GATE_TYPE, COL_WALL_TYPE, COL_LDMRK_TYPE, COL_STREET_TYPE, 
-			# latin type
-			COL_EST_TYPE_LAT,
-			
-			# detail
-			COL_EST_DETAIL,
-			
-			# id
-			COL_EST_ID, #COL_FIX_ID, 
-			COL_EDIF_ID, COL_VILG_ID, COL_CARD_ID, COL_GATE_ID, COL_AREA_ID, COL_WALL_ID, COL_LDMRK_ID, COL_STREET_ID
-		), 
-		vertex_attr_names(g))
+	att.names <- list()
+	# name
+	att.names <- c(att.names, unique(c(
+		# current name
+		COL_STREET_NAME_CURR,
+		# translated name
+		COL_GATE_NAME_FRE, COL_AREA_NAME_FRE, COL_WALL_NAME_FRE, 
+		# name
+#		COL_FIX_NAME, 
+		COL_EDIF_NAME, COL_VILG_NAME, COL_CARD_NAME, COL_LDMRK_NAME, COL_STREET_NAME, 
+		# latin name
+		COL_GATE_NAME_LAT, COL_AREA_NAME_LAT, COL_WALL_NAME_LAT
+	)))
+#	# qualification
+#	att.names <- c(att.names, unique(c(
+#		# normalized qualification
+#		COL_EST_QUALIF_NORM,
+#		# latin qualification
+#		COL_EST_QUALIF_LAT
+#	)))
+#	# type
+#	att.names <- c(att.names, unique(c(
+#		# translated type
+#		COL_EST_TYPE_FRE,
+#		# type
+##		COL_FIX_TYPE, 
+#		COL_EDIF_TYPE, COL_VILG_TYPE, COL_CARD_TYPE, COL_GATE_TYPE, COL_WALL_TYPE, COL_LDMRK_TYPE, COL_STREET_TYPE, 
+#		# latin type
+#		COL_EST_TYPE_LAT
+#	)))
+	# components
+	att.names[[length(att.names)+1]] <- c(COL_EST_COMP_LAB1, COL_EST_COMP_LAB2, COL_EST_COMP_LAB3, COL_EST_COMP_LAB4, COL_EST_COMP_LAB5, COL_EST_COMP_LAB6)
+#	# others
+#	att.names <- c(att.names, unique(c(
+#		# detail
+#		COL_EST_DETAIL
+#	)))
+	# id
+	att.names <- c(att.names, unique(c(
+		COL_LOC_ID,
+		COL_EST_ID, #COL_FIX_ID, 
+		COL_EDIF_ID, COL_VILG_ID, COL_CARD_ID, COL_GATE_ID, COL_AREA_ID, COL_WALL_ID, COL_LDMRK_ID, COL_STREET_ID
+	)))
 	
 	# complete with various graph attributes
 	for(att.name in att.names)
 	{	#print(att.name)
-		result <- complete.names(g=g, vs=vs, att.name=att.name, result=result)
+		result <- complete.names(g=g, vs=vs, att.names=att.name, cur.names=result)
 		#print(result)
 	}
 	
@@ -880,18 +902,21 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #	write.graphml.file(g=g, file=file)
 #	# <do your magic with gephi, then record graph with new layout>
 #	g0 <- read.graph(file, format="graphml")
-#	layout <- cbind(V(g0)$x,V(g0)$y)
-#	write.table(x=layout, file=lay.fime, sep="\t", row.names=F, col.names=F)
+#	layout <- cbind(V(g)$idExterne, V(g0)$x, V(g0)$y)
+#	colnames(layout) <- c("idExterne", "x","y")
+#	write.table(x=layout, file=lay.file, sep="\t", row.names=FALSE, col.names=TRUE)
 	######
 	# update graph
 	tlog(4,"Reading layout from file ",lay.file)
-	layout <- read.table(file=lay.file, sep="\t", header=F)
-	V(g)$x2 <- layout[,1]; V(g)$y2 <- layout[,2]
+	layout <- read.table(file=lay.file, sep="\t", header=TRUE, check.names=FALSE)
+	lay.idx <- match(layout[,"idExterne"], V(g)$idExterne)
+	if(any(is.na(lay.idx))) error("Could not match node ids with ids from the layout file")
+	V(g)$x2 <- layout[lay.idx,"x"]; V(g)$y2 <- layout[lay.idx,"y"]
 	# plot graph
 	plot.file <- file.path(FOLDER_OUT_ANAL_EST,"graph_kk")
 	tlog(4,"Plotting in file ",plot.file)
 	g0 <- g
-	V(g0)$x <- layout[,1]; V(g0)$y <- layout[,2]
+	V(g0)$x <- layout[lay.idx,"x"]; V(g0)$y <- layout[lay.idx,"y"]
 	V(g0)$label <- NA
 	idx <- which(degree(g)>5)
 	V(g0)[idx]$label <- comp.names[idx]
@@ -1086,15 +1111,29 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		tlog(4,"Plotting graph in \"",plot.file,"\"")
 		custom.gplot(g=g1, file=plot.file, asp=1)
 		#custom.gplot(g=g1)
-		#
 		# and plot using a spatialization method 
+		g2 <- g1#; V(g2)$x <- V(g2)$x2; V(g2)$y <- V(g2)$y2
+		V(g2)$label <- NA; idx <- which(degree(g2)>3); V(g2)[idx]$label <- comp.names[idx]
 		plot.file <- file.path(graph.folder, "graph_kk")
 		tlog(4,"Plotting graph in \"",plot.file,"\"")
-		g2 <- g1; V(g2)$x <- V(g2)$x2; V(g2)$y <- V(g2)$y2
-		custom.gplot(g=g2, file=plot.file)
+		###### init layout quasi-manually
+		#layout <- layout_with_kk(g2, kkconst=1);V(g2)$x <- layout[,1]; V(g2)$y <- layout[,2];custom.gplot(g=g2, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), edge.arrow.mode=0, vertex.label.cex=0.1)
+		if(link.types[i]==LK_TYPE_FLATREL)
+			layout <- layout_with_mds(g2)
+		else
+			layout <- layout_with_kk(g2, kkconst=1)
+		scale <- max(layout)/7
+		layout <- layout/scale
+		V(g2)$x <- layout[,1]
+		V(g2)$y <- layout[,2]
+		#lay.file <- file.path(graph.folder, "layout.txt")
+		######
+		custom.gplot(g=g2, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g0)$x), ylim=range(V(g0)$y), edge.arrow.mode=0, vertex.label.cex=0.1)
 		#custom.gplot(g=g2)
 		
 		# record graph as a graphml file
+		V(g1)$x <- V(g2)$x
+		V(g1)$y <- V(g2)$y
 		graph.file <- file.path(graph.folder, FILE_GRAPH)
 		tlog(4,"Recording graph in \"",graph.file,"\"")
 		write.graphml.file(g=g1, file=graph.file)
@@ -1133,14 +1172,14 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 # TODO la transitivité pourrait-elle permettre de gagner de l'information spatiale ?
 #      > si deux noeuds sont proches (connectés ?) et ont une transitivité élevée, sont ils proches spatialement ?
 #      > différence avec sim structurelle ?
-#
-#
+
 # TODO
-# ? vérifier que les tags sont traités correctement dans le cas "tous NA" (? quand on n'a que des NA dans les plots, est-ce vraiment dû à des labels tous NA ?)
-# x générer des visualisations faisant apparaître les composants (kamada-kawaii ou autre)
-# x pureté : calculer les versions asymétriques séparémment
-# x ordonner les noeuds selon l'attribut affiché (lors du tracé des graphiques de graphes)
-# x pb simstruct : noms de fichiers = numéros (+ nom comme actuellement)
+# x réviser le nom des biens : 
+# x spatialisation kk même pour les réseaux filtrés
+# x produire liste des noeuds qui ont un lien avec eux mêmes
+# - corr entre dist spatiale et dist graph (sur les noeuds dont la position est connue)
+# - vérif position vs. graphique (attributs x & y)
+# x ignorer les attributs non-pertinents
 
 
 

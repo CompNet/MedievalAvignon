@@ -144,7 +144,9 @@ analyze.net.comstruct <- function(g, out.folder)
 				V(g)$label <- rep(NA, gorder(g))
 				custom.gplot(g=g, col.att=fname,cat.att=TRUE, file=file.path(coms.folder,paste0(fname,"_graph")))
 				#custom.gplot(g=g, col.att=fname,cat.att=TRUE)
-				
+				g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2
+				custom.gplot(g=g1, col.att=fname,cat.att=TRUE, file=file.path(coms.folder,paste0(fname,"_graph_kk")), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y))
+		
 				# assess community purity for all attributes
 				g <- analyze.net.comstruct.attributes(g=g, coms.folder=coms.folder, membership=mbrs)
 			}
@@ -212,7 +214,7 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 		# deal with categorical attributes
 		
 		# gather regular categorical attributes
-		attrs <- intersect(COL_CAT, vertex_attr_names(g))
+		attrs <- intersect(COL_CAT_SELECT, vertex_attr_names(g))
 		for(attr in attrs)
 		{	# attribute folder
 			attr.folder <- file.path(coms.folder, attr)
@@ -222,85 +224,91 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 			g0 <- delete_vertices(graph=g, v=non.est.idx)
 			tmp <- vertex_attr(g0, attr)
 			
-			# export group-wise distributions as csv
-			tlog(4,"Exporting group-wise distribution for attribute \"",attr,"\"")
-			tmp <- factor(tmp)
-			tt <- t(sapply(coms, function(i) table(tmp[membership[est.idx]==i], useNA="always"), simplify="array"))
-			colnames(tt)[which(is.na(colnames(tt)))] <- "NA"
-			if(nrow(tt)==1 && ncol(tt)>1)
-			{	tt <- t(tt)
-				colnames(tt)[1] <- "NA"
-				rownames(tt) <- NULL
-			}
-			tab <- as.data.frame(tt)
-			tab <- cbind(coms, tab)
-			colnames(tab)[1] <- "Group"
-			tab.file <- file.path(attr.folder, paste0(attr,"_distribution.csv"))
-			write.csv(tab, file=tab.file, row.names=FALSE)
-			
-			# plot as graph with pie-charts as nodes
-			tlog(4,"Plotting group graph with the distribution of \"",attr,"\"")
-			for(c in 1:ncol(tt))
-				cg2 <- set_vertex_attr(graph=cg2, name=colnames(tt)[c], value=tt[,c])
-			plot.file <- file.path(attr.folder, paste0(attr,"_comgraph"))
-			V(cg2)$label <- rep(NA, gorder(cg2))
-			#plot(cg2, vertex.shape="pie", vertex.pie=split(tt,1:nrow(tt)), vertex.pie.color=list(colors))
-			custom.gplot(cg2, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=plot.file, color.isolates=TRUE)
-			#custom.gplot(cg2, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE)
-			
-			# compute group purity for each group
-			grp.pur.tab <- apply(tt, 1, function(row) max(row)/sum(row))
-			tab <- as.data.frame(grp.pur.tab)
-			tab <- cbind(coms, tab)
-			colnames(tab) <- c("Group", "GrpPurity")
-			tab.file <- file.path(attr.folder, paste0(attr,"_grp-purity.csv"))
-			write.csv(tab, file=tab.file, row.names=FALSE)
-			# compute attribute purity for each attribute value (ignoring NAs)
-			if(ncol(tt)>1)
-			{	att.pur.tab <- apply(tt[,colnames(tt)!="NA",drop=FALSE], 2, function(col) max(col)/sum(col))
-				tab <- as.data.frame(att.pur.tab)
-				tab <- cbind(colnames(tt[,colnames(tt)!="NA",drop=FALSE]), tab)
-				colnames(tab) <- c("Value", "ValPurity")
-				rownames(tab) <- NULL
-				tab.file <- file.path(attr.folder, paste0(attr,"_val-purity.csv"))
+			# only NAs, nothing to do
+			if(all(is.na(att.vals)))
+				tlog(4,"Only NAs: nothing to do (",attr,")")
+			# non-NA values
+			else
+			{	# export group-wise distributions as csv
+				tlog(4,"Exporting group-wise distribution for categorical attribute \"",attr,"\"")
+				tmp <- factor(tmp)
+				tt <- t(sapply(coms, function(i) table(tmp[membership[est.idx]==i], useNA="no"), simplify="array"))
+				colnames(tt)[which(is.na(colnames(tt)))] <- "NA"
+				if(nrow(tt)==1 && ncol(tt)>1)
+				{	tt <- t(tt)
+					colnames(tt)[1] <- "NA"
+					rownames(tt) <- NULL
+				}
+				tab <- as.data.frame(tt)
+				tab <- cbind(coms, tab)
+				colnames(tab)[1] <- "Group"
+				tab.file <- file.path(attr.folder, paste0(attr,"_distribution.csv"))
+				write.csv(tab, file=tab.file, row.names=FALSE)
+				
+				# plot as graph with pie-charts as nodes
+				tlog(4,"Plotting group graph with the distribution of \"",attr,"\"")
+				for(c in 1:ncol(tt))
+					cg2 <- set_vertex_attr(graph=cg2, name=colnames(tt)[c], value=tt[,c])
+				plot.file <- file.path(attr.folder, paste0(attr,"_comgraph"))
+				V(cg2)$label <- rep(NA, gorder(cg2))
+				#plot(cg2, vertex.shape="pie", vertex.pie=split(tt,1:nrow(tt)), vertex.pie.color=list(colors))
+				custom.gplot(cg2, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=plot.file, color.isolates=TRUE)
+				#custom.gplot(cg2, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE)
+				
+				# compute group purity for each group
+				grp.pur.tab <- apply(tt, 1, function(row) max(row)/sum(row))
+				tab <- as.data.frame(grp.pur.tab)
+				tab <- cbind(coms, tab)
+				colnames(tab) <- c("Group", "GrpPurity")
+				tab.file <- file.path(attr.folder, paste0(attr,"_grp-purity.csv"))
+				write.csv(tab, file=tab.file, row.names=FALSE)
+				# compute attribute purity for each attribute value (ignoring NAs)
+				if(ncol(tt)>1)
+				{	att.pur.tab <- apply(tt[,colnames(tt)!="NA",drop=FALSE], 2, function(col) max(col)/sum(col))
+					tab <- as.data.frame(att.pur.tab)
+					tab <- cbind(colnames(tt[,colnames(tt)!="NA",drop=FALSE]), tab)
+					colnames(tab) <- c("Value", "ValPurity")
+					rownames(tab) <- NULL
+					tab.file <- file.path(attr.folder, paste0(attr,"_val-purity.csv"))
+					write.csv(tab, file=tab.file, row.names=FALSE)
+				}
+				
+				# compute global measures
+				vals <- c()
+				meas <- c()
+					# purity measures
+					grp.pur.total <- sum(rowSums(tt)/gorder(g0)*grp.pur.tab)
+					att.pur.total <- sum(colSums(tt[,colnames(tt)!="NA",drop=FALSE])/gorder(g0)*att.pur.tab)
+					vals <- c(vals, grp.pur.total, att.pur.total)
+					meas <- c(meas, "GrpPurity", "ValPurity")
+					# chi-squared test of independence (dpt if p<0.05)
+					if(all(is.na(tmp)) || length(unique(tmp))==1 || any(is.na(tmp)) && length(unique(tmp))==2)
+						chisq <- NA
+					else
+						chisq <- suppressWarnings(chisq.test(tmp, membership[est.idx], correct=FALSE))$p.value # warning=groups too small
+					vals <- c(vals, chisq)
+					meas <- c(meas, "Chi2_pval")
+					# Cramér's V
+					if(all(is.na(tmp)) || length(unique(tmp))==1 || any(is.na(tmp)) && length(unique(tmp))==2)
+						cram <- NA
+					else
+						cram <- CramerV(x=tmp, y=membership[est.idx])
+					vals <- c(vals, cram)
+					meas <- c(meas, "C_V")
+					# Goodman’s Kruskal Tau
+					tau <- GKtau(membership[est.idx], tmp)
+					vals <- c(vals, tau$tauxy, tau$tauyx)
+					meas <- c(meas, "GK_tau_Com->Att", "GK_tau_Att->Com")
+				# record as a table
+				tab <- data.frame(meas, vals)
+				colnames(tab) <- c("Measure","Value")
+				tab.file <- file.path(attr.folder, paste0(attr,"_association.csv"))
 				write.csv(tab, file=tab.file, row.names=FALSE)
 			}
-			
-			# compute global measures
-			vals <- c()
-			meas <- c()
-				# purity measures
-				grp.pur.total <- sum(rowSums(tt)/gorder(g0)*grp.pur.tab)
-				att.pur.total <- sum(colSums(tt[,colnames(tt)!="NA",drop=FALSE])/gorder(g0)*att.pur.tab)
-				vals <- c(vals, grp.pur.total, att.pur.total)
-				meas <- c(meas, "GrpPurity", "ValPurity")
-				# chi-squared test of independence (dpt if p<0.05)
-				if(all(is.na(tmp)) || length(unique(tmp))==1 || any(is.na(tmp)) && length(unique(tmp))==2)
-					chisq <- NA
-				else
-					chisq <- suppressWarnings(chisq.test(tmp, membership[est.idx], correct=FALSE))$p.value # warning=groups too small
-				vals <- c(vals, chisq)
-				meas <- c(meas, "Chi2_pval")
-				# Cramér's V
-				if(all(is.na(tmp)) || length(unique(tmp))==1 || any(is.na(tmp)) && length(unique(tmp))==2)
-					cram <- NA
-				else
-					cram <- CramerV(x=tmp, y=membership[est.idx])
-				vals <- c(vals, cram)
-				meas <- c(meas, "C_V")
-				# Goodman’s Kruskal Tau
-				tau <- GKtau(membership[est.idx], tmp)
-				vals <- c(vals, tau$tauxy, tau$tauyx)
-				meas <- c(meas, "GK_tau_Com->Att", "GK_tau_Att->Com")
-			# record as a table
-			tab <- data.frame(meas, vals)
-			colnames(tab) <- c("Measure","Value")
-			tab.file <- file.path(attr.folder, paste0(attr,"_association.csv"))
-			write.csv(tab, file=tab.file, row.names=FALSE)
 		}
 		
 		# convert tag-type attributes
-		attrs <- intersect(names(COL_TAG), vertex_attr_names(g))
+		attrs <- intersect(names(COL_TAG_SELECT), vertex_attr_names(g))
 		for(attr in attrs)
 		{	tlog(4,"Processing attribute-tag \"",attr,"\"")
 			
@@ -312,7 +320,7 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 			dir.create(path=attr.folder, showWarnings=FALSE, recursive=TRUE)
 			
 			# compute values
-			attrc <- intersect(COL_TAG[[attr]], vertex_attr_names(g))
+			attrc <- intersect(COL_TAG_SELECT[[attr]], vertex_attr_names(g))
 			m <- sapply(attrc, function(att) vertex_attr(g0, att))
 			idx.nas <- which(apply(m,1,function(r) all(is.na(r))))	# detect individuals with only NAs
 			uvals <- sort(unique(c(m)))
@@ -457,7 +465,7 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 		# deal with numerical attributes
 		
 		# gather regular numerical attributes
-		attrs <- intersect(COL_NUM, vertex_attr_names(g))
+		attrs <- intersect(COL_NUM_SELECT, vertex_attr_names(g))
 		for(attr in attrs)
 		{	tlog(4,"Processing attribute \"",attr,"\"")
 			
@@ -486,7 +494,7 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 				write.csv(tab, file=tab.file, row.names=FALSE)
 				
 				# export group-wise distributions as csv
-				tlog(6,"Exporting group-wise distribution for attribute \"",attr,"\"")
+				tlog(6,"Exporting group-wise distribution for numerical attribute \"",attr,"\"")
 				if(length(unique(att.vals[!is.na(att.vals)]))==1)
 				{	tmp<-factor(att.vals)
 					tt <- t(sapply(coms, function(i) table(tmp[membership[est.idx]==i], useNA="always")))

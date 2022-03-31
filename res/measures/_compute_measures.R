@@ -102,7 +102,7 @@ analyze.network <- function(gname, out.folder)
 		g <- analyze.net.harmonic.closeness(g, out.folder)
 		
 		# compute distances
-		g <- analyze.net.distance(g, out.folder)
+#		g <- analyze.net.distance(g, out.folder)
 		
 		# compute articulation points
 		g <- analyze.net.articulation(g, out.folder)
@@ -114,7 +114,7 @@ analyze.network <- function(gname, out.folder)
 		g <- analyze.net.transitivity(g, out.folder)
 		
 		# compute vertex connectivity
-		g <- analyze.net.connectivity(g, out.folder)
+#		g <- analyze.net.connectivity(g, out.folder)
 		
 		# compute components
 		g <- analyze.net.components(g, out.folder)
@@ -126,7 +126,7 @@ analyze.network <- function(gname, out.folder)
 		g <- analyze.net.assortativity(g, out.folder)
 		
 		# compute structural similarity
-		g <- analyze.net.structsim(g, out.folder)			
+#		g <- analyze.net.structsim(g, out.folder)			
 	}
 	
 	return(g)

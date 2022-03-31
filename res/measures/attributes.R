@@ -45,7 +45,7 @@ analyze.net.attributes <- function(g, out.folder)
 	cat.data <- NA
 	
 	# gather regular categorical attributes
-	attrs <- intersect(COL_CAT, vertex_attr_names(g))
+	attrs <- intersect(COL_CAT_SELECT, vertex_attr_names(g))
 	for(attr in attrs)
 	{	# get values only for real-estate vertices
 		g0 <- delete_vertices(graph=g, v=non.est.idx)
@@ -74,6 +74,8 @@ analyze.net.attributes <- function(g, out.folder)
 		V(g00)$label <- rep(NA, gorder(g00))
 		custom.gplot(g=g00, col.att=attr, cat.att=TRUE, color.isolates=TRUE, file=plot.file)
 		#custom.gplot(g=g, col.att=attr, cat.att=TRUE, color.isolates=TRUE)
+		V(g00)$x <- V(g00)$x2; V(g00)$y <- V(g00)$y2
+		custom.gplot(g=g00, col.att=attr, cat.att=TRUE, color.isolates=TRUE, file=paste0(plot.file,"_kk"), rescale=FALSE, xlim=range(V(g00)$x), ylim=range(V(g00)$y))
 		
 		# add to matrix
 		tlog(4,"Adding attribute \"",attr,"\" to data matrix")
@@ -85,14 +87,14 @@ analyze.net.attributes <- function(g, out.folder)
 	}
 	
 	# convert tag-type attributes
-	attrs <- intersect(names(COL_TAG), vertex_attr_names(g))
+	attrs <- intersect(names(COL_TAG_SELECT), vertex_attr_names(g))
 	for(attr in attrs)
 	{	# get values only for real-estate vertices
 		g0 <- delete_vertices(graph=g, v=non.est.idx)
 		tmp <- vertex_attr(g0, attr)
 		g00 <- set_vertex_attr(graph=g, name=attr, index=non.est.idx, value=rep(NA,length(non.est.idx)))
 		
-		attrc <- intersect(COL_TAG[[attr]], vertex_attr_names(g))
+		attrc <- intersect(COL_TAG_SELECT[[attr]], vertex_attr_names(g))
 		m <- sapply(attrc, function(att) vertex_attr(g0, att))
 		
 		# count tag distribution
@@ -136,7 +138,9 @@ analyze.net.attributes <- function(g, out.folder)
 		V(g)$label <- rep(NA, gorder(g00))
 		custom.gplot(g=g00, col.att=attrc, cat.att=TRUE, color.isolates=TRUE, file=plot.file)
 		#custom.gplot(g=g00, col.att=attrc, cat.att=TRUE, color.isolates=TRUE)
-			
+		V(g00)$x <- V(g00)$x2; V(g00)$y <- V(g00)$y2
+		custom.gplot(g=g00, col.att=attrc, cat.att=TRUE, color.isolates=TRUE, file=paste0(plot.file,"_kk"), rescale=FALSE, xlim=range(V(g00)$x), ylim=range(V(g00)$y))
+	
 		# add to matrix
 		tlog(4,"Adding attribute \"",attr,"\" to data matrix")
 		uvals <- sort(unique(c(m)))
@@ -180,6 +184,8 @@ analyze.net.attributes <- function(g, out.folder)
 			V(g00)$label <- rep(NA, gorder(g00))
 			custom.gplot(g=g00, col.att=att_name, col.att.cap=paste0(LONG_NAME[attr]," : ",uval), cat.att=TRUE, color.isolates=TRUE, file=plot.file)
 			#custom.gplot(g=g00, col.att=att_name, col.att.cap=paste0(LONG_NAME[attr]," : ",uval), cat.att=TRUE, color.isolates=TRUE)
+			V(g00)$x <- V(g00)$x2; V(g00)$y <- V(g00)$y2
+			custom.gplot(g=g00, col.att=att_name, col.att.cap=paste0(LONG_NAME[attr]," : ",uval), cat.att=TRUE, color.isolates=TRUE, file=paste0(plot.file,"_kk"), rescale=FALSE, xlim=range(V(g00)$x), ylim=range(V(g00)$y))
 		}
 	}
 	
@@ -219,7 +225,7 @@ analyze.net.attributes <- function(g, out.folder)
 	num.data <- NULL
 	
 	# gather regular numerical attributes
-	attrs <- intersect(COL_NUM, vertex_attr_names(g))
+	attrs <- intersect(COL_NUM_SELECT, vertex_attr_names(g))
 	for(attr in attrs)
 	{	# get values only for real-estate vertices
 		g0 <- delete_vertices(graph=g, v=non.est.idx)
@@ -265,6 +271,8 @@ analyze.net.attributes <- function(g, out.folder)
 			plot.file <- file.path(plot.folder, paste0(attr,"_graph"))
 			custom.gplot(g=g00, col.att=attr, cat.att=FALSE, color.isolates=TRUE, file=plot.file)
 #			custom.gplot(g=g00, col.att=attr, cat.att=FALSE, color.isolates=TRUE)
+			V(g00)$x <- V(g00)$x2; V(g00)$y <- V(g00)$y2
+			custom.gplot(g=g00, col.att=attr, cat.att=FALSE, color.isolates=TRUE, file=paste0(plot.file,"_kk"), rescale=FALSE, xlim=range(V(g00)$x), ylim=range(V(g00)$y))
 		}
 	}
 	else

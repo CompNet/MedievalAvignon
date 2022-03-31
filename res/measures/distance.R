@@ -61,6 +61,8 @@ analyze.net.distance <- function(g, out.folder)
 			g <- update.node.labels(g, avg.vals)
 			custom.gplot(g=g, col.att=paste0(fname,"_avg"), file=file.path(distance.folder,paste0(fname,"_avg_graph")))
 			#custom.gplot(g=g, col.att=paste0(fname,"_avg"))
+			g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2
+			custom.gplot(g=g1, col.att=paste0(fname,"_avg"), file=file.path(distance.folder,paste0(fname,"_avg_graph_kk")), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y))
 		}
 		
 		# for each node, plot graph using color for distance

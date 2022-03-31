@@ -44,7 +44,7 @@ analyze.net.assortativity <- function(g, out.folder)
 	cat.data <- NA
 	
 	# gather regular categorical attributes 
-	attrs <- intersect(COL_CAT, vertex_attr_names(g))
+	attrs <- intersect(COL_CAT_SELECT, vertex_attr_names(g))
 	for(attr in attrs)
 	{	tmp <- vertex_attr(g, attr)
 		if(all(is.na(cat.data)))
@@ -55,9 +55,9 @@ analyze.net.assortativity <- function(g, out.folder)
 	}
 	
 	# convert tag-type attributes
-	attrs <- intersect(names(COL_TAG), vertex_attr_names(g))
+	attrs <- intersect(names(COL_TAG_SELECT), vertex_attr_names(g))
 	for(attr in attrs)
-	{	tmp <- intersect(COL_TAG[[attr]], vertex_attr_names(g))
+	{	tmp <- intersect(COL_TAG_SELECT[[attr]], vertex_attr_names(g))
 		m <- sapply(tmp, function(att) vertex_attr(g, att))
 		uvals <- sort(unique(c(m)))
 		for(uval in uvals)
@@ -150,7 +150,7 @@ analyze.net.assortativity <- function(g, out.folder)
 	num.data <- NA
 	
 	# gather regular numerical attributes
-	attrs <- intersect(COL_NUM, vertex_attr_names(g))
+	attrs <- intersect(COL_NUM_SELECT, vertex_attr_names(g))
 	for(attr in attrs)
 	{	tmp <- vertex_attr(g, attr)
 		if(all(is.na(num.data)))

@@ -64,6 +64,8 @@ analyze.net.eccentricity <- function(g, out.folder)
 			V(g)$label <- rep(NA, gorder(g))
 			custom.gplot(g=g, paths=diam.paths[[pp]], file=file.path(diameter.folder,paste0(MEAS_DIAMETER,"_",mode,"_graph_",pp)))
 			#custom.gplot(g=g, paths=diam.paths[[pp]])
+			g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2
+			custom.gplot(g=g1, paths=diam.paths[[pp]], file=file.path(diameter.folder,paste0(MEAS_DIAMETER,"_",mode,"_graph_kk_",pp)), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y))
 			
 			if(length(diam.paths[[pp]])<=20)
 			{	tlog(8,"Plotting the ",length(diam.paths[[pp]])," variants of this diameter")			
@@ -76,7 +78,11 @@ analyze.net.eccentricity <- function(g, out.folder)
 						V(g)[vstart]$label <- get.names(g, vstart) 
 						vend <- diam.paths[[pp]][[p]][length(diam.paths[[pp]][[p]])]
 						V(g)[vend]$label <- get.names(g, vend) 
+						
 						custom.gplot(g=g, paths=diam.paths[[pp]][[p]], file=file.path(diameter.folder,paste0(MEAS_DIAMETER,"_",mode,"_graph_",pp,"_",q)))
+						g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2
+						custom.gplot(g=g1, paths=diam.paths[[pp]][[p]], file=file.path(diameter.folder,paste0(MEAS_DIAMETER,"_",mode,"_graph_kk",pp,"_",q)), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y))
+						
 						q <- q + 1
 					}
 				}

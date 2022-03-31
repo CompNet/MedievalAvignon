@@ -115,13 +115,13 @@ FILE_GRAPH <- "graph.graphml"
 	
 # estate table
 	# ids
-	COL_EST_ID <- "idBien"
-	COL_EST_AREA_ID <- "idQuartier"
-	COL_EST_STREET_ID <- "idRue"
-	COL_EST_VILLAGE_ID <- "idBourg"
-	COL_EST_FEE_ID <- "idRedevance"
-	COL_EST_LORDSHIP_ID <- "idSeigneurie"
-	COL_EST_DECLARATION_ID <- "idDeclaration"
+	COL_EST_ID <- "idBien"							# unique id of an estate
+	COL_EST_AREA_ID <- "idQuartier"					# geographical subdivision
+	COL_EST_STREET_ID <- "idRue"					# unique street id
+	COL_EST_VILLAGE_ID <- "idBourg"					# smaller geographical subdivision
+	COL_EST_FEE_ID <- "idRedevance"					# tax fees
+	COL_EST_LORDSHIP_ID <- "idSeigneurie"			# the estate is attached to a lordship for tax purposes
+	COL_EST_DECLARATION_ID <- "idDeclaration"		# id of the associated tax declation 
 	# misc
 	COL_EST_TYPE_LAT <- "type"
 	COL_EST_TYPE_FRE <- "typeT"
@@ -131,12 +131,13 @@ FILE_GRAPH <- "graph.graphml"
 	COL_EST_MEASURE <- "mesure"
 	COL_EST_MATERIALS <- "materiaux"
 	COL_EST_GEOMETRY <- "geom"
+	COL_EST_MENTION <- "mention1"					# year of first mention in a text
 	# components
-	COL_EST_COMP_LAB1 <- "composant1"
-	COL_EST_COMP_NBR1 <- "nbrComposant1"
-	COL_EST_COMP_TYPE1 <- "typeComposant1"
-	COL_EST_COMP_TYPE_S1 <- "typeSimpleComposant1"
-	COL_EST_COMP_LAB2 <- "composant2"
+	COL_EST_COMP_LAB1 <- "composant1"				# the estate may be constituted of several separte parts
+	COL_EST_COMP_NBR1 <- "nbrComposant1"			# number of instances of the first part
+	COL_EST_COMP_TYPE1 <- "typeComposant1"			# type of the first part
+	COL_EST_COMP_TYPE_S1 <- "typeSimpleComposant1"	# simplified version of the above
+	COL_EST_COMP_LAB2 <- "composant2"				# as above, fro the remaining parts (up to 6 distinct parts)
 	COL_EST_COMP_NBR2 <- "nbrComposant2"
 	COL_EST_COMP_TYPE2 <- "typeComposant2"
 	COL_EST_COMP_TYPE_S2 <- "typeSimpleComposant2"
@@ -586,7 +587,7 @@ COL_CAT <- c(
 	COL_PERS_OCC_CAT, COL_PERS_OCC_THEME,
 	COL_PERS_STATUS_NORM, #COL_PERS_STATUS_LAT, COL_PERS_STATUS_FRE,
 	
-	# estates
+	# estate
 	COL_EST_AREA_ID, COL_EST_STREET_ID, COL_EST_VILLAGE_ID, COL_EST_LORDSHIP_ID,
 	COL_LOC_TYPE, COL_EST_TYPE_FRE, #COL_EST_TYPE_LAT
 	COL_EST_QUALIF_NORM, #COL_EST_QUALIF_LAT
@@ -610,24 +611,36 @@ COL_CAT <- c(
 	# streets
 	COL_STREET_TYPE
 )
+# only those selected for the analysis
+COL_CAT_SELECT <- c(
+	# estates
+	COL_EST_AREA_ID, COL_EST_VILLAGE_ID, COL_EST_STREET_ID, COL_EST_LORDSHIP_ID
+)
 
 # list of tag-like attributes
 COL_TAG <- list()
+	# social
 #	COL_TAG[[COL_PERS_TITLE_LAT1]] <- c(COL_PERS_TITLE_LAT1, COL_PERS_TITLE_LAT2)
 #	COL_TAG[[COL_PERS_TITLE_FRE1]] <- c(COL_PERS_TITLE_FRE1, COL_PERS_TITLE_FRE2)
 	COL_TAG[[COL_PERS_TITLE_NORM1]] <- c(COL_PERS_TITLE_NORM1, COL_PERS_TITLE_NORM2)
 #	COL_TAG[[COL_PERS_OCC_LAT1]] <- c(COL_PERS_OCC_LAT1, COL_PERS_OCC_LAT2)
 #	COL_TAG[[COL_PERS_OCC_FRE1]] <- c(COL_PERS_OCC_FRE1, COL_PERS_OCC_FRE2)
 	COL_TAG[[COL_PERS_OCC_NORM1]] <- c(COL_PERS_OCC_NORM1, COL_PERS_OCC_NORM2)
+	# estate
 	COL_TAG[[COL_EST_COMP_LAB1]] <- c(COL_EST_COMP_LAB1, COL_EST_COMP_LAB2, COL_EST_COMP_LAB3, COL_EST_COMP_LAB4, COL_EST_COMP_LAB5, COL_EST_COMP_LAB6)
 	COL_TAG[[COL_EST_COMP_TYPE1]] <- c(COL_EST_COMP_TYPE1, COL_EST_COMP_TYPE2, COL_EST_COMP_TYPE3, COL_EST_COMP_TYPE4, COL_EST_COMP_TYPE5, COL_EST_COMP_TYPE6)
 	COL_TAG[[COL_EST_COMP_TYPE_S1]] <- c(COL_EST_COMP_TYPE_S1, COL_EST_COMP_TYPE_S2, COL_EST_COMP_TYPE_S3, COL_EST_COMP_TYPE_S4, COL_EST_COMP_TYPE_S5, COL_EST_COMP_TYPE_S6)
-	
+COL_TAG_SELECT <- list()
+	# estate
+	COL_TAG_SELECT[[COL_EST_COMP_LAB1]] <- c(COL_EST_COMP_LAB1, COL_EST_COMP_LAB2, COL_EST_COMP_LAB3, COL_EST_COMP_LAB4, COL_EST_COMP_LAB5, COL_EST_COMP_LAB6)
+	COL_TAG_SELECT[[COL_EST_COMP_TYPE1]] <- c(COL_EST_COMP_TYPE1, COL_EST_COMP_TYPE2, COL_EST_COMP_TYPE3, COL_EST_COMP_TYPE4, COL_EST_COMP_TYPE5, COL_EST_COMP_TYPE6)
+	COL_TAG_SELECT[[COL_EST_COMP_TYPE_S1]] <- c(COL_EST_COMP_TYPE_S1, COL_EST_COMP_TYPE_S2, COL_EST_COMP_TYPE_S3, COL_EST_COMP_TYPE_S4, COL_EST_COMP_TYPE_S5, COL_EST_COMP_TYPE_S6)
+
 # list of numerical attributes
 COL_NUM <- c(
 	COL_LOC_X, COL_LOC_Y,
 	# estates
-	COL_EST_COMP_NBR1, COL_EST_COMP_NBR2, COL_FEE_AMOUNT_NORM1,
+	COL_EST_COMP_NBR1, COL_EST_COMP_NBR2, COL_FEE_AMOUNT_NORM1, COL_EST_MENTION,
 	# edifices
 	COL_EDIF_DATE_FRST_OCC, COL_EDIF_DATE_BUILD_START, COL_EDIF_DATE_BUILD_END, COL_EDIF_DATE_DESTR,
 	# villages
@@ -644,4 +657,8 @@ COL_NUM <- c(
 	COL_LDMRK_DATE_DERIV, COL_LDMRK_DATE_COUV, COL_LDMRK_DATE,
 	# streets
 	COL_STREET_LENGTH
+)
+COL_NUM_SELECT <- c(
+	# estate
+	COL_EST_COMP_NBR1, COL_EST_COMP_NBR2, COL_FEE_AMOUNT_NORM1, COL_EST_MENTION
 )
