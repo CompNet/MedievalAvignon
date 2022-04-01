@@ -986,6 +986,12 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	)
 	short.street.flag <- vertex_attr(graph=g, name=COL_LOC_ID) %in% paste("Rue:",short.tab[,COL_STREET_ID],sep="")
 	
+#	# possibly filter to focus on a single source
+#	sources <- list(
+#		S1=list(src.ids=c(1, 2, 3, 4, 5, 7, 18, 19, 20), re.ids=c(1:3999,6001:9999,60001:60999))
+#	)
+#	keep.idx <- which(is.na(V(g)$idBien) | V(g)$idBien %in% sources[[1]]$re.ids)
+	
 	# extract one graph for each predefined modality
 	tlog(2,"Extracting several variants of the graph")
 	link.types <- c(LV_ESTATE, LK_TYPE_FLATREL)		# c(LK_TYPE_ALL, LV_ESTATE, LK_TYPE_FLATREL, link.types)
