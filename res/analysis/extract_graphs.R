@@ -1184,8 +1184,9 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 # x spatialisation kk même pour les réseaux filtrés
 # x produire liste des noeuds qui ont un lien avec eux mêmes
 # x corr entre dist spatiale et dist graph (sur les noeuds dont la position est connue)
-#   - recouper avec une autre mesure, par ex. le degré, sous forme de couleur 
-#   x alternative: corrélation entre similarité structurelle et distance spatiale ?
+#   x recouper avec une autre mesure, par ex. le degré, sous forme de couleur 
+#   x alternative: corrélation entre similarité structurelle et distance spatiale
+#   - tester la significativité de la correlation
 # x ignorer les attributs non-pertinents
 
 

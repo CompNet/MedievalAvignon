@@ -165,6 +165,33 @@ analyze.net.distance <- function(g, out.folder)
 				col="BLACK"
 			)
 		dev.off()
+		
+		# same using degree for colors
+		meas <- MEAS_DEGREE
+		vals <- igraph::degree(graph=gt, mode="all")
+		cb <- t(combn(1:gorder(gt),2))
+		vals <- (vals[cb[,1]] * vals[cb[,2]])[idx]
+		# set colors
+		fine = 500 									# granularity of the color gradient
+		pal = colorRampPalette(c("yellow",'red'))	# extreme colors of the gradient
+		cols <- pal(fine)[as.numeric(cut(vals,breaks=fine))]
+		pdf(paste0(plot.file,"_col=",meas,".pdf"))
+			plot(
+				x=gvals[order(vals)], y=svals[order(vals)], 
+				xlab="Undirected graph distance", ylab=xlab[sdist],
+				#log="xy", 
+				las=1, col=cols[order(vals)],
+				#xlim=c(1,max(deg.vals)*1.1)
+			)
+			# mean
+			avg.dist <- sapply(min(gvals):max(gvals), function(deg) mean(svals[gvals==deg]))
+			lines(	
+				x=min(gvals):max(gvals), avg.dist,
+				col="BLACK"
+			)
+			# legend
+			gradientLegend(range(vals), color=pal(fine), inside=TRUE)
+		dev.off()
 	}
 	
 	# record correlations
