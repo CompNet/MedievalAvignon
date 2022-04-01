@@ -142,7 +142,7 @@ analyze.net.comstruct <- function(g, out.folder)
 				
 				# plot graph using color for communities
 				V(g)$label <- rep(NA, gorder(g))
-				custom.gplot(g=g, col.att=fname,cat.att=TRUE, file=file.path(coms.folder,paste0(fname,"_graph")))
+				custom.gplot(g=g, col.att=fname,cat.att=TRUE, file=file.path(coms.folder,paste0(fname,"_graph")), size.att=2)
 				#custom.gplot(g=g, col.att=fname,cat.att=TRUE)
 				g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2
 				custom.gplot(g=g1, col.att=fname,cat.att=TRUE, file=file.path(coms.folder,paste0(fname,"_graph_kk")), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y))

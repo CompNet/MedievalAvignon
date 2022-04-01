@@ -62,7 +62,7 @@ analyze.net.eccentricity <- function(g, out.folder)
 		for(pp in 1:length(diam.paths))
 		{	tlog(6,"Plotting diameter path ",pp,"/",length(diam.paths))
 			V(g)$label <- rep(NA, gorder(g))
-			custom.gplot(g=g, paths=diam.paths[[pp]], file=file.path(diameter.folder,paste0(MEAS_DIAMETER,"_",mode,"_graph_",pp)))
+			custom.gplot(g=g, paths=diam.paths[[pp]], file=file.path(diameter.folder,paste0(MEAS_DIAMETER,"_",mode,"_graph_",pp)), size.att=2)
 			#custom.gplot(g=g, paths=diam.paths[[pp]])
 			g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2
 			custom.gplot(g=g1, paths=diam.paths[[pp]], file=file.path(diameter.folder,paste0(MEAS_DIAMETER,"_",mode,"_graph_kk_",pp)), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y))
@@ -79,7 +79,7 @@ analyze.net.eccentricity <- function(g, out.folder)
 						vend <- diam.paths[[pp]][[p]][length(diam.paths[[pp]][[p]])]
 						V(g)[vend]$label <- get.names(g, vend) 
 						
-						custom.gplot(g=g, paths=diam.paths[[pp]][[p]], file=file.path(diameter.folder,paste0(MEAS_DIAMETER,"_",mode,"_graph_",pp,"_",q)))
+						custom.gplot(g=g, paths=diam.paths[[pp]][[p]], file=file.path(diameter.folder,paste0(MEAS_DIAMETER,"_",mode,"_graph_",pp,"_",q)), size.att=2)
 						g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2
 						custom.gplot(g=g1, paths=diam.paths[[pp]][[p]], file=file.path(diameter.folder,paste0(MEAS_DIAMETER,"_",mode,"_graph_kk_",pp,"_",q)), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y))
 						
@@ -126,7 +126,7 @@ analyze.net.eccentricity <- function(g, out.folder)
 		
 		# plot graph using color for eccentricity
 		g <- update.node.labels(g, vals)
-		custom.gplot(g=g, col.att=fname, file=file.path(eccentricity.folder,paste0(fname,"_graph")))
+		custom.gplot(g=g, col.att=fname, file=file.path(eccentricity.folder,paste0(fname,"_graph")), size.att=2)
 		#custom.gplot(g=g, col.att=fname)
 		g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2
 		custom.gplot(g=g1, col.att=fname, file=file.path(eccentricity.folder,paste0(fname,"_graph_kk")))

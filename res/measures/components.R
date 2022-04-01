@@ -80,7 +80,7 @@ analyze.net.components <- function(g, out.folder)
 		
 		# plot graph using color for components
 		V(g)$label <- rep(NA, gorder(g))
-		custom.gplot(g=g, col.att=fname, cat.att=TRUE, file=file.path(comp.folder,paste0(fname,"_graph")))
+		custom.gplot(g=g, col.att=fname, cat.att=TRUE, file=file.path(comp.folder,paste0(fname,"_graph")), size.att=2)
 		#custom.gplot(g=g, col.att=fname, cat.att=TRUE)
 		g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2
 		custom.gplot(g=g1, col.att=fname, cat.att=TRUE, file=file.path(comp.folder,paste0(fname,"_graph_kk")), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y))
@@ -96,7 +96,7 @@ analyze.net.components <- function(g, out.folder)
 				V(g2)$label <- rep(NA, gorder(g2))
 			else
 				V(g2)$label <- get.names(g2)
-			custom.gplot(g=g2, file=file.path(sep.folder,paste0("component_",i)))
+			custom.gplot(g=g2, file=file.path(sep.folder,paste0("component_",i)), size.att=2)
 			#custom.gplot(g=g2)
 			g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2
 			custom.gplot(g=g1, file=file.path(sep.folder,paste0("component_",i,"_kk")), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y))

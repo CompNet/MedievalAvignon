@@ -73,7 +73,7 @@ analyze.net.structsim <- function(g, out.folder)
 					g <- update.node.labels(g, vals[n,])
 					shrt.nm <- substr(nname,1,30)		# to avoid long file names
 					id.cln <- gsub(":", "-", id, fixed=TRUE)
-					custom.gplot(g=g, col.att=fname, v.hl=n, file=file.path(mode.folder,paste0(id.cln,"_",shrt.nm)))
+					custom.gplot(g=g, col.att=fname, v.hl=n, file=file.path(mode.folder,paste0(id.cln,"_",shrt.nm)), size.att=2)
 					#custom.gplot(g=g, col.att=fname, v.hl=n)
 				}
 				g <- delete_vertex_attr(graph=g, name=fname)

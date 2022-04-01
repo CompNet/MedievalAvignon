@@ -78,7 +78,7 @@ analyze.net.articulation <- function(g, out.folder)
 	# plot graph using color for articulation level
 	plot.file <- file.path(articulation.folder,paste0(MEAS_ARTICULATION,"_graph"))
 	g <- update.node.labels(g, vals, best.low=TRUE)
-	custom.gplot(g=g, col.att=MEAS_ARTICULATION, file=plot.file)
+	custom.gplot(g=g, col.att=MEAS_ARTICULATION, file=plot.file, size.att=2)
 	#custom.gplot(g=g, col.att="articulation")
 	g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2
 	custom.gplot(g=g1, col.att=MEAS_ARTICULATION, file=paste0(plot.file,"_kk"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y))

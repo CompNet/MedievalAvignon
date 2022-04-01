@@ -55,7 +55,7 @@ analyze.net.betweenness <- function(g, out.folder)
 		
 		# plot graph using color for betweenness
 		g <- update.node.labels(g, vals)
-		custom.gplot(g=g, col.att=fname, file=file.path(betweenness.folder,paste0(fname,"_graph")))
+		custom.gplot(g=g, col.att=fname, file=file.path(betweenness.folder,paste0(fname,"_graph")), size.att=2)
 		#custom.gplot(g=g, col.att=fname)
 		g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2
 		custom.gplot(g=g1, col.att=fname, file=file.path(betweenness.folder,paste0(fname,"_graph_kk")), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y))

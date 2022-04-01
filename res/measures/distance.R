@@ -61,7 +61,7 @@ analyze.net.distance <- function(g, out.folder)
 			
 			# plot graph using color for average distance
 			g <- update.node.labels(g, avg.vals)
-			custom.gplot(g=g, col.att=paste0(fname,"_avg"), file=file.path(distance.folder,paste0(fname,"_avg_graph")))
+			custom.gplot(g=g, col.att=paste0(fname,"_avg"), file=file.path(distance.folder,paste0(fname,"_avg_graph")), size.att=2)
 			#custom.gplot(g=g, col.att=paste0(fname,"_avg"))
 			g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2
 			custom.gplot(g=g1, col.att=paste0(fname,"_avg"), file=file.path(distance.folder,paste0(fname,"_avg_graph_kk")), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y))
@@ -87,7 +87,7 @@ analyze.net.distance <- function(g, out.folder)
 					g <- update.node.labels(g, vals[n,])
 					shrt.nm <- substr(nname,1,30)		# to avoid long file names
 					id.cln <- gsub(":", "-", nname, fixed=TRUE)
-					custom.gplot(g=g, col.att=fname, v.hl=n, file=file.path(mode.folder,paste0("n",id.cln,"_",shrt.nm )))
+					custom.gplot(g=g, col.att=fname, v.hl=n, file=file.path(mode.folder,paste0("n",id.cln,"_",shrt.nm )), size.att=2)
 					#custom.gplot(g=g, col.att=fname, v.hl=n)
 				}
 				g <- delete_vertex_attr(graph=g, name=fname)

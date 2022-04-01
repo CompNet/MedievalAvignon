@@ -1115,7 +1115,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		# plot full graph using the specified (x,y)
 		plot.file <- file.path(graph.folder, "graph")
 		tlog(4,"Plotting graph in \"",plot.file,"\"")
-		custom.gplot(g=g1, file=plot.file, asp=1)
+		custom.gplot(g=g1, file=plot.file, asp=1, size.att=2)
 		#custom.gplot(g=g1)
 		# and plot using a spatialization method 
 		g2 <- g1#; V(g2)$x <- V(g2)$x2; V(g2)$y <- V(g2)$y2
@@ -1187,9 +1187,6 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #   - recouper avec une autre mesure, par ex. le degré, sous forme de couleur 
 #   x alternative: corrélation entre similarité structurelle et distance spatiale ?
 # x ignorer les attributs non-pertinents
-#
-# - les plots de certains diamètres ne contiennent aucun lien
-# - problème de positionnement de la légende numérique (qui se retrouve au centre du graphique)
 
 
 

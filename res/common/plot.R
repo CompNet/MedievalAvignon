@@ -426,11 +426,23 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 				}
 				# numerical attributes
 				else
-				{	width <- 0.05
+				{	# get plot boundaries
+					if(hasArg(rescale) && !rescale)
+					{	xmin <- par("usr")[1]
+						xmax <- par("usr")[2]
+						ymin <- par("usr")[3] + 0.25
+						ymax <- par("usr")[4]
+					}
+					else
+					{	xmin <- -1.25
+						ymin <- -1
+					}
+					# 
+					width <- 0.05
 					height <- 0.3
-					x1 <- -1.25 #+ min(layout[,1])
+					x1 <- xmin
 					x2 <- x1 + width
-					y2 <- -1 #+ min(layout[,2])
+					y2 <- ymin
 					y1 <- y2 + height
 					leg.loc <- cbind(x=c(x1, x2, x2, x1), y=c(y1, y1, y2, y2))
 					legend.gradient(
