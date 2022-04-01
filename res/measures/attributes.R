@@ -245,9 +245,9 @@ analyze.net.attributes <- function(g, out.folder)
 		dir.create(path=plot.folder, showWarnings=FALSE, recursive=TRUE)
 		plot.file <- file.path(plot.folder, paste0(attr,"_bars"))
 		custom.barplot(tt, 
-				text=names(tt), 
-				xlab=LONG_NAME[attr], ylab="Frequence", 
-				file=plot.file)
+			text=names(tt), 
+			xlab=LONG_NAME[attr], ylab="Frequence", 
+			file=plot.file)
 		# record as a table
 		tt <- as.data.frame(tt)
 		colnames(tt) <- c("Value","Frequency")

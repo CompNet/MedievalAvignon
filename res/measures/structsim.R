@@ -36,6 +36,7 @@ analyze.net.structsim <- function(g, out.folder)
 		
 		
 		###### compute structural similarity
+		tlog(4,"Compute similarity values")
 		
 		# compute node-to-node similarity values
 		vals <- similarity(graph=g, mode=if(mode==MEAS_MODE_UNDIR) "all" else mode, method="jaccard")
@@ -53,6 +54,7 @@ analyze.net.structsim <- function(g, out.folder)
 		write.csv(df, file=file.path(sim.folder,paste0(fname,"_sim_ordered_values.csv")), row.names=FALSE)
 		
 		# for each node, plot graph using color for similarity
+		tlog(4,"Plot individual nodes")
 		mode.folder <- file.path(sim.folder,mode)
 		dir.create(path=mode.folder, showWarnings=FALSE, recursive=TRUE)
 		for(n in 1:gorder(g))
@@ -63,13 +65,13 @@ analyze.net.structsim <- function(g, out.folder)
 			# only for significant nodes
 			deg.lim <- 4
 			if(igraph::degree(g, v=n, mode="all")<deg.lim)
-				tlog(4,"NOT plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),"), as its degree is <",deg.lim)
+				tlog(6,"NOT plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),"), as its degree is <",deg.lim)
 			else
 			{	g <- set_vertex_attr(graph=g, name=fname, value=vals[n,])
 				if(all(is.infinite(vals[n,-n])) | is.nan(vals[n,-n]))
-					tlog(4,"NOT plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),"), as all values are infinite or NaN")
+					tlog(6,"NOT plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),"), as all values are infinite or NaN")
 				else
-				{	tlog(4,"Plotting graph for node #",id," (",nname, ", ",n,"/",gorder(g),")")
+				{	tlog(6,"Plotting graph for node #",id," (",nname, ", ",n,"/",gorder(g),")")
 					g <- update.node.labels(g, vals[n,])
 					shrt.nm <- substr(nname,1,30)		# to avoid long file names
 					id.cln <- gsub(":", "-", id, fixed=TRUE)
@@ -109,12 +111,11 @@ analyze.net.structsim <- function(g, out.folder)
 			# filter structural similarity
 			tlog(8,"Computing undirected graph distance")
 			if(length(rem)>0) 
-			{	gt <- delete_vertices(g,rem)
-				gvals <- similarity(graph=gt, mode=if(mode==MEAS_MODE_UNDIR) "all" else mode, method="jaccard")
-				gvals <- gvals[upper.tri(gvals)]
-			}
+				gt <- delete_vertices(g,rem)
 			else
-				gvals <- vals
+				gt <- g
+			gvals <- similarity(graph=gt, mode=if(mode==MEAS_MODE_UNDIR) "all" else mode, method="jaccard")
+			gvals <- gvals[upper.tri(gvals)]
 			dd <- as.matrix(distances(graph=gt, mode="all"))
 			dd <- dd[upper.tri(dd)]
 			idx <- !is.infinite(dd)

@@ -46,7 +46,7 @@ FORMAT <- c("pdf", "png")	# plot file format: pdf png
 #			 for e.hl (highlighted edges).
 # ...: parameters sent directly to the plot function.
 #############################################################
-custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE, v.hl, e.hl, color.isolates=FALSE, file, top.vertices=c(), top.edges=c(), ...)
+custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE, v.hl, e.hl, color.isolates=FALSE, file, top.vertices=c(), top.edges=c(), rescale=FALSE, ...)
 {	# init graph info
 	m <- gsize(g)						# number of edges
 	n <- gorder(g)						# number of nodes
@@ -230,7 +230,7 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 	if(hasArg(size.att))
 	{	# one size fits all
 		if(length(size.att)==1 && is.numeric(size.att))
-			vsizes <- size.att
+			vsizes <- rep(size.att, gorder(g))
 		
 		# attribute name
 		else
@@ -383,6 +383,7 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 			edge.arrow.size=arrow.param,			# arrow size
 			edge.arrow.width=arrow.param,			# arrow size
 			frame=FALSE, 							# frame around the plot (useful when debugging)
+			rescale=rescale,						# whether to normalize the plot size
 			...										# other parameters
 		)
 		if(length(nature)>0)
@@ -427,7 +428,7 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 				# numerical attributes
 				else
 				{	# get plot boundaries
-					if(hasArg(rescale) && !rescale)
+					if(!rescale)
 					{	xmin <- par("usr")[1]
 						xmax <- par("usr")[2]
 						ymin <- par("usr")[3] + 0.25
