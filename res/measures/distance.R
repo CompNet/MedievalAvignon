@@ -148,7 +148,7 @@ analyze.net.distance <- function(g, out.folder)
 		cor.tab[sdist,"Spearman"] <- cor(x=gvals, y=svals, method="spearman")
 		cor.tab[sdist,"Kendall"] <- cor(x=gvals, y=svals, method="kendall")
 		
-		# plot the spatial measure as a function of the graph-based one
+		# plot the spatial distance as a function of the graph-based one
 		plot.file <- file.path(distance.folder, paste0(fname,"_vs_spatial_",sdist))
 		pdf(paste0(plot.file,".pdf"))
 			plot(

@@ -34,6 +34,9 @@ analyze.net.structsim <- function(g, out.folder)
 		sim.folder <- file.path(out.folder, g$name, MEAS_STRUCT_SIM)
 		dir.create(path=sim.folder, showWarnings=FALSE, recursive=TRUE)
 		
+		
+		###### compute structural similarity
+		
 		# compute node-to-node similarity values
 		vals <- similarity(graph=g, mode=if(mode==MEAS_MODE_UNDIR) "all" else mode, method="jaccard")
 		flat.vals <- vals[upper.tri(vals)]
@@ -58,8 +61,9 @@ analyze.net.structsim <- function(g, out.folder)
 			nname <- trimws(gsub("?", "", nname, fixed=TRUE))
 			
 			# only for significant nodes
-			if(igraph::degree(g, v=n, mode="all")<3)
-				tlog(4,"NOT plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),"), as its degree is <3")
+			deg.lim <- 4
+			if(igraph::degree(g, v=n, mode="all")<deg.lim)
+				tlog(4,"NOT plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),"), as its degree is <",deg.lim)
 			else
 			{	g <- set_vertex_attr(graph=g, name=fname, value=vals[n,])
 				if(all(is.infinite(vals[n,-n])) | is.nan(vals[n,-n]))
@@ -75,6 +79,74 @@ analyze.net.structsim <- function(g, out.folder)
 				g <- delete_vertex_attr(graph=g, name=fname)
 			}
 		}
+		
+		
+		###### compare with spatial distance
+		
+		tlog(4,"Comparing structural similarity and spatial distances")
+		sdists <- c("reliable","estimate")	# only positions from the DB vs. all positions including estimates
+		
+		# init correlation table
+		cor.tab <- matrix(NA,nrow=2,ncol=3)	
+		cor.tab <- data.frame(cor.tab)
+		cor.tab <- cbind(c("Reliable","Estimate"), cor.tab)
+		colnames(cor.tab) <- c("Coordinates", "Pearson", "Spearman", "Kendall")
+		rownames(cor.tab) <- sdists
+		
+		# compute spatial distances
+		ylab <- c(reliable="Spatial distance (as defined)", estimate="Spatial distance (as estimated)")
+		for(sdist in sdists)
+		{	tlog(6,"Computing spatial distance (",sdist,")")
+			if(sdist=="reliable")
+				coords <- cbind(vertex_attr(g, name=COL_LOC_HYP_LON), vertex_attr(g, name=COL_LOC_HYP_LAT))
+			else
+				coords <- cbind(V(g)$x, V(g)$y)
+			idx <- which(!is.na(coords[,1]) & !is.na(coords[,2]))
+			rem <- which(is.na(coords[,1]) | is.na(coords[,2]))
+			svals <- as.matrix(dist(x=coords[idx,], method="euclidean", diag=TRUE, upper=TRUE))
+			svals <- svals[upper.tri(svals)]
+			
+			# filter structural similarity
+			tlog(8,"Computing undirected graph distance")
+			if(length(rem)>0) 
+			{	gt <- delete_vertices(g,rem)
+				gvals <- similarity(graph=gt, mode=if(mode==MEAS_MODE_UNDIR) "all" else mode, method="jaccard")
+				gvals <- gvals[upper.tri(gvals)]
+			}
+			else
+				gvals <- vals
+			idx <- !is.infinite(gvals)
+			gvals <- gvals[idx]
+			svals <- svals[idx]
+			
+			# compute correlations
+			tlog(8,"Computing correlation between structural similarity and spatial distances")
+			cor.tab[sdist,"Pearson"] <- cor(x=gvals, y=svals, method="pearson")
+			cor.tab[sdist,"Spearman"] <- cor(x=gvals, y=svals, method="spearman")
+			cor.tab[sdist,"Kendall"] <- cor(x=gvals, y=svals, method="kendall")
+			
+			# plot the spatial distance as a function of the structural similarity
+			plot.file <- file.path(sim.folder, paste0(fname,"_vs_spatial_",sdist))
+			pdf(paste0(plot.file,".pdf"))
+				plot(
+					x=gvals, y=svals, 
+					xlab=paste(MEAS_LONG_NAMES[mode],MEAS_LONG_NAMES[MEAS_STRUCT_SIM]), ylab=ylab[sdist],
+					#log="xy", 
+					las=1, col="RED",
+					#xlim=c(1,max(deg.vals)*1.1)
+				)
+				# mean
+				avg.dist <- sapply(min(gvals):max(gvals), function(deg) mean(svals[gvals==deg]))
+				lines(	
+					x=min(gvals):max(gvals), avg.dist,
+					col="BLACK"
+				)
+			dev.off()
+		}
+		
+		# record correlations
+		tab.file <- file.path(sim.folder, paste0(fname,"_vs_spatial_correlations.csv"))
+		write.csv(cor.tab, file=tab.file, row.names=FALSE)
 	}
 	
 	return(g)

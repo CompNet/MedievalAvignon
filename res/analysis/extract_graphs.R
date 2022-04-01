@@ -1177,11 +1177,13 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 # x réviser le nom des biens : 
 # x spatialisation kk même pour les réseaux filtrés
 # x produire liste des noeuds qui ont un lien avec eux mêmes
-# - corr entre dist spatiale et dist graph (sur les noeuds dont la position est connue)
+# x corr entre dist spatiale et dist graph (sur les noeuds dont la position est connue)
+#   - recouper avec une autre mesure, par ex. le degré, sous forme de couleur 
+#   x alternative: corrélation entre similarité structurelle et distance spatiale ?
 # x ignorer les attributs non-pertinents
 #
 # - les plots de certains diamètres ne contiennent aucun lien
-# - problème de positionnement de la légende numérique
+# - problème de positionnement de la légende numérique (qui se retrouve au centre du graphique)
 
 
 
