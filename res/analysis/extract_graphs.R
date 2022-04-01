@@ -1020,11 +1020,11 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			tlog(8,"Removing ",length(which(idx))," street nodes")
 			g1 <- delete_vertices(graph=g1, v=idx)
 			# remove nodes of higher type (areas, villages, walls)
-			idx <- startsWith(V(g1)$name,"Quartier:") | startsWith(V(g1)$name,"Bourg:")	 | startsWith(V(g1)$name,"Rempart:")
+			idx <- startsWith(V(g1)$name,"Quartier:") | startsWith(V(g1)$name,"Bourg:") | startsWith(V(g1)$name,"Rempart:")
 			tlog(8,"Removing ",length(which(idx))," areas/villages/walls")
 			g1 <- delete_vertices(graph=g1, v=idx)
 			# remove certain geological objects
-			idx <-  startsWith(V(g1)$name,"Repere:") & vertex_attr(g1,COL_LDMRK_TYPE)!="Rocher"
+			idx <- startsWith(V(g1)$name,"Repere:") & vertex_attr(g1,COL_LDMRK_TYPE)!="Rocher"
 			tlog(8,"Removing ",length(which(idx))," geological object")
 			g1 <- delete_vertices(graph=g1, v=idx)
 		}
@@ -1180,16 +1180,25 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #      > différence avec sim structurelle ?
 
 # TODO
-# x réviser le nom des biens : 
+# x réviser le nom des biens 
 # x spatialisation kk même pour les réseaux filtrés
 # x produire liste des noeuds qui ont un lien avec eux mêmes
 # x corr entre dist spatiale et dist graph (sur les noeuds dont la position est connue)
 #   x recouper avec une autre mesure, par ex. le degré, sous forme de couleur 
 #   x alternative: corrélation entre similarité structurelle et distance spatiale
 #   - tester la significativité de la correlation
+#   - restreindre aux biens confrontés avec édifices & portes
+#   - identifier les édifices et portes dans ces graphiques
 # x ignorer les attributs non-pertinents
-
-
+# - pb: certains bourgs sont présents dans lv_estate (bourg de bernard de rodez, rempart exterieur)
+# - graphes kk: 
+#   - rajouter les id ext, mettre systématiquement le nom
+#   - les noms semblent incorrects, ex. livrée 226 apparait sous le nom de "maison"
+#   - garder le même code couleur (liens) dans les différents graphes
+#   - graphiques attributs: ne garder que les liens (sans flèche ni couleur)
+# - graphe spatialisé géo : sont vides
+# - pq "other" ds typeSimpleComposant1, et pas juste NA ?
+# - représenter les non-biens avec une forme différente
 
 
 ###### SOCIAL ######
