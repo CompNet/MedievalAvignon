@@ -1234,7 +1234,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 # x graphes spatialisés géo : sont vides
 # x pq "other" ds typeSimpleComposant1, et pas juste NA ?
 # x représenter les non-biens avec une forme différente dans les plots (triangle?)
-# - coms: virer les petits composants
+# x coms: virer les petits composants
 
 
 
