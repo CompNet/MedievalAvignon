@@ -46,14 +46,13 @@ FORMAT <- c("pdf", "png")	# plot file format: pdf png
 #			 for e.hl (highlighted edges).
 # ...: parameters sent directly to the plot function.
 #############################################################
-custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE, v.hl, e.hl, color.isolates=FALSE, file, top.vertices=c(), top.edges=c(), rescale=FALSE, ...)
+custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE, v.hl, e.hl, color.isolates=FALSE, file, top.vertices=c(), top.edges=c(), rescale=TRUE, ...)
 {	# init graph info
 	m <- gsize(g)						# number of edges
 	n <- gorder(g)						# number of nodes
 	directed <- is.directed(g)			# whether the graph is directed
 	layout <- cbind(V(g)$x, V(g)$y)		# predefined layout
-#	vlabels <- V(g)$label0				# node short labels
-	vlabels <- V(g)$label				# node long labels
+	vlabels <- V(g)$label				# node labels
 	gtype <- graph_attr(g, GR_TYPE)		# graph type social vs. spatial network (for the current application)
 	
 	pie.values <- NA
@@ -61,13 +60,15 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 	
 	# vertex shapes
 	vshapes <- rep("circle",n)
+	if(gtype==GR_TYPE_EST)
+		vshapes[which(vertex_attr(g, COL_LOC_TYPE)!="Bien")] <- "triangle"
 	if(hasArg(v.hl))
 		vshapes[v.hl] <- "csquare"
 	# vertex outline color
 	outline.cols <- rep("BLACK",n)
 	
 	# set edge colors
-	ecols <- rep("BLACK", m)						# default color
+	ecols <- rep("gray50", m)						# default color
 	nature <- edge_attr(g, LK_TYPE)
 	if(length(nature)>0)
 	{	if(gtype==GR_TYPE_SOC)
@@ -77,7 +78,10 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 #			ecols[nature==LK_TYPE_UNK] <- "#222222"			# dark grey
 		}
 		else if(gtype==GR_TYPE_EST)
-		{	nats <- sort(unique(nature))
+		{	if("name" %in% graph_attr_names(g) && g$name %in% c(LV_ESTATE, LK_TYPE_FLATREL))
+				nats <- LK_TYPE_FLATREL_VALS
+			else
+				nats <- sort(unique(nature))
 			epal <- get.palette(length(nats))
 			for(i in 1:length(nats))
 				ecols[nature==nats[i]] <- epal[i]
@@ -356,11 +360,13 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 		}
 		if(gtype==GR_TYPE_SOC)
 		{	par(mar=c(5,4,4,2)+.1)						# 5, 4, 4, 2 (B L T R)
-			arrow.param <- 0.75
+			arrow.size <- 0.75
+			arrow.width <- 0.75
 		}
 		else
 		{	par(mar=c(0,7,0,7)+.1)						# 5, 4, 4, 2 (B L T R)
-			arrow.param <- 0.5
+			arrow.size <- 0.15
+			arrow.width <- 0.75
 		}
 		plot(g,										# graph to plot
 			#axes=TRUE,								# whether to draw axes or not
@@ -380,8 +386,8 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 			edge.color=ecols,						# link color
 			edge.lty=elty,							# link type
 			edge.width=ewidth,						# link thickness
-			edge.arrow.size=arrow.param,			# arrow size
-			edge.arrow.width=arrow.param,			# arrow size
+			edge.arrow.size=arrow.size,				# arrow size (triangle height)
+			edge.arrow.width=arrow.width,			# arrow width (triangle basis)
 			frame=FALSE, 							# frame around the plot (useful when debugging)
 			rescale=rescale,						# whether to normalize the plot size
 			...										# other parameters
@@ -813,3 +819,55 @@ get.asp <- function()
 	asp <- (pin[2]/(usr[4] - usr[3]))/(pin[1]/(usr[2] - usr[1]))
 	return(asp)
 }
+
+
+
+
+#############################################################################################
+# Adds the triangle vertex shape to igraph plotting abilities.
+# Taken from:
+# 	https://rdrr.io/github/b2slab/FELLA/man/mytriangle.html
+#############################################################################################
+#' Add triangular shape to igraph plot
+#' 
+#' This function enables the usage of triangles as shape in 
+#' the function \code{\link[igraph]{plot.igraph}}. 
+#' 
+#' @param coords,v,params clipping arguments, see 
+#' \code{\link[igraph]{shapes}}
+#' 
+#' @return Plot symbols
+#' 
+#' @examples 
+#' ## This function is internal
+#' library(igraph)
+#' 
+#' add.vertex.shape(
+#' "triangle", clip = shapes("circle")$clip,
+#' plot = FELLA:::mytriangle)
+#' 
+#' g <- barabasi.game(10)
+#' plot(
+#' g, vertex.shape = "triangle", 
+#' vertex.color = rainbow(vcount(g)),
+#' vertex.size = seq(10, 20, length = vcount(g)))
+#' 
+#' @importFrom graphics symbols
+#' 
+#' @keywords internal
+FELLAmytriangle <- function(coords, v=NULL, params) {
+	vertex.color <- params("vertex", "color")
+	if (length(vertex.color) != 1 && !is.null(v)) {
+		vertex.color <- vertex.color[v]
+	}
+	vertex.size <- 1/200 * params("vertex", "size")
+	if (length(vertex.size) != 1 && !is.null(v)) {
+		vertex.size <- vertex.size[v]
+	}
+	
+	graphics::symbols(
+			x = coords[, 1], y = coords[, 2], bg = vertex.color,
+			stars = cbind(vertex.size, vertex.size, vertex.size),
+			add = TRUE, inches = FALSE)
+}
+add.vertex.shape("triangle", clip=shapes("circle")$clip, plot=FELLAmytriangle)

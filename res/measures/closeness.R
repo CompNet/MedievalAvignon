@@ -68,10 +68,10 @@ analyze.net.closeness <- function(g, out.folder)
 		
 		# plot graph using color for closeness
 		g <- update.node.labels(g, vals)
-		custom.gplot(g=g, col.att=fname, file=file.path(closeness.folder,paste0(fname,"_graph")), size.att=2)
-		#custom.gplot(g=g, col.att=fname)
-		g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2
-		custom.gplot(g=g1, col.att=fname, file=file.path(closeness.folder,paste0(fname,"_graph_kk")), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y))
+		custom.gplot(g=g, col.att=fname, file=file.path(closeness.folder,paste0(fname,"_graph")), size.att=2, edge.arrow.mode=0)
+		g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+		V(g1)$label <- paste(vertex_attr(g1,name=COL_LOC_ID), get.location.names(g1),sep="_")
+		custom.gplot(g=g1, col.att=fname, file=file.path(closeness.folder,paste0(fname,"_graph_kk")), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1)
 		if(all(is.na(vals)))
 			tlog(4,"WARNING: all values are NA, so no color in the plot")
 	}
@@ -130,10 +130,10 @@ analyze.net.harmonic.closeness <- function(g, out.folder)
 		
 		# plot graph using color for harmonic closeness
 		g <- update.node.labels(g, vals)
-		custom.gplot(g=g, col.att=fname, file=file.path(closeness.folder,paste0(fname,"_graph")), size.att=2)
-		#custom.gplot(g=g, col.att=fname)
-		g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2
-		custom.gplot(g=g1, col.att=fname, file=file.path(closeness.folder,paste0(fname,"_graph_kk")), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y))
+		custom.gplot(g=g, col.att=fname, file=file.path(closeness.folder,paste0(fname,"_graph")), size.att=2, edge.arrow.mode=0)
+		g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+		V(g1)$label <- paste(vertex_attr(g1,name=COL_LOC_ID), get.location.names(g1),sep="_")
+		custom.gplot(g=g1, col.att=fname, file=file.path(closeness.folder,paste0(fname,"_graph_kk")), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1)
 		if(all(is.na(vals)))
 			tlog(4,"WARNING: all values are NA, so no color in the plot")
 	}

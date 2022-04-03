@@ -75,7 +75,7 @@ analyze.net.structsim <- function(g, out.folder)
 					g <- update.node.labels(g, vals[n,])
 					shrt.nm <- substr(nname,1,30)		# to avoid long file names
 					id.cln <- gsub(":", "-", id, fixed=TRUE)
-					custom.gplot(g=g, col.att=fname, v.hl=n, file=file.path(mode.folder,paste0(id.cln,"_",shrt.nm)), size.att=2)
+					custom.gplot(g=g, col.att=fname, v.hl=n, file=file.path(mode.folder,paste0(id.cln,"_",shrt.nm)), size.att=2, edge.arrow.mode=0)
 					#custom.gplot(g=g, col.att=fname, v.hl=n)
 				}
 				g <- delete_vertex_attr(graph=g, name=fname)
@@ -86,20 +86,20 @@ analyze.net.structsim <- function(g, out.folder)
 		###### compare with spatial distance
 		
 		tlog(4,"Comparing structural similarity and spatial distances")
-		sdists <- c("reliable","estimate")	# only positions from the DB vs. all positions including estimates
+		sdists <- c("database","interpolation")			# only positions from the DB vs. all positions including estimates
 		
 		# init correlation table
-		cor.tab <- matrix(NA,nrow=2,ncol=3)	
+		cor.tab <- matrix(NA,nrow=2,ncol=6)	
 		cor.tab <- data.frame(cor.tab)
-		cor.tab <- cbind(c("Reliable","Estimate"), cor.tab)
-		colnames(cor.tab) <- c("Coordinates", "Pearson", "Spearman", "Kendall")
+		cor.tab <- cbind(c("Database","Interpolation"), cor.tab)
+		colnames(cor.tab) <- c("Coordinates", "PearsonCoef", "PearsonPval", "SpearmanCoef", "SpearmanPval", "KendallCoef", "KendallPval")
 		rownames(cor.tab) <- sdists
 		
 		# compute spatial distances
-		ylab <- c(reliable="Spatial distance (as defined)", estimate="Spatial distance (as estimated)")
+		ylab <- c(database="Spatial distance (database)", interpolation="Spatial distance (interpolation)")
 		for(sdist in sdists)
 		{	tlog(6,"Computing spatial distance (",sdist,")")
-			if(sdist=="reliable")
+			if(sdist=="database")
 				coords <- cbind(vertex_attr(g, name=COL_LOC_HYP_LON), vertex_attr(g, name=COL_LOC_HYP_LAT))
 			else
 				coords <- cbind(V(g)$x, V(g)$y)
@@ -124,9 +124,15 @@ analyze.net.structsim <- function(g, out.folder)
 			
 			# compute correlations
 			tlog(8,"Computing correlation between structural similarity and spatial distances")
-			cor.tab[sdist,"Pearson"] <- cor(x=gvals, y=svals, method="pearson")
-			cor.tab[sdist,"Spearman"] <- cor(x=gvals, y=svals, method="spearman")
-			cor.tab[sdist,"Kendall"] <- cor(x=gvals, y=svals, method="kendall")
+			tmp <- cor.test(x=gvals, y=svals, method="pearson")
+			cor.tab[sdist,"PearsonCoef"] <- tmp$estimate
+			cor.tab[sdist,"PearsonPval"] <- tmp$p.value
+			tmp <- cor.test(x=gvals, y=svals, method="spearman")
+			cor.tab[sdist,"SpearmanCoef"] <- tmp$estimate
+			cor.tab[sdist,"SpearmanPval"] <- tmp$p.value
+			tmp <- cor.test(x=gvals, y=svals, method="kendall")
+			cor.tab[sdist,"KendallCoef"] <- tmp$estimate
+			cor.tab[sdist,"KendallPval"] <- rmp$p.value
 			
 			# plot the spatial distance as a function of the structural similarity
 			plot.file <- file.path(sim.folder, paste0(fname,"_vs_spatial_",sdist))

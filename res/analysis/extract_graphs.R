@@ -902,15 +902,17 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #	write.graphml.file(g=g, file=file)
 #	# <do your magic with gephi, then record graph with new layout>
 #	g0 <- read.graph(file, format="graphml")
-#	layout <- cbind(V(g)$idExterne, V(g0)$x, V(g0)$y)
+#	layout <- data.frame(V(g0)$idExterne, V(g0)$x, V(g0)$y)
 #	colnames(layout) <- c("idExterne", "x","y")
+#	scale <- max(abs(layout[,c("x","y")]))/7
+#	layout[,c("x","y")] <- layout[,c("x","y")]/scale
 #	write.table(x=layout, file=lay.file, sep="\t", row.names=FALSE, col.names=TRUE)
 	######
 	# update graph
 	tlog(4,"Reading layout from file ",lay.file)
 	layout <- read.table(file=lay.file, sep="\t", header=TRUE, check.names=FALSE)
-	lay.idx <- match(layout[,"idExterne"], V(g)$idExterne)
-	if(any(is.na(lay.idx))) error("Could not match node ids with ids from the layout file")
+	lay.idx <- match(V(g)$idExterne, layout[,"idExterne"])
+	if(any(is.na(lay.idx))) stop("Could not match node ids with ids from the layout file")
 	V(g)$x2 <- layout[lay.idx,"x"]; V(g)$y2 <- layout[lay.idx,"y"]
 	# plot graph
 	plot.file <- file.path(FOLDER_OUT_ANAL_EST,"graph_kk")
@@ -968,11 +970,12 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	# copy in new attribute
 	V(g)$lonEst <- V(g)$x
 	V(g)$latEst <- V(g)$y
-	# test plots
-	#V(g)$label <- NA
-	#custom.gplot(g=g)
-	#custom.gplot(g=g, col.att="x", cat.att=FALSE, color.isolates=TRUE)
-	#custom.gplot(g=g, col.att=COL_LOC_HYP_LON, cat.att=FALSE, color.isolates=TRUE, file="temp.png")
+	# plots full graph with spatial positions
+	g1 <- g
+	V(g1)$label <- NA
+	plot.file <- file.path(FOLDER_OUT_ANAL_EST,"graph")
+	custom.gplot(g=g1, file=plot.file, size.att=2)
+	#custom.gplot(g=g1)
 	
 	# get additional info on the streets and other stuff
 	short.tab <- read.table(
@@ -992,7 +995,9 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #	)
 #	keep.idx <- which(is.na(V(g)$idBien) | V(g)$idBien %in% sources[[1]]$re.ids)
 	
+	#################
 	# extract one graph for each predefined modality
+	#################
 	tlog(2,"Extracting several variants of the graph")
 	link.types <- c(LV_ESTATE, LK_TYPE_FLATREL)		# c(LK_TYPE_ALL, LV_ESTATE, LK_TYPE_FLATREL, link.types)
 	for(i in 1:length(link.types))
@@ -1109,32 +1114,39 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 							}))
 		}
 		
-		# keep the labels of only top hubs 
+		# plot the graph using the geographic coordinates
 		g1 <- update.node.labels(g1, vals=degree(g1))
-		
-		# plot full graph using the specified (x,y)
 		plot.file <- file.path(graph.folder, "graph")
-		tlog(4,"Plotting graph in \"",plot.file,"\"")
+		tlog(4,"Plotting graph using geographic coordinates in \"",plot.file,"\"")
 		custom.gplot(g=g1, file=plot.file, asp=1, size.att=2)
 		#custom.gplot(g=g1)
-		# and plot using a spatialization method 
+
+		# plot the graph using a layouting algorithm 
 		g2 <- g1#; V(g2)$x <- V(g2)$x2; V(g2)$y <- V(g2)$y2
-		V(g2)$label <- NA; idx <- which(degree(g2)>3); V(g2)[idx]$label <- comp.names[idx]
+		#V(g2)$label <- NA; idx <- which(degree(g2)>3); V(g2)[idx]$label <- comp.names[idx]
+		V(g2)$label <- paste(vertex_attr(g2,name=COL_LOC_ID), get.location.names(g2),sep="_")
 		plot.file <- file.path(graph.folder, "graph_kk")
-		tlog(4,"Plotting graph in \"",plot.file,"\"")
-		###### init layout quasi-manually
-		#layout <- layout_with_kk(g2, kkconst=1);V(g2)$x <- layout[,1]; V(g2)$y <- layout[,2];custom.gplot(g=g2, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), edge.arrow.mode=0, vertex.label.cex=0.1)
-		if(link.types[i]==LK_TYPE_FLATREL)
-			layout <- layout_with_mds(g2)
-		else
-			layout <- layout_with_kk(g2, kkconst=1)
-		scale <- max(layout)/7
-		layout <- layout/scale
-		V(g2)$x <- layout[,1]
-		V(g2)$y <- layout[,2]
-		#lay.file <- file.path(graph.folder, "layout.txt")
+		tlog(4,"Plotting graph using layouting algorithm in \"",plot.file,"\"")
+		lay.file <- file.path(graph.folder, "layout.txt")
+##		###### init layout quasi-manually
+##		#layout <- layout_with_kk(g2, kkconst=1);V(g2)$x <- layout[,1]; V(g2)$y <- layout[,2];custom.gplot(g=g2, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), edge.arrow.mode=0, vertex.label.cex=0.1)
+##		if(link.types[i]==LK_TYPE_FLATREL)
+##			layout <- layout_with_mds(g2)
+##		else
+##			layout <- layout_with_kk(g2, kkconst=1)
+#		layout <- layout_with_kk(g2, kkconst=10)
+#		scale <- max(layout)/7
+#		layout <- data.frame(V(g2)$idExterne, layout/scale)
+#		colnames(layout) <- c("idExterne", "x","y")
+#		write.table(x=layout, file=lay.file, sep="\t", row.names=FALSE, col.names=TRUE)
+		#
+		layout <- read.table(file=lay.file, sep="\t", header=TRUE, check.names=FALSE)
+		lay.idx <- match(V(g2)$idExterne, layout[,"idExterne"])
+		if(any(is.na(lay.idx))) stop("Could not match node ids with ids from the layout file")
+		V(g2)$x <- layout[lay.idx,"x"]; V(g2)$y <- layout[lay.idx,"y"]
+		E(g2)$weight <- 0.5
 		######
-		custom.gplot(g=g2, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g0)$x), ylim=range(V(g0)$y), edge.arrow.mode=0, vertex.label.cex=0.1)
+		custom.gplot(g=g2, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), vertex.label.cex=0.1)
 		#custom.gplot(g=g2)
 		
 		# record graph as a graphml file
@@ -1156,11 +1168,6 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 
 
 ###### IMMOBILIER ######
-# TODO nommage des noeuds immobiliers >> utiliser les préfixes rajoutés depuis
-#
-# TODO correlation entre distance euclidienne et distance géodésique pr valider 
-# le fait que le réseau de confront est une bonne approximation des relations de proximité spatiale
-#
 # TODO utiliser MDS pour positionner sur la base de la distance géodésique 
 # les noeuds dont on ne connait pas la position spatiale exacte 
 #
@@ -1180,25 +1187,27 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #      > différence avec sim structurelle ?
 
 # TODO
-# x réviser le nom des biens 
-# x spatialisation kk même pour les réseaux filtrés
-# x produire liste des noeuds qui ont un lien avec eux mêmes
+# x mettre à jour les données
 # x corr entre dist spatiale et dist graph (sur les noeuds dont la position est connue)
-#   x recouper avec une autre mesure, par ex. le degré, sous forme de couleur 
-#   x alternative: corrélation entre similarité structurelle et distance spatiale
-#   - tester la significativité de la correlation
+#   x tester la significativité de la correlation
 #   - restreindre aux biens confrontés avec édifices & portes
-#   - identifier les édifices et portes dans ces graphiques
-# x ignorer les attributs non-pertinents
-# - pb: certains bourgs sont présents dans lv_estate (bourg de bernard de rodez, rempart exterieur)
-# - graphes kk: 
-#   - rajouter les id ext, mettre systématiquement le nom
-#   - les noms semblent incorrects, ex. livrée 226 apparait sous le nom de "maison"
-#   - garder le même code couleur (liens) dans les différents graphes
-#   - graphiques attributs: ne garder que les liens (sans flèche ni couleur)
-# - graphe spatialisé géo : sont vides
-# - pq "other" ds typeSimpleComposant1, et pas juste NA ?
-# - représenter les non-biens avec une forme différente
+#   - identifier les édifices et portes dans ces graphiques (forme? couleur?)
+#	- mettre de la transparence pour mieux discerner la densité
+#   - voire générer des heatmaps?
+# x pb: certains bourgs sont présents dans lv_estate (bourg de bernard de rodez, rempart exterieur)
+#   ? après autres modifs, l'erreur ne semble plus apparaître
+# x graphes kk: 
+#   x rajouter les id ext, mettre systématiquement le nom
+#   x les noms semblent incorrects, ex. livrée 226 apparait sous le nom de "maison"
+#     ? après autres modifs, l'erreur ne semble plus apparaître
+#   x garder le même code couleur (liens) dans les différents graphes
+#   x graphiques attributs: ne garder que les liens (sans flèche ni couleur)
+#   x diminuer l'épaisseur des traits dans les graphiques kk
+#   x layout de Flat_rel pas satisfaisant: nombreux recouvrements de noeuds
+# x graphes spatialisés géo : sont vides
+# x pq "other" ds typeSimpleComposant1, et pas juste NA ?
+# x représenter les non-biens avec une forme différente dans les plots (triangle?)
+# - coms: virer les petits composants
 
 
 ###### SOCIAL ######

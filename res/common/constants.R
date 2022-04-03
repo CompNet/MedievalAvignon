@@ -341,7 +341,7 @@ FILE_GRAPH <- "graph.graphml"
 	VAL_CONF_TYPE_SOUS <- "sous"
 	VAL_CONF_TYPE_SUR <- "sur"
 	VAL_CONF_TYPE_VERS <- "vers"
-	
+
 
 
 
@@ -366,6 +366,17 @@ LK_TYPE <- "type"
 	LK_TYPE_SOC_LST <- c(LK_TYPE_ALL, LK_TYPE_FAM, LK_TYPE_PRO, LK_TYPE_ECCL)
 	# confront
 	LK_TYPE_FLATREL <- "Flat_rel"		# keeps everything but the membership relations
+	
+LK_TYPE_FLATREL_VALS <- c(
+	VAL_CONF_TYPE_INTERIEUR, 
+	VAL_CONF_TYPE_EST, 
+	VAL_CONF_TYPE_OUEST, 
+	VAL_CONF_TYPE_NORD, 
+	VAL_CONF_TYPE_SUD, 
+	VAL_CONF_TYPE_MISC, 
+	VAL_CONF_TYPE_EGALE
+)	
+	
 # link description
 LK_DESCR <- "description"
 
