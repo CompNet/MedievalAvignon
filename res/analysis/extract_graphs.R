@@ -1190,10 +1190,10 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 # x mettre à jour les données
 # x corr entre dist spatiale et dist graph (sur les noeuds dont la position est connue)
 #   x tester la significativité de la correlation
-#   - restreindre aux biens confrontés avec édifices & portes
-#   - identifier les édifices et portes dans ces graphiques (forme? couleur?)
-#	- mettre de la transparence pour mieux discerner la densité
-#   - voire générer des heatmaps?
+#   x restreindre aux biens confrontés avec édifices & portes
+#   x identifier les édifices et portes dans ces graphiques (forme? couleur?)
+#	x mettre de la transparence pour mieux discerner la densité (pas suffisant, trop de paires)
+#   ~ voire générer des heatmaps?
 # x pb: certains bourgs sont présents dans lv_estate (bourg de bernard de rodez, rempart exterieur)
 #   ? après autres modifs, l'erreur ne semble plus apparaître
 # x graphes kk: 
@@ -1208,6 +1208,8 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 # x pq "other" ds typeSimpleComposant1, et pas juste NA ?
 # x représenter les non-biens avec une forme différente dans les plots (triangle?)
 # - coms: virer les petits composants
+
+
 
 
 ###### SOCIAL ######

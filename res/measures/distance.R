@@ -152,25 +152,31 @@ analyze.net.distance <- function(g, out.folder)
 		cor.tab[sdist,"SpearmanPval"] <- tmp$p.value
 		tmp <- cor.test(x=gvals, y=svals, method="kendall")
 		cor.tab[sdist,"KendallCoef"] <- tmp$estimate
-		cor.tab[sdist,"KendallPval"] <- rmp$p.value
+		cor.tab[sdist,"KendallPval"] <- tmp$p.value
+		# NOTE: null hypothesis=zero correlation >> small p means this hypothesis is rejected
 		
 		# plot the spatial distance as a function of the graph-based one
 		plot.file <- file.path(distance.folder, paste0(fname,"_vs_spatial_",sdist))
-		pdf(paste0(plot.file,".pdf"))
-			plot(
-				x=gvals, y=svals, 
-				xlab="Undirected graph distance", ylab=xlab[sdist],
-				#log="xy", 
-				las=1, col="RED",
-				#xlim=c(1,max(deg.vals)*1.1)
-			)
-			# mean
-			avg.dist <- sapply(min(gvals):max(gvals), function(deg) mean(svals[gvals==deg]))
-			lines(	
-				x=min(gvals):max(gvals), avg.dist,
-				col="BLACK"
-			)
-		dev.off()
+		for(fformat in FORMAT)
+		{	if(fformat=="pdf")
+				pdf(paste0(plot.file,".pdf"))
+			else if(fformat=="png")
+				png(paste0(plot.file,".png"))
+				plot(
+					x=gvals, y=svals, 
+					xlab="Undirected graph distance", ylab=xlab[sdist],
+					#log="xy", 
+					las=1, col=make.color.transparent("RED",75)
+					#xlim=c(1,max(deg.vals)*1.1)
+				)
+				# mean
+				avg.dist <- sapply(min(gvals):max(gvals), function(deg) mean(svals[gvals==deg]))
+				lines(	
+					x=min(gvals):max(gvals), avg.dist,
+					col="BLACK"
+				)
+			dev.off()
+		}
 		
 		# same using degree for colors
 		meas <- MEAS_DEGREE
@@ -178,32 +184,195 @@ analyze.net.distance <- function(g, out.folder)
 		cb <- t(combn(1:gorder(gt),2))
 		vals <- (vals[cb[,1]] * vals[cb[,2]])[idx]
 		# set colors
-		fine = 500 									# granularity of the color gradient
-		pal = colorRampPalette(c("yellow",'red'))	# extreme colors of the gradient
-		cols <- pal(fine)[as.numeric(cut(vals,breaks=fine))]
-		pdf(paste0(plot.file,"_col=",meas,".pdf"))
+		fine <- 500 									# granularity of the color gradient
+#		cols <- sapply(viridis(fine,direction=-1)[as.numeric(cut(vals,breaks=fine))], function(col) make.color.transparent(col,75))
+		cols <- viridis(fine,direction=-1)[as.numeric(cut(vals,breaks=fine))]
+		plot.file <- file.path(distance.folder, paste0(fname,"_vs_spatial_",sdist,"_col=",meas))
+		for(fformat in FORMAT)
+		{	if(fformat=="pdf")
+				pdf(paste0(plot.file,".pdf"))
+			else if(fformat=="png")
+				png(paste0(plot.file,".png"))
+				plot(
+					x=gvals[order(vals)], y=svals[order(vals)], 
+					xlab="Undirected graph distance", ylab=xlab[sdist],
+					#log="xy", 
+					las=1, col=cols[order(vals)],
+					#xlim=c(1,max(deg.vals)*1.1)
+				)
+				# mean
+				avg.dist <- sapply(min(gvals):max(gvals), function(deg) mean(svals[gvals==deg]))
+				lines(	
+					x=min(gvals):max(gvals), avg.dist,
+					col="BLACK"
+				)
+				# legend
+				gradientLegend(range(vals), color=viridis(fine,direction=-1), inside=TRUE)
+			dev.off()
+		}
+	}
+	
+	# record correlations
+	tab.file <- file.path(distance.folder, paste0(fname,"_correlations.csv"))
+	write.csv(cor.tab, file=tab.file, row.names=FALSE)	
+	
+	
+	###### compare graph and spatial average distances
+	tlog(2,"Comparing graph and spatial average distances")
+	sdists <- c("database","interpolation")			# only positions from the DB vs. all positions including estimates
+	fname <- paste0(MEAS_DISTANCE,"_undirected_avg")
+	distance.folder <- file.path(out.folder,g$name,MEAS_DISTANCE)
+	
+	# init correlation table
+	cor.tab <- matrix(NA,nrow=2,ncol=6)	
+	cor.tab <- data.frame(cor.tab)
+	cor.tab <- cbind(c("Database","Interpolation"), cor.tab)
+	colnames(cor.tab) <- c("Coordinates", "PearsonCoef", "PearsonPval", "SpearmanCoef", "SpearmanPval", "KendallCoef", "KendallPval")
+	rownames(cor.tab) <- sdists
+	
+	# compute spatial average distances
+	xlab <- c(database="Average spatial distance (database)", interpolation="Average spatial distance (interpolation)")
+	for(sdist in sdists)
+	{	tlog(6,"Computing spatial distance (",sdist,")")
+		if(sdist=="database")
+			coords <- cbind(vertex_attr(g, name=COL_LOC_HYP_LON), vertex_attr(g, name=COL_LOC_HYP_LAT))
+		else
+			coords <- cbind(V(g)$x, V(g)$y)
+		idx <- which(!is.na(coords[,1]) & !is.na(coords[,2]))
+		rem <- which(is.na(coords[,1]) | is.na(coords[,2]))
+		svals <- as.matrix(dist(x=coords[idx,], method="euclidean", diag=TRUE, upper=TRUE))
+		
+		# compute average undirected graph distance
+		tlog(8,"Computing undirected graph distance")
+		if(length(rem)>0) 
+			gt <- delete_vertices(g,rem)
+		else
+			gt <- g
+		gvals <- distances(graph=gt, mode="all")
+		idx <- which(is.infinite(gvals), arr.ind=TRUE)
+		for(r in 1:nrow(idx)) gvals[idx[r,1],idx[r,2]] <- NA
+		for(r in 1:nrow(idx)) svals[idx[r,1],idx[r,2]] <- NA
+		gvals <- sapply(1:nrow(gvals), function(r) mean(gvals[r,-r], na.rm=TRUE))
+		svals <- sapply(1:nrow(svals), function(r) mean(svals[r,-r], na.rm=TRUE))
+		flag.keep <- !is.na(gvals) & !is.na(svals)
+		gvals <- gvals[flag.keep]
+		svals <- svals[flag.keep]
+		
+		# compute distribution
+		plot.file <- file.path(distance.folder,paste0(fname,"_histo_spatial_",sdist))
+		tlog(8,"Plotting in \"",plot.file,"\"")
+		custom.hist(vals=svals, xlab[sdist], file=plot.file)
+		
+		# compute correlations
+		tlog(8,"Computing correlation between graph and spatial distances")
+		tmp <- cor.test(x=gvals, y=svals, method="pearson")
+		cor.tab[sdist,"PearsonCoef"] <- tmp$estimate
+		cor.tab[sdist,"PearsonPval"] <- tmp$p.value
+		tmp <- cor.test(x=gvals, y=svals, method="spearman")
+		cor.tab[sdist,"SpearmanCoef"] <- tmp$estimate
+		cor.tab[sdist,"SpearmanPval"] <- tmp$p.value
+		tmp <- cor.test(x=gvals, y=svals, method="kendall")
+		cor.tab[sdist,"KendallCoef"] <- tmp$estimate
+		cor.tab[sdist,"KendallPval"] <- tmp$p.value
+		# NOTE: null hypothesis=zero correlation >> small p means this hypothesis is rejected
+		
+		# plot the spatial distance as a function of the graph-based one
+		avg.dist <- sapply(sort(unique(gvals)), function(deg) mean(svals[gvals==deg]))
+		plot.file <- file.path(distance.folder, paste0(fname,"_vs_spatial_",sdist))
+		for(fformat in FORMAT)
+		{	if(fformat=="pdf")
+				pdf(paste0(plot.file,".pdf"))
+			else if(fformat=="png")
+				png(paste0(plot.file,".png"))
+			plot(
+				x=gvals, y=svals, 
+				xlab="Undirected average graph distance", ylab=xlab[sdist],
+				#log="xy", 
+				las=1, col=make.color.transparent("RED",75)
+				#xlim=c(1,max(deg.vals)*1.1)
+			)
+			# mean
+#			lines(	
+#				x=sort(unique(gvals)), avg.dist,
+#				col="BLACK"
+#			)
+			dev.off()
+		}
+		
+		# same using degree for colors
+		meas <- MEAS_DEGREE
+		vals <- igraph::degree(graph=gt, mode="all")[flag.keep]
+		# set colors
+		fine <- 500 									# granularity of the color gradient
+		cols <- viridis(fine,direction=-1)[as.numeric(cut(vals,breaks=fine))]
+		# produce files
+		avg.dist <- sapply(sort(unique(gvals)), function(deg) mean(svals[gvals==deg]))
+		plot.file <- file.path(distance.folder, paste0(fname,"_vs_spatial_",sdist,"_col=",meas))
+		for(fformat in FORMAT)
+		{	if(fformat=="pdf")
+				pdf(paste0(plot.file,".pdf"))
+			else if(fformat=="png")
+				png(paste0(plot.file,".png"))
 			plot(
 				x=gvals[order(vals)], y=svals[order(vals)], 
-				xlab="Undirected graph distance", ylab=xlab[sdist],
+				xlab="Undirected average graph distance", ylab=xlab[sdist],
 				#log="xy", 
 				las=1, col=cols[order(vals)],
 				#xlim=c(1,max(deg.vals)*1.1)
 			)
 			# mean
-			avg.dist <- sapply(min(gvals):max(gvals), function(deg) mean(svals[gvals==deg]))
-			lines(	
-				x=min(gvals):max(gvals), avg.dist,
-				col="BLACK"
-			)
+#			lines(	
+#				x=min(gvals):max(gvals), avg.dist,
+#				col="BLACK"
+#			)
 			# legend
-			gradientLegend(range(vals), color=pal(fine), inside=TRUE)
-		dev.off()
+			gradientLegend(range(vals), color=viridis(fine,direction=-1), inside=TRUE)
+			dev.off()
+		}
+		
+		# same using colors for fixed buildings
+		edf <- vertex_attr(graph=g, name=COL_LOC_TYPE)[flag.keep] %in% c("Edifice","Porte","Repere")
+		types <- vertex_attr(graph=g, name=COL_LOC_TYPE)[flag.keep]
+		if(any(edf))
+		{	plot.file <- file.path(distance.folder, paste0(fname,"_vs_spatial_",sdist,"_col=fixed"))
+			cols <- rep(make.color.transparent("BLACK",75), length(vals))
+			pal <- get.palette(3)[1:3]
+			cols[edf & types=="Edifice"] <- pal[1]
+			cols[edf & types=="Porte"] <- pal[2]
+			cols[edf & types=="Repere"] <- pal[3]
+			
+			for(fformat in FORMAT)
+			{	if(fformat=="pdf")
+					pdf(paste0(plot.file,".pdf"))
+				else if(fformat=="png")
+					png(paste0(plot.file,".png"))
+				plot(
+					x=gvals[order(edf)], y=svals[order(edf)], 
+					xlab="Undirected average graph distance", ylab=xlab[sdist],
+					#log="xy", 
+					las=1, col=cols[order(edf)],
+					#xlim=c(1,max(deg.vals)*1.1)
+				)
+				# mean
+#				lines(	
+#					x=min(gvals):max(gvals), avg.dist,
+#					col="BLACK"
+#				)
+				# legend
+				legend(
+					x="bottomright",
+					fill=c(pal,"BLACK"),
+					legend=c("Edifice","Gate","Landmark","Others")
+				)
+				dev.off()
+			}
+		}
 	}
 	
 	# record correlations
 	tab.file <- file.path(distance.folder, paste0(fname,"_correlations.csv"))
 	write.csv(cor.tab, file=tab.file, row.names=FALSE)
-
+		
 	
 	###### finalize
 	
