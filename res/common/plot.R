@@ -78,7 +78,7 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 #			ecols[nature==LK_TYPE_UNK] <- "#222222"			# dark grey
 		}
 		else if(gtype==GR_TYPE_EST)
-		{	if("name" %in% graph_attr_names(g) && g$name %in% c(LV_ESTATE, LK_TYPE_FLATREL))
+		{	if("name" %in% graph_attr_names(g) && (startsWith(g$name,LV_ESTATE) || startsWith(g$name,LK_TYPE_FLATREL)))
 				nats <- LK_TYPE_FLATREL_VALS
 			else
 				nats <- sort(unique(nature))

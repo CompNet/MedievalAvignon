@@ -132,7 +132,7 @@ analyze.net.structsim <- function(g, out.folder)
 			cor.tab[sdist,"SpearmanPval"] <- tmp$p.value
 			tmp <- cor.test(x=gvals, y=svals, method="kendall")
 			cor.tab[sdist,"KendallCoef"] <- tmp$estimate
-			cor.tab[sdist,"KendallPval"] <- rmp$p.value
+			cor.tab[sdist,"KendallPval"] <- tmp$p.value
 			
 			# plot the spatial distance as a function of the structural similarity
 			plot.file <- file.path(sim.folder, paste0(fname,"_vs_spatial_",sdist))

@@ -1155,6 +1155,33 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		graph.file <- file.path(graph.folder, FILE_GRAPH)
 		tlog(4,"Recording graph in \"",graph.file,"\"")
 		write.graphml.file(g=g1, file=graph.file)
+		
+		# record the filtered version keeping only the main components
+		if(link.types[i]==LV_ESTATE)
+			cmp.thre <- 15
+		else if(link.types[i]==LK_TYPE_FLATREL)
+			cmp.thre <- 25
+		tmp <- components(graph=g1, mode="weak")
+		cmps <- which(tmp$csize<cmp.thre)
+		idx <- which(tmp$membership %in% cmps)
+		if(length(idx)>1)
+		{	# filter graph
+			g1 <- delete_vertices(graph=g1, v=idx)
+			g1$name <- paste0(g1$name,"_filtered")
+			g2 <- delete_vertices(graph=g2, v=idx)
+			g2$name <- paste0(g2$name,"_filtered")
+			# record as graphml
+			graph.folder <- file.path(FOLDER_OUT_ANAL_EST, g1$name)
+			dir.create(path=graph.folder, showWarnings=FALSE, recursive=TRUE)
+			graph.file <- file.path(graph.folder, FILE_GRAPH)
+			tlog(4,"Recording filtered graph in \"",graph.file,"\"")
+			write.graphml.file(g=g1, file=graph.file)
+			# plot
+			plot.file <- file.path(graph.folder, "graph")
+			custom.gplot(g=g1, file=plot.file, asp=1, size.att=2)
+			plot.file <- file.path(graph.folder, "graph_kk")
+			custom.gplot(g=g2, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), vertex.label.cex=0.1)
+		}
 	}
 	
 	return(link.types)

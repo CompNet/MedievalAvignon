@@ -69,7 +69,11 @@ for(i in 1:length(link.types))
 	
 	# compute all topological measures
 	g <- analyze.network(gname=link.types[i], out.folder=FOLDER_OUT_ANAL_EST)
+	# link.types <- c(LV_ESTATE, LK_TYPE_FLATREL)
 	# gname=LV_ESTATE; out.folder=FOLDER_OUT_ANAL_EST
+	
+	# filtered version
+	g <- analyze.network(gname=paste0(link.types[i],"_filtered"), out.folder=FOLDER_OUT_ANAL_EST)
 }
 tlog.end.loop("Measure computation over")
 
