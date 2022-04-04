@@ -51,12 +51,12 @@ analyze.net.eccentricity <- function(g, out.folder)
 		
 		# plot diameter
 		diam.paths <- future_lapply(1:nrow(idx), function(r) 
-			if(g$name!=LV_ESTATE)
-				# looking for all the paths
-				all_shortest_paths(graph=g, from=idx[r,1], to=idx[r,2], mode=if(mode==MEAS_MODE_DIR) "in" else "all")$res
-			else
+			if(startsWith(g$name,LV_ESTATE))
 				# too long to find all the paths...
 				shortest_paths(graph=g, from=idx[r,1], to=idx[r,2], mode=if(mode==MEAS_MODE_DIR) "in" else "all")$vpath
+			else
+				# looking for all the paths
+				all_shortest_paths(graph=g, from=idx[r,1], to=idx[r,2], mode=if(mode==MEAS_MODE_DIR) "in" else "all")$res
 		)
 		tlog(4,"Found ",length(diam.paths)," distinct diameters, plotting them")
 		for(pp in 1:length(diam.paths))

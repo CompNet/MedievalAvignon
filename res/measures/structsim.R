@@ -68,7 +68,7 @@ analyze.net.structsim <- function(g, out.folder)
 				tlog(6,"NOT plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),"), as its degree is <",deg.lim)
 			else
 			{	g <- set_vertex_attr(graph=g, name=fname, value=vals[n,])
-				if(all(is.infinite(vals[n,-n])) | is.nan(vals[n,-n]))
+				if(all(is.infinite(vals[n,-n]) | is.nan(vals[n,-n])))
 					tlog(6,"NOT plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),"), as all values are infinite or NaN")
 				else
 				{	tlog(6,"Plotting graph for node #",id," (",nname, ", ",n,"/",gorder(g),")")
