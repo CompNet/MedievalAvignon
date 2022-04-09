@@ -972,7 +972,8 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	V(g)$latEst <- V(g)$y
 	# plots full graph with spatial positions
 	g1 <- g
-	V(g1)$label <- NA
+#	V(g1)$label <- NA
+	V(g1)$label <- paste(vertex_attr(g1,name=COL_LOC_ID), get.location.names(g1),sep="_")
 	plot.file <- file.path(FOLDER_OUT_ANAL_EST,"graph")
 	custom.gplot(g=g1, file=plot.file, size.att=2)
 	#custom.gplot(g=g1)
@@ -1235,6 +1236,40 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 # x pq "other" ds typeSimpleComposant1, et pas juste NA ?
 # x représenter les non-biens avec une forme différente dans les plots (triangle?)
 # x coms: virer les petits composants
+#
+# - rajouter les noms dans la version géo des plots de graphes
+# - utiliser les coordonnées lambert93 à la place
+# - rajouter les noms dans les versions spatiales des graphes
+# - fusion des liens "égale" : 
+#   - conserver le noeud qui n'est pas un bien
+#   - concaténer les id dans le nom affiché dans les graphiques
+#   - si plusieurs biens >> pas de fusion
+# - pb égale :
+#   - si traité à la construction du graphe, pq tjrs dans la légende
+#   - pq apparait en gris et pas en rose (Bien:2015_cimetiere -- Edifice:720_Cimetiere juif)
+#   - pq il reste des liens égale alors qu'on les traite avant
+# - tous les noms n'apparaissent pas systématiquement (ex. kk racine)
+# - utiliser les catégories de montant
+# - supprimer les coms orientées (autres ?)
+# - communautés
+#   - accord entre algos ?
+#   - lien hiérarchique entre graphe avec et sans rues ?
+#   - comparer struct com avec seignerie (partitions)
+#   - centralisation des communautés (construites autour d'invariants ?)
+#   - spatialisation du graphe sans rue, avec coms, on fixe leurs coordonnées puis on rajoute les rues (du graphe plat) et on étudie leur position (est elle intermédiaire entre coms ?)
+#     - alt : prendre le graphe plat et représenter coms sans rues vs. coms graphe plat, voir où sont les noeuds sans com (=rues) 
+#   - choix de la méthode de détection: si com construite autour d'une seule rue, ou correspond à une division admin, alors trop évident. il faut qqch entre les deux
+#   - observations :
+#     - edgebetweenness/fastgreedy/louvain: 40aine de coms, semble pertinent
+#     - eigenvector: pertinent mais plus grosses coms
+#     - infomap/labelprop/walktrap: très nombreuses coms (100--200)
+# - manque l'id du noeud dans les noms de fichiers individuels (ex. distance)
+# - supprimer toutes les mesures orientées
+# - générer les graphiques indiv avec la spatialisation algo (en plus de la géo)
+# - margot:
+#   - map de conversion pour les composants de maison
+#   - spécification de couleurs spécifiques pour certaines attributs
+#   - compléter les liens "égale" manquants
 
 
 
