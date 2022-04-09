@@ -250,8 +250,10 @@ analyze.net.distance <- function(g, out.folder)
 			gt <- g
 		gvals <- distances(graph=gt, mode="all")
 		idx <- which(is.infinite(gvals), arr.ind=TRUE)
-		for(r in 1:nrow(idx)) gvals[idx[r,1],idx[r,2]] <- NA
-		for(r in 1:nrow(idx)) svals[idx[r,1],idx[r,2]] <- NA
+		if(nrow(idx)>0)
+		{	for(r in 1:nrow(idx)) gvals[idx[r,1],idx[r,2]] <- NA
+			for(r in 1:nrow(idx)) svals[idx[r,1],idx[r,2]] <- NA
+		}
 		gvals <- sapply(1:nrow(gvals), function(r) mean(gvals[r,-r], na.rm=TRUE))
 		svals <- sapply(1:nrow(svals), function(r) mean(svals[r,-r], na.rm=TRUE))
 		flag.keep <- !is.na(gvals) & !is.na(svals)
