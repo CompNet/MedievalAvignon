@@ -62,10 +62,11 @@ analyze.net.eccentricity <- function(g, out.folder)
 		tlog(4,"Found ",length(diam.paths)," distinct diameters, plotting them")
 		for(pp in 1:length(diam.paths))
 		{	tlog(6,"Plotting diameter path ",pp,"/",length(diam.paths))
-			V(g)$label <- rep(NA, gorder(g))
-			custom.gplot(g=g, paths=diam.paths[[pp]], file=file.path(diameter.folder,paste0(MEAS_DIAMETER,"_",mode,"_graph_lambert_",pp)), size.att=2, edge.arrow.mode=0)
+			#V(g)$label <- rep(NA, gorder(g))
+			V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
+			g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+			custom.gplot(g=g1, paths=diam.paths[[pp]], file=file.path(diameter.folder,paste0(MEAS_DIAMETER,"_",mode,"_graph_lambert_",pp)), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
 			g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-			V(g1)$label <- paste(vertex_attr(g1,name=COL_LOC_ID), get.location.names(g1),sep="_")
 			custom.gplot(g=g1, paths=diam.paths[[pp]], file=file.path(diameter.folder,paste0(MEAS_DIAMETER,"_",mode,"_graph_kk_",pp)), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1)
 			
 			if(length(diam.paths[[pp]])<=20)
@@ -74,15 +75,15 @@ analyze.net.eccentricity <- function(g, out.folder)
 				for(p in 1:length(diam.paths[[pp]]))
 				{	tlog(10,"Plotting variant ",p,"/",length(diam.paths[[pp]]))
 					if(p==1 || !all(diam.paths[[pp]][[p]]==diam.paths[[pp]][[p-1]]))
-					{	V(g)$label <- rep(NA,gorder(g))
-						vstart <- diam.paths[[pp]][[p]][1]
-						V(g)[vstart]$label <- get.names(g, vstart) 
-						vend <- diam.paths[[pp]][[p]][length(diam.paths[[pp]][[p]])]
-						V(g)[vend]$label <- get.names(g, vend) 
-						
-						custom.gplot(g=g, paths=diam.paths[[pp]][[p]], file=file.path(diameter.folder,paste0(MEAS_DIAMETER,"_",mode,"_graph_lambert_",pp,"_",q)), size.att=2, edge.arrow.mode=0)
+					{	#V(g)$label <- rep(NA,gorder(g))
+						#vstart <- diam.paths[[pp]][[p]][1]
+						#V(g)[vstart]$label <- get.names(g, vstart) 
+						#vend <- diam.paths[[pp]][[p]][length(diam.paths[[pp]][[p]])]
+						#V(g)[vend]$label <- get.names(g, vend) 
+						V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
+						g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+						custom.gplot(g=g1, paths=diam.paths[[pp]][[p]], file=file.path(diameter.folder,paste0(MEAS_DIAMETER,"_",mode,"_graph_lambert_",pp,"_",q)), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
 						g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-						V(g1)$label <- paste(vertex_attr(g1,name=COL_LOC_ID), get.location.names(g1),sep="_")
 						custom.gplot(g=g1, paths=diam.paths[[pp]][[p]], file=file.path(diameter.folder,paste0(MEAS_DIAMETER,"_",mode,"_graph_kk_",pp,"_",q)), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1)
 						
 						q <- q + 1
@@ -128,11 +129,12 @@ analyze.net.eccentricity <- function(g, out.folder)
 		stats[fname, ] <- list(Value=NA, Mean=mean(vals), Stdv=sd(vals))
 		
 		# plot graph using color for eccentricity
-		g <- update.node.labels(g, vals)
-		custom.gplot(g=g, col.att=fname, file=file.path(eccentricity.folder,paste0(fname,"_graph_lambert")), size.att=2, edge.arrow.mode=0)
+		#g <- update.node.labels(g, vals)
+		V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
+		g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+		custom.gplot(g=g1, col.att=fname, file=file.path(eccentricity.folder,paste0(fname,"_graph_lambert")), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
 		g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-		V(g1)$label <- paste(vertex_attr(g1,name=COL_LOC_ID), get.location.names(g1),sep="_")
-		custom.gplot(g=g1, col.att=fname, file=file.path(eccentricity.folder,paste0(fname,"_graph_kk")), edge.arrow.mode=0, vertex.label.cex=0.1)
+		custom.gplot(g=g1, col.att=fname, file=file.path(eccentricity.folder,paste0(fname,"_graph_kk")), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1)
 		
 		# compute radius
 		tlog(2,"Computing radius: mode=",mode)

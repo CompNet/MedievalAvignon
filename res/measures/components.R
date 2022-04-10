@@ -80,10 +80,11 @@ analyze.net.components <- function(g, out.folder)
 		g <- set_vertex_attr(graph=g, name=fname, value=mbrs.big)
 		
 		# plot graph using color for components
-		V(g)$label <- rep(NA, gorder(g))
-		custom.gplot(g=g, col.att=fname, cat.att=TRUE, file=file.path(comp.folder,paste0(fname,"_graph_lambert")), size.att=2, edge.arrow.mode=0)
+		#V(g)$label <- rep(NA, gorder(g))
+		V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
+		g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+		custom.gplot(g=g1, col.att=fname, cat.att=TRUE, file=file.path(comp.folder,paste0(fname,"_graph_lambert")), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
 		g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-		V(g1)$label <- paste(vertex_attr(g1,name=COL_LOC_ID), get.location.names(g1),sep="_")
 		custom.gplot(g=g1, col.att=fname, cat.att=TRUE, file=file.path(comp.folder,paste0(fname,"_graph_kk")), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1)
 		g <- set_vertex_attr(graph=g, name=fname, value=cmp$membership)
 	
@@ -93,13 +94,14 @@ analyze.net.components <- function(g, out.folder)
 		for(i in idx)
 		{	# plot subgraph
 			g2 <- induced_subgraph(graph=g, vids=which(mbrs.big==i))
-			if(gorder(g2)>20)
-				V(g2)$label <- rep(NA, gorder(g2))
-			else
-				V(g2)$label <- get.names(g2)
-			custom.gplot(g=g2, file=file.path(sep.folder,paste0("component_",i,"_lambert")), size.att=2, edge.arrow.mode=0)
-			g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-			V(g1)$label <- paste(vertex_attr(g1,name=COL_LOC_ID), get.location.names(g1),sep="_")
+#			if(gorder(g2)>20)
+#				V(g2)$label <- rep(NA, gorder(g2))
+#			else
+#				V(g2)$label <- get.names(g2)
+			V(g2)$label <- paste(vertex_attr(g2,name=COL_LOC_ID), get.location.names(g2),sep="_")
+			g1 <- g2; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+			custom.gplot(g=g1, file=file.path(sep.folder,paste0("component_",i,"_lambert")), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+			g1 <- g2; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
 			custom.gplot(g=g1, file=file.path(sep.folder,paste0("component_",i,"_kk")), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1)
 	
 			# export subgraph

@@ -1224,12 +1224,12 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 
 # TODO
 # - graphiques des graphes
-#   + rajouter les noms dans la version géo des plots de graphes (juste graphique de la racine)
+#   + rajouter les noms dans la version géo des plots de graphes
 #   + utiliser les coordonnées lambert93 à la place des coordonnées actuelles
 #   + tous les noms n'apparaissent pas systématiquement (ex. kk racine)
-#   - générer les graphiques indiv avec la spatialisation algo (en plus de la géo)
+#   + générer les graphiques indiv avec la spatialisation algo (en plus de la géo)
+#   + manque l'id du noeud dans les noms de fichiers individuels (ex. distance)
 # + ne pas calculer les mesures orientées
-# - manque l'id du noeud dans les noms de fichiers individuels (ex. distance)
 # - liens de type "égale" :
 #   - pb égale :
 #     - si traité à la construction du graphe, pq tjrs dans la légende

@@ -76,16 +76,19 @@ analyze.net.connectivity <- function(g, out.folder)
 			stats[fname, ] <- list(Value=NA, Mean=mean(vals), Stdv=sd(vals))
 			
 			# plot graph using color for average connectivity
-			g <- update.node.labels(g, avg.vals)
-			custom.gplot(g=g, col.att=paste0(fname,"_avg"), file=file.path(connectivity.folder,paste0(fname,"_avg_graph")), size.att=2, edge.arrow.mode=0)
-			#custom.gplot(g=g, col.att=paste0(fname,"_avg"))
+			#g <- update.node.labels(g, avg.vals)
+			V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
+			g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+			custom.gplot(g=g1, col.att=paste0(fname,"_avg"), file=file.path(connectivity.folder,paste0(fname,"_avg_graph_lambert")), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+			g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+			custom.gplot(g=g1, col.att=paste0(fname,"_avg"), file=file.path(connectivity.folder,paste0(fname,"_avg_graph_kk")), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1)
 		}
 		
 		# for each node, plot graph using color for connectivity
 		mode.folder <- file.path(connectivity.folder,mode)
 		dir.create(path=mode.folder, showWarnings=FALSE, recursive=TRUE)
 		for(n in 1:gorder(g))
-		{	id <- vertex_attr(g, ND_NAME, n)
+		{	id <- vertex_attr(g, COL_LOC_ID, n)
 			nname <- get.names(g, n)
 			nname <- trimws(gsub("?", "", nname, fixed=TRUE))
 			
@@ -100,9 +103,12 @@ analyze.net.connectivity <- function(g, out.folder)
 				{	tlog(4,"Plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),")")
 					g <- update.node.labels(g, vals[n,])
 					shrt.nm <- substr(nname,1,30)		# to avoid long file names
-					id.cln <- gsub(":", "-", nname, fixed=TRUE)
-					custom.gplot(g=g, col.att=fname, v.hl=n, file=file.path(mode.folder,paste0("n",id.cln,"_",shrt.nm)), size.att=2, edge.arrow.mode=0)
-					#custom.gplot(g=g, col.att=fname, v.hl=n)
+					id.cln <- gsub(":", "-", id, fixed=TRUE)
+					V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
+					g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+					custom.gplot(g=g1, col.att=fname, v.hl=n, file=file.path(mode.folder,"lambert",paste0(id.cln,"_",shrt.nm)), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+					g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+					custom.gplot(g=g1, col.att=fname, v.hl=n, file=file.path(mode.folder,"kk",paste0(id.cln,"_",shrt.nm)), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1)
 				}
 				g <- delete_vertex_attr(graph=g, name=fname)
 			}
