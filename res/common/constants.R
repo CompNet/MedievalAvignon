@@ -107,11 +107,11 @@ FILE_GRAPH <- "graph.graphml"
 	COL_LOC_ID <- "idExterne"
 	COL_LOC_TYPE <- "typeExterne"
 	# coordinates
-	COL_LOC_X <- "xcoord"
-	COL_LOC_Y <- "ycoord"
+	COL_LOC_X <- "xcoord"				# lambert93 coordinates
+	COL_LOC_Y <- "ycoord"				# lambert93 coordinates
 	# estimated coordinates
-	COL_LOC_HYP_LAT <- "latitudeHypo"
-	COL_LOC_HYP_LON <- "longitudeHypo"
+	COL_LOC_HYP_LAT <- "latitudeHypo"	# other projection
+	COL_LOC_HYP_LON <- "longitudeHypo"	# other projection
 	
 # estate table
 	# ids

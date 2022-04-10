@@ -919,15 +919,17 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	tlog(4,"Plotting in file ",plot.file)
 	g0 <- g
 	V(g0)$x <- layout[lay.idx,"x"]; V(g0)$y <- layout[lay.idx,"y"]
-	V(g0)$label <- NA
-	idx <- which(degree(g)>5)
-	V(g0)[idx]$label <- comp.names[idx]
+	#V(g0)$label <- NA
+	#idx <- which(degree(g)>5)
+	#V(g0)[idx]$label <- comp.names[idx]
+	V(g0)$label <- paste(vertex_attr(g0,name=COL_LOC_ID), get.location.names(g0),sep="_")
 	custom.gplot(g=g0, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g0)$x), ylim=range(V(g0)$y), edge.arrow.mode=0, vertex.label.cex=0.1)
-
+	write.graphml.file(g=g0, file=paste0(plot.file,".graphml"))
+	
 	# use spatial coordinates for layout
 	tlog(2,"Using spatial coordinates to define layout")
-	V(g)$x <- vertex_attr(g, name=COL_LOC_HYP_LON)	# COL_LOC_X	COL_LOC_HYP_LON
-	V(g)$y <- vertex_attr(g, name=COL_LOC_HYP_LAT)	# COL_LOC_Y	COL_LOC_HYP_LAT
+	V(g)$x <- vertex_attr(g, name=COL_LOC_X)	# COL_LOC_X	COL_LOC_HYP_LON
+	V(g)$y <- vertex_attr(g, name=COL_LOC_Y)	# COL_LOC_Y	COL_LOC_HYP_LAT
 	# missing coordinates: use the average of the neighbors
 	changed <- TRUE
 	while(changed)
@@ -964,20 +966,21 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			V(g)$y[idx] <- tmp[2,]
 		}
 	}
-	# completely disconnected nodes
+	# put completely disconnected nodes in bottom left corner
 	V(g)$x[which(is.na(V(g)$x))] <- min(V(g)$x, na.rm=TRUE)
 	V(g)$y[which(is.na(V(g)$y))] <- min(V(g)$y, na.rm=TRUE)
-	# copy in new attribute
+	# copy interpolated coordinates in new attribute
 	V(g)$lonEst <- V(g)$x
 	V(g)$latEst <- V(g)$y
-	# plots full graph with spatial positions
+	# plot full graph with these positions
 	g1 <- g
 #	V(g1)$label <- NA
 	V(g1)$label <- paste(vertex_attr(g1,name=COL_LOC_ID), get.location.names(g1),sep="_")
-	plot.file <- file.path(FOLDER_OUT_ANAL_EST,"graph")
-	custom.gplot(g=g1, file=plot.file, size.att=2)
+	plot.file <- file.path(FOLDER_OUT_ANAL_EST,"graph_lambert")
+	custom.gplot(g=g1, file=plot.file, size.att=2, vertex.label.cex=0.1)
 	#custom.gplot(g=g1)
-	
+	write.graphml.file(g=g1, file=paste0(plot.file,".graphml"))
+
 	# get additional info on the streets and other stuff
 	short.tab <- read.table(
 		file=FILE_IN_ANAL_STRT_SHORT,
@@ -1116,11 +1119,13 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		}
 		
 		# plot the graph using the geographic coordinates
-		g1 <- update.node.labels(g1, vals=degree(g1))
-		plot.file <- file.path(graph.folder, "graph")
+		#g1 <- update.node.labels(g1, vals=degree(g1))
+		V(g1)$label <- paste(vertex_attr(g1,name=COL_LOC_ID), get.location.names(g1),sep="_")
+		plot.file <- file.path(graph.folder, "graph_lambert")
 		tlog(4,"Plotting graph using geographic coordinates in \"",plot.file,"\"")
-		custom.gplot(g=g1, file=plot.file, asp=1, size.att=2)
+		custom.gplot(g=g1, file=plot.file, asp=1, size.att=2, vertex.label.cex=0.1)
 		#custom.gplot(g=g1)
+		write.graphml.file(g=g1, file=paste0(plot.file,".graphml"))
 
 		# plot the graph using a layouting algorithm 
 		g2 <- g1#; V(g2)$x <- V(g2)$x2; V(g2)$y <- V(g2)$y2
@@ -1149,6 +1154,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		######
 		custom.gplot(g=g2, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), vertex.label.cex=0.1)
 		#custom.gplot(g=g2)
+		write.graphml.file(g=g2, file=paste0(plot.file,".graphml"))
 		
 		# record graph as a graphml file
 		V(g1)$x2 <- V(g2)$x
@@ -1178,10 +1184,12 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			tlog(4,"Recording filtered graph in \"",graph.file,"\"")
 			write.graphml.file(g=g1, file=graph.file)
 			# plot
-			plot.file <- file.path(graph.folder, "graph")
-			custom.gplot(g=g1, file=plot.file, asp=1, size.att=2)
+			plot.file <- file.path(graph.folder, "graph_lambert")
+			custom.gplot(g=g1, file=plot.file, asp=1, size.att=2, vertex.label.cex=0.1)
+			write.graphml.file(g=g1, file=paste0(plot.file,".graphml"))
 			plot.file <- file.path(graph.folder, "graph_kk")
 			custom.gplot(g=g2, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), vertex.label.cex=0.1)
+			write.graphml.file(g=g2, file=paste0(plot.file,".graphml"))
 		}
 	}
 	
@@ -1215,42 +1223,21 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #      > différence avec sim structurelle ?
 
 # TODO
-# x mettre à jour les données
-# x corr entre dist spatiale et dist graph (sur les noeuds dont la position est connue)
-#   x tester la significativité de la correlation
-#   x restreindre aux biens confrontés avec édifices & portes
-#   x identifier les édifices et portes dans ces graphiques (forme? couleur?)
-#	x mettre de la transparence pour mieux discerner la densité (pas suffisant, trop de paires)
-#   ~ voire générer des heatmaps?
-# x pb: certains bourgs sont présents dans lv_estate (bourg de bernard de rodez, rempart exterieur)
-#   ? après autres modifs, l'erreur ne semble plus apparaître
-# x graphes kk: 
-#   x rajouter les id ext, mettre systématiquement le nom
-#   x les noms semblent incorrects, ex. livrée 226 apparait sous le nom de "maison"
-#     ? après autres modifs, l'erreur ne semble plus apparaître
-#   x garder le même code couleur (liens) dans les différents graphes
-#   x graphiques attributs: ne garder que les liens (sans flèche ni couleur)
-#   x diminuer l'épaisseur des traits dans les graphiques kk
-#   x layout de Flat_rel pas satisfaisant: nombreux recouvrements de noeuds
-# x graphes spatialisés géo : sont vides
-# x pq "other" ds typeSimpleComposant1, et pas juste NA ?
-# x représenter les non-biens avec une forme différente dans les plots (triangle?)
-# x coms: virer les petits composants
-#
-# - rajouter les noms dans la version géo des plots de graphes
-# - utiliser les coordonnées lambert93 à la place
-# - rajouter les noms dans les versions spatiales des graphes
-# - fusion des liens "égale" : 
-#   - conserver le noeud qui n'est pas un bien
-#   - concaténer les id dans le nom affiché dans les graphiques
-#   - si plusieurs biens >> pas de fusion
-# - pb égale :
-#   - si traité à la construction du graphe, pq tjrs dans la légende
-#   - pq apparait en gris et pas en rose (Bien:2015_cimetiere -- Edifice:720_Cimetiere juif)
-#   - pq il reste des liens égale alors qu'on les traite avant
-# - tous les noms n'apparaissent pas systématiquement (ex. kk racine)
-# - utiliser les catégories de montant
-# - supprimer les coms orientées (autres ?)
+# - graphiques des graphes
+#   + rajouter les noms dans la version géo des plots de graphes (juste graphique de la racine)
+#   + utiliser les coordonnées lambert93 à la place des coordonnées actuelles
+#   + tous les noms n'apparaissent pas systématiquement (ex. kk racine)
+# - ne pas calculer les mesures orientées
+# - liens de type "égale" :
+#   - pb égale :
+#     - si traité à la construction du graphe, pq tjrs dans la légende
+#     - pq apparait en gris et pas en rose (Bien:2015_cimetiere -- Edifice:720_Cimetiere juif)
+#     - pq il reste des liens égale alors qu'on les traite avant
+#   - fusion des liens "égale" : 
+#     - conserver le noeud qui n'est pas un bien
+#     - concaténer les id dans le nom affiché dans les graphiques
+#     - si plusieurs biens >> pas de fusion
+# - utiliser les catégories de montant définies avec margot
 # - communautés
 #   - accord entre algos ?
 #   - lien hiérarchique entre graphe avec et sans rues ?
