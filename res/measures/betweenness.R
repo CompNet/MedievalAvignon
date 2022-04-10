@@ -28,7 +28,8 @@ analyze.net.betweenness <- function(g, out.folder)
 	stat.file <- file.path(out.folder, g$name, "stats.csv")
 	stats <- retrieve.stats(stat.file)
 	
-	modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
+#	modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
+	modes <- c(MEAS_MODE_UNDIR)
 	for(i in 1:length(modes))
 	{	mode <- modes[i]
 		tlog(2,"Computing betweenness: mode=",mode)

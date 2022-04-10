@@ -31,7 +31,8 @@ analyze.net.connectivity <- function(g, out.folder)
 	stat.file <- file.path(out.folder, g$name, "stats.csv")
 	stats <- retrieve.stats(stat.file)
 	
-	modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
+#	modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
+	modes <- c(MEAS_MODE_UNDIR)
 	for(mode in modes)
 	{	tlog(2,"Computing vertex connectivity: mode=",mode)
 		

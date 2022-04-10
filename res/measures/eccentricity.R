@@ -33,7 +33,8 @@ analyze.net.eccentricity <- function(g, out.folder)
 	stats <- retrieve.stats(stat.file)
 	
 	# compute diameter
-	modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
+#	modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
+	modes <- c(MEAS_MODE_UNDIR)
 	for(mode in modes)
 	{	tlog(2,"Computing diameter: mode=",mode)
 		diam <- diameter(g, directed=mode==MEAS_MODE_DIR)						# get the network diameter
@@ -98,7 +99,8 @@ analyze.net.eccentricity <- function(g, out.folder)
 	}
 	
 	# compute eccentricity and radius
-	modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_IN, MEAS_MODE_OUT)
+#	modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_IN, MEAS_MODE_OUT)
+	modes <- c(MEAS_MODE_UNDIR)
 	for(i in 1:length(modes))
 	{	mode <- modes[i]
 		

@@ -1227,7 +1227,9 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #   + rajouter les noms dans la version géo des plots de graphes (juste graphique de la racine)
 #   + utiliser les coordonnées lambert93 à la place des coordonnées actuelles
 #   + tous les noms n'apparaissent pas systématiquement (ex. kk racine)
-# - ne pas calculer les mesures orientées
+#   - générer les graphiques indiv avec la spatialisation algo (en plus de la géo)
+# + ne pas calculer les mesures orientées
+# - manque l'id du noeud dans les noms de fichiers individuels (ex. distance)
 # - liens de type "égale" :
 #   - pb égale :
 #     - si traité à la construction du graphe, pq tjrs dans la légende
@@ -1238,7 +1240,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #     - concaténer les id dans le nom affiché dans les graphiques
 #     - si plusieurs biens >> pas de fusion
 # - utiliser les catégories de montant définies avec margot
-# - communautés
+# - structure de communautés
 #   - accord entre algos ?
 #   - lien hiérarchique entre graphe avec et sans rues ?
 #   - comparer struct com avec seignerie (partitions)
@@ -1250,13 +1252,12 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #     - edgebetweenness/fastgreedy/louvain: 40aine de coms, semble pertinent
 #     - eigenvector: pertinent mais plus grosses coms
 #     - infomap/labelprop/walktrap: très nombreuses coms (100--200)
-# - manque l'id du noeud dans les noms de fichiers individuels (ex. distance)
-# - supprimer toutes les mesures orientées
-# - générer les graphiques indiv avec la spatialisation algo (en plus de la géo)
+#
 # - margot:
 #   - map de conversion pour les composants de maison
 #   - spécification de couleurs spécifiques pour certaines attributs
 #   - compléter les liens "égale" manquants
+#   - vérifier les liens à longue distance suspects
 
 
 

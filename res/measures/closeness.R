@@ -33,7 +33,8 @@ analyze.net.closeness <- function(g, out.folder)
 	stat.file <- file.path(out.folder, g$name, "stats.csv")
 	stats <- retrieve.stats(stat.file)
 	
-	modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_IN, MEAS_MODE_OUT)
+#	modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_IN, MEAS_MODE_OUT)
+	modes <- c(MEAS_MODE_UNDIR)
 	for(i in 1:length(modes))
 	{	mode <- modes[i]
 		tlog(2,"Computing closeness: mode=",mode)
@@ -101,7 +102,8 @@ analyze.net.harmonic.closeness <- function(g, out.folder)
 	stat.file <- file.path(out.folder, g$name, "stats.csv")
 	stats <- retrieve.stats(stat.file)
 	
-	modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_IN, MEAS_MODE_OUT)
+#	modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_IN, MEAS_MODE_OUT)
+	modes <- c(MEAS_MODE_UNDIR)
 	for(i in 1:length(modes))
 	{	mode <- modes[i]
 		tlog(2,"Computing harmonic closeness: mode=",mode)

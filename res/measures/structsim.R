@@ -24,7 +24,8 @@ MEAS_LONG_NAMES[MEAS_STRUCT_SIM] <- "Structural Similarity"
 # returns: same graph, updated with the results.
 #############################################################
 analyze.net.structsim <- function(g, out.folder)
-{	modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_IN, MEAS_MODE_OUT)
+{	#modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_IN, MEAS_MODE_OUT)
+	modes <- c(MEAS_MODE_UNDIR)
 	for(i in 1:length(modes))
 	{	mode <- modes[i]
 		tlog(2,"Computing structural similarity: mode=",mode)

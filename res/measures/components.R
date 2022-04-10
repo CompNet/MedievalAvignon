@@ -41,7 +41,8 @@ analyze.net.components <- function(g, out.folder)
 	att.list <- nodal.atts[!startsWith(nodal.atts,"_")]
 	
 	# computing components
-	modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
+#	modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
+	modes <- c(MEAS_MODE_UNDIR)
 	for(mode in modes)
 	{	tlog(2,"Computing components: mode=",mode)
 		
@@ -137,7 +138,8 @@ analyze.net.components.corr <- function(g, out.folder)
 	
 	# retrieve the list of vertex attributes
 	att.list <- list.vertex.attributes(g)
-	modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
+#	modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
+	modes <- c(MEAS_MODE_UNDIR)
 	
 	# init result table
 	val.tab <- matrix(nrow=0,ncol=2)

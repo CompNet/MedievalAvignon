@@ -98,7 +98,8 @@ analyze.net.comstruct <- function(g, out.folder)
 			modes=c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
 	)
 	
-	modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
+#	modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
+	modes <- c(MEAS_MODE_UNDIR)
 	for(i in 1:length(modes))
 	{	mode <- modes[i]
 		tlog(2,"Detecting community structure: mode=",mode)
@@ -623,7 +624,8 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 			}			
 			tab[i,meas] <- gsize(gcom)
 			
-			modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
+#			modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
+			modes <- c(MEAS_MODE_UNDIR)
 			for(mode in modes)
 			{	# number of components
 				meas <- paste(MEAS_COMPONENTS,"_",mode)
@@ -642,7 +644,8 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 				tab[i,meas] <- diameter(gcom, directed=mode==MEAS_MODE_DIR)
 			}
 			
-			modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_IN, MEAS_MODE_OUT)
+#			modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_IN, MEAS_MODE_OUT)
+			modes <- c(MEAS_MODE_UNDIR)
 			for(mode in modes)
 			{	# radius
 				meas <- paste(MEAS_RADIUS,"_",mode)
