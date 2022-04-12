@@ -77,6 +77,30 @@ for(i in 1:length(link.types))
 }
 tlog.end.loop("Measure computation over")
 
+# additional plot
+	algo.name <- "edgebetweenness"
+	fname <- paste0("coms_",MEAS_MODE_UNDIR,"_",algo.name)
+	# load first graph
+	file.path <- file.path(FOLDER_OUT_ANAL_EST, LV_ESTATE, FILE_GRAPH)
+	g1 <- load.graphml.file(file=file.path)
+	coms.folder <- file.path(FOLDER_OUT_ANAL_EST, g1$name, MEAS_COMMUNITIES, "undirected", algo.name)
+	coms <- read.csv(file=file.path(coms.folder,paste0(fname,"_membership.csv")))
+	idx <- match(coms[,"Id"], V(g1)$idExterne)
+	g1 <- set_vertex_attr(graph=g1, name=fname, index=idx, value=coms)
+	# load second graph
+	file.path <- file.path(FOLDER_OUT_ANAL_EST, LK_TYPE_FLATREL, FILE_GRAPH)
+	g2 <- load.graphml.file(file=file.path)
+	V(g2)$label <- paste(vertex_attr(g2,name=COL_LOC_ID), get.location.names(g2),sep="_")
+	V(g2)$x <- V(g2)$x2; V(g2)$y <- V(g2)$y2; E(g2)$weight <- 0.5; g2 <- delete_edge_attr(g2, LK_TYPE); g2 <- simplify(g2)
+	# use coms from g1
+	coms <- rep(NA,gorder(g2))
+	idx <- match(V(g1)$idExterne, V(g2)$idExterne)
+	idx.u <- which(is.na(idx))
+	idx.m <- which(!is.na(idx))
+	coms[idx[idx.m]] <- vertex_attr(g1,fname)[idx.m]
+	V(g2)$Coms[idx] <- coms
+	# plot these coms on g2
+	custom.gplot(g=g2, col.att="Coms", cat.att=TRUE, file=file.path(FOLDER_OUT_ANAL_EST,paste0(fname,"_graph_kk")), rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), edge.arrow.mode=0, vertex.label.cex=0.1)
 
 
 

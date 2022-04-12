@@ -98,6 +98,8 @@ analyze.net.comstruct <- function(g, out.folder)
 			modes=c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
 	)
 	
+	tab.memb <- NA
+	
 #	modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
 	modes <- c(MEAS_MODE_UNDIR)
 	for(i in 1:length(modes))
@@ -124,6 +126,13 @@ analyze.net.comstruct <- function(g, out.folder)
 				com.nbr <- length(unique(mbrs))
 				tlog(4,"Number of communities: ",com.nbr)
 				tlog(4,"Modularity: ",mod)
+				
+				# add to main table
+				if(all(is.na(tab.memb)))
+					tab.memb <- matrix(mbrs,ncol=1)
+				else
+					tab.memb <- cbind(tab.memb, mbrs)
+				colnames(tab.memb)[ncol(tab.memb)] <- paste0(algo.name,"_",mode)
 				
 				# community size distribution
 				sizes <- table(mbrs,useNA="ifany")
@@ -157,6 +166,55 @@ analyze.net.comstruct <- function(g, out.folder)
 	
 	# export CSV stat file
 	write.csv(stats, file=stat.file, row.names=TRUE)
+	
+	# compare community structures
+	score.nmi <- matrix(NA,nrow=ncol(tab.memb),ncol=ncol(tab.memb))
+	rownames(score.nmi) <- colnames(score.nmi) <- colnames(tab.memb)
+	score.ri <- matrix(NA,nrow=ncol(tab.memb),ncol=ncol(tab.memb))
+	rownames(score.ri) <- colnames(score.ri) <- colnames(tab.memb)
+	score.ari <- matrix(NA,nrow=ncol(tab.memb),ncol=ncol(tab.memb))
+	rownames(score.ari) <- colnames(score.ari) <- colnames(tab.memb)
+	for(c1 in 1:(ncol(tab.memb)-1))
+	{	for(c2 in (c1+1):ncol(tab.memb))
+		{	score.nmi[c1,c2] <- score.nmi[c2,c1] <- compare(comm1=tab.memb[,c1], comm2=tab.memb[,c2], method="nmi")
+			score.ri[c1,c2]  <- score.nmi[c2,c1] <- compare(comm1=tab.memb[,c1], comm2=tab.memb[,c2], method="rand")
+			score.ari[c1,c2] <- score.nmi[c2,c1] <- compare(comm1=tab.memb[,c1], comm2=tab.memb[,c2], method="adjusted.rand")
+		}
+	}
+	# record the resulting similarity matrices
+	tab.file <- file.path(out.folder, g$name, MEAS_COMMUNITIES, "comparison_nmi.csv")
+	write.csv(score.nmi, file=tab.file, row.names=TRUE)
+	tab.file <- file.path(out.folder, g$name, MEAS_COMMUNITIES, "comparison_ri.csv")
+	write.csv(score.ri, file=tab.file, row.names=TRUE)
+	tab.file <- file.path(out.folder, g$name, MEAS_COMMUNITIES, "comparison_ari.csv")
+	write.csv(score.ari, file=tab.file, row.names=TRUE)
+	
+	# compare community structures with certain attributes
+	atts <- c(COL_EST_AREA_ID, COL_EST_VILLAGE_ID, COL_EST_LORDSHIP_ID)
+	score.nmi <- matrix(NA,nrow=ncol(tab.memb),ncol=length(atts))
+	rownames(score.nmi) <- colnames(tab.memb)
+	colnames(score.nmi) <- atts
+	score.ri <- matrix(NA,nrow=ncol(tab.memb),ncol=length(atts))
+	rownames(score.ri) <- colnames(tab.memb)
+	colnames(score.ri) <- atts
+	score.ari <- matrix(NA,nrow=ncol(tab.memb),ncol=length(atts))
+	rownames(score.ari) <- colnames(tab.memb)
+	colnames(score.ari) <- atts
+	for(att in atts)
+	{	att.mbrs <- as.integer(as.factor(vertex_attr(graph=g, name=att)))
+		for(c in 1:ncol(tab.memb))
+		{	score.nmi[c,a] <- compare(comm1=tab.memb[,c], comm2=att.mbrs, method="nmi")
+			score.ri[c,a]  <- compare(comm1=tab.memb[,c], comm2=att.mbrs, method="rand")
+			score.ari[c,a] <- compare(comm1=tab.memb[,c], comm2=att.mbrs, method="adjusted.rand")
+		}
+		# record the resulting similarity matrices
+		tab.file <- file.path(out.folder, g$name, MEAS_COMMUNITIES, "att=",att,"_nmi.csv")
+		write.csv(score.nmi, file=tab.file, row.names=TRUE)
+		tab.file <- file.path(out.folder, g$name, MEAS_COMMUNITIES, "att=",att,"_ri.csv")
+		write.csv(score.ri, file=tab.file, row.names=TRUE)
+		tab.file <- file.path(out.folder, g$name, MEAS_COMMUNITIES, "att=",att,"_ari.csv")
+		write.csv(score.ari, file=tab.file, row.names=TRUE)
+	}
 	
 	# record graph and return it
 	graph.file <- file.path(out.folder, g$name, FILE_GRAPH)
@@ -643,6 +701,25 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 					colnames(tab)[ncol(tab)] <- meas
 				}			
 				tab[i,meas] <- diameter(gcom, directed=mode==MEAS_MODE_DIR)
+				
+				# betwenness centralization
+				meas <- paste(MEAS_BETWEENNESS,"_centralization_",mode)
+				if(!(meas %in% colnames(tab)))
+				{	tab <- cbind(tab, rep(NA,nrow(tab)))
+					colnames(tab)[ncol(tab)] <- meas
+				}			
+				tab[i,meas] <- centr_betw(graph=gcom, directed=mode=="directed", normalized=TRUE)
+				
+				# eigenvector centralization
+				meas <- paste(MEAS_EIGENCENTR,"_centralization_",mode)
+				if(!(meas %in% colnames(tab)))
+				{	tab <- cbind(tab, rep(NA,nrow(tab)))
+					colnames(tab)[ncol(tab)] <- meas
+				}			
+				if(mode==MEAS_MODE_DIR && is_dag(gcom))
+					tab[i,meas] <- 0
+				else
+					tab[i,meas] <- centr_eigen(graph=gcom, directed=mode==MEAS_MODE_DIR, scale=FALSE, normalized=TRUE)
 			}
 			
 #			modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_IN, MEAS_MODE_OUT)
@@ -655,6 +732,22 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 					colnames(tab)[ncol(tab)] <- meas
 				}			
 				tab[i,meas] <- radius(g, mode=if(mode==MEAS_MODE_UNDIR) "all" else mode)
+				
+				# degree centralization
+				meas <- paste(MEAS_DEGREE,"_centralization_",mode)
+				if(!(meas %in% colnames(tab)))
+				{	tab <- cbind(tab, rep(NA,nrow(tab)))
+					colnames(tab)[ncol(tab)] <- meas
+				}			
+				tab[i,meas] <- centr_degree(graph=gcom, mode=if(mode==MEAS_MODE_UNDIR) "all" else mode, loops=TRUE, normalized=TRUE)
+				
+				# closeness centralization
+				meas <- paste(MEAS_CLOSENESS,"_centralization_",mode)
+				if(!(meas %in% colnames(tab)))
+				{	tab <- cbind(tab, rep(NA,nrow(tab)))
+					colnames(tab)[ncol(tab)] <- meas
+				}			
+				tab[i,meas] <- centr_clo(graph=gcom, mode=if(mode==MEAS_MODE_UNDIR) "all" else mode, normalized=TRUE)
 			}
 		}		
 		

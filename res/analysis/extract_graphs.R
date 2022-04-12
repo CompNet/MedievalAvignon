@@ -1056,7 +1056,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		# keep all links and nodes
 		if(link.types[i]==LK_TYPE_ALL)
 			g1 <- g
-		# keep only the estate level
+		# keep only the estate level (which includes short streets)
 		else if(link.types[i]==LV_ESTATE)
 		{	g1 <- g
 			tlog(6,"Cleaning the graph (n=",gorder(g1),", m=",gsize(g1),")")
@@ -1083,7 +1083,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			tlog(8,"Removing ",length(which(idx))," geological object")
 			g1 <- delete_vertices(graph=g1, v=idx)
 		}
-		# keep everything but the membership relations
+		# keep everything but the membership relations (and remove isolates)
 		else if(link.types[i]==LK_TYPE_FLATREL)
 		{	g1 <- g
 			tlog(6,"Cleaning the graph (n=",gorder(g1),", m=",gsize(g1),")")
@@ -1288,12 +1288,15 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #     - si plusieurs biens >> pas de fusion
 # + utiliser les catégories de montant définies avec margot
 # - structure de communautés
-#   - accord entre algos ?
+#   + accord entre algos >> calculer les mesures de comparaison de partitions standard
 #   - lien hiérarchique entre communautés detectées sur graphes avec vs. sans rues ?
-#   - comparer struct com avec seignerie (partitions)
-#   - calculer la centralisation des communautés (construites autour d'invariants ?)
+#     > pas les mêmes noeuds : difficile à comparer
+#   + comparer struct com avec seigneurie (partitions)
+#     > déjà fait en partie avec la pureté (calculée pour chaque attribut)
+#   + calculer la centralisation des communautés (sont-elles construites autour d'invariants ?)
+#     ? traiter chaque communauté comme un graphe à part, histoire de produire toutes les stats ?
 #   - spatialisation du graphe sans rue, avec coms, on fixe leurs coordonnées puis on rajoute les rues (du graphe plat) et on étudie leur position (est elle intermédiaire entre coms ?)
-#     - alt : prendre le graphe plat et représenter coms sans rues vs. coms graphe plat, voir où sont les noeuds sans com (=rues) 
+#     + alt : prendre le graphe plat et représenter coms sans rues vs. coms graphe plat, voir où sont les noeuds sans com (=rues) 
 #   > choix de la méthode de détection: si com construite autour d'une seule rue, ou correspond à une division admin, alors trop évident. il faut qqch entre les deux
 #   > observations :
 #     > edgebetweenness/fastgreedy/louvain: 40aine de coms, semble pertinent
