@@ -603,7 +603,10 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		info.fees <- load.location.table(FILE_IN_ANAL_ESTATE_FEE,"fee")
 		mids <- match(info.estate[,COL_EST_FEE_ID], info.fees[,COL_FEE_ID])
 		taxes <- convert.currency(info.fees[mids,COL_FEE_AMOUNT_NORM1])
-		info.estate <- cbind(info.estate, taxes)
+		FEE_BREAKS <- c(0, 34, 60, 144, 336, 624, 1296, 3600, 30000)
+		FEE_CATS <- c(paste0("[",FEE_BREAKS[1],";",FEE_BREAKS[2],"]"), sapply(3:length(FEE_BREAKS), function(b) paste0("]",FEE_BREAKS[b-1],";",FEE_BREAKS[b],"]")))
+		taxCats <- sapply(taxes, function(fee) if(is.na(fee)) NA else FEE_CATS[min(which(FEE_BREAKS>fee))-1])
+		info.estate <- cbind(info.estate, taxes, taxCats)
 		colnames(info.estate)[ncol(info.estate)] <- COL_FEE_AMOUNT_NORM1	# TODO ajouter aux listes d'attributs concernées
 	cols <- colnames(info.estate)
 	total.nbr <- nrow(info.estate)
@@ -764,12 +767,55 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	# VAL_CONF_TYPE_EGALE
 	idx <- which(data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_EGALE)
 	if(length(idx>0))
-	{	for(r in 1:length(idx))
-		{	old.id <- edge.list[r,1]
-			new.id <- edge.list[r,2]
-			edge.list[edge.list[,1]==old.id,1] <- new.id
-			edge.list[edge.list[,2]==old.id,2] <- new.id
+	{	tt <- table(c(edge.list[idx,]))
+		if(any(tt)>1)
+			stop(paste0("ERROR: multiple equal relationship detected"))
+		
+		for(r in idx)
+		{	# first node
+			ext.id1 <- edge.list[r,1]
+			id1 <- which(info.all[,COL_LOC_ID]==ext.id1)
+			type1 <- info.all[id1,COL_LOC_TYPE]
+			# second node
+			ext.id2 <- edge.list[r,2]
+			id2 <- which(info.all[,COL_LOC_ID]==ext.id2)
+			type2 <- info.all[id2,COL_LOC_TYPE]
+			
+			# compare types, put kept node as first
+			if(type1=="Bien")
+			{	if(type2=="Bien")
+					stop(paste0("ERROR: cannot merge two real estate nodes"))
+				else
+				{	ext.id1 <- edge.list[r,2]
+					id1 <- which(info.all[,COL_LOC_ID]==ext.id1)
+					ext.id2 <- edge.list[r,1]
+					id2 <- which(info.all[,COL_LOC_ID]==ext.id2)
+				}
+			}
+			else
+			{	if(type2=="Bien")
+				{	# nothing to do
+				}
+				else
+					stop(paste0("ERROR: cannot merge two non-real estate nodes"))
+			}
+			new.id <- paste(ext.id1,ext.id2,sep="/")
+			
+			# substitute node id in edge list
+			edge.list[edge.list[,1]==ext.id1,1] <- new.id
+			edge.list[edge.list[,2]==ext.id1,2] <- new.id
+			edge.list[edge.list[,1]==ext.id2,1] <- new.id
+			edge.list[edge.list[,2]==ext.id2,2] <- new.id
+			# merge rows in info table
+			info.all[id1,] <- sapply(1:ncol(info.all), function(col) 
+						if(is.na(info.all[id1,col]))
+							info.all[id2,col]
+						else
+							info.all[id1,col])
+			info.all[id1,COL_LOC_ID] <- new.id
+			info.all <- info.all[-id2,]
 		}
+		# remove "equal" relationships
 		data <- data[-idx,]
 		edge.list <- edge.list[-idx,]
 	}
@@ -1231,15 +1277,16 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #   + manque l'id du noeud dans les noms de fichiers individuels (ex. distance)
 # + ne pas calculer les mesures orientées
 # - liens de type "égale" :
-#   - pb égale :
-#     - si traité à la construction du graphe, pq tjrs dans la légende
-#     - pq apparait en gris et pas en rose (Bien:2015_cimetiere -- Edifice:720_Cimetiere juif)
-#     - pq il reste des liens égale alors qu'on les traite avant
+#   + pb égale :
+#     + si traité à la construction du graphe, pq tjrs dans la légende ?
+#     + pq apparait en gris et pas en rose (Bien:2015_cimetiere -- Edifice:720_Cimetiere juif)
+#     + pq il reste des liens égale alors qu'on les traite avant
+#     >> "egal" dans les données au lieu de "egale"
 #   - fusion des liens "égale" : 
-#     - conserver le noeud qui n'est pas un bien
-#     - concaténer les id dans le nom affiché dans les graphiques
+#     + conserver le noeud qui n'est pas un bien, garder un max d'attributs
+#     + concaténer les id dans le nom affiché dans les graphiques
 #     - si plusieurs biens >> pas de fusion
-# - utiliser les catégories de montant définies avec margot
+# + utiliser les catégories de montant définies avec margot
 # - structure de communautés
 #   - accord entre algos ?
 #   - lien hiérarchique entre graphe avec et sans rues ?

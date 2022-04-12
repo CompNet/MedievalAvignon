@@ -397,7 +397,7 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 			{	legend(
 					title="Link type",								# title of the legend box
 					x="topright",									# position
-					legend=c(LK_TYPE_FAM, LK_TYPE_PRO),				# text of the legend
+					legend=LONG_NAME[c(LK_TYPE_FAM, LK_TYPE_PRO)],	# text of the legend
 					col=c("#9C1699","#1A8F39"),						# color of the lines
 					lty=1,											# type of lines
 					lwd=4,											# line thickness
@@ -409,7 +409,7 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 			{	legend(
 					title="Link type",								# title of the legend box
 					x="topright",									# position
-					legend=nats,									# text of the legend
+					legend=LONG_NAME[nats],							# text of the legend
 					col=epal,										# color of the lines
 					lty=1,											# type of lines
 					lwd=4,											# line thickness

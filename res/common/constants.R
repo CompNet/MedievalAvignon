@@ -285,6 +285,7 @@ FILE_GRAPH <- "graph.graphml"
 	COL_FEE_DETAIL <- "detailRedev"
 	COL_FEE_AMOUNT_RAW1 <- "montant"
 	COL_FEE_AMOUNT_NORM1 <- "montantN"
+	COL_FEE_AMOUNT_CAT1 <- "montantCat"
 	COL_FEE_AMOUNT_RAW2 <- "montant2"
 	COL_FEE_AMOUNT_INCR <- "echelonMontant"
 
@@ -335,7 +336,7 @@ FILE_GRAPH <- "graph.graphml"
 	VAL_CONF_TYPE_DANS <- "dans"
 	VAL_CONF_TYPE_DERRIERE <- "derriere"
 	VAL_CONF_TYPE_DEVANT <- "devant"
-	VAL_CONF_TYPE_EGALE <- "egale"
+	VAL_CONF_TYPE_EGALE <- "egal"
 #	VAL_CONF_TYPE_ENTRE <- "entre"
 	VAL_CONF_TYPE_EXTERIEUR <- "est a l exterieur de"
 	VAL_CONF_TYPE_SOUS <- "sous"
@@ -579,8 +580,49 @@ LONG_NAME[COL_FEE_CURRENCY] <- "Fee currency"
 LONG_NAME[COL_FEE_DETAIL] <- "Fee detail"
 LONG_NAME[COL_FEE_AMOUNT_RAW1] <- "Fee amount 1 (raw)"
 LONG_NAME[COL_FEE_AMOUNT_NORM1] <- "Fee amount 1 (normalized)"
+LONG_NAME[COL_FEE_AMOUNT_CAT1] <- "Fee amount 1 (binned)"
 LONG_NAME[COL_FEE_AMOUNT_RAW2] <- "Fee amount 2 (raw)"
 LONG_NAME[COL_FEE_AMOUNT_INCR] <- "Fee increment"
+
+# social links
+LONG_NAME[VAL_SOC_TYPE_FAMILY] <- "Family"
+LONG_NAME[VAL_SOC_TYPE_WORK] <- "Work"
+LONG_NAME[VAL_SOC_TYPE_ECCL] <- "Ecclesiastic"
+#confront links
+LONG_NAME[VAL_CONF_TYPE_COTE] <- "Next to"
+LONG_NAME[VAL_CONF_TYPE_ANGLE] <- "Corner of"
+LONG_NAME[VAL_CONF_TYPE_ENTREE] <- "Entrance of"
+LONG_NAME[VAL_CONF_TYPE_INTERIEUR] <- "Inside of"
+LONG_NAME[VAL_CONF_TYPE_OPPOSE] <- "In front of"
+LONG_NAME[VAL_CONF_TYPE_DEBUT] <- "Start of"
+LONG_NAME[VAL_CONF_TYPE_DELA] <- "Beyond"
+LONG_NAME[VAL_CONF_TYPE_DESSOUS] <- "Below"
+LONG_NAME[VAL_CONF_TYPE_DESSUS] <- "Above"
+#LONG_NAME[VAL_CONF_TYPE_MILIEU] <- "In the middle of"
+LONG_NAME[VAL_CONF_TYPE_EST] <- "East confront"
+#LONG_NAME[VAL_CONF_TYPE_OCC] <- "Occident of"
+LONG_NAME[VAL_CONF_TYPE_OUEST] <- "West confront"
+LONG_NAME[VAL_CONF_TYPE_NORD] <- "North confront"
+LONG_NAME[VAL_CONF_TYPE_SUD] <- "South confront"
+LONG_NAME[VAL_CONF_TYPE_MISC] <- "Confront"
+LONG_NAME[VAL_CONF_TYPE_MULT2] <- "Double confront"
+LONG_NAME[VAL_CONF_TYPE_MULT3] <- "Triple confront"
+LONG_NAME[VAL_CONF_TYPE_ARRIERE] <- "Behind confront"
+LONG_NAME[VAL_CONF_TYPE_AVANT] <- "Side confront"
+LONG_NAME[VAL_CONF_TYPE_INFERIEUR] <- "Lower side confront"
+LONG_NAME[VAL_CONF_TYPE_LATERAL] <- "Lateral side confront"
+LONG_NAME[VAL_CONF_TYPE_POSTERIEUR] <- "Posterior side confront"
+LONG_NAME[VAL_CONF_TYPE_POSSIBLE] <- "Potential confront"
+LONG_NAME[VAL_CONF_TYPE_CONTIGU] <- "Contiguous"
+LONG_NAME[VAL_CONF_TYPE_DANS] <- "Inside"
+LONG_NAME[VAL_CONF_TYPE_DERRIERE] <- "Behind"
+LONG_NAME[VAL_CONF_TYPE_DEVANT] <- "Front"
+LONG_NAME[VAL_CONF_TYPE_EGALE] <- "Equal"
+LONG_NAME[VAL_CONF_TYPE_ENTRE] <- "Between"
+LONG_NAME[VAL_CONF_TYPE_EXTERIEUR] <- "Out of"
+LONG_NAME[VAL_CONF_TYPE_SOUS] <- "Under"
+LONG_NAME[VAL_CONF_TYPE_SUR] <- "Over"
+LONG_NAME[VAL_CONF_TYPE_VERS] <- "Towards"
 
 
 
@@ -625,7 +667,8 @@ COL_CAT <- c(
 # only those selected for the analysis
 COL_CAT_SELECT <- c(
 	# estates
-	COL_EST_AREA_ID, COL_EST_VILLAGE_ID, COL_EST_STREET_ID, COL_EST_LORDSHIP_ID
+	COL_EST_AREA_ID, COL_EST_VILLAGE_ID, COL_EST_STREET_ID, COL_EST_LORDSHIP_ID,
+	COL_FEE_AMOUNT_CAT1
 )
 
 # list of tag-like attributes
