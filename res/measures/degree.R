@@ -39,7 +39,7 @@ analyze.net.degree <- function(g, out.folder)
 		dir.create(path=degree.folder, showWarnings=FALSE, recursive=TRUE)
 		
 		# degree distribution
-		vals <- igraph::degree(g, mode=if(mode==MEAS_MODE_UNDIR) "all" else mode)
+		vals <- igraph::degree(g, mode=if(mode==MEAS_MODE_UNDIR) "all" else mode, loops=TRUE, normalized=FALSE)
 		custom.hist(vals, name=paste(MEAS_LONG_NAMES[mode],MEAS_LONG_NAMES[MEAS_DEGREE]), file=file.path(degree.folder,paste0(fname,"_histo")))
 			
 		# export CSV with degree
@@ -49,9 +49,12 @@ analyze.net.degree <- function(g, out.folder)
 		
 		# add degree (as node attributes) to the graph and stats table
 		g <- set_vertex_attr(graph=g, name=fname, value=vals)
-		g <- set_graph_attr(graph=g, name=paste0(fname,"_mean"), value=mean(vals))
-		g <- set_graph_attr(graph=g, name=paste0(fname,"_stdev"), value=sd(vals))
-		stats[fname, ] <- list(Value=NA, Mean=mean(vals), Stdv=sd(vals))
+		mval <- mean(vals)
+		g <- set_graph_attr(graph=g, name=paste0(fname,"_mean"), value=mval)
+		sdval <- sd(vals)
+		g <- set_graph_attr(graph=g, name=paste0(fname,"_stdev"), value=sdval)
+		centr <- centr_degree(graph=g, mode=if(mode==MEAS_MODE_UNDIR) "all" else mode, loops=TRUE, normalized=TRUE)
+		stats[fname, ] <- list(Value=centr, Mean=mval, Stdv=sdval)
 		
 		# plot graph using color for degree
 		#g <- update.node.labels(g, vals)

@@ -1281,7 +1281,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #     + si traité à la construction du graphe, pq tjrs dans la légende ?
 #     + pq apparait en gris et pas en rose (Bien:2015_cimetiere -- Edifice:720_Cimetiere juif)
 #     + pq il reste des liens égale alors qu'on les traite avant
-#     >> "egal" dans les données au lieu de "egale"
+#     > "egal" dans les données au lieu de "egale"
 #   - fusion des liens "égale" : 
 #     + conserver le noeud qui n'est pas un bien, garder un max d'attributs
 #     + concaténer les id dans le nom affiché dans les graphiques
@@ -1289,16 +1289,16 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 # + utiliser les catégories de montant définies avec margot
 # - structure de communautés
 #   - accord entre algos ?
-#   - lien hiérarchique entre graphe avec et sans rues ?
+#   - lien hiérarchique entre communautés detectées sur graphes avec vs. sans rues ?
 #   - comparer struct com avec seignerie (partitions)
-#   - centralisation des communautés (construites autour d'invariants ?)
+#   - calculer la centralisation des communautés (construites autour d'invariants ?)
 #   - spatialisation du graphe sans rue, avec coms, on fixe leurs coordonnées puis on rajoute les rues (du graphe plat) et on étudie leur position (est elle intermédiaire entre coms ?)
 #     - alt : prendre le graphe plat et représenter coms sans rues vs. coms graphe plat, voir où sont les noeuds sans com (=rues) 
-#   - choix de la méthode de détection: si com construite autour d'une seule rue, ou correspond à une division admin, alors trop évident. il faut qqch entre les deux
-#   - observations :
-#     - edgebetweenness/fastgreedy/louvain: 40aine de coms, semble pertinent
-#     - eigenvector: pertinent mais plus grosses coms
-#     - infomap/labelprop/walktrap: très nombreuses coms (100--200)
+#   > choix de la méthode de détection: si com construite autour d'une seule rue, ou correspond à une division admin, alors trop évident. il faut qqch entre les deux
+#   > observations :
+#     > edgebetweenness/fastgreedy/louvain: 40aine de coms, semble pertinent
+#     > eigenvector: pertinent mais plus grosses coms
+#     > infomap/labelprop/walktrap: très nombreuses coms (100--200)
 #
 # - margot:
 #   - map de conversion pour les composants de maison

@@ -63,9 +63,13 @@ analyze.net.closeness <- function(g, out.folder)
 		
 		# add degree (as node attributes) to the graph and stats table
 		g <- set_vertex_attr(graph=g, name=fname, value=vals)
-		g <- set_graph_attr(graph=g, name=paste0(fname,"_mean"), value=mean(vals,na.rm=TRUE))
-		g <- set_graph_attr(graph=g, name=paste0(fname,"_stdev"), value=sd(vals,na.rm=TRUE))
-		stats[fname, ] <- list(Value=NA, Mean=mean(vals,na.rm=TRUE), Stdv=sd(vals,na.rm=TRUE))
+		mval <- mean(vals,na.rm=TRUE)
+		g <- set_graph_attr(graph=g, name=paste0(fname,"_mean"), value=mval)
+		sdval <- sd(vals,na.rm=TRUE)
+		g <- set_graph_attr(graph=g, name=paste0(fname,"_stdev"), value=sdval)
+		centr <- centr_clo(graph=g.comp, mode=if(mode==MEAS_MODE_UNDIR) "all" else mode, normalized=TRUE)
+		g <- set_graph_attr(graph=g, name=paste0(fname,"_centr"), value=centr)
+		stats[fname, ] <- list(Value=centr, Mean=mval, Stdv=sdval)
 		
 		# plot graph using color for closeness
 		#g <- update.node.labels(g, vals)

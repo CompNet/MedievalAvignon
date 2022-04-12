@@ -50,9 +50,13 @@ analyze.net.betweenness <- function(g, out.folder)
 		
 		# add results to the graph (as attributes) and record
 		g <- set_vertex_attr(graph=g, name=fname, value=vals)
-		g <- set_graph_attr(graph=g, name=paste0(fname,"_mean"), value=mean(vals))
-		g <- set_graph_attr(graph=g, name=paste0(fname,"_stdev"), value=sd(vals))
-		stats[fname, ] <- list(Value=NA, Mean=mean(vals), Stdv=sd(vals))
+		mval <- mean(vals)
+		g <- set_graph_attr(graph=g, name=paste0(fname,"_mean"), value=mval)
+		sdval <- sd(vals)
+		g <- set_graph_attr(graph=g, name=paste0(fname,"_stdev"), value=sdval)
+		centr <- centr_betw(graph=g, directed=mode=="directed", normalized=TRUE)
+		g <- set_graph_attr(graph=g, name=paste0(fname,"_centr"), value=centr)
+		stats[fname, ] <- list(Value=centr, Mean=mval, Stdv=sdval)
 		
 		# plot graph using color for betweenness
 		#g <- update.node.labels(g, vals)

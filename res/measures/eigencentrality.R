@@ -41,9 +41,13 @@ analyze.net.eigencentrality <- function(g, out.folder)
 		
 		# Eigencentrality distribution
 		if(mode==MEAS_MODE_DIR && is_dag(g))
-			vals <- rep(0, gorder(g))
+		{	vals <- rep(0, gorder(g))
+			centr <- 0
+		}
 		else
-			vals <- eigen_centrality(graph=g, scale=FALSE, directed=mode==MEAS_MODE_DIR)$vector
+		{	vals <- eigen_centrality(graph=g, scale=FALSE, directed=mode==MEAS_MODE_DIR)$vector
+			centr <- centr_eigen(graph=g, directed=mode==MEAS_MODE_DIR, scale=FALSE, normalized=TRUE)
+		}
 		custom.hist(vals, name=paste(MEAS_LONG_NAMES[mode],MEAS_LONG_NAMES[MEAS_EIGENCENTR]), file=file.path(eigen.folder,paste0(fname,"_histo")))
 		
 		# export CSV with Eigencentrality
@@ -53,9 +57,11 @@ analyze.net.eigencentrality <- function(g, out.folder)
 		
 		# add results to the graph (as attributes) and record
 		g <- set_vertex_attr(graph=g, name=fname, value=vals)
-		g <- set_graph_attr(graph=g, name=paste0(fname,"_mean"), value=mean(vals))
-		g <- set_graph_attr(graph=g, name=paste0(fname,"_stdev"), value=sd(vals))
-		stats[fname, ] <- list(Value=NA, Mean=mean(vals), Stdv=sd(vals))
+		mval <- mean(vals)
+		g <- set_graph_attr(graph=g, name=paste0(fname,"_mean"), value=mval)
+		sdval <- sd(vals)
+		g <- set_graph_attr(graph=g, name=paste0(fname,"_stdev"), value=sdval)
+		stats[fname, ] <- list(Value=cent, Mean=mval, Stdv=sdval)
 		
 		# plot graph using color for Eigencentrality
 		#g <- update.node.labels(g, vals)
