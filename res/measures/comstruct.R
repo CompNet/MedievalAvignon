@@ -708,7 +708,7 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 				{	tab <- cbind(tab, rep(NA,nrow(tab)))
 					colnames(tab)[ncol(tab)] <- meas
 				}			
-				tab[i,meas] <- centr_betw(graph=gcom, directed=mode=="directed", normalized=TRUE)
+				tab[i,meas] <- centr_betw(graph=gcom, directed=mode=="directed", normalized=TRUE)$centralization
 				
 				# eigenvector centralization
 				meas <- paste(MEAS_EIGENCENTR,"_centralization_",mode)
@@ -719,7 +719,7 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 				if(mode==MEAS_MODE_DIR && is_dag(gcom))
 					tab[i,meas] <- 0
 				else
-					tab[i,meas] <- centr_eigen(graph=gcom, directed=mode==MEAS_MODE_DIR, scale=FALSE, normalized=TRUE)
+					tab[i,meas] <- centr_eigen(graph=gcom, directed=mode==MEAS_MODE_DIR, scale=FALSE, normalized=TRUE)$centralization
 			}
 			
 #			modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_IN, MEAS_MODE_OUT)
@@ -739,7 +739,7 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 				{	tab <- cbind(tab, rep(NA,nrow(tab)))
 					colnames(tab)[ncol(tab)] <- meas
 				}			
-				tab[i,meas] <- centr_degree(graph=gcom, mode=if(mode==MEAS_MODE_UNDIR) "all" else mode, loops=TRUE, normalized=TRUE)
+				tab[i,meas] <- centr_degree(graph=gcom, mode=if(mode==MEAS_MODE_UNDIR) "all" else mode, loops=TRUE, normalized=TRUE)$centralization
 				
 				# closeness centralization
 				meas <- paste(MEAS_CLOSENESS,"_centralization_",mode)
@@ -747,7 +747,7 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 				{	tab <- cbind(tab, rep(NA,nrow(tab)))
 					colnames(tab)[ncol(tab)] <- meas
 				}			
-				tab[i,meas] <- centr_clo(graph=gcom, mode=if(mode==MEAS_MODE_UNDIR) "all" else mode, normalized=TRUE)
+				tab[i,meas] <- centr_clo(graph=gcom, mode=if(mode==MEAS_MODE_UNDIR) "all" else mode, normalized=TRUE)$centralization
 			}
 		}		
 		

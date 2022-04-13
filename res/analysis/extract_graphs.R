@@ -768,12 +768,41 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	
 	# manual corrections and simplifications
 	# VAL_CONF_TYPE_EGALE
+	tlog(2,"Dealing with \"equal\" relationships")
 	idx <- which(data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_EGALE)
 	if(length(idx>0))
-	{	tt <- table(c(edge.list[idx,]))
-		if(any(tt)>1)
-			stop(paste0("ERROR: multiple equal relationship detected"))
+	{	# multiple equal relationships: create clique if some edges are missing
+		tt <- table(c(edge.list[idx,]))
+		if(any(tt>1))
+		{	tlog(4,"Detected ",length(which(tt>1))," multiple relationships")
+			ids <- names(tt[tt>1])
+			for(id in ids)
+			{	tlog(6,"Dealing with ",paste(ids,collapse=", "))
+				vtx <- which(edge.list[idx,1]==id | edge.list[idx,2]==id)
+				vertices <- unique(c(edge.list[idx[vtx],]))
+				tlog(8,"Complete list of neighbors: ",paste(vertices,collapse=", "))
+				for(v1 in 1:(length(vertices)-1))
+				{	for(v2 in (v1+1):length(vertices))
+					{	# possibly add edge if missing
+						if(any(edge.list[,1]==vertices[v1] & edge.list[,2]==vertices[v2]
+							| edge.list[,1]==vertices[v2] & edge.list[,2]==vertices[v1]))
+							tlog(10,"Edge ",vertices[v1],"--",vertices[v2]," already exists")
+						else
+						{	tlog(10,"Could not find edge ",vertices[v1],"--",vertices[v2]," >> adding it")
+							edge.list <- rbind(edge.list, c(vertices[v1],vertices[v2]))
+							df <- data.frame(0, "egal", NA, NA, NA, NA, "egal")
+							colnames(df) <- colnames(data)
+							data <- rbind(data, df)
+						}
+						
+					}
+				}
+				idx <- idx[-vtx]
+			}
+		}
 		
+		# only pairwise equal relationships: merge estate into other vertex
+		tlog(4,"Detected ",length(idx)," single relationships >> merging vertices")
 		for(r in idx)
 		{	# first node
 			ext.id1 <- edge.list[r,1]
@@ -1185,24 +1214,27 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		plot.file <- file.path(graph.folder, "graph_kk")
 		tlog(4,"Plotting graph using layouting algorithm in \"",plot.file,"\"")
 		lay.file <- file.path(graph.folder, "layout.txt")
-##		###### init layout quasi-manually
-##		#layout <- layout_with_kk(g2, kkconst=1);V(g2)$x <- layout[,1]; V(g2)$y <- layout[,2];custom.gplot(g=g2, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), edge.arrow.mode=0, vertex.label.cex=0.1)
-##		if(link.types[i]==LK_TYPE_FLATREL)
-##			layout <- layout_with_mds(g2)
-##		else
-##			layout <- layout_with_kk(g2, kkconst=1)
-#		layout <- layout_with_kk(g2, kkconst=10)
-#		scale <- max(layout)/7
-#		layout <- data.frame(V(g2)$idExterne, layout/scale)
+		###### init layout quasi-manually
+#		# export to graphml and use gephi, then import back
+#		g0 <- g1
+#		layout <- layout_with_kk(g0, kkconst=5)
+#		V(g0)$x <- layout[,1]; V(g0)$y <- layout[,2]; 
+#		custom.gplot(g=g0, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g0)$x), ylim=range(V(g0)$y), vertex.label.cex=0.1)
+#		write.graphml.file(g=g0, file=paste0(plot.file,".graphml"))
+#		# <do your magic with gephi, then record graph with new layout>
+#		g0 <- read.graph(paste0(plot.file,".graphml"), format="graphml")
+#		layout <- data.frame(V(g0)$idExterne, V(g0)$x, V(g0)$y)
 #		colnames(layout) <- c("idExterne", "x","y")
+#		scale <- max(abs(layout[,c("x","y")]))/7
+#		layout[,c("x","y")] <- layout[,c("x","y")]/scale
 #		write.table(x=layout, file=lay.file, sep="\t", row.names=FALSE, col.names=TRUE)
-		#
+		######
 		layout <- read.table(file=lay.file, sep="\t", header=TRUE, check.names=FALSE)
 		lay.idx <- match(V(g2)$idExterne, layout[,"idExterne"])
 		if(any(is.na(lay.idx))) stop("Could not match node ids with ids from the layout file")
 		V(g2)$x <- layout[lay.idx,"x"]; V(g2)$y <- layout[lay.idx,"y"]
 		E(g2)$weight <- 0.5
-		######
+		#
 		custom.gplot(g=g2, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), vertex.label.cex=0.1)
 		#custom.gplot(g=g2)
 		write.graphml.file(g=g2, file=paste0(plot.file,".graphml"))

@@ -132,6 +132,7 @@ FILE_GRAPH <- "graph.graphml"
 	COL_EST_MATERIALS <- "materiaux"
 	COL_EST_GEOMETRY <- "geom"
 	COL_EST_MENTION <- "mention1"					# year of first mention in a text
+	COL_EST_POSITION <- "loc"						# intra- vs. extra-muros
 	# components
 	COL_EST_COMP_LAB1 <- "composant1"				# the estate may be constituted of several separte parts
 	COL_EST_COMP_NBR1 <- "nbrComposant1"			# number of instances of the first part
