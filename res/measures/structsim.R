@@ -79,6 +79,7 @@ analyze.net.structsim <- function(g, out.folder)
 				{	tlog(6,"Plotting graph for node #",id," (",nname, ", ",n,"/",gorder(g),")")
 					shrt.nm <- substr(nname,1,30)		# to avoid long file names
 					id.cln <- gsub(":", "-", id, fixed=TRUE)
+					id.cln <- gsub("/", "_", id.cln, fixed=TRUE)
 					V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
 					g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
 					custom.gplot(g=g1, col.att=fname, v.hl=n, file=file.path(mode.folder,"lambert",paste0(id.cln,"_",shrt.nm)), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
