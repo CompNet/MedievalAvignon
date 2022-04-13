@@ -46,7 +46,7 @@ analyze.net.eigencentrality <- function(g, out.folder)
 		}
 		else
 		{	vals <- eigen_centrality(graph=g, scale=FALSE, directed=mode==MEAS_MODE_DIR)$vector
-			centr <- centr_eigen(graph=g, directed=mode==MEAS_MODE_DIR, scale=FALSE, normalized=TRUE)
+			centr <- centr_eigen(graph=g, directed=mode==MEAS_MODE_DIR, scale=FALSE, normalized=TRUE)$centralization
 		}
 		custom.hist(vals, name=paste(MEAS_LONG_NAMES[mode],MEAS_LONG_NAMES[MEAS_EIGENCENTR]), file=file.path(eigen.folder,paste0(fname,"_histo")))
 		
@@ -61,7 +61,7 @@ analyze.net.eigencentrality <- function(g, out.folder)
 		g <- set_graph_attr(graph=g, name=paste0(fname,"_mean"), value=mval)
 		sdval <- sd(vals)
 		g <- set_graph_attr(graph=g, name=paste0(fname,"_stdev"), value=sdval)
-		stats[fname, ] <- list(Value=cent, Mean=mval, Stdv=sdval)
+		stats[fname, ] <- list(Value=centr, Mean=mval, Stdv=sdval)
 		
 		# plot graph using color for Eigencentrality
 		#g <- update.node.labels(g, vals)

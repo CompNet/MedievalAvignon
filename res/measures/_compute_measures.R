@@ -80,26 +80,26 @@ analyze.network <- function(gname, out.folder)
 	
 	if(gsize(g)>=30)
 	{	# compute attribute stats 
-		# (must be done first, before other results are added as attributes)
-		g <- analyze.net.attributes(g, out.folder)
-		
-		# compute diameters, eccentricity, radius
-		g <- analyze.net.eccentricity(g, out.folder)
-		
-		# compute degree
-		g <- analyze.net.degree(g, out.folder)
-		
-		# compute eigencentrality
-		g <- analyze.net.eigencentrality(g, out.folder)
-		
-		# compute betweenness
-		g <- analyze.net.betweenness(g, out.folder)
-		
-		# compute closeness
-		g <- analyze.net.closeness(g, out.folder)
-		
-		# compute harmonic closeness
-		g <- analyze.net.harmonic.closeness(g, out.folder)
+#		# (must be done first, before other results are added as attributes)
+#		g <- analyze.net.attributes(g, out.folder)
+#		
+#		# compute diameters, eccentricity, radius
+#		g <- analyze.net.eccentricity(g, out.folder)
+#		
+#		# compute degree
+#		g <- analyze.net.degree(g, out.folder)
+#		
+#		# compute eigencentrality
+#		g <- analyze.net.eigencentrality(g, out.folder)
+#		
+#		# compute betweenness
+#		g <- analyze.net.betweenness(g, out.folder)
+#		
+#		# compute closeness
+#		g <- analyze.net.closeness(g, out.folder)
+#		
+#		# compute harmonic closeness
+#		g <- analyze.net.harmonic.closeness(g, out.folder)
 		
 		# compute distances
 		g <- analyze.net.distance(g, out.folder)
