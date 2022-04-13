@@ -72,7 +72,8 @@ analyze.net.comstruct <- function(g, out.folder)
 			fun=function(g, mode) 
 				cluster_leading_eigen(graph=as.undirected(g),
 						weights=NULL,
-						start=NULL),
+						start=NULL,
+						options=list(maxiter=1000000)),
 			modes=c(MEAS_MODE_UNDIR)
 	)
 	algos[["louvain"]] <- list(
@@ -109,6 +110,8 @@ analyze.net.comstruct <- function(g, out.folder)
 		# apply each appropriate algo
 		for(a in 1:length(algos))
 		{	algo.name <- names(algos)[a]
+			tlog(4,"Dealing with algorithm ",algo.name)
+			
 			if(mode %in% algos[[a]]$modes)
 			{	# possibly create folder
 				fname <- paste0("coms_",mode,"_",algo.name)
@@ -124,8 +127,8 @@ analyze.net.comstruct <- function(g, out.folder)
 				mod <- modularity(coms)
 				mbrs <- as.integer(membership(coms))
 				com.nbr <- length(unique(mbrs))
-				tlog(4,"Number of communities: ",com.nbr)
-				tlog(4,"Modularity: ",mod)
+				tlog(6,"Number of communities: ",com.nbr)
+				tlog(6,"Modularity: ",mod)
 				
 				# add to main table
 				if(all(is.na(tab.memb)))
@@ -203,16 +206,16 @@ analyze.net.comstruct <- function(g, out.folder)
 	for(att in atts)
 	{	att.mbrs <- as.integer(as.factor(vertex_attr(graph=g, name=att)))
 		for(c in 1:ncol(tab.memb))
-		{	score.nmi[c,a] <- compare(comm1=tab.memb[,c], comm2=att.mbrs, method="nmi")
-			score.ri[c,a]  <- compare(comm1=tab.memb[,c], comm2=att.mbrs, method="rand")
-			score.ari[c,a] <- compare(comm1=tab.memb[,c], comm2=att.mbrs, method="adjusted.rand")
+		{	score.nmi[c,att] <- compare(comm1=tab.memb[!is.na(att.mbrs),c], comm2=att.mbrs[!is.na(att.mbrs)], method="nmi")
+			score.ri[c,att]  <- compare(comm1=tab.memb[!is.na(att.mbrs),c], comm2=att.mbrs[!is.na(att.mbrs)], method="rand")
+			score.ari[c,att] <- compare(comm1=tab.memb[!is.na(att.mbrs),c], comm2=att.mbrs[!is.na(att.mbrs)], method="adjusted.rand")
 		}
 		# record the resulting similarity matrices
-		tab.file <- file.path(out.folder, g$name, MEAS_COMMUNITIES, "att=",att,"_nmi.csv")
+		tab.file <- file.path(out.folder, g$name, MEAS_COMMUNITIES, paste0("att=",att,"_nmi.csv"))
 		write.csv(score.nmi, file=tab.file, row.names=TRUE)
-		tab.file <- file.path(out.folder, g$name, MEAS_COMMUNITIES, "att=",att,"_ri.csv")
+		tab.file <- file.path(out.folder, g$name, MEAS_COMMUNITIES, paste0("att=",att,"_ri.csv"))
 		write.csv(score.ri, file=tab.file, row.names=TRUE)
-		tab.file <- file.path(out.folder, g$name, MEAS_COMMUNITIES, "att=",att,"_ari.csv")
+		tab.file <- file.path(out.folder, g$name, MEAS_COMMUNITIES, paste0("att=",att,"_ari.csv"))
 		write.csv(score.ari, file=tab.file, row.names=TRUE)
 	}
 	

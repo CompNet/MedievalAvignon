@@ -583,6 +583,102 @@ convert.currency <- function(values)
 
 
 
+
+########################################################################
+# Normalizes real-estate components.
+#
+# comps: original components.
+#
+# returns: same matrix, but with normalized categories.
+########################################################################
+normalize.components <- function(comps)
+{	# define conversion map
+	map <- c(
+		"anniversaire"="anniversaire",
+		"arc"="arc-gallerie",
+		"galerie"="arc-gallerie",
+		"arriere cour"="arriere-cour",
+		"atelier"="atelier-auvent",
+		"auvant"="atelier-auvent",
+		"bistour"="bistour",
+		"boucherie"="boucherie",
+		"bourg"="bourg",
+		"bourguet"="bourg",
+		"part de bourguet"="bourg",
+		"boutique"="boutique",
+		"cave"="cave-cellier",
+		"cellier"="cave-cellier",
+		"cimetiere"="cimetiere",
+		"cloitre"="cloitre",
+		"conduit d eau"="conduit eau",
+		"edifice"="edifice",
+		"emplacement occupe par des batiments ou destine a etre bati"="emplacement bat",
+		"lieu place"="emplacement bat",
+		"part d emplacement occupe par des batiments ou destine a etre bati"="emplacement bat",
+		"forge"="forge",
+		"four"="four",
+		"grange"="grange-grenier",
+		"grenier a foin"="grange-grenier",
+		"hopital"="hopital",
+		"enclos ou petite cour fermee"="jardin",
+		"jardin"="jardin",
+		"part de jardin"="jardin",
+		"loge"="loge",
+		"magasin"="magasin",
+		"habitation"="maison",
+		"maison"="maison",
+		"mur ou fondation de maison"="maison",
+		"part de maison"="maison",
+		"rez de chaussee"="maison",
+		"etage"="masure-salle-piece",
+		"masure"="masure-salle-piece",
+		"piece"="masure-salle-piece",
+		"salle"="masure-salle-piece",
+		"mur"="mur",
+		"part de fosse"="part de fosse",
+		"part de lices"="part de lices",
+		"part de moulin"="part de moulin",
+		"part de rempart"="part de rempart",
+		"part de sorgue"="part de sorgue",
+		"parvis de l eglise"="parvis eglise",
+		"angle"="place-angle-plan",
+		"place"="place-angle-plan",
+		"plan"="place-angle-plan",
+		"cour"="place-cour",
+		"place cour"="place-cour",
+		"pont"="pont",
+		"portail"="portail",
+		"sommet de portail"="portail",
+		"porte dans le rempart"="porte rempart",
+		"part de puit"="puit",
+		"puit"="puit",
+		"table"="table",
+		"taverne"="taverne",
+		"pre"="terre-pre",
+		"terrain"="terre-pre",
+		"terre"="terre-pre",
+		"tinel"="tinel",
+		"toit"="toit",
+		"tour"="tour",
+		"verger"="verger",
+		"treille"="vigne",
+		"vigne"="vigne",
+		"chemin"="voie-traverse-passage-entree",
+		"entree de bourguet"="voie-traverse-passage-entree",
+		"entree de maison"="voie-traverse-passage-entree",
+		"passage"="voie-traverse-passage-entree",
+		"traverse"="voie-traverse-passage-entree",
+		"voie"="voie-traverse-passage-entree"
+	)
+	# normalize each column
+	res <- apply(as.matrix(comps), 2, function(col) map[col])
+	col <- 1; which(!is.na(comps[,col]) & is.na(res[,col]))
+	return(res)
+}
+
+
+
+
 ########################################################################
 # Loads the raw data, extracts the different types of estate networks,
 # records them as graphml files, and plots them.
@@ -610,7 +706,8 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		taxCats <- sapply(taxes, function(fee) if(is.na(fee)) NA else FEE_CATS[min(which(FEE_BREAKS>fee))-1])
 		info.estate <- cbind(info.estate, taxCats)
 		colnames(info.estate)[ncol(info.estate)] <- COL_FEE_AMOUNT_CAT1
-		
+		comp.norm <- normalize.components(info.estate[,c(COL_EST_COMP_LAB1,COL_EST_COMP_LAB2,COL_EST_COMP_LAB3,COL_EST_COMP_LAB4,COL_EST_COMP_LAB5,COL_EST_COMP_LAB6)])
+		colnames(comp.norm) <- c(COL_EST_COMP_NORM1, COL_EST_COMP_NORM2, COL_EST_COMP_NORM3, COL_EST_COMP_NORM4, COL_EST_COMP_NORM5, COL_EST_COMP_NORM6)
 	cols <- colnames(info.estate)
 	total.nbr <- nrow(info.estate)
 	# load area information
@@ -702,7 +799,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	
 	# remove empty columns
 	empty.cols <- which(apply(info.all, 2, function(col) all(is.na(col))))
-	tlog(4,"Found ",length(empty.cols)," all-NA columns: removing them")
+	tlog(4,"Found ",length(empty.cols)," all-NA columns: removing them (",paste(colnames(info.all)[empty.cols],collapse=", "),")")
 	info.all <- info.all[,-empty.cols]
 	
 	# load relationships
@@ -1341,9 +1438,9 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #     > infomap/labelprop/walktrap: très nombreuses coms (100--200)
 #
 # - margot:
-#   - map de conversion pour les composants de maison
-#   - spécification de couleurs spécifiques pour certaines attributs
-#   - compléter les liens "égale" manquants
+#   + map de conversion pour les composants de maison
+#   + spécification de couleurs spécifiques pour certaines attributs
+#   + compléter les liens "égale" manquants
 #   - vérifier les liens à longue distance suspects
 
 

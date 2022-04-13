@@ -160,9 +160,14 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 					if(cat.att)
 					{	tmp <- factor(vvals[connected])
 						lgd.txt <- levels(tmp)
-						colcols <- get.palette(length(lgd.txt))
-						vcols[connected] <- colcols[(as.integer(tmp)-1) %% length(colcols) + 1]
-						lgd.col <- colcols[(1:length(lgd.txt)-1) %% length(colcols) + 1]
+						colcols <- COLS_ATT[[col.att[1]]]
+						if(is.null(colcols))
+						{	colcols <- get.palette(length(lgd.txt))
+							vcols[connected] <- colcols[(as.integer(tmp)-1) %% length(colcols) + 1]
+							lgd.col <- colcols[(1:length(lgd.txt)-1) %% length(colcols) + 1]
+						}
+						else
+							lgd.col <- colcols[lgd.txt]
 					}
 					# numerical attribute
 					else
@@ -189,10 +194,10 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 				# several boolean attributes, to combine (like multiple tags)
 				if(!is.numeric(vvals))
 				{	are.nas <- apply(mat,1,function(r) all(is.na(r)))					# detect individuals with only NAs
-					are.pie <- apply(mat,1,function(r) length(r[!is.na(r)])>1)		# detect individuals with several non-NA values
+					are.pie <- apply(mat,1,function(r) length(r[!is.na(r)])>1)			# detect individuals with several non-NA values
 					uvals <- sort(unique(c(mat)))										# get unique attribute values
 					pie.matrix <- NA
-					for(uval in uvals)												# build a column for each of them
+					for(uval in uvals)													# build a column for each of them
 					{	vals <- as.integer(apply(mat, 1, function(v) uval %in% v[!is.na(v)]))
 						if(all(is.na(pie.matrix)))
 							pie.matrix <- as.matrix(vals, ncol=1)
@@ -201,8 +206,13 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 						colnames(pie.matrix)[ncol(pie.matrix)] <- uval
 					}
 					lgd.txt <- colnames(pie.matrix)
-					colcols <- get.palette(length(lgd.txt))
-					lgd.col <- colcols[(1:length(lgd.txt)-1) %% length(colcols) + 1]
+					colcols <- COLS_ATT[[col.att[1]]]
+					if(is.null(colcols))
+					{	colcols <- get.palette(length(lgd.txt))
+						lgd.col <- colcols[(1:length(lgd.txt)-1) %% length(colcols) + 1]
+					}
+					else
+						lgd.col <- colcols[lgd.txt]
 					pie.values <- unlist(apply(pie.matrix, 1, function(v) list(v)), recursive=FALSE)
 					pie.values[!are.pie | !connected] <- NA
 					vshapes[are.pie & connected] <- rep("pie",length(which(are.pie & connected)))
@@ -214,9 +224,14 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 				else
 				{	are.pie <- apply(mat,1,function(r) length(which(r>0))>1)				# detect individuals with several non-zero values
 					lgd.txt <- col.att
-					colcols <- get.palette(length(lgd.txt))
-					lgd.col <- colcols[(1:length(lgd.txt)-1) %% length(colcols) + 1]
-					lgd.col[which(is.na(lgd.txt) | lgd.txt=="NA")] <- "#F0F0F0"			# force NA to white
+					colcols <- COLS_ATT[[col.att[1]]]
+					if(is.null(colcols))
+					{	colcols <- get.palette(length(lgd.txt))
+						lgd.col <- colcols[(1:length(lgd.txt)-1) %% length(colcols) + 1]
+					}
+					else
+						lgd.col <- colcols[lgd.txt]
+					lgd.col[which(is.na(lgd.txt) | lgd.txt=="NA")] <- "#F0F0F0"				# force NA to white
 					pie.values <- split(mat,1:nrow(mat))
 					pie.values[!are.pie | !connected] <- NA
 					vshapes[are.pie & connected] <- rep("pie",length(which(are.pie & connected)))
@@ -407,13 +422,13 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 			}
 			else
 			{	legend(
-					title="Link type",								# title of the legend box
-					x="topright",									# position
-					legend=LONG_NAME[nats],							# text of the legend
-					col=epal,										# color of the lines
-					lty=1,											# type of lines
-					lwd=4,											# line thickness
-					bty="n",										# no box around the legend
+					title="Link type",				# title of the legend box
+					x="topright",					# position
+					legend=LONG_NAME[nats],			# text of the legend
+					col=epal,						# color of the lines
+					lty=1,							# type of lines
+					lwd=4,							# line thickness
+					bty="n",						# no box around the legend
 					cex=0.8
 				)
 			}
@@ -423,12 +438,12 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 			{	# categorical attributes
 				if(cat.att)
 				{	legend(
-						title=leg.cap,							# title of the legend box
-						x="bottomleft",							# position
-						legend=lgd.txt,							# text of the legend
-						fill=lgd.col,							# color of the nodes
-						bty="n",								# no box around the legend
-						cex=0.8									# size of the text in the legend
+						title=leg.cap,				# title of the legend box
+						x="bottomleft",				# position
+						legend=lgd.txt,				# text of the legend
+						fill=lgd.col,				# color of the nodes
+						bty="n",					# no box around the legend
+						cex=0.8						# size of the text in the legend
 					)
 				}
 				# numerical attributes

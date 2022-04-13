@@ -117,6 +117,36 @@ CAT_COLORS_32 <- c(	# glasbey.colors(32) from package Polychrome
 	"#FFB79F", "#858567", "#A10300", "#14F9FF", "#00479E", "#DC5E93", "#93D4FF", "#004CFF"
 )
 
+COLS_ATT <- list()
+# colors for component type attribute
+COLS_ATT_COMP_TYPE <- c(
+	"ancien systeme defensif"="#636363",
+	"bourg"="#FA9FB5",
+	"cimetiere"="#252525",
+	"communication voie d acces"="#FFF7EC",
+	"cour"="#FD8D3C",
+	"edifice commercial atelier professionnel"="#D8B365",
+	"edifice de stockage"="#8C510A",
+	"edifice religieux"="#FFFF56",
+	"edifice residentiel"="#FED02B",
+	"four puit"="#5AB4AC",
+	"infrastructure hydraulique"="#0868AC",
+	"messe"="#FFFFD4",
+	"moulin"="#9BC2E6",
+	"terrain agricol"="#31A800",
+	"terrain a batir"="#BD0026"
+)
+COLS_ATT[[COL_EST_COMP_TYPE1]]
+# colors for simple component type attribute
+COLS_ATT_COMP_TYPE_S <- c(
+	"hydrau"="#0868AC",
+	"moulin"="#9BC2E6",
+	"non bati"="#BD0026",
+	"bati"="#FED02B",
+	"immateriel"="#FFFFD4"
+)
+COLS_ATT[[COL_EST_COMP_TYPE_S1]]
+
 
 
 
