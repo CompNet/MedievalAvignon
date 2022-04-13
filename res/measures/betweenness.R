@@ -54,7 +54,7 @@ analyze.net.betweenness <- function(g, out.folder)
 		g <- set_graph_attr(graph=g, name=paste0(fname,"_mean"), value=mval)
 		sdval <- sd(vals)
 		g <- set_graph_attr(graph=g, name=paste0(fname,"_stdev"), value=sdval)
-		centr <- centr_betw(graph=g, directed=mode=="directed", normalized=TRUE)
+		centr <- centr_betw(graph=g, directed=mode=="directed", normalized=TRUE)$centralization
 		g <- set_graph_attr(graph=g, name=paste0(fname,"_centr"), value=centr)
 		stats[fname, ] <- list(Value=centr, Mean=mval, Stdv=sdval)
 		

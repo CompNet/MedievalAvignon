@@ -67,7 +67,7 @@ analyze.net.closeness <- function(g, out.folder)
 		g <- set_graph_attr(graph=g, name=paste0(fname,"_mean"), value=mval)
 		sdval <- sd(vals,na.rm=TRUE)
 		g <- set_graph_attr(graph=g, name=paste0(fname,"_stdev"), value=sdval)
-		centr <- centr_clo(graph=g.comp, mode=if(mode==MEAS_MODE_UNDIR) "all" else mode, normalized=TRUE)
+		centr <- centr_clo(graph=g.comp, mode=if(mode==MEAS_MODE_UNDIR) "all" else mode, normalized=TRUE)$centralization
 		g <- set_graph_attr(graph=g, name=paste0(fname,"_centr"), value=centr)
 		stats[fname, ] <- list(Value=centr, Mean=mval, Stdv=sdval)
 		

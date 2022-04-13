@@ -603,11 +603,14 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		info.fees <- load.location.table(FILE_IN_ANAL_ESTATE_FEE,"fee")
 		mids <- match(info.estate[,COL_EST_FEE_ID], info.fees[,COL_FEE_ID])
 		taxes <- convert.currency(info.fees[mids,COL_FEE_AMOUNT_NORM1])
+		info.estate <- cbind(info.estate, taxes)
+		colnames(info.estate)[ncol(info.estate)] <- COL_FEE_AMOUNT_NORM1
 		FEE_BREAKS <- c(0, 34, 60, 144, 336, 624, 1296, 3600, 30000)
 		FEE_CATS <- c(paste0("[",FEE_BREAKS[1],";",FEE_BREAKS[2],"]"), sapply(3:length(FEE_BREAKS), function(b) paste0("]",FEE_BREAKS[b-1],";",FEE_BREAKS[b],"]")))
 		taxCats <- sapply(taxes, function(fee) if(is.na(fee)) NA else FEE_CATS[min(which(FEE_BREAKS>fee))-1])
-		info.estate <- cbind(info.estate, taxes, taxCats)
-		colnames(info.estate)[ncol(info.estate)] <- COL_FEE_AMOUNT_NORM1	# TODO ajouter aux listes d'attributs concernées
+		info.estate <- cbind(info.estate, taxCats)
+		colnames(info.estate)[ncol(info.estate)] <- COL_FEE_AMOUNT_CAT1
+		
 	cols <- colnames(info.estate)
 	total.nbr <- nrow(info.estate)
 	# load area information
@@ -807,11 +810,13 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			edge.list[edge.list[,1]==ext.id2,1] <- new.id
 			edge.list[edge.list[,2]==ext.id2,2] <- new.id
 			# merge rows in info table
-			info.all[id1,] <- sapply(1:ncol(info.all), function(col) 
-						if(is.na(info.all[id1,col]))
-							info.all[id2,col]
-						else
-							info.all[id1,col])
+			for(col in 1:ncol(info.all))
+			{	if(is.na(info.all[id1,col]))
+					val <- info.all[id2,col]
+				else
+					val <- info.all[id1,col]
+				info.all[id1,col] <- val
+			}
 			info.all[id1,COL_LOC_ID] <- new.id
 			info.all <- info.all[-id2,]
 		}

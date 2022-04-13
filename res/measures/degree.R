@@ -28,7 +28,8 @@ analyze.net.degree <- function(g, out.folder)
 	stat.file <- file.path(out.folder, g$name, "stats.csv")
 	stats <- retrieve.stats(stat.file)
 	
-	modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_IN, MEAS_MODE_OUT)
+#	modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_IN, MEAS_MODE_OUT)
+	modes <- c(MEAS_MODE_UNDIR)
 	for(i in 1:length(modes))
 	{	mode <- modes[i]
 		tlog(2,"Computing degree: mode=",mode)
@@ -53,7 +54,7 @@ analyze.net.degree <- function(g, out.folder)
 		g <- set_graph_attr(graph=g, name=paste0(fname,"_mean"), value=mval)
 		sdval <- sd(vals)
 		g <- set_graph_attr(graph=g, name=paste0(fname,"_stdev"), value=sdval)
-		centr <- centr_degree(graph=g, mode=if(mode==MEAS_MODE_UNDIR) "all" else mode, loops=TRUE, normalized=TRUE)
+		centr <- centr_degree(graph=g, mode=if(mode==MEAS_MODE_UNDIR) "all" else mode, loops=TRUE, normalized=TRUE)$centralization
 		stats[fname, ] <- list(Value=centr, Mean=mval, Stdv=sdval)
 		
 		# plot graph using color for degree
