@@ -8,20 +8,20 @@
 1438,361,1528,NULL,NULL,1,NULL,NULL,1363,NULL
 3005,1953,2557,NULL,NULL,1,NULL,NULL,1370,NULL
 2640,2602,2162,1358,NULL,1,NULL,"moyenneDatesConnues",1367,2162
-3084,619,3032,1355,NULL,1,NULL,"moyenneDatesConnues de la premiere main donc jusqu'à la déclaration 3060 incluse",1373,3032
-3085,533,3033,1355,NULL,1,NULL,"moyenneDatesConnues de la premiere main donc jusqu'à la déclaration 3060 incluse",1373,3033
-3093,626,3040,1355,NULL,1,NULL,"moyenneDatesConnues de la premiere main donc jusqu'à la déclaration 3060 incluse",1373,3040
-3095,628,3041,1355,NULL,1,NULL,"moyenneDatesConnues de la premiere main donc jusqu'à la déclaration 3060 incluse",1373,3041
-3094,627,3041,1355,NULL,1,NULL,"moyenneDatesConnues de la premiere main donc jusqu'à la déclaration 3060 incluse",1373,3041
-3106,19,3052,1355,NULL,1,NULL,"moyenneDatesConnues de la premiere main donc jusqu'à la déclaration 3060 incluse",1373,3052
-3107,635,3053,1355,NULL,1,NULL,"moyenneDatesConnues de la premiere main donc jusqu'à la déclaration 3060 incluse",1373,3053
-3111,639,3057,1355,NULL,1,NULL,"moyenneDatesConnues de la premiere main donc jusqu'à la déclaration 3060 incluse",1373,3057
-3112,639,3058,1355,NULL,1,NULL,"moyenneDatesConnues de la premiere main donc jusqu'à la déclaration 3060 incluse",1373,3058
-3122,647,3068,1379,NULL,1,NULL,"moyenneDatesConnues reconnaissance de la deuxième main donc a partir de la déclaration 3061",1373,3068
-1688,1671,7139,1370,NULL,1,NULL,"date inconnue, antérieur à 1373 qui est la date de l'ordre succession 2",1378,7139
-1689,1491,7139,1370,NULL,1,NULL,"date inconnue, antérieur à 1373 qui est la date de l'ordre succession 2",1378,7139
-1692,1490,7141,1370,NULL,1,NULL,"date inconnue, antérieur à 1373 qui est la date de l'ordre succession 2",1378,7141
-1693,1757,7141,1370,NULL,1,NULL,"date inconnue, antérieur à 1373 qui est la date de l'ordre succession 2",1378,7141
+3084,619,3032,1355,NULL,1,NULL,"moyenneDatesConnues de la premiere main donc jusqu'à la declaration 3060 incluse",1373,3032
+3085,533,3033,1355,NULL,1,NULL,"moyenneDatesConnues de la premiere main donc jusqu'à la declaration 3060 incluse",1373,3033
+3093,626,3040,1355,NULL,1,NULL,"moyenneDatesConnues de la premiere main donc jusqu'à la declaration 3060 incluse",1373,3040
+3095,628,3041,1355,NULL,1,NULL,"moyenneDatesConnues de la premiere main donc jusqu'à la declaration 3060 incluse",1373,3041
+3094,627,3041,1355,NULL,1,NULL,"moyenneDatesConnues de la premiere main donc jusqu'à la declaration 3060 incluse",1373,3041
+3106,19,3052,1355,NULL,1,NULL,"moyenneDatesConnues de la premiere main donc jusqu'à la declaration 3060 incluse",1373,3052
+3107,635,3053,1355,NULL,1,NULL,"moyenneDatesConnues de la premiere main donc jusqu'à la declaration 3060 incluse",1373,3053
+3111,639,3057,1355,NULL,1,NULL,"moyenneDatesConnues de la premiere main donc jusqu'à la declaration 3060 incluse",1373,3057
+3112,639,3058,1355,NULL,1,NULL,"moyenneDatesConnues de la premiere main donc jusqu'à la declaration 3060 incluse",1373,3058
+3122,647,3068,1379,NULL,1,NULL,"moyenneDatesConnues reconnaissance de la deuxieme main donc a partir de la declaration 3061",1373,3068
+1688,1671,7139,1370,NULL,1,NULL,"date inconnue, anterieur à 1373 qui est la date de l'ordre succession 2",1378,7139
+1689,1491,7139,1370,NULL,1,NULL,"date inconnue, anterieur à 1373 qui est la date de l'ordre succession 2",1378,7139
+1692,1490,7141,1370,NULL,1,NULL,"date inconnue, anterieur à 1373 qui est la date de l'ordre succession 2",1378,7141
+1693,1757,7141,1370,NULL,1,NULL,"date inconnue, anterieur à 1373 qui est la date de l'ordre succession 2",1378,7141
 3105,46,3051,1371,NULL,1,NULL,"moyenneDatesConnues",1373,3051
 3239,1332,3052,1386,NULL,4,NULL,"moyenneDatesConnues",1373,3052
 2813,2682,2021,1369,NULL,3,NULL,NULL,1359,2021
@@ -31,12 +31,12 @@
 6164,2917,9078,1319,NULL,1,NULL,NULL,NULL,9078
 6163,10152,9077,1319,NULL,1,NULL,NULL,NULL,9077
 6162,10151,9076,1319,NULL,1,NULL,NULL,NULL,9076
-3123,648,3069,1379,NULL,1,NULL,"moyenneDatesConnues reconnaissance de la deuxième main donc a partir de la déclaration 3061",1373,3069
-3148,670,3094,1379,NULL,1,NULL,"moyenneDatesConnues reconnaissance de la deuxième main donc a partir de la déclaration 3061",1373,3094
-3149,671,3095,1379,NULL,1,NULL,"moyenneDatesConnues reconnaissance de la deuxième main donc a partir de la déclaration 3061",1373,3095
-3160,680,3106,1379,NULL,1,NULL,"moyenneDatesConnues reconnaissance de la deuxième main donc a partir de la déclaration 3061",1373,3106
-3162,682,3108,1379,NULL,1,NULL,"moyenneDatesConnues reconnaissance de la deuxième main donc a partir de la déclaration 3061",1373,3108
-3163,683,3109,1379,NULL,1,NULL,"moyenneDatesConnues reconnaissance de la deuxième main donc a partir de la déclaration 3061",1373,3109
+3123,648,3069,1379,NULL,1,NULL,"moyenneDatesConnues reconnaissance de la deuxieme main donc a partir de la declaration 3061",1373,3069
+3148,670,3094,1379,NULL,1,NULL,"moyenneDatesConnues reconnaissance de la deuxieme main donc a partir de la declaration 3061",1373,3094
+3149,671,3095,1379,NULL,1,NULL,"moyenneDatesConnues reconnaissance de la deuxieme main donc a partir de la declaration 3061",1373,3095
+3160,680,3106,1379,NULL,1,NULL,"moyenneDatesConnues reconnaissance de la deuxieme main donc a partir de la declaration 3061",1373,3106
+3162,682,3108,1379,NULL,1,NULL,"moyenneDatesConnues reconnaissance de la deuxieme main donc a partir de la declaration 3061",1373,3108
+3163,683,3109,1379,NULL,1,NULL,"moyenneDatesConnues reconnaissance de la deuxieme main donc a partir de la declaration 3061",1373,3109
 3320,1326,4025,1384,NULL,1,NULL,"moyenneDatesConnues",1383,4025
 3329,635,4033,1384,NULL,1,NULL,"moyenneDatesConnues",1383,4033
 3592,3735,20079,1251,NULL,1,NULL,NULL,1251,20079
@@ -45,10 +45,10 @@
 3370,672,4073,1384,NULL,1,NULL,"moyenneDatesConnues",1383,4073
 3379,682,4081,1384,NULL,1,NULL,"moyenneDatesConnues",1383,4081
 3418,2672,6012,1377,NULL,1,NULL,"moyenneDatesConnues",1375,6012
-2209,2037,7098,1370,NULL,2,NULL,"date inconnue mais antérieur à date ordre de succession 5 connues",1378,7098
-2210,2106,7098,1375,NULL,3,NULL,"date inconnue mais antérieur à date ordre de succession 5 connues",1378,7098
-2211,538,7098,1380,NULL,4,NULL,"date inconnue mais antérieur à date ordre de succession 5 connues",1378,7098
-2212,2266,7098,1381,NULL,5,NULL,"date inconnue mais antérieur à date ordre de succession 5 connues",1378,7098
+2209,2037,7098,1370,NULL,2,NULL,"date inconnue mais anterieur à date ordre de succession 5 connues",1378,7098
+2210,2106,7098,1375,NULL,3,NULL,"date inconnue mais anterieur à date ordre de succession 5 connues",1378,7098
+2211,538,7098,1380,NULL,4,NULL,"date inconnue mais anterieur à date ordre de succession 5 connues",1378,7098
+2212,2266,7098,1381,NULL,5,NULL,"date inconnue mais anterieur à date ordre de succession 5 connues",1378,7098
 2213,2141,7098,1385,NULL,6,NULL,"date inconnue mais posterieure à date ordre de succession 5 connues",1378,7098
 2214,2150,7098,1390,NULL,7,NULL,"date inconnue mais posterieure à date ordre de succession 5 connues",1378,7098
 4816,503,3316,NULL,NULL,1,NULL,NULL,1362,NULL
@@ -111,7 +111,7 @@
 1553,1604,7015,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7015
 1554,50,7016,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7016
 1555,26,7017,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7017
-3083,618,3031,1355,NULL,1,NULL,"moyenneDatesConnues de la premiere main donc jusqu'à la déclaration 3060 incluse",1355,3031
+3083,618,3031,1355,NULL,1,NULL,"moyenneDatesConnues de la premiere main donc jusqu'à la declaration 3060 incluse",1355,3031
 4810,6604,6421,NULL,NULL,1,NULL,NULL,1377,NULL
 2170,2052,7077,1380,NULL,3,NULL,NULL,1378,7077
 4811,2941,6422,NULL,NULL,1,NULL,NULL,1377,NULL
@@ -124,8 +124,8 @@
 2157,1578,7069,1379,NULL,3,NULL,"moyenneDatesConnues",1378,7069
 2231,1552,7104,1371,NULL,2,NULL,NULL,1378,7104
 3240,1378,3052,1390,NULL,5,NULL,"moyenneDatesConnues",1373,3052
-1561,1743,7023,1370,NULL,1,NULL,"date inconnue, antérieur à 1373 qui est la date de l'ordre succession 2",1378,7023
-2165,1857,7074,1395,NULL,3,NULL,"date inconnue mais postérieure à la date de succession 2 connu 1391",1378,7074
+1561,1743,7023,1370,NULL,1,NULL,"date inconnue, anterieur à 1373 qui est la date de l'ordre succession 2",1378,7023
+2165,1857,7074,1395,NULL,3,NULL,"date inconnue mais posterieure à la date de succession 2 connu 1391",1378,7074
 4813,3067,6424,NULL,NULL,1,NULL,NULL,1377,NULL
 4814,3064,6425,NULL,NULL,1,NULL,NULL,1377,NULL
 1978,1924,7613,NULL,NULL,1,NULL,NULL,1376,NULL
@@ -148,10 +148,10 @@
 2176,102,7082,1379,NULL,3,NULL,"moyenneDatesConnues",1378,7082
 6287,10241,8593,1349,NULL,1,NULL,NULL,NULL,8593
 2152,2143,7067,1390,NULL,5,NULL,"moyenneDatesConnues",1378,7067
-2166,2134,7074,1400,NULL,4,NULL,"date inconnue mais postérieure à la date de succession 2 connu 1391",1378,7074
-2167,2212,7074,1405,NULL,5,NULL,"date inconnue mais postérieure à la date de succession 2 connu 1391",1378,7074
+2166,2134,7074,1400,NULL,4,NULL,"date inconnue mais posterieure à la date de succession 2 connu 1391",1378,7074
+2167,2212,7074,1405,NULL,5,NULL,"date inconnue mais posterieure à la date de succession 2 connu 1391",1378,7074
 2134,2208,7035,1376,NULL,2,NULL,"moyenneDatesConnues",1378,7035
-2449,2096,7287,1385,NULL,3,NULL,"date inconnue mais postérieure à date ordre de succession 2 connue",1378,7287
+2449,2096,7287,1385,NULL,3,NULL,"date inconnue mais posterieure à date ordre de succession 2 connue",1378,7287
 2122,2089,7023,1373,NULL,2,NULL,NULL,1378,7023
 2124,2057,7025,1380,NULL,2,NULL,NULL,1378,7025
 2127,1065,7027,1390,NULL,2,NULL,NULL,1378,7027
@@ -219,14 +219,14 @@
 1568,1616,7030,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7030
 1573,1593,7035,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7035
 1574,1748,7036,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7036
-2139,2262,7037,1385,NULL,3,NULL,"date inconnue mais postérieure à la date de succession 2 connu 1380",1378,7037
+2139,2262,7037,1385,NULL,3,NULL,"date inconnue mais posterieure à la date de succession 2 connu 1380",1378,7037
 2775,2797,2123,1378,NULL,2,NULL,"moyenneDatesConnues",1343,2123
-2183,2231,7087,1370,NULL,2,NULL,"date inconnue mais postérieur à date de l'ordre de succession3 connue 1374",1378,7087
+2183,2231,7087,1370,NULL,2,NULL,"date inconnue mais posterieur à date de l'ordre de succession3 connue 1374",1378,7087
 2186,2211,7087,1387,NULL,4,NULL,"moyenneDatesConnues",1378,7087
 2187,2190,7087,1390,NULL,5,NULL,"moyenneDatesConnues",1378,7087
 2606,2579,2131,1370,NULL,1,NULL,NULL,1370,2131
 2138,1808,7037,1380,NULL,2,NULL,NULL,1378,7037
-2422,2072,7251,1370,NULL,2,NULL,"date inconnue mais antérieur à date ordre de succession 3 connue",1378,7251
+2422,2072,7251,1370,NULL,2,NULL,"date inconnue mais anterieur à date ordre de succession 3 connue",1378,7251
 2175,2101,7082,1373,NULL,2,NULL,NULL,1378,7082
 2426,1836,7255,1380,NULL,2,NULL,"moyenneDatesConnues",1378,7255
 1575,365,7037,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7037
@@ -364,7 +364,7 @@
 4624,2989,5032,1392,NULL,1,NULL,"moyenneDatesConnues",1392,5032
 4625,2989,5033,1392,NULL,1,NULL,"moyenneDatesConnues",1392,5033
 4626,4946,5034,1392,NULL,1,NULL,"moyenneDatesConnues",1392,5034
-1621,149,7082,1370,NULL,1,NULL,"date inconnue, antérieur à 1373 qui est la date de l'ordre succession 2",1378,7082
+1621,149,7082,1370,NULL,1,NULL,"date inconnue, anterieur à 1373 qui est la date de l'ordre succession 2",1378,7082
 4805,3057,6416,NULL,NULL,1,NULL,NULL,1377,NULL
 2930,2854,2409,NULL,NULL,1,NULL,NULL,1345,NULL
 1974,1920,7618,NULL,NULL,1,NULL,NULL,1376,NULL
@@ -500,16 +500,16 @@
 2957,2920,2493,NULL,NULL,1,NULL,NULL,1328,NULL
 1623,1663,7084,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7084
 2206,2170,7096,1387,NULL,4,NULL,"moyenneDatesConnues",1378,7096
-1628,1619,7088,1370,NULL,1,NULL,"date inconnue, antérieur à 1371 qui est la date de l'ordre succession 2",1378,7088
-1627,1714,7088,1370,NULL,1,NULL,"date inconnue, antérieur à 1371 qui est la date de l'ordre succession 2",1378,7088
-2199,2213,7093,1380,NULL,6,NULL,"date inconnue mais postérieur a date connue",1378,7093
+1628,1619,7088,1370,NULL,1,NULL,"date inconnue, anterieur à 1371 qui est la date de l'ordre succession 2",1378,7088
+1627,1714,7088,1370,NULL,1,NULL,"date inconnue, anterieur à 1371 qui est la date de l'ordre succession 2",1378,7088
+2199,2213,7093,1380,NULL,6,NULL,"date inconnue mais posterieur a date connue",1378,7093
 2196,2227,7093,1374,NULL,4,NULL,"date inconnue mais comprise entre les connues",1378,7093
 2189,2177,7088,1379,NULL,3,NULL,NULL,1378,7088
 2974,2924,2532,NULL,NULL,1,NULL,NULL,1365,NULL
 2197,2179,7093,1375,NULL,5,NULL,NULL,1378,7093
 2879,531,1644,NULL,NULL,1,NULL,NULL,1392,NULL
 2193,2255,7091,1387,NULL,4,NULL,"moyenneDatesConnues",1378,7091
-2198,2063,7093,1380,NULL,6,NULL,"date inconnue mais postérieur a date connue",1378,7093
+2198,2063,7093,1380,NULL,6,NULL,"date inconnue mais posterieur a date connue",1378,7093
 2972,1953,2559,NULL,NULL,1,NULL,NULL,1370,NULL
 1455,79,1545,NULL,NULL,1,NULL,NULL,1364,NULL
 2907,2897,2448,NULL,NULL,1,NULL,NULL,1351,NULL
@@ -590,7 +590,7 @@
 1630,463,7090,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7090
 1631,1503,7091,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7091
 1632,1787,7092,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7092
-1634,1722,7094,1365,NULL,1,NULL,"date inconnue mais postérieur à date de l'ordre de succession3 connue 1373",1378,7094
+1634,1722,7094,1365,NULL,1,NULL,"date inconnue mais posterieur à date de l'ordre de succession3 connue 1373",1378,7094
 2191,1458,7091,1376,NULL,2,NULL,"moyenneDatesConnues",1378,7091
 4679,9076,22019,1416,NULL,1,NULL,NULL,1416,22019
 4680,9077,22020,1394,NULL,1,NULL,NULL,1394,22020
@@ -622,8 +622,8 @@
 3411,3015,6005,1377,NULL,1,NULL,"moyenneDatesConnues",1377,6005
 3414,2676,6008,1377,NULL,1,NULL,"moyenneDatesConnues",1377,6008
 3415,3019,6009,1375,NULL,1,NULL,NULL,1375,6009
-1633,527,7093,1370,NULL,1,NULL,"date inconnue, antérieur à 1372 qui est la date de l'ordre succession 2",1378,7093
-1644,1792,7102,1370,NULL,1,NULL,"date inconnue, antérieur à 1374 qui est la date de l'ordre succession 2",1378,7102
+1633,527,7093,1370,NULL,1,NULL,"date inconnue, anterieur à 1372 qui est la date de l'ordre succession 2",1378,7093
+1644,1792,7102,1370,NULL,1,NULL,"date inconnue, anterieur à 1374 qui est la date de l'ordre succession 2",1378,7102
 2188,2045,7088,1371,NULL,2,NULL,NULL,1378,7088
 1430,18,1520,NULL,NULL,1,NULL,NULL,1363,NULL
 2190,2078,7090,1381,NULL,2,NULL,NULL,1378,7090
@@ -650,9 +650,9 @@
 1478,33,1567,NULL,NULL,1,NULL,NULL,1363,NULL
 1642,1740,7100,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7100
 1643,1527,7101,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7101
-1635,1754,7094,1365,NULL,1,NULL,"date inconnue mais postérieur à date de l'ordre de succession3 connue 1373",1378,7094
+1635,1754,7094,1365,NULL,1,NULL,"date inconnue mais posterieur à date de l'ordre de succession3 connue 1373",1378,7094
 1645,1542,7103,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7103
-2200,1741,7094,1370,NULL,2,NULL,"date inconnue mais postérieur à date de l'ordre de succession3 connue 1373",1378,7094
+2200,1741,7094,1370,NULL,2,NULL,"date inconnue mais posterieur à date de l'ordre de succession3 connue 1373",1378,7094
 1854,191,7280,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7280
 1855,1585,7281,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7281
 2216,2221,7099,1376,NULL,2,NULL,"moyenneDatesConnues",1378,7099
@@ -660,8 +660,8 @@
 2218,2193,7099,1379,NULL,3,NULL,"moyenneDatesConnues",1378,7099
 2220,2191,7101,1376,NULL,2,NULL,"moyenneDatesConnues",1378,7101
 2221,2092,7101,1379,NULL,3,NULL,"moyenneDatesConnues",1378,7101
-1646,1846,7104,1370,NULL,1,NULL,"date inconnue, antérieur à 1371 qui est la date de l'ordre succession 2",1378,7104
-1639,1739,7098,1365,NULL,1,NULL,"date inconnue mais antérieur à date ordre de succession 5 connues",1378,7098
+1646,1846,7104,1370,NULL,1,NULL,"date inconnue, anterieur à 1371 qui est la date de l'ordre succession 2",1378,7104
+1639,1739,7098,1365,NULL,1,NULL,"date inconnue mais anterieur à date ordre de succession 5 connues",1378,7098
 1465,526,1555,NULL,NULL,1,NULL,NULL,1364,NULL
 1466,1268,1555,NULL,NULL,1,NULL,NULL,1364,NULL
 2192,2219,7091,1376,NULL,3,NULL,NULL,1378,7091
@@ -677,7 +677,7 @@
 1584,1583,7046,1376,NULL,1,NULL,"moyenneDatesConnues",1374,7046
 1595,60,7057,1376,NULL,1,NULL,"moyenneDatesConnues",1356,7057
 1629,1580,7089,1376,NULL,1,NULL,"moyenneDatesConnues",1364,7089
-1856,1835,7282,1365,NULL,1,NULL,"date inconnue, antérieur à 1370 qui est la date de l'ordre succession 2",1378,7282
+1856,1835,7282,1365,NULL,1,NULL,"date inconnue, anterieur à 1370 qui est la date de l'ordre succession 2",1378,7282
 1650,1673,7107,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7107
 230,169,195,1366,1368,1,NULL,NULL,1366,197
 231,170,196,1366,1368,1,NULL,NULL,1366,198
@@ -766,7 +766,7 @@
 2928,2906,2542,NULL,NULL,1,NULL,NULL,1322,NULL
 1510,1470,1603,NULL,NULL,1,NULL,NULL,1365,NULL
 1463,496,1553,NULL,NULL,1,NULL,NULL,1368,NULL
-2282,1953,7134,1380,NULL,2,NULL,"date inconnue mais doit être comprise entre deux connues",1378,7134
+2282,1953,7134,1380,NULL,2,NULL,"date inconnue mais doit etre comprise entre deux connues",1378,7134
 2238,656,7108,1374,NULL,2,NULL,NULL,1378,7108
 39,33,32,1366,1368,1,NULL,NULL,1366,32
 1026,435,1026,1363,NULL,1,NULL,NULL,1363,1023
@@ -875,17 +875,17 @@
 5768,3444,8159,1319,NULL,1,NULL,NULL,NULL,8159
 5767,397,8158,1319,NULL,1,NULL,NULL,NULL,8158
 5766,398,8158,1319,NULL,1,NULL,NULL,NULL,8158
-1666,1495,7121,1365,NULL,1,NULL,"date inconnue, antérieur à 1370 qui est la date de l'ordre succession 2",1378,7121
-3254,1349,3062,1380,NULL,2,NULL,"date inconnue après 1373 seule certitude",1373,3062
-3289,2097,3096,1390,NULL,2,NULL,"date inconnue après 1385 seule certitude",1385,3096
-3290,1356,3097,1390,NULL,2,NULL,"date inconnue après 1385 seule certitude",1385,3097
-1651,1736,7108,1370,NULL,1,NULL,"date inconnue, antérieur à 1374 qui est la date de l'ordre succession 2",1378,7108
-1656,1643,7112,1365,NULL,1,NULL,"date inconnue, antérieur à 1370 qui est la date de l'ordre succession 2",1378,7112
-1658,1497,7114,1370,NULL,1,NULL,"date inconnue, antérieur à 1372 qui est la date de l'ordre succession 2",1378,7114
-1661,1683,7116,1370,NULL,1,NULL,"date inconnue, antérieur à 1372 qui est la date de l'ordre succession 2",1378,7116
-1665,1495,7120,1360,NULL,1,NULL,"date inconnue, antérieur à 1367 qui est la date de l'ordre succession 2",1378,7120
-2251,2156,7115,1385,NULL,3,NULL,"date inconnue mais postérieure à date ordre de succession 2 connue",1378,7115
-2252,2145,7115,1385,NULL,3,NULL,"date inconnue mais postérieure à date ordre de succession 2 connue",1378,7115
+1666,1495,7121,1365,NULL,1,NULL,"date inconnue, anterieur à 1370 qui est la date de l'ordre succession 2",1378,7121
+3254,1349,3062,1380,NULL,2,NULL,"date inconnue apres 1373 seule certitude",1373,3062
+3289,2097,3096,1390,NULL,2,NULL,"date inconnue apres 1385 seule certitude",1385,3096
+3290,1356,3097,1390,NULL,2,NULL,"date inconnue apres 1385 seule certitude",1385,3097
+1651,1736,7108,1370,NULL,1,NULL,"date inconnue, anterieur à 1374 qui est la date de l'ordre succession 2",1378,7108
+1656,1643,7112,1365,NULL,1,NULL,"date inconnue, anterieur à 1370 qui est la date de l'ordre succession 2",1378,7112
+1658,1497,7114,1370,NULL,1,NULL,"date inconnue, anterieur à 1372 qui est la date de l'ordre succession 2",1378,7114
+1661,1683,7116,1370,NULL,1,NULL,"date inconnue, anterieur à 1372 qui est la date de l'ordre succession 2",1378,7116
+1665,1495,7120,1360,NULL,1,NULL,"date inconnue, anterieur à 1367 qui est la date de l'ordre succession 2",1378,7120
+2251,2156,7115,1385,NULL,3,NULL,"date inconnue mais posterieure à date ordre de succession 2 connue",1378,7115
+2252,2145,7115,1385,NULL,3,NULL,"date inconnue mais posterieure à date ordre de succession 2 connue",1378,7115
 5765,397,8157,1319,NULL,1,NULL,NULL,NULL,8157
 2240,2069,7111,1376,NULL,2,NULL,NULL,1378,7111
 2241,2117,7111,1376,NULL,2,NULL,NULL,1378,7111
@@ -981,7 +981,7 @@
 1607,1862,7069,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7069
 1608,1771,7070,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7070
 2287,1585,7137,1379,NULL,3,NULL,"moyenneDatesConnues",1378,7137
-2266,2181,7125,1385,NULL,3,NULL,"date inconnue mais postérieure à date ordre de succession 2 connue",1378,7125
+2266,2181,7125,1385,NULL,3,NULL,"date inconnue mais posterieure à date ordre de succession 2 connue",1378,7125
 1610,2019,7071,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7071
 1609,2018,7071,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7071
 2289,1585,7138,1379,NULL,3,NULL,"moyenneDatesConnues",1378,7138
@@ -1004,9 +1004,9 @@
 1668,1497,7123,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7123
 1669,1497,7124,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7124
 1674,1760,7128,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7128
-1616,1548,7077,1370,NULL,1,NULL,"date inconnue, antérieur à 1373 qui est la date de l'ordre succession 2",1378,7077
+1616,1548,7077,1370,NULL,1,NULL,"date inconnue, anterieur à 1373 qui est la date de l'ordre succession 2",1378,7077
 5740,893,8135,1319,NULL,1,NULL,NULL,NULL,8135
-2265,2138,7125,1385,NULL,3,NULL,"date inconnue mais postérieure à date ordre de succession 2 connue",1378,7125
+2265,2138,7125,1385,NULL,3,NULL,"date inconnue mais posterieure à date ordre de succession 2 connue",1378,7125
 1676,1579,7130,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7130
 5739,1018,8134,1319,NULL,1,NULL,NULL,NULL,8134
 5738,9841,8133,1319,NULL,1,NULL,NULL,NULL,8133
@@ -1018,22 +1018,22 @@
 5731,9838,8126,1319,NULL,1,NULL,NULL,NULL,8126
 5730,9837,8126,1319,NULL,1,NULL,NULL,NULL,8126
 2264,2243,7125,1380,NULL,2,NULL,NULL,1378,7125
-2267,2236,7126,1385,NULL,2,NULL,"date inconnue posérieur à 1380 date de l'ordre de succession 1",1378,7126
-2268,2056,7126,1390,NULL,3,NULL,"date inconnue posérieur à 1380 date de l'ordre de succession 1",1378,7126
-1675,1679,7129,1370,NULL,1,NULL,"date inconnue, antérieur à 1372 qui est la date de l'ordre succession 2",1378,7129
-1677,1644,7131,1360,NULL,1,NULL,"date inconnue, antérieur à 1367 qui est la date de l'ordre succession 2",1378,7131
+2267,2236,7126,1385,NULL,2,NULL,"date inconnue poserieur à 1380 date de l'ordre de succession 1",1378,7126
+2268,2056,7126,1390,NULL,3,NULL,"date inconnue poserieur à 1380 date de l'ordre de succession 1",1378,7126
+1675,1679,7129,1370,NULL,1,NULL,"date inconnue, anterieur à 1372 qui est la date de l'ordre succession 2",1378,7129
+1677,1644,7131,1360,NULL,1,NULL,"date inconnue, anterieur à 1367 qui est la date de l'ordre succession 2",1378,7131
 1682,1504,7135,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7135
 1683,1497,7136,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7136
-1678,1644,7132,1360,NULL,1,NULL,"date inconnue, antérieur à 1367 qui est la date de l'ordre succession 2",1378,7132
+1678,1644,7132,1360,NULL,1,NULL,"date inconnue, anterieur à 1367 qui est la date de l'ordre succession 2",1378,7132
 2271,2164,7129,1373,NULL,3,NULL,NULL,1378,7129
 2273,2059,7130,1376,NULL,3,NULL,NULL,1378,7130
 2275,2159,7131,1371,NULL,3,NULL,NULL,1378,7131
 2277,2159,7132,1371,NULL,3,NULL,NULL,1378,7132
-1684,1782,7137,1370,NULL,1,NULL,"date inconnue, antérieur à 1371 qui est la date de l'ordre succession 2",1378,7137
+1684,1782,7137,1370,NULL,1,NULL,"date inconnue, anterieur à 1371 qui est la date de l'ordre succession 2",1378,7137
 1686,1588,7138,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7138
 2283,657,7134,1387,NULL,3,NULL,NULL,1378,7134
 5729,764,8125,1319,NULL,1,NULL,NULL,NULL,8125
-1685,1622,7137,1370,NULL,1,NULL,"date inconnue, antérieur à 1371 qui est la date de l'ordre succession 2",1378,7137
+1685,1622,7137,1370,NULL,1,NULL,"date inconnue, anterieur à 1371 qui est la date de l'ordre succession 2",1378,7137
 5728,9838,8124,1319,NULL,1,NULL,NULL,NULL,8124
 1690,1572,7140,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7140
 1691,1721,7140,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7140
@@ -1046,9 +1046,9 @@
 1698,1514,7145,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7145
 1699,1514,7146,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7146
 2304,2167,7143,1379,NULL,3,NULL,"moyenneDatesConnues",1378,7143
-1694,1753,7142,1370,NULL,1,NULL,"date inconnue, antérieur à 1371 qui est la date de l'ordre succession 2",1378,7142
+1694,1753,7142,1370,NULL,1,NULL,"date inconnue, anterieur à 1371 qui est la date de l'ordre succession 2",1378,7142
 1700,1514,7147,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7147
-1695,1761,7142,1370,NULL,1,NULL,"date inconnue, antérieur à 1371 qui est la date de l'ordre succession 2",1378,7142
+1695,1761,7142,1370,NULL,1,NULL,"date inconnue, anterieur à 1371 qui est la date de l'ordre succession 2",1378,7142
 1701,1498,7148,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7148
 1703,1733,7149,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7149
 1702,1598,7149,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7149
@@ -1065,8 +1065,8 @@
 2313,2198,7149,1379,NULL,3,NULL,"moyenneDatesConnues",1378,7149
 1714,1749,7157,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7157
 1713,1746,7157,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7157
-1853,1526,7279,1370,NULL,1,NULL,"date inconnue, antérieur à 1371 qui est la date de l'ordre succession 2",1378,7279
-1743,1648,7177,1365,NULL,1,NULL,"date inconnue mais antérieur à date ordre de succession 3 connue",1378,7177
+1853,1526,7279,1370,NULL,1,NULL,"date inconnue, anterieur à 1371 qui est la date de l'ordre succession 2",1378,7279
+1743,1648,7177,1365,NULL,1,NULL,"date inconnue mais anterieur à date ordre de succession 3 connue",1378,7177
 1715,1695,7158,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7158
 1716,1492,7158,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7158
 1717,1695,7159,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7159
@@ -1125,12 +1125,12 @@
 5702,1031,8101,1319,NULL,1,NULL,NULL,NULL,8101
 4697,9100,22034,1406,NULL,1,NULL,NULL,1406,22034
 2332,2201,7160,1376,NULL,2,NULL,"moyenneDatesConnues",1378,7160
-1731,1736,7167,1370,NULL,1,NULL,"date inconnue, antérieur à 1374 qui est la date de l'ordre succession 2",1378,7167
-1732,1797,7168,1370,NULL,1,NULL,"date inconnue, antérieur à 1371 qui est la date de l'ordre succession 2",1378,7168
-1626,1796,7087,1365,NULL,1,NULL,"date inconnue mais postérieur à date de l'ordre de succession3 connue 1374",1378,7087
-1736,1682,7170,1365,NULL,1,NULL,"date inconnue mais antérieur à date ordre de succession 3 connue",1378,7170
-1735,1780,7170,1365,NULL,1,NULL,"date inconnue mais antérieur à date ordre de succession 3 connue",1378,7170
-2349,2074,7170,1370,NULL,2,NULL,"date inconnue mais antérieur à date ordre de succession 3 connue",1378,7170
+1731,1736,7167,1370,NULL,1,NULL,"date inconnue, anterieur à 1374 qui est la date de l'ordre succession 2",1378,7167
+1732,1797,7168,1370,NULL,1,NULL,"date inconnue, anterieur à 1371 qui est la date de l'ordre succession 2",1378,7168
+1626,1796,7087,1365,NULL,1,NULL,"date inconnue mais posterieur à date de l'ordre de succession3 connue 1374",1378,7087
+1736,1682,7170,1365,NULL,1,NULL,"date inconnue mais anterieur à date ordre de succession 3 connue",1378,7170
+1735,1780,7170,1365,NULL,1,NULL,"date inconnue mais anterieur à date ordre de succession 3 connue",1378,7170
+2349,2074,7170,1370,NULL,2,NULL,"date inconnue mais anterieur à date ordre de succession 3 connue",1378,7170
 1908,1869,7697,NULL,NULL,1,NULL,NULL,1376,NULL
 5701,9823,8100,1319,NULL,1,NULL,NULL,NULL,8100
 5700,9822,8099,1319,NULL,1,NULL,NULL,NULL,8099
@@ -1213,7 +1213,7 @@
 2361,2157,7181,1376,NULL,2,NULL,"moyenneDatesConnues",1378,7181
 3311,1848,4018,1384,NULL,1,NULL,"moyenneDatesConnues",1383,4018
 2362,2103,7182,1376,NULL,2,NULL,"moyenneDatesConnues",1378,7182
-2357,97,7177,1370,NULL,2,NULL,"date inconnue mais antérieur à date ordre de succession 3 connue",1378,7177
+2357,97,7177,1370,NULL,2,NULL,"date inconnue mais anterieur à date ordre de succession 3 connue",1378,7177
 2064,1039,7609,NULL,NULL,1,NULL,NULL,1376,NULL
 1990,1935,7620,NULL,NULL,1,NULL,NULL,1376,NULL
 1921,27,7621,NULL,NULL,1,NULL,NULL,1376,NULL
@@ -1250,8 +1250,8 @@
 2367,2132,7187,1376,NULL,2,NULL,"moyenneDatesConnues",1378,7187
 2366,2205,7184,1381,NULL,2,NULL,NULL,1378,7184
 2368,2025,7191,1376,NULL,2,NULL,"moyenneDatesConnues",1378,7191
-2369,2098,7192,1390,NULL,2,NULL,"date inconnue, postérieure à 1389",1378,7192
-2370,2836,7192,1395,NULL,3,NULL,"date inconnue, postérieure à 1389",1378,7192
+2369,2098,7192,1390,NULL,2,NULL,"date inconnue, posterieure à 1389",1378,7192
+2370,2836,7192,1395,NULL,3,NULL,"date inconnue, posterieure à 1389",1378,7192
 1751,1766,7184,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7184
 1752,1594,7184,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7184
 2371,2244,7193,1376,NULL,2,NULL,"moyenneDatesConnues",1378,7193
@@ -1338,7 +1338,7 @@
 1898,2017,7462,1376,NULL,1,NULL,"moyenneDatesConnues",1378,7462
 2392,43,7221,1379,NULL,3,NULL,"moyenneDatesConnues",1378,7221
 4699,9102,22036,1386,NULL,1,NULL,NULL,1386,22036
-2390,2172,7220,1395,NULL,5,NULL,"date inconnue mais postérieur a date connue",1378,7220
+2390,2172,7220,1395,NULL,5,NULL,"date inconnue mais posterieur a date connue",1378,7220
 3393,1332,4200,NULL,NULL,1,NULL,NULL,1390,NULL
 3394,2983,4201,NULL,NULL,1,NULL,NULL,1390,NULL
 3395,3005,4202,NULL,NULL,1,NULL,NULL,1340,NULL
@@ -1408,9 +1408,9 @@
 1956,1905,7644,NULL,NULL,1,NULL,NULL,1376,NULL
 2006,1944,7678,NULL,NULL,1,NULL,NULL,1376,NULL
 2078,657,7690,NULL,NULL,1,NULL,NULL,1376,NULL
-1794,1849,7223,1370,NULL,1,NULL,"date inconnue, antérieur à 1373 qui est la date de l'ordre succession 2",1378,7223
-1795,1524,7224,1370,NULL,1,NULL,"date inconnue, antérieur à 1372 qui est la date de l'ordre succession 2",1378,7224
-1805,1517,7234,1370,NULL,1,NULL,"date inconnue, antérieur à 1374 qui est la date de l'ordre succession 2",1378,7234
+1794,1849,7223,1370,NULL,1,NULL,"date inconnue, anterieur à 1373 qui est la date de l'ordre succession 2",1378,7223
+1795,1524,7224,1370,NULL,1,NULL,"date inconnue, anterieur à 1372 qui est la date de l'ordre succession 2",1378,7224
+1805,1517,7234,1370,NULL,1,NULL,"date inconnue, anterieur à 1374 qui est la date de l'ordre succession 2",1378,7234
 2393,2176,7222,1380,NULL,2,NULL,NULL,1378,7222
 2395,42,7223,1373,NULL,2,NULL,NULL,1378,7223
 2397,2083,7224,1372,NULL,2,NULL,NULL,1378,7224
@@ -1494,10 +1494,10 @@
 2922,2902,2490,NULL,NULL,1,NULL,NULL,1355,NULL
 2921,1041,2490,NULL,NULL,1,NULL,NULL,1355,NULL
 2967,1441,2539,NULL,NULL,1,NULL,NULL,1365,NULL
-1821,1562,7248,1370,NULL,1,NULL,"date inconnue, antérieur à 1371 qui est la date de l'ordre succession 2",1378,7248
-1820,1550,7248,1370,NULL,1,NULL,"date inconnue, antérieur à 1371 qui est la date de l'ordre succession 2",1378,7248
-1822,1595,7249,1370,NULL,1,NULL,"date inconnue, antérieur à 1373 qui est la date de l'ordre succession 2",1378,7249
-1823,1843,7250,1370,NULL,1,NULL,"date inconnue, antérieur à 1375 qui est la date de l'ordre succession 2",1378,7250
+1821,1562,7248,1370,NULL,1,NULL,"date inconnue, anterieur à 1371 qui est la date de l'ordre succession 2",1378,7248
+1820,1550,7248,1370,NULL,1,NULL,"date inconnue, anterieur à 1371 qui est la date de l'ordre succession 2",1378,7248
+1822,1595,7249,1370,NULL,1,NULL,"date inconnue, anterieur à 1373 qui est la date de l'ordre succession 2",1378,7249
+1823,1843,7250,1370,NULL,1,NULL,"date inconnue, anterieur à 1375 qui est la date de l'ordre succession 2",1378,7250
 3307,3072,3313,NULL,NULL,1,NULL,NULL,1355,NULL
 2413,2253,7243,1387,NULL,4,NULL,"moyenneDatesConnues",1378,7243
 4800,3053,6411,NULL,NULL,1,NULL,NULL,1377,NULL
@@ -1593,8 +1593,8 @@
 2903,730,2520,NULL,NULL,1,NULL,NULL,1351,NULL
 3016,2582,2545,NULL,NULL,1,NULL,NULL,1366,NULL
 1825,312,7252,1398,NULL,1,NULL,NULL,1378,7252
-1824,1650,7251,1365,NULL,1,NULL,"date inconnue mais antérieur à date ordre de succession 3 connue",1378,7251
-2450,2258,7287,1390,NULL,4,NULL,"date inconnue mais postérieure à date ordre de succession 2 connue",1378,7287
+1824,1650,7251,1365,NULL,1,NULL,"date inconnue mais anterieur à date ordre de succession 3 connue",1378,7251
+2450,2258,7287,1390,NULL,4,NULL,"date inconnue mais posterieure à date ordre de succession 2 connue",1378,7287
 2428,500,7255,1390,NULL,4,NULL,"moyenneDatesConnues",1378,7255
 2394,2199,7222,1386,NULL,3,NULL,NULL,1378,7222
 2396,2149,7223,1375,NULL,3,NULL,NULL,1378,7223
@@ -1891,11 +1891,11 @@
 5197,9541,60239,NULL,NULL,0,NULL,NULL,NULL,60239
 5199,9543,60240,NULL,NULL,0,NULL,NULL,NULL,60240
 5202,1333,60242,NULL,NULL,0,NULL,NULL,NULL,60242
-2431,2055,7263,1390,NULL,2,NULL,"date inconnue postérieure à 1387",1378,7263
-2434,1851,7268,1390,NULL,2,NULL,"date inconnue postérieure à 1386",1378,7268
+2431,2055,7263,1390,NULL,2,NULL,"date inconnue posterieure à 1387",1378,7263
+2434,1851,7268,1390,NULL,2,NULL,"date inconnue posterieure à 1386",1378,7268
 2034,18,7602,NULL,NULL,1,NULL,NULL,1376,NULL
 5203,9545,60242,NULL,NULL,0,NULL,NULL,NULL,60242
-2433,2065,7268,1390,NULL,2,NULL,"date inconnue postérieure à 1386",1378,7268
+2433,2065,7268,1390,NULL,2,NULL,"date inconnue posterieure à 1386",1378,7268
 5205,1134,60243,NULL,NULL,0,NULL,NULL,NULL,60243
 5207,9547,60244,NULL,NULL,0,NULL,NULL,NULL,60244
 5209,6472,60245,NULL,NULL,0,NULL,NULL,NULL,60245
@@ -3627,7 +3627,7 @@
 2731,2757,2078,1391,NULL,2,NULL,NULL,1355,2078
 2732,2758,2078,1391,NULL,2,NULL,NULL,1355,2078
 2821,2706,2041,1367,NULL,2,NULL,NULL,1364,2041
-3086,620,3034,1355,NULL,1,NULL,"moyenneDatesConnues de la premiere main donc jusqu'à la déclaration 3060 incluse",1357,3034
+3086,620,3034,1355,NULL,1,NULL,"moyenneDatesConnues de la premiere main donc jusqu'à la declaration 3060 incluse",1357,3034
 2735,1200,2080,1342,NULL,2,NULL,NULL,1326,2080
 2736,2760,2081,1371,NULL,2,NULL,NULL,1360,2081
 2737,2761,2081,1371,NULL,2,NULL,NULL,1360,2081
