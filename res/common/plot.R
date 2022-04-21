@@ -630,7 +630,7 @@ custom.barplot <- function(vals, text, xlab, ylab, file, ...)
 
 
 #############################################################
-# Graph plot using a circular layout.
+# Plots a (signed) graph using a circular layout.
 #
 # g: the signed graph to plot.
 # att: node attribute corresponding to the membership
@@ -752,6 +752,8 @@ plot.circos <- function(g, att, sign.order=FALSE, alt=FALSE, file)
 
 
 #############################################################################################
+# Adds a legend for vertex sizes.
+#
 # Function taken from
 # https://rdrr.io/github/AtlanticR/bio.utilities/src/R/legend.bubble.r
 #############################################################################################
@@ -787,6 +789,7 @@ legend.bubble  <- function (x, y = NULL, title, z, maxradius = 1, n = 3, round =
 #############################################################################################
 # Function taken from
 # https://rdrr.io/github/AtlanticR/bio.utilities/src/R/legend.box.r
+# Used by legend.bubble.
 #############################################################################################
 legend.box <- function (x, y = NULL, maxradius, mab = 1.2, inset = 0, double = F) 
 {
@@ -827,6 +830,7 @@ legend.box <- function (x, y = NULL, maxradius, mab = 1.2, inset = 0, double = F
 # Returns the current aspect ratio. 
 # Function taken from
 # 	https://rdrr.io/github/AtlanticR/bio.utilities/src/R/get.asp.r
+# Used by legend.box.
 #############################################################################################
 get.asp <- function() 
 {	pin <- par("pin")

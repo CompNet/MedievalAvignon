@@ -25,7 +25,8 @@ MEAS_LONG_NAMES[MEAS_ASSORTATIVITY] <- "Assortativity"
 #############################################################
 analyze.net.assortativity <- function(g, out.folder)
 {	tlog(2,"Computing the assortativity")
-	modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
+#	modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
+	modes <- c(MEAS_MODE_UNDIR)
 	
 	# retrieve the list of vertex attributes
 	att.list <- list.vertex.attributes(g)
@@ -35,7 +36,7 @@ analyze.net.assortativity <- function(g, out.folder)
 	non.est.idx <- which(vertex_attr(g, name=COL_LOC_TYPE)!="Bien")
 	
 	# init result table
-	val.tab <- matrix(nrow=0,ncol=2)
+	val.tab <- matrix(nrow=0,ncol=length(modes))
 	colnames(val.tab) <- modes
 	
 	#############################
@@ -105,7 +106,7 @@ analyze.net.assortativity <- function(g, out.folder)
 					tlog(12,"Assortativity for attribute \"",attr,"\" (mode=",mode," -- ",txt,") when representing NAs explicitly: ",ass)
 					name <- paste0(attr,"_",an,"_expNA")
 					if(!(name %in% rownames(val.tab)))
-					{	val.tab <- rbind(val.tab, c(NA,NA))
+					{	val.tab <- rbind(val.tab, rep(NA,length(modes)))
 						rownames(val.tab)[nrow(val.tab)] <- name
 					}
 					val.tab[name,mode] <- ass
@@ -122,7 +123,7 @@ analyze.net.assortativity <- function(g, out.folder)
 					tlog(12,"Assortativity for attribute \"",attr,"\" (mode=",mode," -- ",txt,") when ignoring NAs: ",ass)
 					name <- paste0(attr,"_",an,"_noNA")
 					if(!(name %in% rownames(val.tab)))
-					{	val.tab <- rbind(val.tab, c(NA,NA))
+					{	val.tab <- rbind(val.tab, rep(NA,length(modes)))
 						rownames(val.tab)[nrow(val.tab)] <- name
 					}
 					val.tab[name,mode] <- ass
@@ -135,7 +136,7 @@ analyze.net.assortativity <- function(g, out.folder)
 					tlog(12,"Assortativity for attribute \"",attr,"\" (mode=",mode," -- ",txt,"): ",ass)
 					name <- paste0(attr,"_",an)
 					if(!(name %in% rownames(val.tab)))
-					{	val.tab <- rbind(val.tab, c(NA,NA))
+					{	val.tab <- rbind(val.tab, rep(NA,length(modes)))
 						rownames(val.tab)[nrow(val.tab)] <- name
 					}
 					val.tab[name,mode] <- ass
@@ -200,7 +201,7 @@ analyze.net.assortativity <- function(g, out.folder)
 						tlog(12,"Assortativity for attribute \"",attr,"\" (mode=",mode," - ",txt,") when replacing NAs by 0: ",ass)
 						name <- paste0(attr,"_",an,"_expNA")
 						if(!(name %in% rownames(val.tab)))
-						{	val.tab <- rbind(val.tab, c(NA,NA))
+						{	val.tab <- rbind(val.tab, rep(NA,length(modes)))
 							rownames(val.tab)[nrow(val.tab)] <- name
 						}
 						val.tab[name,mode] <- ass
@@ -216,7 +217,7 @@ analyze.net.assortativity <- function(g, out.folder)
 						tlog(12,"Assortativity for attribute \"",attr,"\" (mode=",mode," - ",txt,") when ignoring NAs: ",ass)
 						name <- paste0(attr,"_",an,"_noNA")
 						if(!(name %in% rownames(val.tab)))
-						{	val.tab <- rbind(val.tab, c(NA,NA))
+						{	val.tab <- rbind(val.tab, rep(NA,length(modes)))
 							rownames(val.tab)[nrow(val.tab)] <- name
 						}
 						val.tab[name,mode] <- ass
@@ -227,7 +228,7 @@ analyze.net.assortativity <- function(g, out.folder)
 						tlog(12,"Assortativity for attribute \"",attr,"\" (mode=",mode," - ",txt,"): ",ass)
 						name <- paste0(attr,"_",an)
 						if(!(name %in% rownames(val.tab)))
-						{	val.tab <- rbind(val.tab, c(NA,NA))
+						{	val.tab <- rbind(val.tab, rep(NA,length(modes)))
 							rownames(val.tab)[nrow(val.tab)] <- name
 						}
 						val.tab[name,mode] <- ass

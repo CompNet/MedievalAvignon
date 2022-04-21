@@ -708,6 +708,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		colnames(info.estate)[ncol(info.estate)] <- COL_FEE_AMOUNT_CAT1
 		comp.norm <- normalize.components(info.estate[,c(COL_EST_COMP_LAB1,COL_EST_COMP_LAB2,COL_EST_COMP_LAB3,COL_EST_COMP_LAB4,COL_EST_COMP_LAB5,COL_EST_COMP_LAB6)])
 		colnames(comp.norm) <- c(COL_EST_COMP_NORM1, COL_EST_COMP_NORM2, COL_EST_COMP_NORM3, COL_EST_COMP_NORM4, COL_EST_COMP_NORM5, COL_EST_COMP_NORM6)
+		info.estate <- cbind(info.estate, comp.norm)
 	cols <- colnames(info.estate)
 	total.nbr <- nrow(info.estate)
 	# load area information
@@ -1403,24 +1404,24 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #      > différence avec sim structurelle ?
 
 # TODO
-# - graphiques des graphes
+# + graphiques des graphes
 #   + rajouter les noms dans la version géo des plots de graphes
 #   + utiliser les coordonnées lambert93 à la place des coordonnées actuelles
 #   + tous les noms n'apparaissent pas systématiquement (ex. kk racine)
 #   + générer les graphiques indiv avec la spatialisation algo (en plus de la géo)
 #   + manque l'id du noeud dans les noms de fichiers individuels (ex. distance)
 # + ne pas calculer les mesures orientées
-# - liens de type "égale" :
+# + liens de type "égale" :
 #   + pb égale :
 #     + si traité à la construction du graphe, pq tjrs dans la légende ?
 #     + pq apparait en gris et pas en rose (Bien:2015_cimetiere -- Edifice:720_Cimetiere juif)
 #     + pq il reste des liens égale alors qu'on les traite avant
 #     > "egal" dans les données au lieu de "egale"
-#   - fusion des liens "égale" : 
+#   + fusion des liens "égale" : 
 #     + conserver le noeud qui n'est pas un bien, garder un max d'attributs
 #     + concaténer les id dans le nom affiché dans les graphiques
-#     - si plusieurs biens >> pas de fusion
-# + utiliser les catégories de montant définies avec margot
+#     + si plusieurs biens >> pas de fusion
+# + utiliser les catégories de montants définies avec margot
 # - structure de communautés
 #   + accord entre algos >> calculer les mesures de comparaison de partitions standard
 #   - lien hiérarchique entre communautés detectées sur graphes avec vs. sans rues ?
@@ -1431,7 +1432,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #     ? traiter chaque communauté comme un graphe à part, histoire de produire toutes les stats ?
 #   - spatialisation du graphe sans rue, avec coms, on fixe leurs coordonnées puis on rajoute les rues (du graphe plat) et on étudie leur position (est elle intermédiaire entre coms ?)
 #     + alt : prendre le graphe plat et représenter coms sans rues vs. coms graphe plat, voir où sont les noeuds sans com (=rues) 
-#   > choix de la méthode de détection: si com construite autour d'une seule rue, ou correspond à une division admin, alors trop évident. il faut qqch entre les deux
+#   > choix de la méthode de détection: si com construite autour d'une seule rue, ou correspond à une division admin, alors trop évident. il faut qqch entre les deux.
 #   > observations :
 #     > edgebetweenness/fastgreedy/louvain: 40aine de coms, semble pertinent
 #     > eigenvector: pertinent mais plus grosses coms
@@ -1443,6 +1444,12 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #   + compléter les liens "égale" manquants
 #   - vérifier les liens à longue distance suspects
 
+# TODO
+# + supprimer les nbres de composants des attributs traités
+# + vérifier les couleurs des attributs
+# - vérifier le fichier de comparaison entre coms et attr : pq plusieurs ?
+# - graphiques coms sur estate + rajouter rues manquantes
+# - augmenter la taille des noeuds dans kk
 
 
 

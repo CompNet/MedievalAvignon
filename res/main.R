@@ -4,7 +4,7 @@
 # Vincent Labatut
 # 06/2020
 #
-# setwd("C:/users/Vincent/Eclipse/workspaces/Extraction/MedievalAvignon")
+# setwd("D:/users/Vincent/Eclipse/workspaces/Extraction/MedievalAvignon")
 # setwd("~/eclipse/workspaces/Extraction/MedievalAvignon")
 # source("res/main.R")
 ########################################################################
@@ -67,10 +67,11 @@ tlog.start.loop(0,length(link.types), "Processing the measures for each extracte
 for(i in 1:length(link.types))
 {	tlog.loop(2, i, "Processing the measures for graph ",link.types[i]," (",i,"/",length(link.types),")")
 	
-	# compute all topological measures
-	g <- analyze.network(gname=link.types[i], out.folder=FOLDER_OUT_ANAL_EST)
 	# link.types <- c(LV_ESTATE, LK_TYPE_FLATREL)
 	# gname=LV_ESTATE; out.folder=FOLDER_OUT_ANAL_EST
+	
+	# compute all topological measures
+	g <- analyze.network(gname=link.types[i], out.folder=FOLDER_OUT_ANAL_EST)
 	
 	# filtered version
 	g <- analyze.network(gname=paste0(link.types[i],"_filtered"), out.folder=FOLDER_OUT_ANAL_EST)

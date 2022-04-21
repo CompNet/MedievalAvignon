@@ -118,9 +118,54 @@ CAT_COLORS_32 <- c(	# glasbey.colors(32) from package Polychrome
 )
 
 COLS_ATT <- list()
+# colors for normalized component
+COLS_ATT[[COL_EST_COMP_NORM1]] <- c(
+	"anniversaire"="#FFFFD4",
+	"arc-gallerie"="#FFF7EC",
+	"arriere-cour"="#FD8D3C",
+	"atelier-auvent"="#BF8100",
+	"bistour"="#BDBDBD",
+	"boucherie"="#DCAA61",
+	"bourg"="#FA9FB5",
+	"boutique"="#C59956",
+	"cave-cellier"="#8C510A",
+	"cimetiere"="#252525",
+	"cloitre"="#FFFF56",
+	"conduit eau"="#41B6C4",
+	"edifice"="#FED02B",
+	"emplacement bat"="#BD0026",
+	"forge"="#642D04",
+	"four"="#5AB4AC",
+	"grange-grenier"="#944800",
+	"hopital"="#FFFF56",
+	"jardin"="#74C476",
+	"loge"="#D8B365",
+	"magasin"="#C09E70",
+	"maison"="#FED02B",
+	"masure-salle-piece"="#FED200",
+	"part de fosse"="#525252",
+	"part de lices"="#969696",
+	"part de moulin"="#9BC2E6",
+	"part de rempart"="#737373",
+	"part de sorgue"="#0868AC",
+	"parvis eglise"="#FFFFE9",
+	"place-angle-plan"="#FEE8C8",
+	"place-cour"="#FD8D3C",
+	"portail"="#D9D9D9",
+	"puit"="#5AB4AC",
+	"table"="#BF812D",
+	"taverne"="#642D04",
+	"terre-pre"="#005A32",
+	"tinel"="#FFD966",
+	"toit"="#FFEB88",
+	"tour"="#FFB166",
+	"verger"="#41AB5D",
+	"vigne"="#238B45",
+	"voie-traverse-passage-entree"="#FFF7EC"
+)
 # colors for component type attribute
-COLS_ATT_COMP_TYPE <- c(
-	"ancien systeme defensif"="#636363",
+COLS_ATT[[COL_EST_COMP_TYPE1]] <- c(
+"ancien systeme defensif"="#636363",
 	"bourg"="#FA9FB5",
 	"cimetiere"="#252525",
 	"communication voie d acces"="#FFF7EC",
@@ -136,16 +181,14 @@ COLS_ATT_COMP_TYPE <- c(
 	"terrain agricol"="#31A800",
 	"terrain a batir"="#BD0026"
 )
-COLS_ATT[[COL_EST_COMP_TYPE1]]
 # colors for simple component type attribute
-COLS_ATT_COMP_TYPE_S <- c(
-	"hydrau"="#0868AC",
+COLS_ATT[[COL_EST_COMP_TYPE_S1]] <- c(
+"hydrau"="#0868AC",
 	"moulin"="#9BC2E6",
 	"non bati"="#BD0026",
 	"bati"="#FED02B",
 	"immateriel"="#FFFFD4"
 )
-COLS_ATT[[COL_EST_COMP_TYPE_S1]]
 
 
 

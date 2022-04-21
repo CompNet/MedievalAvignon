@@ -144,9 +144,9 @@ analyze.net.components.corr <- function(g, out.folder)
 	modes <- c(MEAS_MODE_UNDIR)
 	
 	# init result table
-	val.tab <- matrix(nrow=0,ncol=2)
+	val.tab <- matrix(nrow=0,ncol=length(modes))
 	colnames(val.tab) <- modes
-vals <- c()
+	
 	
 	#############################
 	# gathering categorical attributes
@@ -185,6 +185,7 @@ vals <- c()
 		}
 	}
 	
+	
 	#############################
 	# gathering numerical attributes
 	tlog(4,"Gathering numerical attributes")
@@ -204,6 +205,7 @@ vals <- c()
 			num.data <- cbind(num.data, tmp)
 		colnames(num.data)[ncol(num.data)] <- attr
 	}
+	
 	
 	#############################
 	# computing correlation between component size and attribute values
@@ -237,7 +239,7 @@ vals <- c()
 				tlog(8,"Association for attribute \"",attr,"\" (mode=",mode,") when representing NAs explicitly: ",cor)
 				name <- paste0(attr,"_expNA")
 				if(!(name %in% rownames(val.tab)))
-				{	val.tab <- rbind(val.tab, c(NA,NA))
+				{	val.tab <- rbind(val.tab, rep(NA,length(modes)))
 					rownames(val.tab)[nrow(val.tab)] <- name
 				}
 				val.tab[name,mode] <- cor
@@ -259,7 +261,7 @@ vals <- c()
 				tlog(8,"Association for attribute \"",attr,"\" (mode=",mode,") when ignoring NAs: ",cor)
 				name <- paste0(attr,"_noNA")
 				if(!(name %in% rownames(val.tab)))
-				{	val.tab <- rbind(val.tab, c(NA,NA))
+				{	val.tab <- rbind(val.tab, rep(NA,length(modes)))
 					rownames(val.tab)[nrow(val.tab)] <- name
 				}
 				val.tab[name,mode] <- cor
@@ -277,7 +279,7 @@ vals <- c()
 				tlog(8,"Association for attribute \"",attr,"\" (mode=",mode,") when considering NAs vs the rest: ",cor)
 				name <- paste0(attr,"_NAvsRest")
 				if(!(name %in% rownames(val.tab)))
-				{	val.tab <- rbind(val.tab, c(NA,NA))
+				{	val.tab <- rbind(val.tab, rep(NA,length(modes)))
 					rownames(val.tab)[nrow(val.tab)] <- name
 				}
 				val.tab[name,mode] <- cor
@@ -296,7 +298,7 @@ vals <- c()
 				tlog(8,"Association for attribute \"",attr,"\" (mode=",mode,"): ",cor)
 				name <- paste0(attr)
 				if(!(name %in% rownames(val.tab)))
-				{	val.tab <- rbind(val.tab, c(NA,NA))
+				{	val.tab <- rbind(val.tab, rep(NA,length(modes)))
 					rownames(val.tab)[nrow(val.tab)] <- name
 				}
 				val.tab[name,mode] <- cor
@@ -324,7 +326,7 @@ vals <- c()
 					tlog(12,"Correlation for attribute \"",attr,"\" (mode=",mode,") when replacing NAs by 0: ",cor)
 					name <- paste0(attr,"_expNA")
 					if(!(name %in% rownames(val.tab)))
-					{	val.tab <- rbind(val.tab, c(NA,NA))
+					{	val.tab <- rbind(val.tab, rep(NA,length(modes)))
 						rownames(val.tab)[nrow(val.tab)] <- name
 					}
 					val.tab[name,mode] <- cor
@@ -340,7 +342,7 @@ vals <- c()
 					tlog(12,"Correlation for attribute \"",attr,"\" (mode=",mode,") when ignoring NAs: ",cor)
 					name <- paste0(attr,"_noNA")
 					if(!(name %in% rownames(val.tab)))
-					{	val.tab <- rbind(val.tab, c(NA,NA))
+					{	val.tab <- rbind(val.tab, rep(NA,length(modes)))
 						rownames(val.tab)[nrow(val.tab)] <- name
 					}
 					val.tab[name,mode] <- cor
@@ -358,7 +360,7 @@ vals <- c()
 					tlog(12,"Correlation for attribute \"",attr,"\" (mode=",mode,") when considering NAs vs the rest: ",cor)
 					name <- paste0(attr,"_NAvsRest")
 					if(!(name %in% rownames(val.tab)))
-					{	val.tab <- rbind(val.tab, c(NA,NA))
+					{	val.tab <- rbind(val.tab, rep(NA,length(modes)))
 						rownames(val.tab)[nrow(val.tab)] <- name
 					}
 					val.tab[name,mode] <- cor
@@ -369,7 +371,7 @@ vals <- c()
 					tlog(12,"Correlation for attribute \"",attr,"\" (mode=",mode,"): ",cor)
 					name <- paste0(attr)
 					if(!(name %in% rownames(val.tab)))
-					{	val.tab <- rbind(val.tab, c(NA,NA))
+					{	val.tab <- rbind(val.tab, rep(NA,length(modes)))
 						rownames(val.tab)[nrow(val.tab)] <- name
 					}
 					val.tab[name,mode] <- cor
