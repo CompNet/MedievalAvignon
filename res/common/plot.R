@@ -150,7 +150,10 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 		# get the attribute values
 		vvals <- get.vertex.attribute(graph=g, name=col.att[1])
 		if(!all(!connected))
-		{	leg.cap <- LONG_NAME[col.att[1]]
+		{	if(hasArg(col.att.cap))
+				leg.cap <- col.att.cap
+			else
+				leg.cap <- LONG_NAME[col.att[1]]
 			
 			# just one attribute
 			if(length(col.att)==1)
@@ -186,8 +189,6 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 			# several attributes
 			else
 			{	cat.att <- TRUE
-				if(hasArg(col.att.cap))
-					leg.cap <- col.att.cap
 				# get attribute values as a matrix
 				mat <- sapply(col.att, function(att) vertex_attr(g, att))
 				
@@ -225,6 +226,8 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 				{	are.pie <- apply(mat,1,function(r) length(which(r>0))>1)				# detect individuals with several non-zero values
 					lgd.txt <- col.att
 					colcols <- COLS_ATT[[col.att[1]]]
+					if(is.null(colcols) && hasArg(col.att.cap))
+						colcols <- COLS_ATT[[col.att.cap]]
 					if(is.null(colcols))
 					{	colcols <- get.palette(length(lgd.txt))
 						lgd.col <- colcols[(1:length(lgd.txt)-1) %% length(colcols) + 1]

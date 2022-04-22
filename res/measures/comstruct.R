@@ -160,7 +160,7 @@ analyze.net.comstruct <- function(g, out.folder)
 				custom.gplot(g=g1, col.att=fname,cat.att=TRUE, file=file.path(coms.folder,paste0(fname,"_graph_lambert")), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
 				g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
 				custom.gplot(g=g1, col.att=fname,cat.att=TRUE, file=file.path(coms.folder,paste0(fname,"_graph_kk")), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1)
-		
+				
 				# assess community purity for all attributes
 				g <- analyze.net.comstruct.attributes(g=g, coms.folder=coms.folder, membership=mbrs)
 			}
@@ -394,7 +394,7 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 			tt <- t(sapply(coms, function(i) 
 			{	idx <- which(membership[est.idx]==i & !all.nas)
 				tmp <- factor(c(m[idx,], rep(NA, length(which(membership[est.idx]==i & all.nas)))), levels=uvals)
-				table(tmp, useNA="always")
+				table(tmp, useNA="no")
 			}))
 			colnames(tt)[which(is.na(colnames(tt)))] <- "NA"
 			if(nrow(tt)==1 && ncol(tt)>1)
@@ -769,4 +769,76 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 	write.graphml.file(g=cg, file=graph.file)
 	
 	return(g)
+}
+
+
+
+
+#############################################################
+# Plots files exhibiting the communities detected on the estate level
+# graph, but shown on the flat graph.
+#############################################################
+plot.comstruct.comparison <- function()
+{	# considered community detection methods
+	algo.names <- c(
+		"edgebetweenness",
+		"fastgreedy",
+		"infomap",
+		"labelprop",
+		"leadingeigen",
+		"louvain",
+#		"spinglass",
+		"walktrap"
+	)
+	
+#	modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
+	modes <- c(MEAS_MODE_UNDIR)
+	for(i in 1:length(modes))
+	{	mode <- modes[i]
+		tlog(2,"Dealing with mode=",mode)
+		
+		for(algo.name in algo.names)
+		{	tlog(4,"Dealing with community detection method '",algo.name,"'")
+			#algo.name <- "edgebetweenness"
+			fname <- paste0("coms_",mode,"_",algo.name)
+			
+			for(filt in c(FALSE, TRUE))
+			{	tlog(6,"Dealing with the ",if(filt) "" else "un"," filtered version of the networks")
+				
+				# load first graph
+				file.path <- file.path(FOLDER_OUT_ANAL_EST, if(filt) paste0(LV_ESTATE,"_filtered") else LV_ESTATE, FILE_GRAPH)
+				tlog(8,"Loading first graph '",file.path,"'")
+				g1 <- load.graphml.file(file=file.path)
+				coms.folder <- file.path(FOLDER_OUT_ANAL_EST, g1$name, MEAS_COMMUNITIES, mode, algo.name)
+				coms <- read.csv(file=file.path(coms.folder,paste0(fname,"_membership.csv")))
+				idx <- match(gsub("_part","",coms[,"Id"],fixed=TRUE), V(g1)$idExterne)
+				g1 <- set_vertex_attr(graph=g1, name=fname, index=idx, value=coms[,"Community"])
+				
+				# load second graph
+				file.path <- file.path(FOLDER_OUT_ANAL_EST, if(filt) paste0(LK_TYPE_FLATREL,"_filtered") else LK_TYPE_FLATREL, FILE_GRAPH)
+				tlog(8,"Loading second graph '",file.path,"'")
+				g2 <- load.graphml.file(file=file.path)
+				
+				# add g1 coms to g2
+				coms <- rep(NA,gorder(g2))
+				idx <- match(V(g1)$idExterne, V(g2)$idExterne)
+				idx.u <- which(is.na(idx))
+				idx.m <- which(!is.na(idx))
+				coms[idx[idx.m]] <- vertex_attr(g1,fname)[idx.m]
+				V(g2)$Coms <- coms
+				
+				# plot g2 with these coms
+				coms.folder <- file.path(FOLDER_OUT_ANAL_EST, g2$name, MEAS_COMMUNITIES, mode, algo.name)
+				plot.file <- file.path(coms.folder, paste0(fname,"_graph_comparison"))
+				tlog(8,"Plotting graph in '",plot.file,"'")
+				V(g2)$label <- paste(vertex_attr(g2,name=COL_LOC_ID), get.location.names(g2),sep="_")
+				# lambert plot
+				g2 <- delete_edge_attr(g2, LK_TYPE); g2 <- simplify(g2)
+				custom.gplot(g=g2, col.att="Coms", cat.att=TRUE, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+				# kk plot
+				V(g2)$x <- V(g2)$x2; V(g2)$y <- V(g2)$y2; E(g2)$weight <- 0.5
+				custom.gplot(g=g2, col.att="Coms", cat.att=TRUE, file=paste0(plot.file,"_kk"), rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), edge.arrow.mode=0, vertex.label.cex=0.1)
+			}
+		}
+	}
 }

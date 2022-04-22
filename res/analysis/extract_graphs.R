@@ -1447,6 +1447,8 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 # TODO
 # + supprimer les nbres de composants des attributs traités
 # + vérifier les couleurs des attributs
+# + les tags continuent à inclure les biens non déclarés (NA) lors du plot des coms
+# - les couleurs appropriées sont elles utilisées pour plotter les tags dans les coms ?
 # - vérifier le fichier de comparaison entre coms et attr : pq plusieurs ?
 # - graphiques coms sur estate + rajouter rues manquantes
 # - augmenter la taille des noeuds dans kk

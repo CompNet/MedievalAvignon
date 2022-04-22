@@ -165,10 +165,10 @@ COLS_ATT[[COL_EST_COMP_NORM1]] <- c(
 )
 # colors for component type attribute
 COLS_ATT[[COL_EST_COMP_TYPE1]] <- c(
-"ancien systeme defensif"="#636363",
+	"ancien systeme defensif"="#636363",
 	"bourg"="#FA9FB5",
 	"cimetiere"="#252525",
-	"communication voie d acces"="#FFF7EC",
+	"communication voie d acces"="#FFEDD4",
 	"cour"="#FD8D3C",
 	"edifice commercial atelier professionnel"="#D8B365",
 	"edifice de stockage"="#8C510A",
