@@ -210,14 +210,14 @@ analyze.net.comstruct <- function(g, out.folder)
 			score.ri[c,att]  <- compare(comm1=tab.memb[!is.na(att.mbrs),c], comm2=att.mbrs[!is.na(att.mbrs)], method="rand")
 			score.ari[c,att] <- compare(comm1=tab.memb[!is.na(att.mbrs),c], comm2=att.mbrs[!is.na(att.mbrs)], method="adjusted.rand")
 		}
-		# record the resulting similarity matrices
-		tab.file <- file.path(out.folder, g$name, MEAS_COMMUNITIES, paste0("att=",att,"_nmi.csv"))
-		write.csv(score.nmi, file=tab.file, row.names=TRUE)
-		tab.file <- file.path(out.folder, g$name, MEAS_COMMUNITIES, paste0("att=",att,"_ri.csv"))
-		write.csv(score.ri, file=tab.file, row.names=TRUE)
-		tab.file <- file.path(out.folder, g$name, MEAS_COMMUNITIES, paste0("att=",att,"_ari.csv"))
-		write.csv(score.ari, file=tab.file, row.names=TRUE)
 	}
+	# record the resulting similarity matrices
+	tab.file <- file.path(out.folder, g$name, MEAS_COMMUNITIES, paste0("attributes_nmi.csv"))
+	write.csv(score.nmi, file=tab.file, row.names=TRUE)
+	tab.file <- file.path(out.folder, g$name, MEAS_COMMUNITIES, paste0("attributes_ri.csv"))
+	write.csv(score.ri, file=tab.file, row.names=TRUE)
+	tab.file <- file.path(out.folder, g$name, MEAS_COMMUNITIES, paste0("attributes_ari.csv"))
+	write.csv(score.ari, file=tab.file, row.names=TRUE)
 	
 	# record graph and return it
 	graph.file <- file.path(out.folder, g$name, FILE_GRAPH)
