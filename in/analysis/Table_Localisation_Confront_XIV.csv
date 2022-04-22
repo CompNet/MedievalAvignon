@@ -1481,8 +1481,8 @@ idConfront,localisation,idBien1,idBien2,idInvariant,idQuartierParoisse,localisat
 1529,in,79,NULL,1129,NULL,dans
 1530,a-meridie,81,NULL,1130,NULL,confronte au sud avec
 1531,a-circio,102,NULL,1131,NULL,confronte au nord avec
-1532,a-meridie,129,NULL,125,NULL,confronte au sud avec
-1533,a-occident,130,NULL,125,NULL,confronte a l ouest avec
+1532,a-meridie,129,NULL,1125,NULL,confronte au sud avec
+1533,a-occident,130,NULL,1125,NULL,confronte a l ouest avec
 1534,a-meridie,148,NULL,1132,NULL,confronte au sud avec
 1535,a-meridie,164,NULL,1124,NULL,confronte au sud avec
 1536,a-occident,165,NULL,1124,NULL,confronte a l ouest avec

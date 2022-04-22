@@ -1442,7 +1442,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #   + map de conversion pour les composants de maison
 #   + spécification de couleurs spécifiques pour certaines attributs
 #   + compléter les liens "égale" manquants
-#   - vérifier les liens à longue distance suspects
+#   + vérifier les liens à longue distance suspects
 
 # TODO
 # + supprimer les nbres de composants des attributs traités
@@ -1450,7 +1450,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 # + les tags continuent à inclure les biens non déclarés (NA) lors du plot des coms
 # + les couleurs appropriées sont elles utilisées pour plotter les tags dans les coms ?
 # + vérifier le fichier de comparaison entre coms et attr : pq plusieurs ?
-# - augmenter la taille des noeuds dans kk
+# + augmenter la taille des noeuds dans kk
 
 
 
