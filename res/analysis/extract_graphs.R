@@ -1101,7 +1101,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	#idx <- which(degree(g)>5)
 	#V(g0)[idx]$label <- comp.names[idx]
 	V(g0)$label <- paste(vertex_attr(g0,name=COL_LOC_ID), get.location.names(g0),sep="_")
-	custom.gplot(g=g0, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g0)$x), ylim=range(V(g0)$y), edge.arrow.mode=0, vertex.label.cex=0.1)
+	custom.gplot(g=g0, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g0)$x), ylim=range(V(g0)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
 	write.graphml.file(g=g0, file=paste0(plot.file,".graphml"))
 	
 	# use spatial coordinates for layout
@@ -1317,7 +1317,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #		g0 <- g1
 #		layout <- layout_with_kk(g0, kkconst=5)
 #		V(g0)$x <- layout[,1]; V(g0)$y <- layout[,2]; 
-#		custom.gplot(g=g0, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g0)$x), ylim=range(V(g0)$y), vertex.label.cex=0.1)
+#		custom.gplot(g=g0, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g0)$x), ylim=range(V(g0)$y), vertex.label.cex=0.1, size.att=6)
 #		write.graphml.file(g=g0, file=paste0(plot.file,".graphml"))
 #		# <do your magic with gephi, then record graph with new layout>
 #		g0 <- read.graph(paste0(plot.file,".graphml"), format="graphml")
@@ -1333,7 +1333,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		V(g2)$x <- layout[lay.idx,"x"]; V(g2)$y <- layout[lay.idx,"y"]
 		E(g2)$weight <- 0.5
 		#
-		custom.gplot(g=g2, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), vertex.label.cex=0.1)
+		custom.gplot(g=g2, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), vertex.label.cex=0.1, size.att=6)
 		#custom.gplot(g=g2)
 		write.graphml.file(g=g2, file=paste0(plot.file,".graphml"))
 		
@@ -1369,7 +1369,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			custom.gplot(g=g1, file=plot.file, asp=1, size.att=2, vertex.label.cex=0.1)
 			write.graphml.file(g=g1, file=paste0(plot.file,".graphml"))
 			plot.file <- file.path(graph.folder, "graph_kk")
-			custom.gplot(g=g2, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), vertex.label.cex=0.1)
+			custom.gplot(g=g2, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), vertex.label.cex=0.1, size.att=6)
 			write.graphml.file(g=g2, file=paste0(plot.file,".graphml"))
 		}
 	}
