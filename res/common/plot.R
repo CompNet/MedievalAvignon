@@ -44,9 +44,10 @@ FORMAT <- c("pdf", "png")	# plot file format: pdf png
 # top.edges: links to draw on top of the plot. If not specified and some paths
 # 			 are highlighted, the corresponding edges are drawn on top. Same thing
 #			 for e.hl (highlighted edges).
+# show.coms: show the vertex attribute as hulls in addition to vertex color (for communinities). 
 # ...: parameters sent directly to the plot function.
 #############################################################
-custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE, v.hl, e.hl, color.isolates=FALSE, file, top.vertices=c(), top.edges=c(), rescale=TRUE, ...)
+custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE, v.hl, e.hl, color.isolates=FALSE, file, top.vertices=c(), top.edges=c(), rescale=TRUE, show.coms=FALSE, ...)
 {	# init graph info
 	m <- gsize(g)						# number of edges
 	n <- gorder(g)						# number of nodes
@@ -55,8 +56,12 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 	vlabels <- V(g)$label				# node labels
 	gtype <- graph_attr(g, GR_TYPE)		# graph type social vs. spatial network (for the current application)
 	
+	# init default values
 	pie.values <- NA
 	lgd.col <- NA
+	mark.groups <- list()
+	mark.col <- rainbow(length(mark.groups), alpha = 0.3)
+	mark.border <- rainbow(length(mark.groups), alpha = 1)
 	
 	# vertex shapes
 	vshapes <- rep("circle",n)
@@ -140,7 +145,7 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 	
 	# vertex color
 	if(hasArg(col.att))
-	{	# isolates have no color
+	{	# isolates have no color (or rather, they're white)
 		vcols <- rep("WHITE",n)
 		if(color.isolates)
 			connected <- rep(TRUE, n)
@@ -170,7 +175,17 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 							lgd.col <- colcols[(1:length(lgd.txt)-1) %% length(colcols) + 1]
 						}
 						else
+						{	vcols[connected] <- colcols[as.integer(tmp)]
+							lgd.txt <- intersect(names(colcols), lgd.txt)
 							lgd.col <- colcols[lgd.txt]
+						}
+						
+						# possibly deal with community hulls
+						if(show.coms)
+						{	mark.groups <- lapply(lgd.txt, function(com) which(tmp==com))
+							mark.col <- sapply(lgd.col, function(col) make.color.transparent(color=col, transparency=75))
+							mark.border <- lgd.col
+						}
 					}
 					# numerical attribute
 					else
@@ -408,6 +423,9 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 			edge.arrow.width=arrow.width,			# arrow width (triangle basis)
 			frame=FALSE, 							# frame around the plot (useful when debugging)
 			rescale=rescale,						# whether to normalize the plot size
+			mark.groups=mark.groups,				# community membership, used to plot hulls
+			mark.col=mark.col,						# fill color of these hulls 
+			mark.border=mark.border,				# border color of these hulls
 			...										# other parameters
 		)
 		if(length(nature)>0)
@@ -569,9 +587,10 @@ custom.hist <- function(vals, name, file)
 # xlab: label of the x-axis.
 # ylab: label of the y-axis.
 # file: (optional) file name, to record the histogram plot.
+# cols: bar colors.
 # ...: additional parameters, fetched to the barplot function.
 #############################################################
-custom.barplot <- function(vals, text, xlab, ylab, file, ...)
+custom.barplot <- function(vals, text, xlab, ylab, file, cols=NA, ...)
 {	idx <- which(is.na(text))
 	if(length(idx)>0)
 		text[idx] <- VAL_UNKNOWN
@@ -589,10 +608,12 @@ custom.barplot <- function(vals, text, xlab, ylab, file, ...)
 		else
 			par(mar=c(5, 4, 1, 0)+0.1)
 		if(length(dim(vals))<=1)
-		{	barplot(
+		{	if(all(is.na(cols)))
+				cols <- "#FFD6D6"
+			barplot(
 				height=vals,				# data
 				names.arg=text,				# bar names
-				col="#ffd6d6",				# bar color
+				col=cols,					# bar color
 				main=NA,					# no main title
 				xlab=if(wide) NA else xlab,	# x-axis label
 				ylab=ylab,					# y-axis label
@@ -601,7 +622,8 @@ custom.barplot <- function(vals, text, xlab, ylab, file, ...)
 			)
 		}
 		else
-		{	barcols <- CAT_COLORS_8[(1:nrow(vals)-1) %% length(CAT_COLORS_8)+1]
+		{	if(all(is.na(cols)))
+				barcols <- CAT_COLORS_8[(1:nrow(vals)-1) %% length(CAT_COLORS_8)+1]
 			barplot(
 				height=vals,				# data
 				names.arg=text,				# bar names

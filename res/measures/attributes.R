@@ -55,14 +55,26 @@ analyze.net.attributes <- function(g, out.folder)
 		
 		# plot the attribute distribution as a barplot
 		tlog(4,"Bar-plotting attribute \"",attr,"\"")
-		tt <- table(tmp, useNA="ifany")
+		cols <- COLS_ATT[[attr]]
+		if(is.null(cols))
+		{	cols <- NA
+			tt <- table(tmp, useNA="ifany")
+		}
+		else
+		{	tt <- table(factor(tmp, levels=names(cols)), useNA="ifany")
+			if(any(is.na(names(tt))))
+				cols <- c(cols, "GRAY")
+		}
 		plot.folder <- file.path(attr.folder, attr)
 		dir.create(path=plot.folder, showWarnings=FALSE, recursive=TRUE)
 		plot.file <- file.path(plot.folder, paste0(attr,"_bars"))
-		custom.barplot(tt, 
+		custom.barplot(
+			tt, 
 			text=names(tt), 
 			xlab=LONG_NAME[attr], ylab="Frequence",
-			file=plot.file)
+			file=plot.file,
+			cols=cols
+		)
 		# record as a table
 		tt <- as.data.frame(tt)
 		colnames(tt) <- c("Value","Frequency")
@@ -104,8 +116,18 @@ analyze.net.attributes <- function(g, out.folder)
 		nbr.nas <- length(idx.nas) 								# count them
 		dt <- c(m)[!is.na(c(m))]								# handles non-NA values
 		dt <- c(dt,rep(NA,nbr.nas))								# insert the appropriate number of NAs
+		# colors
+		cols <- COLS_ATT[[attr]]
+		if(is.null(cols))
+		{	cols <- NA
+			tt <- table(dt, useNA="ifany")
+		}
+		else
+		{	tt <- table(factor(dt, levels=names(cols)), useNA="ifany")
+			if(any(is.na(names(tt))))
+				cols <- c(cols, "GRAY")
+		}
 		# compute highest frequency for later use (to handle plot y-scale)
-		tt <- table(dt, useNA="ifany")
 		if(any(is.na(names(tt))))
 			na.nbr <- tt[is.na(names(tt))]
 		else
@@ -119,10 +141,13 @@ analyze.net.attributes <- function(g, out.folder)
 		plot.folder <- file.path(attr.folder, attr)
 		dir.create(path=plot.folder, showWarnings=FALSE, recursive=TRUE)
 		plot.file <- file.path(plot.folder, paste0(attr,"_bars"))
-		custom.barplot(tt, 
-				text=names(tt), 
-				xlab=LONG_NAME[attr], ylab="Frequence", 
-				file=plot.file)
+		custom.barplot(
+			tt, 
+			text=names(tt), 
+			xlab=LONG_NAME[attr], ylab="Frequence", 
+			file=plot.file,
+			cols=cols
+		)
 		# record tag distribution as table
 		tt <- as.data.frame(tt)
 		colnames(tt) <- c("Value","Frequency")

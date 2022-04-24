@@ -157,9 +157,12 @@ analyze.net.comstruct <- function(g, out.folder)
 				#V(g)$label <- rep(NA, gorder(g))
 				V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
 				g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-				custom.gplot(g=g1, col.att=fname,cat.att=TRUE, file=file.path(coms.folder,paste0(fname,"_graph_lambert")), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+				custom.gplot(g=g1, col.att=fname, cat.att=TRUE, file=file.path(coms.folder,paste0(fname,"_graph_lambert")), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+				custom.gplot(g=g1, col.att=fname, cat.att=TRUE, file=file.path(coms.folder,paste0(fname,"_graph_lambert_hulls")), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1, show.coms=TRUE)
+				#
 				g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
 				custom.gplot(g=g1, col.att=fname,cat.att=TRUE, file=file.path(coms.folder,paste0(fname,"_graph_kk")), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+				custom.gplot(g=g1, col.att=fname,cat.att=TRUE, file=file.path(coms.folder,paste0(fname,"_graph_kk_hulls")), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6, show.coms=TRUE)
 				
 				# assess community purity for all attributes
 				g <- analyze.net.comstruct.attributes(g=g, coms.folder=coms.folder, membership=mbrs)
@@ -180,8 +183,8 @@ analyze.net.comstruct <- function(g, out.folder)
 	for(c1 in 1:(ncol(tab.memb)-1))
 	{	for(c2 in (c1+1):ncol(tab.memb))
 		{	score.nmi[c1,c2] <- score.nmi[c2,c1] <- compare(comm1=tab.memb[,c1], comm2=tab.memb[,c2], method="nmi")
-			score.ri[c1,c2]  <- score.nmi[c2,c1] <- compare(comm1=tab.memb[,c1], comm2=tab.memb[,c2], method="rand")
-			score.ari[c1,c2] <- score.nmi[c2,c1] <- compare(comm1=tab.memb[,c1], comm2=tab.memb[,c2], method="adjusted.rand")
+			score.ri[c1,c2]  <- score.ri[c2,c1] <- compare(comm1=tab.memb[,c1], comm2=tab.memb[,c2], method="rand")
+			score.ari[c1,c2] <- score.ari[c2,c1] <- compare(comm1=tab.memb[,c1], comm2=tab.memb[,c2], method="adjusted.rand")
 		}
 	}
 	# record the resulting similarity matrices
@@ -835,9 +838,11 @@ plot.comstruct.comparison <- function()
 				# lambert plot
 				g2 <- delete_edge_attr(g2, LK_TYPE); g2 <- simplify(g2)
 				custom.gplot(g=g2, col.att="Coms", cat.att=TRUE, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+				custom.gplot(g=g2, col.att="Coms", cat.att=TRUE, file=paste0(plot.file,"_lambert_hulls"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1, show.coms=TRUE)
 				# kk plot
 				V(g2)$x <- V(g2)$x2; V(g2)$y <- V(g2)$y2; E(g2)$weight <- 0.5
 				custom.gplot(g=g2, col.att="Coms", cat.att=TRUE, file=paste0(plot.file,"_kk"), rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+				custom.gplot(g=g2, col.att="Coms", cat.att=TRUE, file=paste0(plot.file,"_kk_hulls"), rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6, show.coms=TRUE)
 			}
 		}
 	}

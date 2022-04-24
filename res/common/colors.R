@@ -143,6 +143,7 @@ COLS_ATT[[COL_EST_COMP_NORM1]] <- c(
 	"magasin"="#C09E70",
 	"maison"="#FED02B",
 	"masure-salle-piece"="#FED200",
+	"mur"="#0D0D0D",
 	"part de fosse"="#525252",
 	"part de lices"="#969696",
 	"part de moulin"="#9BC2E6",
@@ -151,7 +152,9 @@ COLS_ATT[[COL_EST_COMP_NORM1]] <- c(
 	"parvis eglise"="#FFFFE9",
 	"place-angle-plan"="#FEE8C8",
 	"place-cour"="#FD8D3C",
+	"pont"="#FEC0C8",
 	"portail"="#D9D9D9",
+	"porte rempart"="#942193",
 	"puit"="#5AB4AC",
 	"table"="#BF812D",
 	"taverne"="#642D04",
@@ -161,7 +164,7 @@ COLS_ATT[[COL_EST_COMP_NORM1]] <- c(
 	"tour"="#FFB166",
 	"verger"="#41AB5D",
 	"vigne"="#238B45",
-	"voie-traverse-passage-entree"="#FFF7EC"
+	"voie-traverse-passage-entree"="#DAADCC"
 )
 # colors for component type attribute
 COLS_ATT[[COL_EST_COMP_TYPE1]] <- c(
@@ -189,7 +192,11 @@ COLS_ATT[[COL_EST_COMP_TYPE_S1]] <- c(
 	"bati"="#FED02B",
 	"immateriel"="#FFFFD4"
 )
-
+# colors for fee categories
+cols <- viridis(n=length(FEE_CATS))
+names(cols) <- FEE_CATS
+COLS_ATT[[COL_FEE_AMOUNT_CAT1]] <- cols
+		
 
 
 

@@ -295,6 +295,9 @@ FILE_GRAPH <- "graph.graphml"
 	COL_FEE_AMOUNT_CAT1 <- "montantCat"
 	COL_FEE_AMOUNT_RAW2 <- "montant2"
 	COL_FEE_AMOUNT_INCR <- "echelonMontant"
+	#
+	FEE_BREAKS <- c(0, 34, 60, 144, 336, 624, 1296, 3600, 30000)
+	FEE_CATS <- c(paste0("[",FEE_BREAKS[1],";",FEE_BREAKS[2],"]"), sapply(3:length(FEE_BREAKS), function(b) paste0("]",FEE_BREAKS[b-1],";",FEE_BREAKS[b],"]")))
 
 # source table
 	COL_SRC_ID <- "idsource"
@@ -676,7 +679,6 @@ COL_CAT <- c(
 COL_CAT_SELECT <- c(
 	# estates
 	COL_EST_AREA_ID, COL_EST_VILLAGE_ID, COL_EST_STREET_ID, COL_EST_LORDSHIP_ID,
-	COL_EST_COMP_NORM1, COL_EST_COMP_TYPE1, COL_EST_COMP_TYPE_S1,
 	COL_FEE_AMOUNT_CAT1,
 	COL_EST_POSITION
 )

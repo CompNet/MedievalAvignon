@@ -701,8 +701,6 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		taxes <- convert.currency(info.fees[mids,COL_FEE_AMOUNT_NORM1])
 		info.estate <- cbind(info.estate, taxes)
 		colnames(info.estate)[ncol(info.estate)] <- COL_FEE_AMOUNT_NORM1
-		FEE_BREAKS <- c(0, 34, 60, 144, 336, 624, 1296, 3600, 30000)
-		FEE_CATS <- c(paste0("[",FEE_BREAKS[1],";",FEE_BREAKS[2],"]"), sapply(3:length(FEE_BREAKS), function(b) paste0("]",FEE_BREAKS[b-1],";",FEE_BREAKS[b],"]")))
 		taxCats <- sapply(taxes, function(fee) if(is.na(fee)) NA else FEE_CATS[min(which(FEE_BREAKS>fee))-1])
 		info.estate <- cbind(info.estate, taxCats)
 		colnames(info.estate)[ncol(info.estate)] <- COL_FEE_AMOUNT_CAT1
