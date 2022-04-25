@@ -980,10 +980,8 @@
 1021,a-orient,41,NULL,131,NULL,confronte a l est avec
 1022,a-circio,41,NULL,131,NULL,confronte au nord avec
 1023,a-circio,42,NULL,131,NULL,confronte au nord avec
-1024,a-meridie,41,NULL,132,NULL,confronte au sud avec
 1025,ante,465,NULL,133,NULL,devant
 1026,a-orient,81,NULL,146,NULL,confronte a l est avec
-1027,a-circio,3,NULL,152,NULL,confronte au nord avec
 1028,a-orient,6,NULL,154,NULL,confronte a l est avec
 1029,a-circio,6,NULL,154,NULL,confronte au nord avec
 1030,a-occident,7,NULL,154,NULL,confronte a l ouest avec
