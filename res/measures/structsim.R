@@ -131,16 +131,20 @@ analyze.net.structsim <- function(g, out.folder)
 			svals <- svals[idx]
 			
 			# compute correlations
-			tlog(8,"Computing correlation between structural similarity and spatial distances")
-			tmp <- cor.test(x=gvals, y=svals, method="pearson")
-			cor.tab[sdist,"PearsonCoef"] <- tmp$estimate
-			cor.tab[sdist,"PearsonPval"] <- tmp$p.value
-			tmp <- cor.test(x=gvals, y=svals, method="spearman")
-			cor.tab[sdist,"SpearmanCoef"] <- tmp$estimate
-			cor.tab[sdist,"SpearmanPval"] <- tmp$p.value
-			tmp <- cor.test(x=gvals, y=svals, method="kendall")
-			cor.tab[sdist,"KendallCoef"] <- tmp$estimate
-			cor.tab[sdist,"KendallPval"] <- tmp$p.value
+			tlog(8,"Computing correlation between structural similarity and spatial distances (",length(gvals)," values vs. ",length(svals)," values)")
+			if(length(gvals)<3)
+				tlog(10,"WARNING: not enough values to compute correlation")
+			else
+			{	tmp <- cor.test(x=gvals, y=svals, method="pearson")
+				cor.tab[sdist,"PearsonCoef"] <- tmp$estimate
+				cor.tab[sdist,"PearsonPval"] <- tmp$p.value
+				tmp <- cor.test(x=gvals, y=svals, method="spearman")
+				cor.tab[sdist,"SpearmanCoef"] <- tmp$estimate
+				cor.tab[sdist,"SpearmanPval"] <- tmp$p.value
+				tmp <- cor.test(x=gvals, y=svals, method="kendall")
+				cor.tab[sdist,"KendallCoef"] <- tmp$estimate
+				cor.tab[sdist,"KendallPval"] <- tmp$p.value
+			}
 			
 			# plot the spatial distance as a function of the structural similarity
 			plot.file <- file.path(sim.folder, paste0(fname,"_vs_spatial_",sdist))

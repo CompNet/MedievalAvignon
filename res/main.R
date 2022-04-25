@@ -56,8 +56,8 @@ start.rec.log(text="Nets")
 # possibly create folder
 dir.create(path=FOLDER_OUT_ANAL_EST, showWarnings=FALSE, recursive=TRUE)
 # load the data and create various versions of the spatial graph
-#link.types <- extract.estate.networks()
- link.types <- c(LV_ESTATE, LK_TYPE_FLATREL)
+link.types <- extract.estate.networks()
+#link.types <- c(LV_ESTATE, LK_TYPE_FLATREL)
 
 
 

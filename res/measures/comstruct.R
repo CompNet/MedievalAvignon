@@ -99,6 +99,7 @@ analyze.net.comstruct <- function(g, out.folder)
 			modes=c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
 	)
 	
+	select.algos <- "louvain"
 	tab.memb <- NA
 	
 #	modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
@@ -166,6 +167,62 @@ analyze.net.comstruct <- function(g, out.folder)
 				
 				# assess community purity for all attributes
 				g <- analyze.net.comstruct.attributes(g=g, coms.folder=coms.folder, membership=mbrs)
+				
+				# possibly process each community separately
+				if(algo.name %in% select.algos)
+				{	coms <- sort(unique(mbrs))
+					for(com in coms)
+					{	tlog(8,"Processing community #",com,"/",length(coms))
+						
+						# create subfolder
+						com.folder <- file.path(coms.folder, "_communities", com)
+						dir.create(path=com.folder, showWarnings=FALSE, recursive=TRUE)
+						# create subgraph
+						g.com <- induced_subgraph(graph=g, vids=which(mbrs==com))
+						g.com$name <- file.path(g$name, MEAS_COMMUNITIES, mode, algo.name, "_communities", com)
+						# plot
+						plot.file <- file.path(com.folder, "graph")
+						# TODO update layout? or good enough already?
+						custom.gplot(g=g.com, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+						g1 <- g.com; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5
+						custom.gplot(g=g1, file=paste0(plot.file,"_kk"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+						# record as graphml
+						write.graphml.file(g=g.com, file=paste0(plot.file,".graphml"))
+						
+#						# compute attribute stats 
+#						g.com <- analyze.net.attributes(g.com, out.folder)
+						# compute diameters, eccentricity, radius
+						g.com <- analyze.net.eccentricity(g.com, out.folder)
+						# compute degree
+						g.com <- analyze.net.degree(g.com, out.folder)
+						# compute eigencentrality
+						g.com <- analyze.net.eigencentrality(g.com, out.folder)
+						# compute betweenness
+						g.com <- analyze.net.betweenness(g.com, out.folder)
+						# compute closeness
+						g.com <- analyze.net.closeness(g.com, out.folder)
+						# compute harmonic closeness
+						g.com <- analyze.net.harmonic.closeness(g.com, out.folder)
+						# compute distances
+						g.com <- analyze.net.distance(g.com, out.folder)
+						# compute articulation points
+						g.com <- analyze.net.articulation(g.com, out.folder)
+#						# detect communities
+#						g.com <- analyze.net.comstruct(g.com, out.folder)
+						# compute transitivity
+						g.com <- analyze.net.transitivity(g.com, out.folder)
+#						# compute vertex connectivity
+#						g.com <- analyze.net.connectivity(g.com, out.folder)
+#						# compute components
+#						g.com <- analyze.net.components(g.com, out.folder)
+#						# correlation between component size and attributes
+#						g.com <- analyze.net.components.corr(g.com, out.folder)
+#						# compute assortativity
+#						g.com <- analyze.net.assortativity(g.com, out.folder)
+						# compute structural similarity
+						g.com <- analyze.net.structsim(g.com, out.folder)			
+					}
+				}
 			}
 		}
 	}

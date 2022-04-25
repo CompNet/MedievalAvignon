@@ -1088,7 +1088,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	tlog(4,"Reading layout from file ",lay.file)
 	layout <- read.table(file=lay.file, sep="\t", header=TRUE, check.names=FALSE)
 	lay.idx <- match(V(g)$idExterne, layout[,"idExterne"])
-	if(any(is.na(lay.idx))) stop("Could not match node ids with ids from the layout file")
+	if(any(is.na(lay.idx))) {print(V(g)[which(is.na(lay.idx))]); stop("Could not match node ids with ids from the layout file")}
 	V(g)$x2 <- layout[lay.idx,"x"]; V(g)$y2 <- layout[lay.idx,"y"]
 	# plot graph
 	plot.file <- file.path(FOLDER_OUT_ANAL_EST,"graph_kk")
@@ -1327,7 +1327,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		######
 		layout <- read.table(file=lay.file, sep="\t", header=TRUE, check.names=FALSE)
 		lay.idx <- match(V(g2)$idExterne, layout[,"idExterne"])
-		if(any(is.na(lay.idx))) stop("Could not match node ids with ids from the layout file")
+		if(any(is.na(lay.idx))) {print(V(g2)[which(is.na(lay.idx))]); stop("Could not match node ids with ids from the layout file")}
 		V(g2)$x <- layout[lay.idx,"x"]; V(g2)$y <- layout[lay.idx,"y"]
 		E(g2)$weight <- 0.5
 		#
