@@ -1,4 +1,4 @@
-idConfront,localisation,idBien1,idBien2,idInvariant,idQuartierParoisse,localisationTN
+﻿idConfront,localisation,idBien1,idBien2,idInvariant,idQuartierParoisse,localisationTN
 1,a-meridie,1,2,NULL,NULL,confronte au sud avec
 2,ab-aura-recta,2,1,NULL,NULL,confronte au nord avec
 3,a-occident,3,801,NULL,NULL,confronte a l ouest avec
@@ -2330,9 +2330,9 @@ idConfront,localisation,idBien1,idBien2,idInvariant,idQuartierParoisse,localisat
 2419,a-occident,1177,NULL,541,NULL,confronte a l ouest avec
 2420,a-meridie,1178,NULL,769,NULL,confronte au sud avec
 2423,a-circio,1179,NULL,482,NULL,confronte au nord avec
-2424,a-meridie,1180,NULL,543,NULL,confronte au sud avec
+2424,a-meridie,1180,NULL,1543,NULL,confronte au sud avec
 2425,in,1182,NULL,225,NULL,a l interieur de
-2427,a-meridie,1183,NULL,544,NULL,confronte au sud avec
+2427,a-meridie,1183,NULL,1809,NULL,confronte au sud avec
 2428,a-circio,1183,NULL,225,NULL,confronte au nord avec
 2429,a-orient,1185,NULL,545,NULL,confronte a l est avec
 2430,a-occident,1185,NULL,3,NULL,confronte a l ouest avec
@@ -2348,7 +2348,6 @@ idConfront,localisation,idBien1,idBien2,idInvariant,idQuartierParoisse,localisat
 2440,apud,1189,NULL,243,NULL,vers
 2441,a-orient,1189,NULL,5,NULL,confronte a l est avec
 2442,prope,1190,NULL,81,NULL,a cote de
-2443,ab-una-part,1190,NULL,132,NULL,confronte avec
 2444,in,1190,NULL,81,NULL,dans
 2445,ante,1191,NULL,81,NULL,devant
 2446,a-orient,1191,NULL,81,NULL,confronte a l est avec
@@ -4989,7 +4988,7 @@ idConfront,localisation,idBien1,idBien2,idInvariant,idQuartierParoisse,localisat
 5283,a-occident,7183,7182,NULL,NULL,confronte a l ouest avec
 5284,ante,7184,7697,NULL,NULL,devant
 5285,ab-una-part,7184,7698,NULL,NULL,confronte avec
-5286,ab-una-part,7184,7285,NULL,NULL,confronte avec
+5286,ab-una-part,7284,7285,NULL,NULL,confronte avec
 5287,ab-una-part,7185,7699,NULL,NULL,confronte avec
 5288,a-orient,7187,7700,NULL,NULL,confronte a l est avec
 5289,a-meridie,7187,7700,NULL,NULL,confronte au sud avec
