@@ -80,8 +80,8 @@ analyze.network <- function(gname, out.folder)
 	
 	if(gsize(g)>=30)
 	{	# compute attribute stats 
-		# (must be done first, before other results are added as attributes)
-		g <- analyze.net.attributes(g, out.folder)
+#		# (must be done first, before other results are added as attributes)
+#		g <- analyze.net.attributes(g, out.folder)
 #		
 #		# compute diameters, eccentricity, radius
 #		g <- analyze.net.eccentricity(g, out.folder)
@@ -108,7 +108,7 @@ analyze.network <- function(gname, out.folder)
 #		g <- analyze.net.articulation(g, out.folder)
 #		
 #		# detect communities
-#		g <- analyze.net.comstruct(g, out.folder)
+		g <- analyze.net.comstruct(g, out.folder)
 #		
 #		# compute transitivity
 #		g <- analyze.net.transitivity(g, out.folder)

@@ -1402,53 +1402,8 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #      > différence avec sim structurelle ?
 
 # TODO
-# + graphiques des graphes
-#   + rajouter les noms dans la version géo des plots de graphes
-#   + utiliser les coordonnées lambert93 à la place des coordonnées actuelles
-#   + tous les noms n'apparaissent pas systématiquement (ex. kk racine)
-#   + générer les graphiques indiv avec la spatialisation algo (en plus de la géo)
-#   + manque l'id du noeud dans les noms de fichiers individuels (ex. distance)
-# + ne pas calculer les mesures orientées
-# + liens de type "égale" :
-#   + pb égale :
-#     + si traité à la construction du graphe, pq tjrs dans la légende ?
-#     + pq apparait en gris et pas en rose (Bien:2015_cimetiere -- Edifice:720_Cimetiere juif)
-#     + pq il reste des liens égale alors qu'on les traite avant
-#     > "egal" dans les données au lieu de "egale"
-#   + fusion des liens "égale" : 
-#     + conserver le noeud qui n'est pas un bien, garder un max d'attributs
-#     + concaténer les id dans le nom affiché dans les graphiques
-#     + si plusieurs biens >> pas de fusion
-# + utiliser les catégories de montants définies avec margot
-# - structure de communautés
-#   + accord entre algos >> calculer les mesures de comparaison de partitions standard
-#   - lien hiérarchique entre communautés detectées sur graphes avec vs. sans rues ?
-#     > pas les mêmes noeuds : difficile à comparer
-#   + comparer struct com avec seigneurie (partitions)
-#     > déjà fait en partie avec la pureté (calculée pour chaque attribut)
-#   + calculer la centralisation des communautés (sont-elles construites autour d'invariants ?)
-#     ? traiter chaque communauté comme un graphe à part, histoire de produire toutes les stats ?
-#   - spatialisation du graphe sans rue, avec coms, on fixe leurs coordonnées puis on rajoute les rues (du graphe plat) et on étudie leur position (est elle intermédiaire entre coms ?)
-#     + alt : prendre le graphe plat et représenter coms sans rues vs. coms graphe plat, voir où sont les noeuds sans com (=rues) 
-#   > choix de la méthode de détection: si com construite autour d'une seule rue, ou correspond à une division admin, alors trop évident. il faut qqch entre les deux.
-#   > observations :
-#     > edgebetweenness/fastgreedy/louvain: 40aine de coms, semble pertinent
-#     > eigenvector: pertinent mais plus grosses coms
-#     > infomap/labelprop/walktrap: très nombreuses coms (100--200)
-#
-# - margot:
-#   + map de conversion pour les composants de maison
-#   + spécification de couleurs spécifiques pour certaines attributs
-#   + compléter les liens "égale" manquants
-#   + vérifier les liens à longue distance suspects
+# - traiter chaque communauté comme un graphe à part, histoire de produire toutes les stats
 
-# TODO
-# + supprimer les nbres de composants des attributs traités
-# + vérifier les couleurs des attributs
-# + les tags continuent à inclure les biens non déclarés (NA) lors du plot des coms
-# + les couleurs appropriées sont elles utilisées pour plotter les tags dans les coms ?
-# + vérifier le fichier de comparaison entre coms et attr : pq plusieurs ?
-# + augmenter la taille des noeuds dans kk
 
 
 
