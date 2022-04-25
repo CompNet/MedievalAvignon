@@ -133,7 +133,7 @@ analyze.net.structsim <- function(g, out.folder)
 			# compute correlations
 			tlog(8,"Computing correlation between structural similarity and spatial distances (",length(gvals)," values vs. ",length(svals)," values)")
 			if(length(gvals)<3)
-				tlog(10,"WARNING: not enough values to compute correlation")
+				tlog(10,"WARNING: not enough values to compute correlation or produce plots")
 			else
 			{	tmp <- cor.test(x=gvals, y=svals, method="pearson")
 				cor.tab[sdist,"PearsonCoef"] <- tmp$estimate
@@ -144,27 +144,27 @@ analyze.net.structsim <- function(g, out.folder)
 				tmp <- cor.test(x=gvals, y=svals, method="kendall")
 				cor.tab[sdist,"KendallCoef"] <- tmp$estimate
 				cor.tab[sdist,"KendallPval"] <- tmp$p.value
+				
+				# plot the spatial distance as a function of the structural similarity
+				plot.file <- file.path(sim.folder, paste0(fname,"_vs_spatial_",sdist))
+				pdf(paste0(plot.file,".pdf"))
+					plot(
+						x=gvals, y=svals, 
+						xlab=paste(MEAS_LONG_NAMES[mode],MEAS_LONG_NAMES[MEAS_STRUCT_SIM]), ylab=ylab[sdist],
+						#log="xy", 
+						las=1, col="RED",
+						#xlim=c(1,max(deg.vals)*1.1)
+					)
+					# mean
+					avg.dist <- sapply(min(gvals):max(gvals), function(deg) mean(svals[gvals==deg]))
+					lines(	
+						x=min(gvals):max(gvals), avg.dist,
+						col="BLACK"
+					)
+				dev.off()
 			}
-			
-			# plot the spatial distance as a function of the structural similarity
-			plot.file <- file.path(sim.folder, paste0(fname,"_vs_spatial_",sdist))
-			pdf(paste0(plot.file,".pdf"))
-				plot(
-					x=gvals, y=svals, 
-					xlab=paste(MEAS_LONG_NAMES[mode],MEAS_LONG_NAMES[MEAS_STRUCT_SIM]), ylab=ylab[sdist],
-					#log="xy", 
-					las=1, col="RED",
-					#xlim=c(1,max(deg.vals)*1.1)
-				)
-				# mean
-				avg.dist <- sapply(min(gvals):max(gvals), function(deg) mean(svals[gvals==deg]))
-				lines(	
-					x=min(gvals):max(gvals), avg.dist,
-					col="BLACK"
-				)
-			dev.off()
 		}
-		
+			
 		# record correlations
 		tab.file <- file.path(sim.folder, paste0(fname,"_vs_spatial_correlations.csv"))
 		write.csv(cor.tab, file=tab.file, row.names=FALSE)
