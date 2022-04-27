@@ -4,7 +4,7 @@
 # Vincent Labatut
 # 06/2020
 #
-# setwd("D:/users/Vincent/Eclipse/workspaces/Extraction/MedievalAvignon")
+# setwd("C:/users/Vincent/Eclipse/workspaces/Extraction/MedievalAvignon")
 # setwd("~/eclipse/workspaces/Extraction/MedievalAvignon")
 # source("res/main.R")
 ########################################################################

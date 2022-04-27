@@ -1401,7 +1401,18 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #      > si deux noeuds sont proches (connectés ?) et ont une transitivité élevée, sont ils proches spatialement ?
 #      > différence avec sim structurelle ?
 
-
+# TODO
+# - graphes de communautés
+#   - rajouter kk+lambert 
+#   - épaisseur des liens
+# - sousgraphes de coms: spatialisation spécifique (kk)
+# - générer graphes avec filigrannes
+# - simstruct : ne pas comparer les paires de sim=0
+# - diametre : manque les liens dans les graphes filtrés
+# - troisième type de graphe: flat -- remparts, canaux, rhone >> générer visualisation de comparaison
+#   rues : lister les rues par degré et les considérer manuellement ?
+# - étudier l'évolution d'indicateurs d'intérêt (corr entre distances, nbre de composants ?) 
+#   en fonction d'un critère permettant de sélectionner les rues à sortir (par ex. longueur)
 
 
 ###### SOCIAL ######
