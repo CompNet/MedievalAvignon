@@ -42,7 +42,8 @@ analyze.net.structsim <- function(g, out.folder)
 		# compute node-to-node similarity values
 		vals <- similarity(graph=g, mode=if(mode==MEAS_MODE_UNDIR) "all" else mode, method="jaccard")
 		flat.vals <- vals[upper.tri(vals)]
-		custom.hist(vals=flat.vals, name=paste(MEAS_LONG_NAMES[mode],MEAS_LONG_NAMES[MEAS_STRUCT_SIM]), file=file.path(sim.folder,paste0(fname,"_histo")))
+		if(length(flat.vals)>2)
+			custom.hist(vals=flat.vals, name=paste(MEAS_LONG_NAMES[mode],MEAS_LONG_NAMES[MEAS_STRUCT_SIM]), file=file.path(sim.folder,paste0(fname,"_histo")))
 		
 		# record table of node pairs ranked by decreasing similarity
 		unique.vals <- vals[upper.tri(vals)]

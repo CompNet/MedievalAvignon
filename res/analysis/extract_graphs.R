@@ -1401,9 +1401,6 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #      > si deux noeuds sont proches (connectés ?) et ont une transitivité élevée, sont ils proches spatialement ?
 #      > différence avec sim structurelle ?
 
-# TODO
-# - traiter chaque communauté comme un graphe à part, histoire de produire toutes les stats
-
 
 
 
