@@ -1406,13 +1406,14 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 # - graphes de communautés
 #   - rajouter kk+lambert 
 #   - épaisseur des liens
-# - sousgraphes de coms: spatialisation spécifique (kk)
+# - sous-graphes de coms: spatialisation spécifique (kk)
 # - générer graphes avec filigrannes
-# - simstruct : ne pas comparer les paires de sim=0
-# - troisième type de graphe: flat -- remparts, canaux, rhone >> générer visualisation de comparaison
-#   rues : lister les rues par degré et les considérer manuellement ?
-# - étudier l'évolution d'indicateurs d'intérêt (corr entre distances, nbre de composants ?) 
-#   en fonction d'un critère permettant de sélectionner les rues à sortir (par ex. longueur)
+# + simstruct : ne pas comparer les paires de sim=0
+# - paramétrer construction graphe
+#   - troisième type de graphe: flat -- remparts, canaux, rhone >> générer visualisation de comparaison
+#   - rues : lister les rues par degré et les considérer manuellement ?
+#   - étudier l'évolution d'indicateurs d'intérêt (corr entre distances, nbre de composants ?) 
+#     en fonction d'un critère permettant de sélectionner les rues à sortir (par ex. longueur)
 
 
 ###### SOCIAL ######

@@ -93,7 +93,6 @@ analyze.net.structsim <- function(g, out.folder)
 		
 		
 		###### compare with spatial distance
-		
 		tlog(4,"Comparing structural similarity and spatial distances")
 		sdists <- c("database","interpolation")			# only positions from the DB vs. all positions including estimates
 		
@@ -127,7 +126,7 @@ analyze.net.structsim <- function(g, out.folder)
 			gvals <- gvals[upper.tri(gvals)]
 			dd <- as.matrix(distances(graph=gt, mode="all"))
 			dd <- dd[upper.tri(dd)]
-			idx <- !is.infinite(dd)
+			idx <- !is.infinite(dd) & dd>0
 			gvals <- gvals[idx]
 			svals <- svals[idx]
 			
