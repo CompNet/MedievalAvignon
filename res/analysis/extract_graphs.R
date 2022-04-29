@@ -1402,13 +1402,13 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #      > différence avec sim structurelle ?
 
 # TODO
+# + diametre : manque les liens dans les graphes filtrés
 # - graphes de communautés
 #   - rajouter kk+lambert 
 #   - épaisseur des liens
 # - sousgraphes de coms: spatialisation spécifique (kk)
 # - générer graphes avec filigrannes
 # - simstruct : ne pas comparer les paires de sim=0
-# - diametre : manque les liens dans les graphes filtrés
 # - troisième type de graphe: flat -- remparts, canaux, rhone >> générer visualisation de comparaison
 #   rues : lister les rues par degré et les considérer manuellement ?
 # - étudier l'évolution d'indicateurs d'intérêt (corr entre distances, nbre de composants ?) 

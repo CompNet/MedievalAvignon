@@ -49,6 +49,8 @@ analyze.net.eccentricity <- function(g, out.folder)
 		fname <- paste0(MEAS_DIAMETER,"_",mode)
 		diameter.folder <- file.path(out.folder, g$name, MEAS_DIAMETER, mode)
 		dir.create(path=diameter.folder, showWarnings=FALSE, recursive=TRUE)
+		dir.create(path=file.path(diameter.folder,"lambert"), showWarnings=FALSE, recursive=TRUE)
+		dir.create(path=file.path(diameter.folder,"kk"), showWarnings=FALSE, recursive=TRUE)
 		
 		# plot diameter
 		diam.paths <- future_lapply(1:nrow(idx), function(r) 
@@ -65,9 +67,9 @@ analyze.net.eccentricity <- function(g, out.folder)
 			#V(g)$label <- rep(NA, gorder(g))
 			V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
 			g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-			custom.gplot(g=g1, paths=diam.paths[[pp]], file=file.path(diameter.folder,paste0(MEAS_DIAMETER,"_",mode,"_graph_lambert_",pp)), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+			custom.gplot(g=g1, paths=diam.paths[[pp]], file=file.path(diameter.folder,"lambert",paste0(MEAS_DIAMETER,"_",mode,"_graph_",pp)), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
 			g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-			custom.gplot(g=g1, paths=diam.paths[[pp]], file=file.path(diameter.folder,paste0(MEAS_DIAMETER,"_",mode,"_graph_kk_",pp)), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+			custom.gplot(g=g1, paths=diam.paths[[pp]], file=file.path(diameter.folder,"kk",paste0(MEAS_DIAMETER,"_",mode,"_graph_",pp)), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
 			
 			if(length(diam.paths[[pp]])<=20)
 			{	tlog(8,"Plotting the ",length(diam.paths[[pp]])," variants of this diameter")			
@@ -82,9 +84,9 @@ analyze.net.eccentricity <- function(g, out.folder)
 						#V(g)[vend]$label <- get.names(g, vend) 
 						V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
 						g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-						custom.gplot(g=g1, paths=diam.paths[[pp]][[p]], file=file.path(diameter.folder,paste0(MEAS_DIAMETER,"_",mode,"_graph_lambert_",pp,"_",q)), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+						custom.gplot(g=g1, paths=diam.paths[[pp]][[p]], file=file.path(diameter.folder,"lambert",paste0(MEAS_DIAMETER,"_",mode,"_graph_",pp,"_",q)), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
 						g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-						custom.gplot(g=g1, paths=diam.paths[[pp]][[p]], file=file.path(diameter.folder,paste0(MEAS_DIAMETER,"_",mode,"_graph_kk_",pp,"_",q)), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+						custom.gplot(g=g1, paths=diam.paths[[pp]][[p]], file=file.path(diameter.folder,"kk",paste0(MEAS_DIAMETER,"_",mode,"_graph_",pp,"_",q)), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
 						
 						q <- q + 1
 					}

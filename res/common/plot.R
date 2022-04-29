@@ -332,9 +332,18 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 			outline.cols <- outline.cols[idx]
 			vlabels <- vlabels[idx]
 			
-			# re-number edges
+			# re-number edges in graph
 			el <- as_edgelist(graph=g, names=FALSE)
 			el <- apply(el, 1:2, function(v) ord[v])
+			
+			# possibly re-number edges in path
+			if(hasArg(paths))
+			{	for(p in 1:length(paths))
+				{	path <- paths[[p]]
+					path <- sapply(path, function(v) ord[v])
+					paths[[p]] <- path
+				}
+			}
 			
 			# recreate graph
 			g <- graph_from_edgelist(el=el, directed=directed)
@@ -356,14 +365,18 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 		if(length(top.edges)>0)
 		{	# revise edge order
 			el <- as_edgelist(graph=g, names=FALSE)
-			lst <- lapply(1:(length(top.edges)/2), function(i) 
+			lst <- lapply(seq(1,length(top.edges),by=2), function(i) 
 			{	e <- top.edges[c(i,i+1)]
 				if(directed)
-					return(which(el[,1]==e[1] & el[,2]==e[2]))
+				{	res <- which(el[,1]==e[1] & el[,2]==e[2])
+					if(length(res)==0)
+						res <- which(el[,1]==e[2] & el[,2]==e[1])
+				}
 				else
-					return(which(el[,1]==e[1] & el[,2]==e[2]) | el[,1]==e[2] & el[,2]==e[1])
+					res <- which(el[,1]==e[1] & el[,2]==e[2] | el[,1]==e[2] & el[,2]==e[1])
+				return(res)
 			})
-			top.edges <- unlist(lst)
+			top.edges <- unique(unlist(lst))
 			idx <- c((1:m)[-top.edges], rev(top.edges))
 			# re-order edges
 			el <- el[idx,,drop=FALSE]
