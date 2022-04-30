@@ -190,14 +190,14 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 					# numerical attribute
 					else
 					{	finite <- !is.infinite(vvals)
+						pal <- colorRampPalette(c("yellow",'red'))	# extreme colors of the gradient
 						if(any(!is.na(vvals)))
 						{	# only one value
 							if(length(unique(vvals))==1)
 								vcols[connected & finite] <- "YELLOW"
 							# several distinct values
 							else
-							{	fine = 500 									# granularity of the color gradient
-								pal = colorRampPalette(c("yellow",'red'))	# extreme colors of the gradient
+							{	fine <- 500 								# granularity of the color gradient
 								vcols[connected & finite] <- pal(fine)[as.numeric(cut(vvals[connected & finite],breaks=fine))]
 								vcols[connected & !finite] <- "#575757"		# infinite values are grey
 								# see https://stackoverflow.com/questions/27004167/coloring-vertexes-according-to-their-centrality
