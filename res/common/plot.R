@@ -193,7 +193,8 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 						pal <- colorRampPalette(c("yellow",'red'))	# extreme colors of the gradient
 						if(any(!is.na(vvals)))
 						{	# only one value
-							if(length(unique(vvals))==1)
+							#if(length(unique(vvals))==1)								# does not work when values are too close
+							if(isTRUE(all.equal(vvals,rep(vvals[1],length(vvals)))))	# more efficient way to compare close values
 								vcols[connected & finite] <- "YELLOW"
 							# several distinct values
 							else
