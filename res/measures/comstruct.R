@@ -182,8 +182,12 @@ analyze.net.comstruct <- function(g, out.folder)
 						g.com$name <- file.path(g$name, MEAS_COMMUNITIES, mode, algo.name, "_communities", com)
 						# plot
 						plot.file <- file.path(com.folder, "graph")
-						# TODO update layout? or good enough already?
 						custom.gplot(g=g.com, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+						g1 <- g.com; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5
+						custom.gplot(g=g1, file=paste0(plot.file,"_kk0"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+						# update layout
+						layout <- layout_with_kk(g1, kkconst=5); #scale <- max(abs(layout))/7; layout <- layout/scale
+						V(g.com)$x2 <- layout[,1]; V(g.com)$y2 <- layout[,2]; 
 						g1 <- g.com; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5
 						custom.gplot(g=g1, file=paste0(plot.file,"_kk"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
 						# record as graphml

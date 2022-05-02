@@ -1404,10 +1404,10 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 
 # TODO
 # + diametre : manque les liens dans les graphes filtrés
-# - graphes de communautés
-#   - rajouter kk+lambert 
-#   - épaisseur des liens
-# - sous-graphes de coms: spatialisation spécifique (kk)
+# + graphes de communautés
+#   + rajouter kk+lambert 
+#   + épaisseur des liens
+# + sous-graphes de coms: spatialisation spécifique (kk)
 # - générer graphes avec filigrannes
 # + simstruct : ne pas comparer les paires de sim=0
 # - paramétrer construction graphe
