@@ -949,7 +949,7 @@ add.vertex.shape("triangle", clip=shapes("circle")$clip, plot=FELLAmytriangle)
 plot.graph.comparisons <- function(graph.names, folder)
 {	for(i in 1:(length(graph.names)-1))
 	{	# read the first graph
-		file.path <- file.path(out.folder, graph.names[i], FILE_GRAPH)
+		file.path <- file.path(folder, graph.names[i], FILE_GRAPH)
 		g1 <- load.graphml.file(file=file.path)
 		# clean it
 		V(g1)$label <- paste(vertex_attr(g1,name=COL_LOC_ID), get.location.names(g1),sep="_")
@@ -958,7 +958,7 @@ plot.graph.comparisons <- function(graph.names, folder)
 		
 		for(j in (i+1):length(graph.names))
 		{	# read the second graph
-			file.path <- file.path(out.folder, graph.names[j], FILE_GRAPH)
+			file.path <- file.path(folder, graph.names[j], FILE_GRAPH)
 			g2 <- load.graphml.file(file=file.path)
 			# clean it
 			V(g2)$label <- paste(vertex_attr(g2,name=COL_LOC_ID), get.location.names(g2),sep="_")
