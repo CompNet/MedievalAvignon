@@ -47,7 +47,7 @@ FORMAT <- c("pdf", "png")	# plot file format: pdf png
 # show.coms: show the vertex attribute as hulls in addition to vertex color (for communinities). 
 # ...: parameters sent directly to the plot function.
 #############################################################
-custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE, v.hl, e.hl, color.isolates=FALSE, file, top.vertices=c(), top.edges=c(), rescale=TRUE, show.coms=FALSE, ...)
+custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE, v.hl, e.hl, color.isolates=FALSE, file, top.vertices=c(), top.edges=c(), rescale=TRUE, show.coms=FALSE, min.size, max.size, ...)
 {	# init graph info
 	m <- gsize(g)						# number of edges
 	n <- gorder(g)						# number of nodes
@@ -282,8 +282,10 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 			
 			# init limit sizes
 			vsizes <- rep(NA, n)
-			min.size <- if(min(vvals,na.rm=TRUE)==0) 0 else 2
-			max.size <- 20
+			if(!hasArg(min.size))
+				min.size <- if(min(vvals,na.rm=TRUE)==0) 0 else 2
+			if(!hasArg(max.size))
+				max.size <- 20
 			cut.nbr <- 4
 			
 			# define cuts

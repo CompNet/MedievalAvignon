@@ -313,17 +313,25 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 	coms <- sort(unique(membership))
 	
 	# build group graph
-	cg <- contract.vertices(g, mapping=membership)	# TODO we could keep edges of different types separted (familial, professional, etc.)
-	E(cg)$weight <- 1
-	cg <- simplify(cg, remove.loops=TRUE)	# keeping the loops makes the plot difficult to read
+	cg <- g
 	for(eattr in edge_attr_names(graph=cg))
 		cg <- delete_edge_attr(graph=cg, name=eattr)
+	E(cg)$weight <- 1
+	cg <- simplify(cg, remove.multiple=TRUE, edge.attr.comb=list(weight="sum"), remove.loops=FALSE)
+	cg <- contract.vertices(cg, mapping=membership)	# TODO we could keep edges of different types separated (familial, professional, etc.)
+	cg <- simplify(cg, 
+		remove.multiple=TRUE,						# count multiple edges to get intercommunity weights
+		edge.attr.comb=list(weight="sum"),
+		remove.loops=TRUE 							# keeping the loops makes the plot difficult to read
+	)
 	# setup its attributes
 	V(cg)$name <- paste("C",coms,sep="")
 	V(cg)$label <- paste("C",coms,sep="")
 	V(cg)$size <- sapply(coms, function(i) length(which(membership==i)))
 	V(cg)$x <- sapply(coms, function(i) mean(V(g)$x[membership==i]))
 	V(cg)$y <- sapply(coms, function(i) mean(V(g)$y[membership==i]))
+	V(cg)$x2 <- sapply(coms, function(i) mean(V(g)$x2[membership==i]))
+	V(cg)$y2 <- sapply(coms, function(i) mean(V(g)$y2[membership==i]))
 	cg2 <- cg
 	
 	# only one group
@@ -373,10 +381,10 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 				for(c in 1:ncol(tt))
 					cg2 <- set_vertex_attr(graph=cg2, name=colnames(tt)[c], value=tt[,c])
 				plot.file <- file.path(attr.folder, paste0(attr,"_comgraph"))
-				V(cg2)$label <- rep(NA, gorder(cg2))
-				#plot(cg2, vertex.shape="pie", vertex.pie=split(tt,1:nrow(tt)), vertex.pie.color=list(colors))
-				custom.gplot(cg2, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=plot.file, color.isolates=TRUE)
-				#custom.gplot(cg2, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE)
+				#V(cg2)$label <- rep(NA, gorder(cg2))
+				custom.gplot(g=cg2, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=paste0(plot.file,"_lambert"), color.isolates=TRUE)
+				cg3 <- cg2; V(cg3)$x <- V(cg2)$x2; V(cg3)$y <- V(cg2)$y2; E(cg3)$weight <- E(cg2)$weight*2; 
+				custom.gplot(g=cg3, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=paste0(plot.file,"_kk"), rescale=FALSE, xlim=range(V(cg3)$x), ylim=range(V(cg3)$y), color.isolates=TRUE, min.size=15, max.size=100)
 				
 				# compute group purity for each group
 				grp.pur.tab <- apply(tt, 1, function(row) max(row)/sum(row))
@@ -473,11 +481,11 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 			for(c in 1:ncol(tt))
 				cg2 <- set_vertex_attr(graph=cg2, name=colnames(tt)[c], value=tt[,c])
 			plot.file <- file.path(attr.folder, paste0(attr,"_comgraph"))
-			V(cg2)$label <- rep(NA, gorder(cg2))
-			#plot(cg2, vertex.shape="pie", vertex.pie=split(tt,1:nrow(tt)), vertex.pie.color=list(colors))
-			custom.gplot(cg2, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=plot.file, color.isolates=TRUE)
-			#custom.gplot(cg2, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE)
-			
+			#V(cg2)$label <- rep(NA, gorder(cg2))
+			custom.gplot(g=cg2, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=paste0(plot.file,"_lambert"), color.isolates=TRUE)
+			cg3 <- cg2; V(cg3)$x <- V(cg2)$x2; V(cg3)$y <- V(cg2)$y2; E(cg3)$weight <- E(cg2)$weight*2; 
+			custom.gplot(g=cg3, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=paste0(plot.file,"_kk"), rescale=FALSE, xlim=range(V(cg3)$x), ylim=range(V(cg3)$y), color.isolates=TRUE, min.size=15, max.size=100)
+
 			# compute group purity for each group
 			grp.pur.tab <- apply(tt, 1, function(row) max(row)/sum(row))
 			tab <- as.data.frame(grp.pur.tab)
@@ -533,11 +541,11 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 				for(c in 1:ncol(tt))
 					cg2 <- set_vertex_attr(graph=cg2, name=colnames(tt)[c], value=tt[,c])
 				plot.file <- file.path(attrval.folder, paste0("comgraph"))
-				V(cg2)$label <- rep(NA, gorder(cg2))
-				#plot(cg2, vertex.shape="pie", vertex.pie=split(tt,1:nrow(tt)), vertex.pie.color=list(colors))
-				custom.gplot(cg2, col.att=colnames(tt), col.att.cap=paste0(attr," : ",uval), size.att="size", cat.att=TRUE, file=plot.file, color.isolates=TRUE)
-				#custom.gplot(cg2, col.att=colnames(tt), col.att.cap=attr_val, size.att="size", cat.att=TRUE)
-				
+				#V(cg2)$label <- rep(NA, gorder(cg2))
+				custom.gplot(g=cg2, col.att=colnames(tt), col.att.cap=paste0(attr," : ",uval), size.att="size", cat.att=TRUE, file=paste0(plot.file,"_lambert"), color.isolates=TRUE)
+				cg3 <- cg2; V(cg3)$x <- V(cg2)$x2; V(cg3)$y <- V(cg2)$y2; E(cg3)$weight <- E(cg2)$weight*2; 
+				custom.gplot(g=cg3, col.att=colnames(tt), col.att.cap=paste0(attr," : ",uval), size.att="size", cat.att=TRUE, file=paste0(plot.file,"_kk"), rescale=FALSE, xlim=range(V(cg3)$x), ylim=range(V(cg3)$y), color.isolates=TRUE, min.size=15, max.size=100)
+	
 				# compute group purity for each group
 				grp.pur.tab <- apply(tt, 1, function(row) max(row)/sum(row))
 				tab <- as.data.frame(grp.pur.tab)
@@ -655,11 +663,11 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 				for(c in 1:ncol(tt))
 					cg2 <- set_vertex_attr(graph=cg2, name=colnames(tt)[c], value=tt[,c])
 				plot.file <- file.path(attr.folder, paste0(attr,"_comgraph"))
-				V(cg2)$label <- rep(NA, gorder(cg2))
-				#plot(cg, vertex.shape="pie", vertex.pie=split(tt,1:nrow(tt)), vertex.pie.color=list(colors))
-				custom.gplot(cg2, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=plot.file, color.isolates=TRUE)
-				#custom.gplot(cg, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE)
-			
+				#V(cg2)$label <- rep(NA, gorder(cg2))
+				custom.gplot(g=cg2, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=paste0(plot.file,"_lambert"), color.isolates=TRUE)
+				cg3 <- cg2; V(cg3)$x <- V(cg2)$x2; V(cg3)$y <- V(cg2)$y2; E(cg3)$weight <- E(cg2)$weight*2; 
+				custom.gplot(g=cg3, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=paste0(plot.file,"_kk"), rescale=FALSE, xlim=range(V(cg3)$x), ylim=range(V(cg3)$y), color.isolates=TRUE, min.size=15, max.size=100)
+
 #				# compute purity for each group
 #				pur.tab <- apply(tt, 1, function(row) max(row)/sum(row))
 #				tab <- as.data.frame(pur.tab)

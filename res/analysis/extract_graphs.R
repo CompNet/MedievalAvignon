@@ -1382,6 +1382,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 
 
 
+
 ###### IMMOBILIER ######
 # TODO utiliser MDS pour positionner sur la base de la distance géodésique 
 # les noeuds dont on ne connait pas la position spatiale exacte 
@@ -1414,6 +1415,9 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #   - rues : lister les rues par degré et les considérer manuellement ?
 #   - étudier l'évolution d'indicateurs d'intérêt (corr entre distances, nbre de composants ?) 
 #     en fonction d'un critère permettant de sélectionner les rues à sortir (par ex. longueur)
+# - définir un modèle pour tester comment la dégradation d'un réseau de confront artificiel affecte la correlation des distances
+
+
 
 
 ###### SOCIAL ######
