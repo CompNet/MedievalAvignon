@@ -1179,15 +1179,15 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	# extract one graph for each predefined modality
 	#################
 	tlog(2,"Extracting several variants of the graph")
-	link.types <- c(LV_ESTATE, LK_TYPE_FLATREL)		# c(LK_TYPE_ALL, LV_ESTATE, LK_TYPE_FLATREL, link.types)
-	for(i in 1:length(link.types))
-	{	tlog(4,"Extracting graph \"",link.types[i],"\" (",i,"/",length(link.types),")")
+	graph.types <- c(GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS)		# c(GR_EST_FULL, GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS, LK_TYPE_FLATREL_VALS)
+	for(i in 1:length(graph.types))
+	{	tlog(4,"Extracting graph \"",graph.types[i],"\" (",i,"/",length(graph.types),")")
 		
 		# keep all links and nodes
-		if(link.types[i]==LK_TYPE_ALL)
+		if(graph.types[i]==GR_EST_FULL)
 			g1 <- g
 		# keep only the estate level (which includes short streets)
-		else if(link.types[i]==LV_ESTATE)
+		else if(graph.types[i]==GR_EST_ESTATE_LEVEL)
 		{	g1 <- g
 			tlog(6,"Cleaning the graph (n=",gorder(g1),", m=",gsize(g1),")")
 			# change the name of certain streets whose only a part is targeted in the confronts
@@ -1210,11 +1210,11 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			g1 <- delete_vertices(graph=g1, v=idx)
 			# remove certain geological objects
 			idx <- startsWith(V(g1)$name,"Repere:") & vertex_attr(g1,COL_LDMRK_TYPE)!="Rocher"
-			tlog(8,"Removing ",length(which(idx))," geological object")
+			tlog(8,"Removing ",length(which(idx))," geological object(s)")
 			g1 <- delete_vertices(graph=g1, v=idx)
 		}
-		# keep everything but the membership relations (and remove isolates)
-		else if(link.types[i]==LK_TYPE_FLATREL)
+		# keep everything but the membership relations
+		else if(graph.types[i]==GR_EST_FLAT_REL)
 		{	g1 <- g
 			tlog(6,"Cleaning the graph (n=",gorder(g1),", m=",gsize(g1),")")
 			# removing membership relations
@@ -1222,13 +1222,30 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			tlog(8,"Removing ",length(idx)," \"inside\" confronts")
 			g1 <- delete_edges(graph=g1, edges=idx)
 		}
+		# keep everything but the membership relations and long entities (walls, rivers)
+		else if(graph.types[i]==GR_EST_FLAT_MINUS)
+		{	g1 <- g
+			tlog(6,"Cleaning the graph (n=",gorder(g1),", m=",gsize(g1),")")
+			# removing membership relations
+			idx <- which(E(g1)$type==VAL_CONF_TYPE_INTERIEUR)
+			tlog(8,"Removing ",length(idx)," \"inside\" confronts")
+			g1 <- delete_edges(graph=g1, edges=idx)
+			# remove walls
+			idx <- startsWith(V(g1)$name,"Rempart:")
+			tlog(8,"Removing ",length(which(idx))," walls")
+			g1 <- delete_vertices(graph=g1, v=idx)
+			# remove certain geological objects
+			idx <- startsWith(V(g1)$name,"Repere:") & vertex_attr(g1,COL_LDMRK_TYPE)!="Rocher"
+			tlog(8,"Removing ",length(which(idx))," geological object(s)")
+			g1 <- delete_vertices(graph=g1, v=idx)
+		}
 		# keep only one type of link
 		else
 		{	# delete the links of the other types
-			g1 <- delete_edges(graph=g, edges=which(E(g)$type!=link.types[i]))
+			g1 <- delete_edges(graph=g, edges=which(E(g)$type!=graph.types[i]))
 			#g1 <- delete_vertices(graph=g1, v=which(degree(g, mode="all")==0))
 		}
-		g1$name <- link.types[i]
+		g1$name <- graph.types[i]
 		
 		# remove isolated nodes
 		idx <- igraph::degree(g1) < 1
@@ -1242,7 +1259,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		dir.create(path=graph.folder, showWarnings=FALSE, recursive=TRUE)
 		
 		# check graph validity
-		if(!(link.types[i] %in% c(LK_TYPE_ALL, LV_ESTATE, LK_TYPE_FLATREL)) && any_multiple(graph=g1))
+		if(!(graph.types[i] %in% c(GR_EST_FULL, GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS)) && any_multiple(graph=g1))
 		{	el <- as_edgelist(graph=g1, names=FALSE)
 			# loops
 			idx.loop <- which(count_multiple(g1)<1)
@@ -1343,9 +1360,11 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		write.graphml.file(g=g1, file=graph.file)
 		
 		# record the filtered version keeping only the main components
-		if(link.types[i]==LV_ESTATE)
+		if(graph.types[i]==GR_EST_ESTATE_LEVEL)
 			cmp.thre <- 15
-		else if(link.types[i]==LK_TYPE_FLATREL)
+		else if(graph.types[i]==GR_EST_FLAT_REL)
+			cmp.thre <- 25
+		else if(graph.types[i]==GR_EST_FLAT_MINUS)
 			cmp.thre <- 25
 		tmp <- components(graph=g1, mode="weak")
 		cmps <- which(tmp$csize<cmp.thre)
@@ -1372,7 +1391,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		}
 	}
 	
-	return(link.types)
+	return(graph.types)
 }
 
 ###### GÉNÉRAL ######
@@ -1408,13 +1427,14 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #   + rajouter kk+lambert 
 #   + épaisseur des liens
 # + sous-graphes de coms: spatialisation spécifique (kk)
-# - générer graphes avec filigrannes
+# - générer graphes avec filigrannes (pq déjà ? plot des versions filtrées ? ou coms)
 # + simstruct : ne pas comparer les paires de sim=0
 # - paramétrer construction graphe
-#   - troisième type de graphe: flat -- remparts, canaux, rhone >> générer visualisation de comparaison
+#   + troisième type de graphe: flat -- remparts, canaux, rhone
+#   + générer visualisation de comparaison
 #   - rues : lister les rues par degré et les considérer manuellement ?
 #   - étudier l'évolution d'indicateurs d'intérêt (corr entre distances, nbre de composants ?) 
-#     en fonction d'un critère permettant de sélectionner les rues à sortir (par ex. longueur)
+#     en fonction d'un critère permettant de sélectionner les rues à retirer (par ex. longueur)
 # - définir un modèle pour tester comment la dégradation d'un réseau de confront artificiel affecte la correlation des distances
 
 

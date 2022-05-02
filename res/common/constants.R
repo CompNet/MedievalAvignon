@@ -363,6 +363,12 @@ FILE_GRAPH <- "graph.graphml"
 GR_TYPE <- "type"
 	GR_TYPE_SOC <- "Social"
 	GR_TYPE_EST <- "Estate"
+	
+# subtypes of graphs
+GR_EST_FULL <- "full"					# all relations
+GR_EST_FLAT_REL <- "flat_relations"		# keeps everything but the membership relations	
+GR_EST_ESTATE_LEVEL <- "estate_level"	# basically only keeps real estate entities, short streets, and other punctual entities
+GR_EST_FLAT_MINUS <- "flat_minus"		# stricter version of the flat net: no wall and river
 
 # node attributes
 ND_NAME <- "name"
@@ -374,25 +380,25 @@ LK_TYPE <- "type"
 	LK_TYPE_FAM <- "Familial"
 	LK_TYPE_PRO <- "Professional"
 	LK_TYPE_ECCL <- "Ecclesiastical"
-	LK_TYPE_SOC_LST <- c(LK_TYPE_ALL, LK_TYPE_FAM, LK_TYPE_PRO, LK_TYPE_ECCL)
+	LK_TYPE_SOC_LST <- c(
+		LK_TYPE_ALL, 
+		LK_TYPE_FAM, 
+		LK_TYPE_PRO, 
+		LK_TYPE_ECCL
+	)
 	# confront
-	LK_TYPE_FLATREL <- "Flat_rel"		# keeps everything but the membership relations
-	
-LK_TYPE_FLATREL_VALS <- c(
-	VAL_CONF_TYPE_INTERIEUR, 
-	VAL_CONF_TYPE_EST, 
-	VAL_CONF_TYPE_OUEST, 
-	VAL_CONF_TYPE_NORD, 
-	VAL_CONF_TYPE_SUD, 
-	VAL_CONF_TYPE_MISC, 
-	VAL_CONF_TYPE_EGALE
-)	
-	
+	LK_TYPE_FLATREL_VALS <- c(
+		VAL_CONF_TYPE_INTERIEUR, 
+		VAL_CONF_TYPE_EST, 
+		VAL_CONF_TYPE_OUEST, 
+		VAL_CONF_TYPE_NORD, 
+		VAL_CONF_TYPE_SUD, 
+		VAL_CONF_TYPE_MISC, 
+		VAL_CONF_TYPE_EGALE
+	)	
+
 # link description
 LK_DESCR <- "description"
-
-# levels
-LV_ESTATE <- "lv_estate"				# basically only keeps real estate entities
 
 # map to convert link attribute values
 MAP_TABLE2GRAPH <- c()

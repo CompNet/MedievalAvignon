@@ -881,7 +881,7 @@ plot.comstruct.comparison <- function()
 			{	tlog(6,"Dealing with the ",if(filt) "" else "un"," filtered version of the networks")
 				
 				# load first graph
-				file.path <- file.path(FOLDER_OUT_ANAL_EST, if(filt) paste0(LV_ESTATE,"_filtered") else LV_ESTATE, FILE_GRAPH)
+				file.path <- file.path(FOLDER_OUT_ANAL_EST, if(filt) paste0(GR_EST_ESTATE_LEVEL,"_filtered") else GR_EST_ESTATE_LEVEL, FILE_GRAPH)
 				tlog(8,"Loading first graph '",file.path,"'")
 				g1 <- load.graphml.file(file=file.path)
 				coms.folder <- file.path(FOLDER_OUT_ANAL_EST, g1$name, MEAS_COMMUNITIES, mode, algo.name)
@@ -890,7 +890,7 @@ plot.comstruct.comparison <- function()
 				g1 <- set_vertex_attr(graph=g1, name=fname, index=idx, value=coms[,"Community"])
 				
 				# load second graph
-				file.path <- file.path(FOLDER_OUT_ANAL_EST, if(filt) paste0(LK_TYPE_FLATREL,"_filtered") else LK_TYPE_FLATREL, FILE_GRAPH)
+				file.path <- file.path(FOLDER_OUT_ANAL_EST, if(filt) paste0(GR_EST_FLAT_REL,"_filtered") else GR_EST_FLAT_REL, FILE_GRAPH)
 				tlog(8,"Loading second graph '",file.path,"'")
 				g2 <- load.graphml.file(file=file.path)
 				

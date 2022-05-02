@@ -56,28 +56,32 @@ start.rec.log(text="Nets")
 # possibly create folder
 dir.create(path=FOLDER_OUT_ANAL_EST, showWarnings=FALSE, recursive=TRUE)
 # load the data and create various versions of the spatial graph
-link.types <- extract.estate.networks()
-#link.types <- c(LV_ESTATE, LK_TYPE_FLATREL)
+graph.types <- extract.estate.networks()
+#graph.types <- c(GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS)
+
+# plot comparison graphs
+plot.graph.comparisons(graph.names=graph.types, folder=FOLDER_OUT_ANAL_EST)
+plot.graph.comparisons(graph.names=paste0(graph.types,"_filtered"), folder=FOLDER_OUT_ANAL_EST)
 
 
 
 
 ########################################################################
 # compute topological measures for the extracted networks
-tlog.start.loop(0,length(link.types), "Processing the measures for each extracted estate graph")
-for(i in 1:length(link.types))
-{	tlog.loop(2, i, "Processing the measures for graph ",link.types[i]," (",i,"/",length(link.types),")")
+tlog.start.loop(0,length(graph.types), "Processing the measures for each extracted estate graph")
+for(i in 1:length(graph.types))
+{	tlog.loop(2, i, "Processing the measures for graph ",graph.types[i]," (",i,"/",length(graph.types),")")
 	
-	# gname=LV_ESTATE; out.folder=FOLDER_OUT_ANAL_EST
+	# gname=GR_EST_ESTATE_LEVEL; out.folder=FOLDER_OUT_ANAL_EST
 	
 	# compute all topological measures
-	g <- analyze.network(gname=link.types[i], out.folder=FOLDER_OUT_ANAL_EST)
+	g <- analyze.network(gname=graph.types[i], out.folder=FOLDER_OUT_ANAL_EST)
 	
 	# filtered version
-	g <- analyze.network(gname=paste0(link.types[i],"_filtered"), out.folder=FOLDER_OUT_ANAL_EST)
+	g <- analyze.network(gname=paste0(graph.types[i],"_filtered"), out.folder=FOLDER_OUT_ANAL_EST)
 }
-plot.comstruct.comparison()
 tlog.end.loop("Measure computation over")
+plot.comstruct.comparison()
 
 
 

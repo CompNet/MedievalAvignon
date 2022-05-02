@@ -83,7 +83,7 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 #			ecols[nature==LK_TYPE_UNK] <- "#222222"			# dark grey
 		}
 		else if(gtype==GR_TYPE_EST)
-		{	if("name" %in% graph_attr_names(g) && (startsWith(g$name,LV_ESTATE) || startsWith(g$name,LK_TYPE_FLATREL)))
+		{	if("name" %in% graph_attr_names(g) && (startsWith(g$name,GR_EST_ESTATE_LEVEL) || startsWith(g$name,GR_EST_FLAT_REL)))
 				nats <- LK_TYPE_FLATREL_VALS
 			else
 				nats <- sort(unique(nature))
@@ -936,3 +936,76 @@ FELLAmytriangle <- function(coords, v=NULL, params) {
 			add = TRUE, inches = FALSE)
 }
 add.vertex.shape("triangle", clip=shapes("circle")$clip, plot=FELLAmytriangle)
+
+
+
+
+#############################################################################################
+# Creates plots comparing all pairs of graphs whose names are specified.
+#
+# graph.names: names of the graphs to compare.
+# folder: root folder to find the graph and record the plots.
+#############################################################################################
+plot.graph.comparisons <- function(graph.names, folder)
+{	for(i in 1:(length(graph.names)-1))
+	{	# read the first graph
+		file.path <- file.path(out.folder, graph.names[i], FILE_GRAPH)
+		g1 <- load.graphml.file(file=file.path)
+		# clean it
+		V(g1)$label <- paste(vertex_attr(g1,name=COL_LOC_ID), get.location.names(g1),sep="_")
+		g1 <- delete_edge_attr(g1, LK_TYPE)
+		g1 <- simplify(g1)
+		
+		for(j in (i+1):length(graph.names))
+		{	# read the second graph
+			file.path <- file.path(out.folder, graph.names[j], FILE_GRAPH)
+			g2 <- load.graphml.file(file=file.path)
+			# clean it
+			V(g2)$label <- paste(vertex_attr(g2,name=COL_LOC_ID), get.location.names(g2),sep="_")
+			g2 <- delete_edge_attr(g2, LK_TYPE)
+			g2 <- simplify(g2)
+			
+			# produce plots
+			plot.graph.comparison(g1, g2, folder)
+		}
+	}	
+}
+
+
+
+
+#############################################################################################
+# Creates a plot comparing both specified graph. Both graphs are plot, with colors showing
+# extra/missing vertices.
+#
+# g1: first graph to compare.
+# g2: second graph to compare.
+# folder: root folder to record the plot files.
+#############################################################################################
+plot.graph.comparison <- function(g1, g2, folder)
+{	# init file names
+	plot.file1 <- file.path(folder, g1$name, paste0("graph_comparison_", g2$name))
+	plot.file2 <- file.path(folder, g2$name, paste0("graph_comparison_", g1$name))
+	
+	# perform comparison
+	att1 <- rep("Present",gorder(g1))
+	att2 <- rep("Present",gorder(g2))
+	names1 <- gsub("_part","",V(g1)$idExterne,fixed=TRUE)
+	names2 <- gsub("_part","",V(g2)$idExterne,fixed=TRUE)
+	idx1 <- which(is.na(match(names1, names2)))
+	idx2 <- which(is.na(match(names2, names1)))
+	att1[idx1] <- "Absent"
+	att2[idx2] <- "Absent"
+	V(g1)$comparison <- att1
+	V(g2)$comparison <- att2
+	
+	# create the geo plots
+	custom.gplot(g=g1, col.att="comparison", cat.att=TRUE, file=paste0(plot.file1,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+	custom.gplot(g=g2, col.att="comparison", cat.att=TRUE, file=paste0(plot.file2,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+	
+	# create the algo plots
+	V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5
+	custom.gplot(g=g1, col.att="comparison", cat.att=TRUE, file=paste0(plot.file1,"_kk"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+	V(g2)$x <- V(g2)$x2; V(g2)$y <- V(g2)$y2; E(g2)$weight <- 0.5
+	custom.gplot(g=g2, col.att="comparison", cat.att=TRUE, file=paste0(plot.file2,"_kk"), rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+}
