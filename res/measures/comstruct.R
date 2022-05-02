@@ -362,7 +362,10 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 			else
 			{	# export group-wise distributions as csv
 				tlog(4,"Exporting group-wise distribution for categorical attribute \"",attr,"\"")
-				tmp <- factor(tmp)
+				if(is.null(COLS_ATT[[attr]]))
+					tmp <- factor(tmp)
+				else
+					tmp <- factor(tmp, levels=names(COLS_ATT[[attr]]))
 				tt <- t(sapply(coms, function(i) table(tmp[membership[est.idx]==i], useNA="no"), simplify="array"))
 				colnames(tt)[which(is.na(colnames(tt)))] <- "NA"
 				if(nrow(tt)==1 && ncol(tt)>1)
