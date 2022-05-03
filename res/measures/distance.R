@@ -170,7 +170,7 @@ analyze.net.distance <- function(g, out.folder)
 			cor.tab[sdist,"KendallCoef"] <- tmp$estimate
 			cor.tab[sdist,"KendallPval"] <- tmp$p.value
 			# NOTE: null hypothesis=zero correlation >> small p means this hypothesis is rejected
-		
+			
 			# plot the spatial distance as a function of the graph-based one
 			plot.file <- file.path(distance.folder, paste0(fname,"_vs_spatial_",sdist))
 			for(fformat in FORMAT)
