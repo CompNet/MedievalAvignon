@@ -1435,8 +1435,25 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #   - rues : lister les rues par degré et les considérer manuellement ?
 #   - étudier l'évolution d'indicateurs d'intérêt (corr entre distances, nbre de composants ?) 
 #     en fonction d'un critère permettant de sélectionner les rues à retirer (par ex. longueur)
-# - définir un modèle pour tester comment la dégradation d'un réseau de confront artificiel affecte la correlation des distances
+# + définir un modèle pour tester comment la dégradation d'un réseau de confront artificiel affecte la correlation des distances
 
+# TODO
+# + rajouter la ligne de moyenne dans les graphique de comparaison avg géodesic dist vs. spatial dist
+# - graphique distance spatiale moyenne = couleur de noeud (comme attribut)
+# - calculer aire des communautés (rectangle)
+# - modèle : dégrader en termes de coordonnées, voir si l'interpolation fonctionne
+# - légende pour l'épaisseur des liens
+# - critère pour l'extraction de graphes :
+#   - longueur de la rue
+#   critères :
+#   - nbre de noeuds
+#   - nbre de liens
+#   - nbre de communités
+#   - nbre de composants
+#   - modularité
+
+# idée papier: comment utiliser les graphes pour détecter les erreurs de saisie
+#              + effet des erreurs sur les graphes extraits
 
 
 

@@ -316,10 +316,10 @@ analyze.net.distance <- function(g, out.folder)
 						#xlim=c(1,max(deg.vals)*1.1)
 					)
 					# mean
-#					lines(	
-#						x=sort(unique(gvals)), avg.dist,
-#						col="BLACK"
-#					)
+					lines(	
+						x=sort(unique(gvals)), y=avg.dist,
+						col="BLACK"
+					)
 					dev.off()
 				}
 				
@@ -345,10 +345,10 @@ analyze.net.distance <- function(g, out.folder)
 						#xlim=c(1,max(deg.vals)*1.1)
 					)
 					# mean
-#					lines(	
-#						x=min(gvals):max(gvals), avg.dist,
-#						col="BLACK"
-#					)
+					lines(	
+						x=sort(unique(gvals)), y=avg.dist,
+						col="BLACK"
+					)
 					# legend
 					gradientLegend(range(vals), color=viridis(fine,direction=-1), inside=TRUE)
 					dev.off()

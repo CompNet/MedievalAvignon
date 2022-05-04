@@ -126,7 +126,7 @@ analyze.net.structsim <- function(g, out.folder)
 			gvals <- gvals[upper.tri(gvals)]
 			dd <- as.matrix(distances(graph=gt, mode="all"))
 			dd <- dd[upper.tri(dd)]
-			idx <- !is.infinite(dd) & dd>0
+			idx <- !is.infinite(dd) & svals>0
 			gvals <- gvals[idx]
 			svals <- svals[idx]
 			
