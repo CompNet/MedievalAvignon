@@ -829,7 +829,25 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 			}
 		}		
 		
-		# TODO add community-specific measures
+		tlog(4,"Compute community-specific topological measures for each group")
+		for(i in 1:length(coms))
+		{	com <- coms[i]
+			
+			# approximate the community spatial area through its bounding box
+			meas <- "rect_area"
+			if(!(meas %in% colnames(tab)))
+			{	tab <- cbind(tab, rep(NA,nrow(tab)))
+				colnames(tab)[ncol(tab)] <- meas
+			}			
+			idx <- which(membership==com)
+			posx <- vertex_attr(graph=g, name=COL_LOC_X, index=idx)
+			width <- max(posx,na.rm=TRUE) - min(posx,na.rm=TRUE)
+			posy <- vertex_attr(graph=g, name=COL_LOC_Y, index=idx)
+			height <- max(posy,na.rm=TRUE) - min(posy,na.rm=TRUE)
+			tab[i,meas] <- width*height
+			
+			# TODO add other community-specific measures
+		}
 		
 		# record stat table
 		tab.file <- file.path(coms.folder, "stats.csv")

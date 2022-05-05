@@ -475,6 +475,28 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 				)
 			}
 		}
+		uweights <- sort(unique(weights))
+		if(length(uweights)>1)
+		{	if(length(uweights)==2)
+			{	legs <- range(uweights)
+				thicks <- range(uweights)
+			}
+			else
+			{	legs <- c(uweights[1], uweights[round(length(uweights)/2)], uweights[length(uweights)])
+				thicks <- c(uweights[1], uweights[round(length(uweights)/2)], uweights[length(uweights)])
+			}
+			
+			legend(
+				title="Link width",				# title of the legend box
+				x="bottomright",				# position
+				legend=legs,					# text of the legend
+				col="BLACK",					# color of the lines
+				lty=1,							# type of lines
+				lwd=thicks,						# line thickness
+				bty="n",						# no box around the legend
+				cex=0.8
+			)
+		}
 		if(hasArg(col.att))
 		{	if(!all(!connected) && !all(is.na(vvals)))
 			{	# categorical attributes

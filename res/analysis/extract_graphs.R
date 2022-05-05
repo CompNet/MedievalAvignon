@@ -1435,10 +1435,10 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 # + simstruct : ne pas comparer les paires de sim=0
 # + rajouter la ligne de moyenne dans les graphiques de comparaison avg géodesic dist vs. spatial dist
 # + graphique distance spatiale moyenne = couleur de noeud (comme attribut)
-# - calculer aire des communautés (rectangle)
+# + calculer aire des communautés (rectangle)
+# - ajouter la légende pour l'épaisseur des liens
 # - modèle : 
 #   - dégrader en termes de coordonnées, voir si l'interpolation fonctionne
-# - ajouter la légende pour l'épaisseur des liens
 # - critère pour l'extraction de graphes :
 #   - longueur de la rue
 #   - descripteurs possibles :
