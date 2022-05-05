@@ -135,6 +135,7 @@ analyze.net.distance <- function(g, out.folder)
 		idx <- which(!is.na(coords[,1]) & !is.na(coords[,2]))
 		rem <- which(is.na(coords[,1]) | is.na(coords[,2]))
 		svals <- as.matrix(dist(x=coords[idx,], method="euclidean", diag=TRUE, upper=TRUE))
+		svals.avg <- apply(X=svals, MARGIN=1, FUN=function(v) mean(v[!is.na(v)]))
 		svals <- svals[upper.tri(svals)]
 		
 		# compute distribution
@@ -142,6 +143,17 @@ analyze.net.distance <- function(g, out.folder)
 		tlog(8,"Plotting in \"",plot.file,"\"")
 		if(length(svals)>2)
 			custom.hist(vals=svals, xlab[sdist], file=plot.file)
+		
+		# plot graph using color for average distance
+		satt <- "SpatialDist_avg"
+		avg.vals <- rep(NA,gorder(g))
+		avg.vals[idx] <- svals.avg
+		g <- set_vertex_attr(graph=g, name=satt, value=avg.vals)
+		V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
+		g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+		custom.gplot(g=g1, col.att=satt, file=file.path(distance.folder,paste0("distance_spatial_",sdist,"_avg_graph_lambert")), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+		g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+		custom.gplot(g=g1, col.att=satt, file=file.path(distance.folder,paste0("distance_spatial_",sdist,"_avg_graph_kk")), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
 		
 		# compute undirected graph distance
 		tlog(8,"Computing undirected graph distance")

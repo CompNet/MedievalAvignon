@@ -1422,13 +1422,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #      > différence avec sim structurelle ?
 
 # TODO
-# + diametre : manque les liens dans les graphes filtrés
-# + graphes de communautés
-#   + rajouter kk+lambert 
-#   + épaisseur des liens
-# + sous-graphes de coms: spatialisation spécifique (kk)
 # - générer graphes avec filigrannes (pq déjà ? plot des versions filtrées ? ou coms)
-# + simstruct : ne pas comparer les paires de sim=0
 # - paramétrer construction graphe
 #   + troisième type de graphe: flat -- remparts, canaux, rhone
 #   + générer visualisation de comparaison
@@ -1438,21 +1432,26 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 # + définir un modèle pour tester comment la dégradation d'un réseau de confront artificiel affecte la correlation des distances
 
 # TODO
-# + rajouter la ligne de moyenne dans les graphique de comparaison avg géodesic dist vs. spatial dist
-# - graphique distance spatiale moyenne = couleur de noeud (comme attribut)
+# + simstruct : ne pas comparer les paires de sim=0
+# + rajouter la ligne de moyenne dans les graphiques de comparaison avg géodesic dist vs. spatial dist
+# + graphique distance spatiale moyenne = couleur de noeud (comme attribut)
 # - calculer aire des communautés (rectangle)
-# - modèle : dégrader en termes de coordonnées, voir si l'interpolation fonctionne
-# - légende pour l'épaisseur des liens
+# - modèle : 
+#   - dégrader en termes de coordonnées, voir si l'interpolation fonctionne
+# - ajouter la légende pour l'épaisseur des liens
 # - critère pour l'extraction de graphes :
 #   - longueur de la rue
-#   critères :
-#   - nbre de noeuds
-#   - nbre de liens
-#   - nbre de communités
-#   - nbre de composants
-#   - modularité
+#   - descripteurs possibles :
+#     - nbre de noeuds
+#     - nbre de liens
+#     - nbre de communités
+#     - nbre de composants
+#     - modularité
+#     - faudrait qq ch de plus spatial
 
-# idée papier: comment utiliser les graphes pour détecter les erreurs de saisie
+# idées papiers: 
+# 1) intérêt du réseau de confront pour approximer la distance spatiale
+# 2) comment utiliser les graphes pour détecter les erreurs de saisie
 #              + effet des erreurs sur les graphes extraits
 
 
