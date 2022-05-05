@@ -269,6 +269,19 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 	else
 		vcols <- rep("GREY",n)
 	
+	# handle watermark attribute
+	if("watermark" %in% vertex_attr_names(g))
+	{	# nodes
+		wm <- V(g)$watermark
+		trans <- sapply(wm, function(v) if(v) 85 else 0)
+		vcols <- make.color.transparent(vcols, trans)
+		
+		# edges
+		el <- as_edgelist(g,names=FALSE)
+		trans <- sapply(wm[el[e,1]] | wm[el[e,2]], function(e) if(e) 85 else 0)
+		ecols <- make.color.transparent(ecols, trans)
+	}
+	
 	# vertex size
 	if(hasArg(size.att))
 	{	# one size fits all

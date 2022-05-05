@@ -1422,22 +1422,14 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #      > différence avec sim structurelle ?
 
 # TODO
-# - générer graphes avec filigrannes (pq déjà ? plot des versions filtrées ? ou coms)
-# - paramétrer construction graphe
-#   + troisième type de graphe: flat -- remparts, canaux, rhone
-#   + générer visualisation de comparaison
-#   - rues : lister les rues par degré et les considérer manuellement ?
-#   - étudier l'évolution d'indicateurs d'intérêt (corr entre distances, nbre de composants ?) 
-#     en fonction d'un critère permettant de sélectionner les rues à retirer (par ex. longueur)
-# + définir un modèle pour tester comment la dégradation d'un réseau de confront artificiel affecte la correlation des distances
-
-# TODO
 # + simstruct : ne pas comparer les paires de sim=0
 # + rajouter la ligne de moyenne dans les graphiques de comparaison avg géodesic dist vs. spatial dist
 # + graphique distance spatiale moyenne = couleur de noeud (comme attribut)
 # + calculer aire des communautés (rectangle)
-# - ajouter la légende pour l'épaisseur des liens
+# + ajouter la légende pour l'épaisseur des liens
+# - générer graphes avec filigrannes (pq déjà ? plot des versions filtrées ? ou coms)
 # - modèle : 
+#   + définir un modèle pour tester comment la dégradation d'un réseau de confront artificiel affecte la correlation des distances
 #   - dégrader en termes de coordonnées, voir si l'interpolation fonctionne
 # - critère pour l'extraction de graphes :
 #   - longueur de la rue

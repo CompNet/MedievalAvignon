@@ -177,11 +177,20 @@ analyze.net.comstruct <- function(g, out.folder)
 						# create subfolder
 						com.folder <- file.path(coms.folder, "_communities", com)
 						dir.create(path=com.folder, showWarnings=FALSE, recursive=TRUE)
+						plot.file <- file.path(com.folder, "graph")
+						
+						# plot as watermark
+						V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
+						g1 <- g; V(g1)$watermark <- mbrs!=com; #g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+						custom.gplot(g=g1, file=paste0(plot.file,"_lambert_watermark"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+						#
+						g1 <- g; V(g1)$watermark <- mbrs!=com;  V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; #g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+						custom.gplot(g=g1, file=paste0(plot.file,"_kk_watermark"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+		
 						# create subgraph
 						g.com <- induced_subgraph(graph=g, vids=which(mbrs==com))
 						g.com$name <- file.path(g$name, MEAS_COMMUNITIES, mode, algo.name, "_communities", com)
-						# plot
-						plot.file <- file.path(com.folder, "graph")
+						# plot only the community
 						custom.gplot(g=g.com, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
 						g1 <- g.com; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5
 						custom.gplot(g=g1, file=paste0(plot.file,"_kk0"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
