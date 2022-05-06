@@ -1427,7 +1427,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 # + graphique distance spatiale moyenne = couleur de noeud (comme attribut)
 # + calculer aire des communautés (rectangle)
 # + ajouter la légende pour l'épaisseur des liens
-# - générer graphes avec filigrannes (pq déjà ? plot des versions filtrées ? ou coms)
+# + générer graphes avec filigrannes pour chaque communauté
 # - modèle : 
 #   + définir un modèle pour tester comment la dégradation d'un réseau de confront artificiel affecte la correlation des distances
 #   - dégrader en termes de coordonnées, voir si l'interpolation fonctionne

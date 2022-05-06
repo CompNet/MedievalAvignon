@@ -69,8 +69,9 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 		vshapes[which(vertex_attr(g, COL_LOC_TYPE)!="Bien")] <- "triangle"
 	if(hasArg(v.hl))
 		vshapes[v.hl] <- "csquare"
-	# vertex outline color
-	outline.cols <- rep("BLACK",n)
+	# vertex colors
+	outline.cols <- rep("BLACK", n)
+	vlab.cols <- rep("BLACK", n)
 	
 	# set edge colors
 	ecols <- rep("gray50", m)						# default color
@@ -274,13 +275,14 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 	{	# nodes
 		wm <- V(g)$watermark
 		trans <- sapply(wm, function(v) if(v) 85 else 0)
-		vcols <- make.color.transparent(vcols, trans)
-		outline.cols <- make.color.transparent(outline.cols, trans)
+		vcols <- sapply(1:length(trans), function(i) make.color.transparent(vcols[i], trans[i]))
+		outline.cols <- sapply(1:length(trans), function(i) make.color.transparent(outline.cols[i], trans[i]))
+		vlab.cols <- sapply(1:length(trans), function(i) make.color.transparent(vlab.cols[i], trans[i]))
 		
 		# edges
 		el <- as_edgelist(g,names=FALSE)
 		trans <- sapply(wm[el[,1]] | wm[el[,2]], function(e) if(e) 85 else 0)
-		ecols <- make.color.transparent(ecols, trans)
+		ecols <- sapply(1:length(trans), function(i) make.color.transparent(ecols[i], trans[i]))
 	}
 	
 	# vertex size
@@ -450,7 +452,7 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 			vertex.label.family="sans",				# font type
 			vertex.label.font=1,					# 1 is plain text, 2 is bold face, 3 is italic, 4 is bold and italic
 			vertex.label.label.dist=0,				# label distance to node center (0=center)
-			vertex.label.color="BLACK",				# label color
+			vertex.label.color=vlab.cols,			# vertex label color
 			edge.color=ecols,						# link color
 			edge.lty=elty,							# link type
 			edge.width=ewidth,						# link thickness
@@ -961,13 +963,18 @@ FELLAmytriangle <- function(coords, v=NULL, params) {
 	if (length(vertex.color) != 1 && !is.null(v)) {
 		vertex.color <- vertex.color[v]
 	}
+	frame.color <- params("vertex", "frame.color")
+	if (length(frame.color) != 1 && !is.null(v)) {
+		frame.color <- frame.color[v]
+	}
 	vertex.size <- 1/200 * params("vertex", "size")
 	if (length(vertex.size) != 1 && !is.null(v)) {
 		vertex.size <- vertex.size[v]
 	}
 	
 	graphics::symbols(
-			x = coords[, 1], y = coords[, 2], bg = vertex.color,
+			x = coords[, 1], y = coords[, 2], 
+			bg = vertex.color, fg = frame.color,
 			stars = cbind(vertex.size, vertex.size, vertex.size),
 			add = TRUE, inches = FALSE)
 }
