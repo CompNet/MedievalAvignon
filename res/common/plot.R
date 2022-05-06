@@ -275,6 +275,7 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 		wm <- V(g)$watermark
 		trans <- sapply(wm, function(v) if(v) 85 else 0)
 		vcols <- make.color.transparent(vcols, trans)
+		outline.cols <- make.color.transparent(outline.cols, trans)
 		
 		# edges
 		el <- as_edgelist(g,names=FALSE)
