@@ -278,7 +278,7 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 		
 		# edges
 		el <- as_edgelist(g,names=FALSE)
-		trans <- sapply(wm[el[e,1]] | wm[el[e,2]], function(e) if(e) 85 else 0)
+		trans <- sapply(wm[el[,1]] | wm[el[,2]], function(e) if(e) 85 else 0)
 		ecols <- make.color.transparent(ecols, trans)
 	}
 	
