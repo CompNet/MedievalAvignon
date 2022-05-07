@@ -63,6 +63,9 @@ graph.types <- extract.estate.networks()
 plot.graph.comparisons(graph.names=graph.types, folder=FOLDER_OUT_ANAL_EST)
 plot.graph.comparisons(graph.names=paste0(graph.types,"_filtered"), folder=FOLDER_OUT_ANAL_EST)
 
+# check street removal step
+plot.street.removal()
+
 
 
 

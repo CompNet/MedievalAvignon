@@ -10,7 +10,11 @@
 #############################################################
 # measure name
 MEAS_COMMUNITIES <- "communities"
+MEAS_COMMUNITY_NBR <- "community_nbr"
+MEAS_MODULARITY <- "modularity"
 MEAS_LONG_NAMES[MEAS_COMMUNITIES] <- "Communities"
+MEAS_LONG_NAMES[MEAS_COMMUNITY_NBR] <- "Community number"
+MEAS_LONG_NAMES[MEAS_MODULARITY] <- "Modularity"
 
 
 

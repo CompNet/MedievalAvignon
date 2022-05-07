@@ -10,9 +10,11 @@
 #############################################################
 # measure name
 MEAS_COMPONENTS <- "components"
+MEAS_NBR_COMPONENTS <- "component_nbr"
 MEAS_NBR_NODES <- "node_nbr"
 MEAS_NBR_LINKS <- "link_nbr"
 MEAS_LONG_NAMES[MEAS_COMPONENTS] <- "Components"
+MEAS_LONG_NAMES[MEAS_NBR_COMPONENTS] <- "Component number"
 MEAS_LONG_NAMES[MEAS_NBR_NODES] <- "Node number"
 MEAS_LONG_NAMES[MEAS_NBR_LINKS] <- "Link number"
 

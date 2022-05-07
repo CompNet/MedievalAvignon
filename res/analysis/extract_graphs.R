@@ -1179,7 +1179,9 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	# extract one graph for each predefined modality
 	#################
 	tlog(2,"Extracting several variants of the graph")
-	graph.types <- c(GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS)		# c(GR_EST_FULL, GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS, LK_TYPE_FLATREL_VALS)
+#	graph.types <- c(GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS)		# c(GR_EST_FULL, GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS, LK_TYPE_FLATREL_VALS)
+	measured.streets <- which(vertex_attr(g,COL_LOC_TYPE)=="Rue" & !is.na(vertex_attr(g,COL_STREET_LENGTH)))
+	graph.types <- paste0(GR_EST_FLAT_MINUS,"_",1:length(measured.streets))
 	for(i in 1:length(graph.types))
 	{	tlog(4,"Extracting graph \"",graph.types[i],"\" (",i,"/",length(graph.types),")")
 		
@@ -1223,7 +1225,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			g1 <- delete_edges(graph=g1, edges=idx)
 		}
 		# keep everything but the membership relations and long entities (walls, rivers)
-		else if(graph.types[i]==GR_EST_FLAT_MINUS)
+		else if(startsWith(graph.types[i], GR_EST_FLAT_MINUS))
 		{	g1 <- g
 			tlog(6,"Cleaning the graph (n=",gorder(g1),", m=",gsize(g1),")")
 			# removing membership relations
@@ -1238,6 +1240,14 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			idx <- startsWith(V(g1)$name,"Repere:") & vertex_attr(g1,COL_LDMRK_TYPE)!="Rocher"
 			tlog(8,"Removing ",length(which(idx))," geological object(s)")
 			g1 <- delete_vertices(graph=g1, v=idx)
+			# possibly remove the longest streets
+			if(graph.types[i]!=GR_EST_FLAT_MINUS)
+			{	nbr <- as.integer(strsplit(graph.types[i],"_")[[1]][3])
+				idx <- order(vertex_attr(g, name=COL_STREET_LENGTH, index=measured.streets),decreasing=TRUE)[1:nbr]
+				#vertex_attr(g, name=COL_STREET_LENGTH, index=measured.streets[idx])
+				tlog(8,"Removing the ",length(idx)," longest street(s)")
+				g1 <- delete_vertices(graph=g1, v=measured.streets[idx])
+			}
 		}
 		# keep only one type of link
 		else
@@ -1254,140 +1264,164 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		#
 		tlog(6,"Remaining: n=",gorder(g1)," m=",gsize(g1))
 		
-		# init folder
-		graph.folder <- file.path(FOLDER_OUT_ANAL_EST, g1$name)
-		dir.create(path=graph.folder, showWarnings=FALSE, recursive=TRUE)
-		
-		# check graph validity
-		if(!(graph.types[i] %in% c(GR_EST_FULL, GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS)) && any_multiple(graph=g1))
-		{	el <- as_edgelist(graph=g1, names=FALSE)
-			# loops
-			idx.loop <- which(count_multiple(g1)<1)
-			tlog(6,"Loops: ",length(idx.loop))
-			if(length(idx.loop)>0)
-			{	tab <- cbind(V(g1)$name[el[idx.loop,1]], 
-						V(g1)$name[el[idx.loop,2]], 
-						count_multiple(g1)[idx.loop], 
-						sapply(1:length(idx.loop), function(j) 
-								edge_attr(g1, LK_TYPE, E(g1)[el[idx.loop[j],1] %->% el[idx.loop[j],2]])))
-				colnames(tab) <- c("Source","Target","Multiplicity","Type")
-				print(tab)
-				tab.file <- file.path(graph.folder, "pb_loops.txt")
-				write.table(tab, file=tab.file, quote=FALSE, sep="\t", row.names=FALSE, col.names=TRUE)
-			}
-			# multiple links
-			idx.mult <- which(count_multiple(g1)>1)
-			tlog(6,"Multiple links: ",length(idx.mult))
-			if(length(idx.mult)>0)
-			{	tab <- matrix(nrow=0, ncol=4)
-				colnames(tab) <- c("Source","Target","Multiplicity","Type")
-				for(j in 1:length(idx.mult))
-				{	lids <- E(g1)[el[idx.mult[j],1] %->% el[idx.mult[j],2]]
-					descr <- edge_attr(g1,LK_TYPE, E(g1)[lids])
-					if(length(descr)>length(unique(descr)))
-					{	row <- c(V(g1)$name[el[idx.mult[j],1]], 
-								V(g1)$name[el[idx.mult[j],2]], 
-								count_multiple(g1)[idx.mult[j]], 
-								paste(descr, collapse=":"))
-						tab <- rbind(tab, row)
-					}
-				}
-				if(nrow(tab)>0)
-				{	print(tab)
-					tab.file <- file.path(graph.folder, "pb_multiple_links.txt")
-					write.table(tab, file=tab.file, quote=FALSE, sep="\t", row.names=FALSE, col.names=TRUE)
-				}
-			}
-			# stop execution
-			#stop("The graph contains multiple edges or loops")
-			g1 <- simplify(graph=g1, remove.multiple=TRUE, remove.loops=TRUE, 
-					edge.attr.comb=list(type="first", label=function(x) 
-							{	x <- x[!is.na(x)]
-								if(length(x)>0)
-									res <- paste(x, collapse=";")
-								else
-									res <- NA
-								return(res)
-							}))
+		# specific case of street removal test
+		if(startsWith(graph.types[i], paste0(GR_EST_FLAT_MINUS,"_")))
+		{	# setup file names
+			graph.folder <- file.path(FOLDER_OUT_ANAL_EST, GR_EST_FLAT_MINUS, "_removed_streets")
+			dir.create(path=graph.folder, showWarnings=FALSE, recursive=TRUE)
+			graph.file <- file.path(graph.folder, paste0("graph_rem=",nbr,".graphml"))
+			lay.file <- file.path(FOLDER_OUT_ANAL_EST, GR_EST_FLAT_MINUS, "layout.txt")
+			
+			# retrieve layout and add to graph
+			layout <- read.table(file=lay.file, sep="\t", header=TRUE, check.names=FALSE)
+			lay.idx <- match(V(g1)$idExterne, layout[,"idExterne"])
+			if(any(is.na(lay.idx))) {print(V(g1)[which(is.na(lay.idx))]); stop("Could not match node ids with ids from the layout file")}
+			V(g1)$x2 <- layout[lay.idx,"x"]; V(g1)$y <- layout[lay.idx,"y"]
+			
+			# record graphml file
+			tlog(4,"Recording graph in \"",graph.file,"\"")
+			write.graphml.file(g=g1, file=graph.file)
+			
+			# TODO same thing with filtered versions
 		}
 		
-		# plot the graph using the geographic coordinates
-		#g1 <- update.node.labels(g1, vals=degree(g1))
-		V(g1)$label <- paste(vertex_attr(g1,name=COL_LOC_ID), get.location.names(g1),sep="_")
-		plot.file <- file.path(graph.folder, "graph_lambert")
-		tlog(4,"Plotting graph using geographic coordinates in \"",plot.file,"\"")
-		custom.gplot(g=g1, file=plot.file, asp=1, size.att=2, vertex.label.cex=0.1)
-		#custom.gplot(g=g1)
-		write.graphml.file(g=g1, file=paste0(plot.file,".graphml"))
-
-		# plot the graph using a layouting algorithm 
-		g2 <- g1#; V(g2)$x <- V(g2)$x2; V(g2)$y <- V(g2)$y2
-		#V(g2)$label <- NA; idx <- which(degree(g2)>3); V(g2)[idx]$label <- comp.names[idx]
-		V(g2)$label <- paste(vertex_attr(g2,name=COL_LOC_ID), get.location.names(g2),sep="_")
-		plot.file <- file.path(graph.folder, "graph_kk")
-		tlog(4,"Plotting graph using layouting algorithm in \"",plot.file,"\"")
-		lay.file <- file.path(graph.folder, "layout.txt")
-		###### init layout quasi-manually
-#		# export to graphml and use gephi, then import back
-#		g0 <- g1
-#		layout <- layout_with_kk(g0, kkconst=5)
-#		V(g0)$x <- layout[,1]; V(g0)$y <- layout[,2]; 
-#		custom.gplot(g=g0, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g0)$x), ylim=range(V(g0)$y), vertex.label.cex=0.1, size.att=6)
-#		write.graphml.file(g=g0, file=paste0(plot.file,".graphml"))
-#		# <do your magic with gephi, then record graph with new layout>
-#		g0 <- read.graph(paste0(plot.file,".graphml"), format="graphml")
-#		layout <- data.frame(V(g0)$idExterne, V(g0)$x, V(g0)$y)
-#		colnames(layout) <- c("idExterne", "x","y")
-#		scale <- max(abs(layout[,c("x","y")]))/7
-#		layout[,c("x","y")] <- layout[,c("x","y")]/scale
-#		write.table(x=layout, file=lay.file, sep="\t", row.names=FALSE, col.names=TRUE)
-		######
-		layout <- read.table(file=lay.file, sep="\t", header=TRUE, check.names=FALSE)
-		lay.idx <- match(V(g2)$idExterne, layout[,"idExterne"])
-		if(any(is.na(lay.idx))) {print(V(g2)[which(is.na(lay.idx))]); stop("Could not match node ids with ids from the layout file")}
-		V(g2)$x <- layout[lay.idx,"x"]; V(g2)$y <- layout[lay.idx,"y"]
-		E(g2)$weight <- 0.5
-		#
-		custom.gplot(g=g2, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), vertex.label.cex=0.1, size.att=6)
-		#custom.gplot(g=g2)
-		write.graphml.file(g=g2, file=paste0(plot.file,".graphml"))
-		
-		# record graph as a graphml file
-		V(g1)$x2 <- V(g2)$x
-		V(g1)$y2 <- V(g2)$y
-		graph.file <- file.path(graph.folder, FILE_GRAPH)
-		tlog(4,"Recording graph in \"",graph.file,"\"")
-		write.graphml.file(g=g1, file=graph.file)
-		
-		# record the filtered version keeping only the main components
-		if(graph.types[i]==GR_EST_ESTATE_LEVEL)
-			cmp.thre <- 15
-		else if(graph.types[i]==GR_EST_FLAT_REL)
-			cmp.thre <- 25
-		else if(graph.types[i]==GR_EST_FLAT_MINUS)
-			cmp.thre <- 25
-		tmp <- components(graph=g1, mode="weak")
-		cmps <- which(tmp$csize<cmp.thre)
-		idx <- which(tmp$membership %in% cmps)
-		if(length(idx)>1)
-		{	# filter graph
-			g1 <- delete_vertices(graph=g1, v=idx)
-			g1$name <- paste0(g1$name,"_filtered")
-			g2 <- delete_vertices(graph=g2, v=idx)
-			g2$name <- paste0(g2$name,"_filtered")
-			# record as graphml
+		# regular case
+		else
+		{	# init folder
 			graph.folder <- file.path(FOLDER_OUT_ANAL_EST, g1$name)
 			dir.create(path=graph.folder, showWarnings=FALSE, recursive=TRUE)
-			graph.file <- file.path(graph.folder, FILE_GRAPH)
-			tlog(4,"Recording filtered graph in \"",graph.file,"\"")
-			write.graphml.file(g=g1, file=graph.file)
-			# plot
+		
+			# check graph validity
+			if(!(graph.types[i] %in% c(GR_EST_FULL, GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS)) && any_multiple(graph=g1))
+			{	el <- as_edgelist(graph=g1, names=FALSE)
+				# loops
+				idx.loop <- which(count_multiple(g1)<1)
+				tlog(6,"Loops: ",length(idx.loop))
+				if(length(idx.loop)>0)
+				{	tab <- cbind(V(g1)$name[el[idx.loop,1]], 
+							V(g1)$name[el[idx.loop,2]], 
+							count_multiple(g1)[idx.loop], 
+							sapply(1:length(idx.loop), function(j) 
+									edge_attr(g1, LK_TYPE, E(g1)[el[idx.loop[j],1] %->% el[idx.loop[j],2]])))
+					colnames(tab) <- c("Source","Target","Multiplicity","Type")
+					print(tab)
+					tab.file <- file.path(graph.folder, "pb_loops.txt")
+					write.table(tab, file=tab.file, quote=FALSE, sep="\t", row.names=FALSE, col.names=TRUE)
+				}
+				# multiple links
+				idx.mult <- which(count_multiple(g1)>1)
+				tlog(6,"Multiple links: ",length(idx.mult))
+				if(length(idx.mult)>0)
+				{	tab <- matrix(nrow=0, ncol=4)
+					colnames(tab) <- c("Source","Target","Multiplicity","Type")
+					for(j in 1:length(idx.mult))
+					{	lids <- E(g1)[el[idx.mult[j],1] %->% el[idx.mult[j],2]]
+						descr <- edge_attr(g1,LK_TYPE, E(g1)[lids])
+						if(length(descr)>length(unique(descr)))
+						{	row <- c(V(g1)$name[el[idx.mult[j],1]], 
+									V(g1)$name[el[idx.mult[j],2]], 
+									count_multiple(g1)[idx.mult[j]], 
+									paste(descr, collapse=":"))
+							tab <- rbind(tab, row)
+						}
+					}
+					if(nrow(tab)>0)
+					{	print(tab)
+						tab.file <- file.path(graph.folder, "pb_multiple_links.txt")
+						write.table(tab, file=tab.file, quote=FALSE, sep="\t", row.names=FALSE, col.names=TRUE)
+					}
+				}
+				# stop execution
+				#stop("The graph contains multiple edges or loops")
+				g1 <- simplify(graph=g1, remove.multiple=TRUE, remove.loops=TRUE, 
+						edge.attr.comb=list(type="first", label=function(x) 
+								{	x <- x[!is.na(x)]
+									if(length(x)>0)
+										res <- paste(x, collapse=";")
+									else
+										res <- NA
+									return(res)
+								}))
+			}
+			
+			# plot the graph using the geographic coordinates
+			#g1 <- update.node.labels(g1, vals=degree(g1))
+			V(g1)$label <- paste(vertex_attr(g1,name=COL_LOC_ID), get.location.names(g1),sep="_")
 			plot.file <- file.path(graph.folder, "graph_lambert")
+			tlog(4,"Plotting graph using geographic coordinates in \"",plot.file,"\"")
 			custom.gplot(g=g1, file=plot.file, asp=1, size.att=2, vertex.label.cex=0.1)
+			#custom.gplot(g=g1)
 			write.graphml.file(g=g1, file=paste0(plot.file,".graphml"))
+	
+			# plot the graph using a layouting algorithm 
+			g2 <- g1#; V(g2)$x <- V(g2)$x2; V(g2)$y <- V(g2)$y2
+			#V(g2)$label <- NA; idx <- which(degree(g2)>3); V(g2)[idx]$label <- comp.names[idx]
+			V(g2)$label <- paste(vertex_attr(g2,name=COL_LOC_ID), get.location.names(g2),sep="_")
 			plot.file <- file.path(graph.folder, "graph_kk")
+			tlog(4,"Plotting graph using layouting algorithm in \"",plot.file,"\"")
+			lay.file <- file.path(graph.folder, "layout.txt")
+			###### init layout quasi-manually
+#			# export to graphml and use gephi, then import back
+#			g0 <- g1
+#			layout <- layout_with_kk(g0, kkconst=5)
+#			V(g0)$x <- layout[,1]; V(g0)$y <- layout[,2]; 
+#			custom.gplot(g=g0, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g0)$x), ylim=range(V(g0)$y), vertex.label.cex=0.1, size.att=6)
+#			write.graphml.file(g=g0, file=paste0(plot.file,".graphml"))
+#			# <do your magic with gephi, then record graph with new layout>
+#			g0 <- read.graph(paste0(plot.file,".graphml"), format="graphml")
+#			layout <- data.frame(V(g0)$idExterne, V(g0)$x, V(g0)$y)
+#			colnames(layout) <- c("idExterne", "x","y")
+#			scale <- max(abs(layout[,c("x","y")]))/7
+#			layout[,c("x","y")] <- layout[,c("x","y")]/scale
+#			write.table(x=layout, file=lay.file, sep="\t", row.names=FALSE, col.names=TRUE)
+			######
+			layout <- read.table(file=lay.file, sep="\t", header=TRUE, check.names=FALSE)
+			lay.idx <- match(V(g2)$idExterne, layout[,"idExterne"])
+			if(any(is.na(lay.idx))) {print(V(g2)[which(is.na(lay.idx))]); stop("Could not match node ids with ids from the layout file")}
+			V(g2)$x <- layout[lay.idx,"x"]; V(g2)$y <- layout[lay.idx,"y"]
+			E(g2)$weight <- 0.5
+			#
 			custom.gplot(g=g2, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), vertex.label.cex=0.1, size.att=6)
+			#custom.gplot(g=g2)
 			write.graphml.file(g=g2, file=paste0(plot.file,".graphml"))
+			
+			# record graph as a graphml file
+			V(g1)$x2 <- V(g2)$x
+			V(g1)$y2 <- V(g2)$y
+			graph.file <- file.path(graph.folder, FILE_GRAPH)
+			tlog(4,"Recording graph in \"",graph.file,"\"")
+			write.graphml.file(g=g1, file=graph.file)
+			
+			# record the filtered version keeping only the main components
+			if(graph.types[i]==GR_EST_ESTATE_LEVEL)
+				cmp.thre <- 15
+			else if(graph.types[i]==GR_EST_FLAT_REL)
+				cmp.thre <- 25
+			else if(graph.types[i]==GR_EST_FLAT_MINUS)
+				cmp.thre <- 25
+			tmp <- components(graph=g1, mode="weak")
+			cmps <- which(tmp$csize<cmp.thre)
+			idx <- which(tmp$membership %in% cmps)
+			if(length(idx)>1)
+			{	# filter graph
+				g1 <- delete_vertices(graph=g1, v=idx)
+				g1$name <- paste0(g1$name,"_filtered")
+				g2 <- delete_vertices(graph=g2, v=idx)
+				g2$name <- paste0(g2$name,"_filtered")
+				# record as graphml
+				graph.folder <- file.path(FOLDER_OUT_ANAL_EST, g1$name)
+				dir.create(path=graph.folder, showWarnings=FALSE, recursive=TRUE)
+				graph.file <- file.path(graph.folder, FILE_GRAPH)
+				tlog(4,"Recording filtered graph in \"",graph.file,"\"")
+				write.graphml.file(g=g1, file=graph.file)
+				# plot
+				plot.file <- file.path(graph.folder, "graph_lambert")
+				custom.gplot(g=g1, file=plot.file, asp=1, size.att=2, vertex.label.cex=0.1)
+				write.graphml.file(g=g1, file=paste0(plot.file,".graphml"))
+				plot.file <- file.path(graph.folder, "graph_kk")
+				custom.gplot(g=g2, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), vertex.label.cex=0.1, size.att=6)
+				write.graphml.file(g=g2, file=paste0(plot.file,".graphml"))
+			}
 		}
 	}
 	

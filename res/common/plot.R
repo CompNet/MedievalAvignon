@@ -1052,3 +1052,54 @@ plot.graph.comparison <- function(g1, g2, folder)
 	V(g2)$x <- V(g2)$x2; V(g2)$y <- V(g2)$y2; E(g2)$weight <- 0.5
 	custom.gplot(g=g2, col.att="comparison", cat.att=TRUE, file=paste0(plot.file2,"_kk"), rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
 }
+
+
+
+
+#############################################################################################
+#############################################################################################
+plot.street.removal <- function()
+{	tlog(2,"Plotting stats related to street removal")
+	
+	# get folder path 
+	graph.folder <- file.path(FOLDER_OUT_ANAL_EST, GR_EST_FLAT_MINUS, "_removed_streets")
+	ll <- list.files(path=graph.folder, pattern="graph_rem=[0-9]+\\.graphml", full.names=TRUE)
+	tlog(4,"Found ",length(ll)," graph files in folder '",graph.folder,"'")
+	
+	# read graphs
+	tlog(4,"Reading graph files")
+	gs <- list()
+	for(i in 1:length(ll))
+	{	graph.file <- ll[[i]]
+		tlog(6,"Reading file '",graph.file,"'")
+		g <- load.graphml.file(file=graph.file)
+		#r <- as.integer(substr(basename(graph.file), start=nchar("graph_rem=")+1, stop=unlist(gregexpr(pattern=".graphml",basename(graph.file)))-1))
+		r <- as.integer(strsplit(g$name,"_")[[1]][3])
+		gs[[r]] <- g 
+	}
+	#sapply(gs,function(g) g$name)
+	
+	# compute stats
+	meas.names <- c(MEAS_NBR_NODES, MEAS_NBR_LINKS, MEAS_NBR_COMPONENTS, MEAS_COMMUNITY_NBR, MEAS_MODULARITY)
+	tab.stats <- data.frame(1:length(gs), matrix(NA, nrow=length(gs), ncol=length(meas.names)))
+	colnames(tab.stats) <- c("DeletedStreets", meas.names)
+	tlog(4,"Computing stats")
+	for(i in 1:nrow(tab.stats))
+	{	tlog(6,"Processing graph #",i,"/",nrow(tab.stats))
+		
+		# counts
+		tab.stats[i,MEAS_NBR_NODES] <- gorder(gs[[i]])
+		tab.stats[i,MEAS_NBR_LINKS] <- gsize(gs[[i]])
+		
+		# components
+		tab.stats[i,MEAS_NBR_COMPONENTS] <- components(graph=gs[[i]], mode="weak")$no
+		
+		# communities
+		coms <- cluster_louvain(graph=simplify(as.undirected(gs[[i]])), weights=NULL)
+		tab.stats[i,MEAS_COMMUNITY_NBR] <- length(unique(as.integer(membership(coms))))
+		tab.stats[i,MEAS_MODULARITY] <- modularity(coms)
+	}
+	
+	# record stats
+	
+}
