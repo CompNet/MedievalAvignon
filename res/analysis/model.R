@@ -70,9 +70,8 @@ epal <- get.palette(length(types))
 # init correlation table
 tlog(6,"Initializing correlation table")
 cor.tab <- matrix(NA,nrow=length(del.rates),ncol=6)	
-cor.tab <- data.frame(cor.tab)
-colnames(cor.tab) <- c("PearsonCoef", "PearsonPval", "SpearmanCoef", "SpearmanPval", "KendallCoef", "KendallPval")
-rownames(cor.tab) <- sprintf("%.2f", del.rates)
+cor.tab <- data.frame(sprintf("%.2f", del.rates), cor.tab)
+colnames(cor.tab) <- c("DeletionRate", "PearsonCoef", "PearsonPval", "SpearmanCoef", "SpearmanPval", "KendallCoef", "KendallPval")
 
 tlog(6,"Looping over deletion rates")
 for(d in 1:length(del.rates))
@@ -192,7 +191,7 @@ for(d in 1:length(del.rates))
 # dislay/record correlation results
 tab.file <- file.path(out.folder, "correlations.csv")
 tlog(6,"Recording correlation results in ",tab.file)
-cor.tab <- # TODO
+cor.tab <- data.frame(cor.tab)
 print(cor.tab)
 write.csv(cor.tab, file=tab.file, row.names=FALSE)	
 # plot
