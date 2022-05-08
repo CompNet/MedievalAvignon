@@ -1279,10 +1279,25 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			V(g1)$x2 <- layout[lay.idx,"x"]; V(g1)$y <- layout[lay.idx,"y"]
 			
 			# record graphml file
-			tlog(4,"Recording graph in \"",graph.file,"\"")
+			tlog(8,"Recording graph in \"",graph.file,"\"")
 			write.graphml.file(g=g1, file=graph.file)
 			
-			# TODO same thing with filtered versions
+			# filter graph by keeping only the main components
+			cmp.thre <- 25
+			tmp <- components(graph=g1, mode="weak")
+			cmps <- which(tmp$csize<cmp.thre)
+			idx <- which(tmp$membership %in% cmps)
+			# possibly filter graph
+			tlog(8,"Filtering out component under ",cmp.thre," nodes")
+			if(length(idx)>1)
+				g1 <- delete_vertices(graph=g1, v=idx)
+			g1$name <- paste0(g1$name,"_filtered")
+			# record as graphml
+			graph.folder <- file.path(FOLDER_OUT_ANAL_EST, paste0(GR_EST_FLAT_MINUS,"_filtered"), "_removed_streets")
+			dir.create(path=graph.folder, showWarnings=FALSE, recursive=TRUE)
+			graph.file <- file.path(graph.folder, paste0("graph_rem=",nbr,".graphml"))
+			tlog(8,"Recording graph in \"",graph.file,"\"")
+			write.graphml.file(g=g1, file=graph.file)
 		}
 		
 		# regular case
@@ -1465,14 +1480,14 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 # - modèle : 
 #   + définir un modèle pour tester comment la dégradation d'un réseau de confront artificiel affecte la correlation des distances
 #   - dégrader en termes de coordonnées, voir si l'interpolation fonctionne
-# - critère pour l'extraction de graphes :
-#   - longueur de la rue
-#   - descripteurs possibles :
-#     - nbre de noeuds
-#     - nbre de liens
-#     - nbre de communités
-#     - nbre de composants
-#     - modularité
+# + critère pour l'extraction de graphes :
+#   + longueur de la rue
+#   + descripteurs possibles :
+#     + nbre de noeuds
+#     + nbre de liens
+#     + nbre de communités
+#     + nbre de composants
+#     + modularité
 #     - faudrait qq ch de plus spatial
 
 # idées papiers: 

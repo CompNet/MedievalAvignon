@@ -1057,49 +1057,79 @@ plot.graph.comparison <- function(g1, g2, folder)
 
 
 #############################################################################################
+# Loads graphs corresponding to the removal of streets of decreasing length, and compute and
+# plots some graph-related stats.
 #############################################################################################
 plot.street.removal <- function()
 {	tlog(2,"Plotting stats related to street removal")
 	
-	# get folder path 
-	graph.folder <- file.path(FOLDER_OUT_ANAL_EST, GR_EST_FLAT_MINUS, "_removed_streets")
-	ll <- list.files(path=graph.folder, pattern="graph_rem=[0-9]+\\.graphml", full.names=TRUE)
-	tlog(4,"Found ",length(ll)," graph files in folder '",graph.folder,"'")
-	
-	# read graphs
-	tlog(4,"Reading graph files")
-	gs <- list()
-	for(i in 1:length(ll))
-	{	graph.file <- ll[[i]]
-		tlog(6,"Reading file '",graph.file,"'")
-		g <- load.graphml.file(file=graph.file)
-		#r <- as.integer(substr(basename(graph.file), start=nchar("graph_rem=")+1, stop=unlist(gregexpr(pattern=".graphml",basename(graph.file)))-1))
-		r <- as.integer(strsplit(g$name,"_")[[1]][3])
-		gs[[r]] <- g 
+	for(folder in c(GR_EST_FLAT_MINUS, paste0(GR_EST_FLAT_MINUS,"_filtered")))
+	{	tlog(2,"Dealing with folder '",folder,"'")
+		
+		# get folder path 
+		graph.folder <- file.path(FOLDER_OUT_ANAL_EST, folder, "_removed_streets")
+		ll <- list.files(path=graph.folder, pattern="graph_rem=[0-9]+\\.graphml", full.names=TRUE)
+		tlog(4,"Found ",length(ll)," graph files in folder '",graph.folder,"'")
+		
+		# read graphs
+		tlog(4,"Reading graph files")
+		gs <- list()
+		for(i in 1:length(ll))
+		{	graph.file <- ll[[i]]
+			tlog(6,"Reading file '",graph.file,"'")
+			g <- load.graphml.file(file=graph.file)
+			#r <- as.integer(substr(basename(graph.file), start=nchar("graph_rem=")+1, stop=unlist(gregexpr(pattern=".graphml",basename(graph.file)))-1))
+			r <- as.integer(strsplit(g$name,"_")[[1]][3])
+			gs[[r]] <- g 
+		}
+		#sapply(gs,function(g) g$name)
+		
+		# compute stats
+		meas.names <- c(MEAS_NBR_NODES, MEAS_NBR_LINKS, MEAS_NBR_COMPONENTS, MEAS_COMMUNITY_NBR, MEAS_MODULARITY)
+		tab.stats <- data.frame(1:length(gs), matrix(NA, nrow=length(gs), ncol=length(meas.names)))
+		colnames(tab.stats) <- c("DeletedStreets", meas.names)
+		tlog(4,"Computing stats")
+		for(i in 1:nrow(tab.stats))
+		{	tlog(6,"Processing graph #",i,"/",nrow(tab.stats))
+			
+			# counts
+			tab.stats[i,MEAS_NBR_NODES] <- gorder(gs[[i]])
+			tab.stats[i,MEAS_NBR_LINKS] <- gsize(gs[[i]])
+			
+			# components
+			tab.stats[i,MEAS_NBR_COMPONENTS] <- components(graph=gs[[i]], mode="weak")$no
+			
+			# communities
+			coms <- cluster_louvain(graph=simplify(as.undirected(gs[[i]])), weights=NULL)
+			tab.stats[i,MEAS_COMMUNITY_NBR] <- length(unique(as.integer(membership(coms))))
+			tab.stats[i,MEAS_MODULARITY] <- modularity(coms)
+		}
+		
+		# record stats
+		tab.file <- file.path(graph.folder, "stats.csv")
+		tlog(4,"Recording stats in file '",tab.file,"'")
+		write.csv(tab.stats, file=tab.file, row.names=TRUE)
+		
+		# plot stats
+		tlog(4,"Plotting stats")
+		for(meas.name in meas.names)
+		{	plot.file <- file.path(graph.folder, paste0("evolution_",meas.name))
+			tlog(4,"Creating plot '",plot.file,"'")
+			for(fformat in FORMAT)
+			{	if(fformat=="pdf")
+					pdf(paste0(plot.file,".pdf"), width=25, height=25)
+				else if(fformat=="png")
+					png(paste0(plot.file,".png"), width=1024, height=1024)
+#				par(mar=c(5,3,1,2)+0.1)	# remove the title space Bottom Left Top Right
+				par(mar=c(5.1, 4.1, 4.1, 2.1))
+				plot(
+					x=1:length(gs), y=tab.stats[,meas.name],
+					xlab="Number of streets removed (by decreasing length)",
+					ylab=MEAS_LONG_NAMES[meas.name],
+					type="l", col="RED"
+				)
+				dev.off()
+			}
+		}
 	}
-	#sapply(gs,function(g) g$name)
-	
-	# compute stats
-	meas.names <- c(MEAS_NBR_NODES, MEAS_NBR_LINKS, MEAS_NBR_COMPONENTS, MEAS_COMMUNITY_NBR, MEAS_MODULARITY)
-	tab.stats <- data.frame(1:length(gs), matrix(NA, nrow=length(gs), ncol=length(meas.names)))
-	colnames(tab.stats) <- c("DeletedStreets", meas.names)
-	tlog(4,"Computing stats")
-	for(i in 1:nrow(tab.stats))
-	{	tlog(6,"Processing graph #",i,"/",nrow(tab.stats))
-		
-		# counts
-		tab.stats[i,MEAS_NBR_NODES] <- gorder(gs[[i]])
-		tab.stats[i,MEAS_NBR_LINKS] <- gsize(gs[[i]])
-		
-		# components
-		tab.stats[i,MEAS_NBR_COMPONENTS] <- components(graph=gs[[i]], mode="weak")$no
-		
-		# communities
-		coms <- cluster_louvain(graph=simplify(as.undirected(gs[[i]])), weights=NULL)
-		tab.stats[i,MEAS_COMMUNITY_NBR] <- length(unique(as.integer(membership(coms))))
-		tab.stats[i,MEAS_MODULARITY] <- modularity(coms)
-	}
-	
-	# record stats
-	
 }
