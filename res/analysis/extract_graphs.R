@@ -1493,7 +1493,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 # + générer graphes avec filigrannes pour chaque communauté
 # - modèle : 
 #   + définir un modèle pour tester comment la dégradation d'un réseau de confront artificiel affecte la correlation des distances
-#   - dégrader en termes de coordonnées, voir si l'interpolation fonctionne
+#   + dégrader en termes de coordonnées, voir si l'interpolation fonctionne
 # + critère pour l'extraction de graphes :
 #   + longueur de la rue
 #   + descripteurs possibles :
@@ -1503,6 +1503,20 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #     + nbre de composants
 #     + modularité
 #     - faudrait qq ch de plus spatial
+# TODO
+# - distance géodésique moyenne : passer à l'harmonique ? mais aussi pour la spatiale, du coup ? (faire les deux) 
+# - street removal :
+#   - rajouter des stats spatiales :
+#     - distance moyenne géodésique/spatiale
+#     - correlation
+#     - générer les plots des données non-moyennées, pour comparaison (?)
+#     - similarité entre deux struct com successives
+# - modèle :
+#   - rajouter le concept de rue
+#   - questions :
+#     - effet de la suppression des liens
+#     - effet de la suppression des coordonnées
+#     - effet des rues longues. mais ça demanderait de partir d'un plan stochastique.
 
 # idées papiers: 
 # 1) intérêt du réseau de confront pour approximer la distance spatiale
