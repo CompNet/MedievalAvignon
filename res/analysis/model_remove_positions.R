@@ -143,7 +143,7 @@ for(d in 1:length(del.rates))
 	cor.tab[d,"KendallPval"] <- tmp$p.value
 	tlog(12,"Kendall: ",tmp$estimate,"(p=",tmp$p.value,")")
 	# NOTE: null hypothesis=zero correlation >> small p means this hypothesis is rejected
-		
+	
 	# plot the spatial distance as a function of the graph-based one
 	plot.file <- file.path(out.folder, paste0("graph_vs_spatial_del-rate=",dr))
 	tlog(10,"Plotting spatial vs. graph distances in ",plot.file)

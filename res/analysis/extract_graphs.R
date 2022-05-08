@@ -1051,7 +1051,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	tlog(4,"Number of vertices: ",gorder(g),"/",nrow(info.all))
 	tlog(4,"Vertex attributes (",length(vertex_attr_names(g)),"): ",paste(vertex_attr_names(g),collapse=", "))
 	
-	# add composite name as label
+	# add composite names as labels
 	comp.names <- get.location.names(g)
 	#print(which(is.na(comp.names)))
 	V(g)$label <- comp.names
@@ -1089,6 +1089,11 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	layout <- read.table(file=lay.file, sep="\t", header=TRUE, check.names=FALSE)
 	lay.idx <- match(V(g)$idExterne, layout[,"idExterne"])
 	if(any(is.na(lay.idx))) {print(V(g)[which(is.na(lay.idx))]); stop("Could not match node ids with ids from the layout file")}
+	######
+	# debug
+	# which(V(g)$idExterne=="Rue:1810")
+	# neighbors(graph=g, v=988, mode="all")
+	######
 	V(g)$x2 <- layout[lay.idx,"x"]; V(g)$y2 <- layout[lay.idx,"y"]
 	# plot graph
 	plot.file <- file.path(FOLDER_OUT_ANAL_EST,"graph_kk")
@@ -1169,7 +1174,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	)
 	short.street.flag <- vertex_attr(graph=g, name=COL_LOC_ID) %in% paste("Rue:",short.tab[,COL_STREET_ID],sep="")
 	
-#	# possibly filter to focus on a single source
+#	# possibly filter to focus on a single historical source
 #	sources <- list(
 #		S1=list(src.ids=c(1, 2, 3, 4, 5, 7, 18, 19, 20), re.ids=c(1:3999,6001:9999,60001:60999))
 #	)
@@ -1245,8 +1250,12 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			{	nbr <- as.integer(strsplit(graph.types[i],"_")[[1]][3])
 				idx <- order(vertex_attr(g, name=COL_STREET_LENGTH, index=measured.streets),decreasing=TRUE)[1:nbr]
 				#vertex_attr(g, name=COL_STREET_LENGTH, index=measured.streets[idx])
-				tlog(8,"Removing the ",length(idx)," longest street(s)")
+				ldsi <- V(g)$idExterne[measured.streets[idx[nbr]]]
+				ldsl <- V(g)$length[measured.streets[idx[nbr]]]
+				tlog(8,"Removing the ",length(idx)," longest street(s) (last one=",ldsi," -- length=",ldsl,")")
 				g1 <- delete_vertices(graph=g1, v=measured.streets[idx])
+				g1$LastDeletedStreetId <- ldsi
+				g1$LastDeletedStreetLength <-ldsl
 			}
 		}
 		# keep only one type of link
@@ -1393,6 +1402,11 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			layout <- read.table(file=lay.file, sep="\t", header=TRUE, check.names=FALSE)
 			lay.idx <- match(V(g2)$idExterne, layout[,"idExterne"])
 			if(any(is.na(lay.idx))) {print(V(g2)[which(is.na(lay.idx))]); stop("Could not match node ids with ids from the layout file")}
+			######
+			# debug
+			# which(V(g2)$idExterne=="Rue:1810")
+			# neighbors(graph=g2, v=969, mode="all")
+			######
 			V(g2)$x <- layout[lay.idx,"x"]; V(g2)$y <- layout[lay.idx,"y"]
 			E(g2)$weight <- 0.5
 			#

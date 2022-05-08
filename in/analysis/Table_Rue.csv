@@ -264,7 +264,7 @@ id,nom,nomActuel,length,type,detailLoc,xcoord,ycoord,longitude,latitude,longitud
 760,rue publique du bourg sainte-catherine,,,Rue,,,,,,,
 761,impasse du bourg de sainte-catherine,,,Impasse,,,,,,,
 763,traverse du bourg de sainte-catherine,,,Traverse,,,,,,,
-764,rue du bourg de raymond milon maintenant de sainte-catherine,,_93.32359333094503,Rue,,_845822.3121729189,_6318449.05754016,,,,
+764,rue du bourg de raymond milon maintenant de sainte-catherine,,93.32359333094503,Rue,,845822.3121729189,6318449.05754016,,,,
 765,parva traversia in qua est putei ,,,Traverse,,,,,,,
 766,carreria publica extra portale partusi prope riperia rodani,,,Rue,Rue exterieur au Portail de Pertuis vers la rive du Rhône,,,,,,
 769,carreriis vicinalibus per quas itur ad Rodanum,,,Rue,rue qui amene au Rhône,,,,,,

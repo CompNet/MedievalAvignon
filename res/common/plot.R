@@ -1074,6 +1074,8 @@ plot.street.removal <- function()
 		# read graphs
 		tlog(4,"Reading graph files")
 		gs <- list()
+		street.names <- rep(NA, length(ll))
+		street.lengths <- rep(NA, length(ll))
 		for(i in 1:length(ll))
 		{	graph.file <- ll[[i]]
 			tlog(6,"Reading file '",graph.file,"'")
@@ -1081,13 +1083,15 @@ plot.street.removal <- function()
 			#r <- as.integer(substr(basename(graph.file), start=nchar("graph_rem=")+1, stop=unlist(gregexpr(pattern=".graphml",basename(graph.file)))-1))
 			r <- as.integer(strsplit(g$name,"_")[[1]][3])
 			gs[[r]] <- g 
+			street.names[r] <- g$LastDeletedStreetId
+			street.lengths[r] <- g$LastDeletedStreetLength
 		}
 		#sapply(gs,function(g) g$name)
 		
 		# compute stats
 		meas.names <- c(MEAS_NBR_NODES, MEAS_NBR_LINKS, MEAS_NBR_COMPONENTS, MEAS_COMMUNITY_NBR, MEAS_MODULARITY)
-		tab.stats <- data.frame(1:length(gs), matrix(NA, nrow=length(gs), ncol=length(meas.names)))
-		colnames(tab.stats) <- c("DeletedStreets", meas.names)
+		tab.stats <- data.frame(1:length(gs), street.names, street.lengths, matrix(NA, nrow=length(gs), ncol=length(meas.names)))
+		colnames(tab.stats) <- c("NumberDeletedStreets", "LastDeletedStreetId", "LastDeletedStreetLength", meas.names)
 		tlog(4,"Computing stats")
 		for(i in 1:nrow(tab.stats))
 		{	tlog(6,"Processing graph #",i,"/",nrow(tab.stats))
@@ -1108,7 +1112,7 @@ plot.street.removal <- function()
 		# record stats
 		tab.file <- file.path(graph.folder, "stats.csv")
 		tlog(4,"Recording stats in file '",tab.file,"'")
-		write.csv(tab.stats, file=tab.file, row.names=TRUE)
+		write.csv(tab.stats, file=tab.file, row.names=FALSE)
 		
 		# plot stats
 		tlog(4,"Plotting stats")
