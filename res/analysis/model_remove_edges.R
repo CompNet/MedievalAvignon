@@ -1,7 +1,12 @@
-# TODO: Add comment
+# Random model to study how missing confronts affect the 
+# spatial vs. geodesic distances correlation.
 # 
 # Vincent Labatut
 # 05/2022
+#
+# setwd("D:/users/Vincent/Eclipse/workspaces/Extraction/MedievalAvignon")
+# setwd("~/eclipse/workspaces/Extraction/MedievalAvignon")
+# source("res/analysis/model_remove_edges.R")
 ###############################################################################
 # load other scripts
 source("res/common/_include.R")
@@ -14,7 +19,7 @@ source("res/measures/_compute_measures.R")
 ###############################################################################
 # parameters
 n <- 250
-out.folder <- "out/analysis/estate/model"
+out.folder <- "out/analysis/estate/model/edges"
 del.rates <- seq(0,1,by=0.1)
 
 
@@ -32,6 +37,8 @@ y <- runif(n, min=0, max=1)
 g <- make_empty_graph(n, directed=TRUE)
 V(g)$x <- x
 V(g)$y <- y
+g <- set_vertex_attr(g, name=COL_LOC_X, value=V(g)$x)
+g <- set_vertex_attr(g, name=COL_LOC_Y, value=V(g)$y)
 g$type <- GR_TYPE_EST
 g$name <- GR_EST_FULL
 
@@ -82,10 +89,9 @@ for(d in 1:length(del.rates))
 	# randomly remove some edges
 	tlog(10,"Removing edges")
 	idx <- sample(gsize(g), size=round(del.rate*gsize(g)))
-	if(length(idx)==0)
-		g1 <- g
-	else
-		g1 <- delete_edges(graph=g, edges=idx)
+	g1 <- g
+	if(length(idx)>0)
+		g1 <- delete_edges(graph=g1, edges=idx)
 	
 	# plot graph
 	plot.file <- file.path(out.folder,paste0("graph_del-rate=",dr))
@@ -113,7 +119,7 @@ for(d in 1:length(del.rates))
 	# plot distribution
 	plot.file <- file.path(out.folder,paste0("histo_graph_del-rate=",dr))
 	custom.hist(vals=gvals, "Graph distance", file=plot.file)
-		
+	
 	# compute correlations
 	tlog(10,"Computting correlations:")
 	tmp <- cor.test(x=gvals, y=svals, method="pearson")
