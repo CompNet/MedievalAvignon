@@ -11,6 +11,7 @@
 # load other scripts
 source("res/common/_include.R")
 source("res/analysis/extract_graphs.R")
+source("res/analysis/graph_comp.R")
 source("res/measures/_compute_measures.R")
 
 

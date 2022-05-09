@@ -10,7 +10,11 @@
 #############################################################
 # measure name
 MEAS_DISTANCE <- "distance"
+MEAS_DISTANCE_AVG_SPATIAL <- "distance-avg-spatial"
+MEAS_DISTANCE_AVG_GEODESIC <- "distance-avg-geodesic"
 MEAS_LONG_NAMES[MEAS_DISTANCE] <- "Distance"
+MEAS_LONG_NAMES[MEAS_DISTANCE_AVG_SPATIAL] <- "Average Spatial Distance"
+MEAS_LONG_NAMES[MEAS_DISTANCE_AVG_GEODESIC] <- "Average Geodesic Distance"
 
 
 
@@ -156,7 +160,7 @@ analyze.net.distance <- function(g, out.folder)
 		custom.gplot(g=g1, col.att=satt, file=file.path(distance.folder,paste0("distance_spatial_",sdist,"_avg_graph_kk")), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
 		
 		# compute undirected graph distance
-		tlog(8,"Computing undirected graph distance")
+		tlog(8,"Computing undirected geodesic distance")
 		if(length(rem)>0) 
 			gt <- delete_vertices(g,rem)
 		else
@@ -192,7 +196,7 @@ analyze.net.distance <- function(g, out.folder)
 					png(paste0(plot.file,".png"))
 					plot(
 						x=gvals, y=svals, 
-						xlab="Undirected graph distance", ylab=xlab[sdist],
+						xlab="Undirected geodesic distance", ylab=xlab[sdist],
 						#log="xy", 
 						las=1, col=make.color.transparent("RED",75)
 						#xlim=c(1,max(deg.vals)*1.1)
@@ -223,7 +227,7 @@ analyze.net.distance <- function(g, out.folder)
 					png(paste0(plot.file,".png"))
 					plot(
 						x=gvals[order(vals)], y=svals[order(vals)], 
-						xlab="Undirected graph distance", ylab=xlab[sdist],
+						xlab="Undirected geodesic distance", ylab=xlab[sdist],
 						#log="xy", 
 						las=1, col=cols[order(vals)],
 						#xlim=c(1,max(deg.vals)*1.1)
@@ -272,7 +276,7 @@ analyze.net.distance <- function(g, out.folder)
 		svals <- as.matrix(dist(x=coords[idx,], method="euclidean", diag=TRUE, upper=TRUE))
 		
 		# compute average undirected graph distance
-		tlog(8,"Computing undirected graph distance")
+		tlog(8,"Computing undirected geodesic distance")
 		if(length(rem)>0) 
 			gt <- delete_vertices(g,rem)
 		else
@@ -322,7 +326,7 @@ analyze.net.distance <- function(g, out.folder)
 						png(paste0(plot.file,".png"))
 					plot(
 						x=gvals, y=svals, 
-						xlab="Undirected average graph distance", ylab=xlab[sdist],
+						xlab="Undirected average geodesic distance", ylab=xlab[sdist],
 						#log="xy", 
 						las=1, col=make.color.transparent("RED",75)
 						#xlim=c(1,max(deg.vals)*1.1)
@@ -351,7 +355,7 @@ analyze.net.distance <- function(g, out.folder)
 						png(paste0(plot.file,".png"))
 					plot(
 						x=gvals[order(vals)], y=svals[order(vals)], 
-						xlab="Undirected average graph distance", ylab=xlab[sdist],
+						xlab="Undirected average geodesic distance", ylab=xlab[sdist],
 						#log="xy", 
 						las=1, col=cols[order(vals)],
 						#xlim=c(1,max(deg.vals)*1.1)
@@ -384,7 +388,7 @@ analyze.net.distance <- function(g, out.folder)
 							png(paste0(plot.file,".png"))
 						plot(
 							x=gvals[order(edf)], y=svals[order(edf)], 
-							xlab="Undirected average graph distance", ylab=xlab[sdist],
+							xlab="Undirected average geodesic distance", ylab=xlab[sdist],
 							#log="xy", 
 							las=1, col=cols[order(edf)],
 							#xlim=c(1,max(deg.vals)*1.1)

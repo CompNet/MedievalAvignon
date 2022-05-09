@@ -117,7 +117,7 @@ analyze.net.structsim <- function(g, out.folder)
 			svals <- svals[upper.tri(svals)]
 			
 			# filter structural similarity
-			tlog(8,"Computing undirected graph distance")
+			tlog(8,"Computing undirected geodesic distance")
 			if(length(rem)>0) 
 				gt <- delete_vertices(g,rem)
 			else

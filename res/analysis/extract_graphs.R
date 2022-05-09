@@ -1510,7 +1510,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #     - distance moyenne géodésique/spatiale
 #     - correlation
 #     - générer les plots des données non-moyennées, pour comparaison (?)
-#     - similarité entre deux struct com successives
+#     + similarité entre deux struct com successives
 # - modèle :
 #   - rajouter le concept de rue
 #   - questions :

@@ -12,9 +12,15 @@
 MEAS_COMMUNITIES <- "communities"
 MEAS_COMMUNITY_NBR <- "community_nbr"
 MEAS_MODULARITY <- "modularity"
+MEAS_NMI <- "nmi"
+MEAS_RI <- "ri"
+MEAS_ARI <- "ari"
 MEAS_LONG_NAMES[MEAS_COMMUNITIES] <- "Communities"
 MEAS_LONG_NAMES[MEAS_COMMUNITY_NBR] <- "Community number"
 MEAS_LONG_NAMES[MEAS_MODULARITY] <- "Modularity"
+MEAS_LONG_NAMES[MEAS_NMI] <- "Normalized Mutual Information"
+MEAS_LONG_NAMES[MEAS_RI] <- "Rand Index"
+MEAS_LONG_NAMES[MEAS_ARI] <- "Adjusted Rand Index"
 
 
 

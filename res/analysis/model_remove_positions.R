@@ -114,7 +114,7 @@ for(d in 1:length(del.rates))
 	custom.hist(vals=svals, "Spatial distance", file=plot.file)
 	
 	# compute undirected graph distance
-	tlog(10,"Computing undirected graph distance")
+	tlog(10,"Computing undirected geodesic distance")
 	if(length(rem)>0) 
 		gt <- delete_vertices(g1,rem)
 	else
@@ -126,7 +126,7 @@ for(d in 1:length(del.rates))
 	svals <- svals[idx]
 	# plot distribution
 	plot.file <- file.path(out.folder,paste0("histo_graph_del-rate=",dr))
-	custom.hist(vals=gvals, "Graph distance", file=plot.file)
+	custom.hist(vals=gvals, "Geodesic distance", file=plot.file)
 	
 	# compute correlations
 	tlog(10,"Computting correlations:")
@@ -146,7 +146,7 @@ for(d in 1:length(del.rates))
 	
 	# plot the spatial distance as a function of the graph-based one
 	plot.file <- file.path(out.folder, paste0("graph_vs_spatial_del-rate=",dr))
-	tlog(10,"Plotting spatial vs. graph distances in ",plot.file)
+	tlog(10,"Plotting spatial vs. geodesic distances in ",plot.file)
 	for(fformat in FORMAT)
 	{	if(fformat=="pdf")
 			pdf(paste0(plot.file,".pdf"))
@@ -154,7 +154,7 @@ for(d in 1:length(del.rates))
 			png(paste0(plot.file,".png"))
 			plot(
 				x=gvals, y=svals, 
-				xlab="Undirected graph distance", ylab="Spatial distance",
+				xlab="Undirected geodesic distance", ylab="Spatial distance",
 				#log="xy", 
 				las=1, col=make.color.transparent("RED",75)
 			#xlim=c(1,max(deg.vals)*1.1)
@@ -177,7 +177,7 @@ for(d in 1:length(del.rates))
 	fine <- 500 									# granularity of the color gradient
 	cols <- viridis(fine,direction=-1)[as.numeric(cut(vals,breaks=fine))]
 	plot.file <- file.path(out.folder, paste0("graph_vs_spatial_col=",meas,"_del-rate=",dr))
-	tlog(10,"Plotting spatial vs. graph distances using ",meas," for color in ",plot.file)
+	tlog(10,"Plotting spatial vs. geodesic distances using ",meas," for color in ",plot.file)
 	for(fformat in FORMAT)
 	{	if(fformat=="pdf")
 			pdf(paste0(plot.file,".pdf"))
@@ -185,7 +185,7 @@ for(d in 1:length(del.rates))
 			png(paste0(plot.file,".png"))
 			plot(
 				x=gvals[order(vals)], y=svals[order(vals)], 
-				xlab="Undirected graph distance", ylab="Spatial distance",
+				xlab="Undirected geodesic distance", ylab="Spatial distance",
 				#log="xy", 
 				las=1, col=cols[order(vals)],
 			#xlim=c(1,max(deg.vals)*1.1)
