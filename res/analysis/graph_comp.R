@@ -86,11 +86,18 @@ plot.graph.comparison <- function(g1, g2, folder)
 plot.street.removal <- function()
 {	tlog(2,"Plotting stats related to street removal")
 	
-	for(folder in c(GR_EST_FLAT_MINUS, paste0(GR_EST_FLAT_MINUS,"_filtered")))
-	{	tlog(2,"Dealing with folder '",folder,"'")
+	folders <- c(GR_EST_FLAT_MINUS, paste0(GR_EST_FLAT_MINUS,"_filtered"))
+	for(f in 1:length(folders))
+	{	folder <- folders[f]
+		tlog(2,"Dealing with folder '",folder,"' (",f,"/",length(folders),")")
 		
 		# get folder path 
-		graph.folder <- file.path(FOLDER_OUT_ANAL_EST, folder, "_removed_streets")
+		main.folder <- file.path(FOLDER_OUT_ANAL_EST, folder, "_removed_streets")
+		graph.folder <- file.path(main.folder, "graphs")
+		dist.folder <- file.path(main.folder, "dist_geodesic_vs_spatial")
+		dir.create(path=dist.folder, showWarnings=FALSE, recursive=TRUE)
+		
+		# list graph files
 		ll <- list.files(path=graph.folder, pattern="graph_rem=[0-9]+\\.graphml", full.names=TRUE)
 		tlog(4,"Found ",length(ll)," graph files in folder '",graph.folder,"'")
 		
@@ -115,7 +122,9 @@ plot.street.removal <- function()
 		meas.names <- c(
 			MEAS_NBR_NODES, MEAS_NBR_LINKS, 
 			MEAS_NBR_COMPONENTS, 
-			MEAS_COMMUNITY_NBR, MEAS_MODULARITY, MEAS_NMI, MEAS_RI, MEAS_ARI
+			MEAS_COMMUNITY_NBR, MEAS_MODULARITY, MEAS_NMI, MEAS_RI, MEAS_ARI,
+			MEAS_DISTANCE_AVG_SPATIAL, MEAS_DISTANCE_AVG_GEODESIC, MEAS_DISTANCE_HARM_SPATIAL, MEAS_DISTANCE_HARM_GEODESIC,
+			MEAS_DISTANCE_COR_PEARSON, MEAS_DISTANCE_COR_SPEARMAN, MEAS_DISTANCE_COR_KENDALL
 		)
 		tab.stats <- data.frame(1:length(gs), street.names, street.lengths, matrix(NA, nrow=length(gs), ncol=length(meas.names)))
 		colnames(tab.stats) <- c("NumberDeletedStreets", "LastDeletedStreetId", "LastDeletedStreetLength", meas.names)
@@ -125,55 +134,119 @@ plot.street.removal <- function()
 		{	tlog(6,"Processing graph #",i,"/",nrow(tab.stats))
 			
 			# counts
+			tlog(8,"Compute node and edge counts")
 			tab.stats[i,MEAS_NBR_NODES] <- gorder(gs[[i]])
 			tab.stats[i,MEAS_NBR_LINKS] <- gsize(gs[[i]])
 			
 			# components
+			tlog(8,"Compute component counts")
 			tab.stats[i,MEAS_NBR_COMPONENTS] <- components(graph=gs[[i]], mode="weak")$no
 			
 			# communities
+			tlog(8,"Compute communities")
 			coms <- cluster_louvain(graph=simplify(as.undirected(gs[[i]])), weights=NULL)
 			mbr.cur <- as.integer(membership(coms))
+			names(mbr.cur) <- V(gs[[i]])$idExterne
 			tab.stats[i,MEAS_COMMUNITY_NBR] <- length(unique(mbr.cur))
 			tab.stats[i,MEAS_MODULARITY] <- modularity(coms)
-			if(!all(is.na(mbr.prev)))
-			{	tab.stats[i,MEAS_NMI] <- compare(comm1=mbr.cur, comm2=mbr.prev, method="nmi")
-				tab.stats[i,MEAS_RI] <- compare(comm1=mbr.cur, comm2=mbr.prev, method="rand")
-				tab.stats[i,MEAS_ARI] <- compare(comm1=mbr.cur, comm2=mbr.prev, method="adjusted.rand")
+			if(i>1)
+			{	nn <- intersect(names(mbr.cur), names(mbr.prev))	# we only consider vertices common to both graphs
+				tab.stats[i,MEAS_NMI] <- compare(comm1=mbr.cur[nn], comm2=mbr.prev[nn], method="nmi")
+				tab.stats[i,MEAS_RI] <- compare(comm1=mbr.cur[nn], comm2=mbr.prev[nn], method="rand")
+				tab.stats[i,MEAS_ARI] <- compare(comm1=mbr.cur[nn], comm2=mbr.prev[nn], method="adjusted.rand")
 			}
 			mbr.prev <- mbr.cur
 			
 			# spatial distance
-			
+			tlog(8,"Compute spatial distance")
+			coords <- cbind(vertex_attr(gs[[i]], name=COL_LOC_X), vertex_attr(gs[[i]], name=COL_LOC_Y))
+			idx <- which(!is.na(coords[,1]) & !is.na(coords[,2]))
+			rem <- which(is.na(coords[,1]) | is.na(coords[,2]))
+			svals <- as.matrix(dist(x=coords[idx,], method="euclidean", diag=TRUE, upper=TRUE))
+			svals <- svals[upper.tri(svals)]
+			tab.stats[i,MEAS_DISTANCE_AVG_SPATIAL] <- mean(svals)
+			tab.stats[i,MEAS_DISTANCE_HARM_SPATIAL] <- 1/mean(1/svals)
 			
 			# geodesic distance
+			tlog(8,"Compute geodesic distance")
+			gt <- gs[[i]]
+			gvals <- distances(graph=gt, mode="all")
+			gvals <- gvals[upper.tri(gvals)]
+			tab.stats[i,MEAS_DISTANCE_HARM_GEODESIC] <- 1/mean(1/gvals)
+			idx <- !is.infinite(gvals)
+			gvals <- gvals[idx]
+			tab.stats[i,MEAS_DISTANCE_AVG_GEODESIC] <- mean(gvals)
 			
+			# distance correlation
+			tlog(8,"Compute distance correlation")
+			if(length(rem)>0) gt <- delete_vertices(gt,rem)
+			gvals <- distances(graph=gt, mode="all")
+			gvals <- gvals[upper.tri(gvals)]
+			idx <- !is.infinite(gvals)
+			gvals <- gvals[idx]
+			svals <- svals[idx]
+			tab.stats[i,MEAS_DISTANCE_COR_PEARSON] <- cor(x=gvals,y=svals,method="pearson")
+			#tab.stats[i,MEAS_DISTANCE_COR_SPEARMAN] <- cor(x=gvals,y=svals,method="spearman")
+			#tab.stats[i,MEAS_DISTANCE_COR_KENDALL] <- cor(x=gvals,y=svals,method="kendall")
+			
+			# plot geodesic vs. spatial distance
+			vals <- igraph::degree(graph=gt, mode="all")
+			cb <- t(combn(1:gorder(gt),2))
+			vals <- (vals[cb[,1]] * vals[cb[,2]])[idx]
+			# set colors
+			fine <- 500 									# granularity of the color gradient
+			cols <- viridis(fine,direction=-1)[as.numeric(cut(vals,breaks=fine))]
+			plot.file <- file.path(dist.folder, paste0("dist_geodesic_vs_spatial_rem=",i))
+			tlog(8,"Plot geodesic vs. spatial distance in file '",plot.file,"'")
+			for(fformat in c("png"))	# FORMAT
+			{	if(fformat=="pdf")
+					pdf(paste0(plot.file,".pdf"))
+				else if(fformat=="png")
+					png(paste0(plot.file,".png"))
+				plot(
+					x=gvals[order(vals)], y=svals[order(vals)], 
+					xlab="Undirected geodesic distance", ylab="Spatial distance",
+					#log="xy", 
+					las=1, col=cols[order(vals)],
+					#xlim=c(1,max(deg.vals)*1.1)
+				)
+				# mean
+				avg.dist <- sapply(min(gvals):max(gvals), function(deg) mean(svals[gvals==deg]))
+				lines(	
+					x=min(gvals):max(gvals), avg.dist,
+					col="BLACK"
+				)
+				# legend
+				gradientLegend(range(vals), color=viridis(fine,direction=-1), inside=TRUE)
+				dev.off()
+			}
 		}
 		
 		# record stats
-		tab.file <- file.path(graph.folder, "stats.csv")
+		tab.file <- file.path(main.folder, "stats.csv")
 		tlog(4,"Recording stats in file '",tab.file,"'")
 		write.csv(tab.stats, file=tab.file, row.names=FALSE)
 		
 		# plot stats
 		tlog(4,"Plotting stats")
 		for(meas.name in meas.names)
-		{	plot.file <- file.path(graph.folder, paste0("evolution_",meas.name))
-			tlog(4,"Creating plot '",plot.file,"'")
-			for(fformat in FORMAT)
-			{	if(fformat=="pdf")
-					pdf(paste0(plot.file,".pdf"), width=25, height=25)
-				else if(fformat=="png")
-					png(paste0(plot.file,".png"), width=1024, height=1024)
-#				par(mar=c(5,3,1,2)+0.1)	# remove the title space Bottom Left Top Right
-				par(mar=c(5.1, 4.1, 4.1, 2.1))
-				plot(
-					x=1:length(gs), y=tab.stats[,meas.name],
-					xlab="Number of streets removed (by decreasing length)",
-					ylab=MEAS_LONG_NAMES[meas.name],
-					type="l", col="RED"
-				)
-				dev.off()
+		{	if(!all(is.na(tab.stats[,meas.name])))
+			{	plot.file <- file.path(main.folder, paste0("evolution_",meas.name))
+				tlog(4,"Creating plot '",plot.file,"'")
+				for(fformat in FORMAT)
+				{	if(fformat=="pdf")
+						pdf(paste0(plot.file,".pdf"), width=25, height=25)
+					else if(fformat=="png")
+						png(paste0(plot.file,".png"), width=1024, height=1024)
+					par(mar=c(5.1, 4.1, 4.1, 2.1))		# remove the title space Bottom Left Top Right
+					plot(
+						x=1:length(gs), y=tab.stats[,meas.name],
+						xlab="Number of streets removed (by decreasing length)",
+						ylab=MEAS_LONG_NAMES[meas.name],
+						type="l", col="RED"
+					)
+					dev.off()
+				}
 			}
 		}
 	}

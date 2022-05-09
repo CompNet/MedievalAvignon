@@ -12,9 +12,19 @@
 MEAS_DISTANCE <- "distance"
 MEAS_DISTANCE_AVG_SPATIAL <- "distance-avg-spatial"
 MEAS_DISTANCE_AVG_GEODESIC <- "distance-avg-geodesic"
+MEAS_DISTANCE_HARM_SPATIAL <- "distance-harm-spatial"
+MEAS_DISTANCE_HARM_GEODESIC <- "distance-harm-geodesic"
+MEAS_DISTANCE_COR_PEARSON <- "distance-cor-pearson"
+MEAS_DISTANCE_COR_SPEARMAN <- "distance-cor-spearman"
+MEAS_DISTANCE_COR_KENDALL <- "distance-cor-kendall"
 MEAS_LONG_NAMES[MEAS_DISTANCE] <- "Distance"
 MEAS_LONG_NAMES[MEAS_DISTANCE_AVG_SPATIAL] <- "Average Spatial Distance"
 MEAS_LONG_NAMES[MEAS_DISTANCE_AVG_GEODESIC] <- "Average Geodesic Distance"
+MEAS_LONG_NAMES[MEAS_DISTANCE_HARM_SPATIAL] <- "Harmonic Mean of the Spatial Distance"
+MEAS_LONG_NAMES[MEAS_DISTANCE_HARM_GEODESIC] <- "Harmonic Mean of the Geodesic Distance"
+MEAS_LONG_NAMES[MEAS_DISTANCE_COR_PEARSON] <- "Distance Correlation (Pearson)"
+MEAS_LONG_NAMES[MEAS_DISTANCE_COR_SPEARMAN] <- "Distance Correlation (Spearman)"
+MEAS_LONG_NAMES[MEAS_DISTANCE_COR_KENDALL] <- "Distance Correlation (Kendall)"
 
 
 

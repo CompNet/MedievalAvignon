@@ -1302,7 +1302,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 				g1 <- delete_vertices(graph=g1, v=idx)
 			g1$name <- paste0(g1$name,"_filtered")
 			# record as graphml
-			graph.folder <- file.path(FOLDER_OUT_ANAL_EST, paste0(GR_EST_FLAT_MINUS,"_filtered"), "_removed_streets")
+			graph.folder <- file.path(FOLDER_OUT_ANAL_EST, paste0(GR_EST_FLAT_MINUS,"_filtered"), "_removed_streets", "graphs")
 			dir.create(path=graph.folder, showWarnings=FALSE, recursive=TRUE)
 			graph.file <- file.path(graph.folder, paste0("graph_rem=",nbr,".graphml"))
 			tlog(8,"Recording graph in \"",graph.file,"\"")
@@ -1505,11 +1505,11 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #     - faudrait qq ch de plus spatial
 # TODO
 # - distance géodésique moyenne : passer à l'harmonique ? mais aussi pour la spatiale, du coup ? (faire les deux) 
-# - street removal :
-#   - rajouter des stats spatiales :
-#     - distance moyenne géodésique/spatiale
-#     - correlation
-#     - générer les plots des données non-moyennées, pour comparaison (?)
+# + street removal :
+#   + rajouter des stats spatiales :
+#     + distance moyenne géodésique/spatiale
+#     + correlation
+#     + générer les plots des données non-moyennées, pour comparaison (?)
 #     + similarité entre deux struct com successives
 # - modèle :
 #   - rajouter le concept de rue
