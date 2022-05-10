@@ -123,9 +123,9 @@ plot.street.removal <- function()
 			MEAS_NBR_NODES, MEAS_NBR_LINKS, 
 			MEAS_NBR_COMPONENTS, 
 			MEAS_COMMUNITY_NBR, MEAS_MODULARITY, MEAS_NMI, MEAS_RI, MEAS_ARI,
-			MEAS_DISTANCE_AVG_SPATIAL, MEAS_DISTANCE_AVG_GEODESIC, MEAS_DISTANCE_HARM_SPATIAL, MEAS_DISTANCE_HARM_GEODESIC,
-			MEAS_DISTANCE_COR_PEARSON, MEAS_DISTANCE_COR_SPEARMAN, MEAS_DISTANCE_COR_KENDALL
+			MEAS_DISTANCE_AVG_SPATIAL, MEAS_DISTANCE_AVG_GEODESIC, MEAS_DISTANCE_HARM_SPATIAL, MEAS_DISTANCE_HARM_GEODESIC
 		)
+		cor.names <- c(MEAS_DISTANCE_COR_PEARSON, MEAS_DISTANCE_COR_SPEARMAN, MEAS_DISTANCE_COR_KENDALL)
 		tab.stats <- data.frame(1:length(gs), street.names, street.lengths, matrix(NA, nrow=length(gs), ncol=length(meas.names)))
 		colnames(tab.stats) <- c("NumberDeletedStreets", "LastDeletedStreetId", "LastDeletedStreetLength", meas.names)
 		tlog(4,"Computing stats")
@@ -186,8 +186,8 @@ plot.street.removal <- function()
 			gvals <- gvals[idx]
 			svals <- svals[idx]
 			tab.stats[i,MEAS_DISTANCE_COR_PEARSON] <- cor(x=gvals,y=svals,method="pearson")
-			#tab.stats[i,MEAS_DISTANCE_COR_SPEARMAN] <- cor(x=gvals,y=svals,method="spearman")
-			#tab.stats[i,MEAS_DISTANCE_COR_KENDALL] <- cor(x=gvals,y=svals,method="kendall")
+			tab.stats[i,MEAS_DISTANCE_COR_SPEARMAN] <- cor(x=gvals,y=svals,method="spearman")
+			tab.stats[i,MEAS_DISTANCE_COR_KENDALL] <- cor(x=gvals,y=svals,method="kendall")
 			
 			# plot geodesic vs. spatial distance
 			vals <- igraph::degree(graph=gt, mode="all")
@@ -226,6 +226,23 @@ plot.street.removal <- function()
 		tab.file <- file.path(main.folder, "stats.csv")
 		tlog(4,"Recording stats in file '",tab.file,"'")
 		write.csv(tab.stats, file=tab.file, row.names=FALSE)
+		
+		# plot correlations
+		pal <- get.palette(length(cor.names))
+		plot.file <- file.path(main.folder, "evolution_correlation")
+		for(fformat in FORMAT)
+		{	if(fformat=="pdf")
+				pdf(paste0(plot.file,".pdf"))
+			else if(fformat=="png")
+				png(paste0(plot.file,".png"))
+			plot(NULL, xlim=range(del.rates),ylim=c(0,1),xlab="Number of streets removed (by decreasing length)", ylab="Correlation value")
+			for(i in 1:length(cor.names))
+			{	cor.name <- cor.names[i]
+				lines(x=1:length(gs), y=tab.stats[,cor.name],pal[i])
+			}
+			legend(x="bottomleft", fill=pal, legend=cor.names)
+			dev.off()
+		}
 		
 		# plot stats
 		tlog(4,"Plotting stats")
