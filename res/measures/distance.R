@@ -59,7 +59,7 @@ analyze.net.distance <- function(g, out.folder)
 		vals <- distances(graph=g, mode=if(mode==MEAS_MODE_UNDIR) "all" else mode)
 		flat.vals <- vals[upper.tri(vals)]
 		if(length(flat.vals)>2)
-			custom.hist(vals=flat.vals, paste(MEAS_LONG_NAMES[mode],MEAS_LONG_NAMES[MEAS_DISTANCE]), file=file.path(distance.folder,paste0(fname,"_histo")))
+			custom.hist(vals=flat.vals, name=paste(MEAS_LONG_NAMES[mode],MEAS_LONG_NAMES[MEAS_DISTANCE]), file=file.path(distance.folder,paste0(fname,"_histo")))
 		
 		# average distance distributions
 		tlog(4,"Dealing with average distance distribution")
@@ -163,7 +163,8 @@ analyze.net.distance <- function(g, out.folder)
 	rownames(cor.tab) <- sdists
 	
 	# compute spatial distances
-	xlab <- c(database="Spatial distance (database)", interpolation="Spatial distance (interpolation)")
+	ylabs <- c(database="Spatial distance (database)", interpolation="Spatial distance (interpolation)")
+	xlab <- paste0(mode," Geodesic Distance")
 	for(sdist in sdists)
 	{	tlog(6,"Computing spatial distance (",sdist,")")
 		if(sdist=="database")
@@ -181,7 +182,7 @@ analyze.net.distance <- function(g, out.folder)
 		plot.file <- file.path(distance.folder,paste0(fname,"_histo_spatial-",sdist))
 		tlog(8,"Plotting histogram in \"",plot.file,"\"")
 		if(length(svals)>2)
-			custom.hist(vals=svals, xlab[sdist], file=plot.file)
+			custom.hist(vals=svals, name=ylabs[sdist], file=plot.file)
 		
 		# plot graph using color for average distance
 		for(avg.type in c("arith","harmo"))
@@ -239,7 +240,7 @@ analyze.net.distance <- function(g, out.folder)
 					png(paste0(plot.file,".png"))
 					plot(
 						x=gvals, y=svals, 
-						xlab="Undirected geodesic distance", ylab=xlab[sdist],
+						xlab=xlab, ylab=ylabs[sdist],
 						#log="xy", 
 						las=1, col=make.color.transparent("RED",75)
 						#xlim=c(1,max(deg.vals)*1.1)
@@ -270,7 +271,7 @@ analyze.net.distance <- function(g, out.folder)
 					png(paste0(plot.file,".png"))
 					plot(
 						x=gvals[order(vals)], y=svals[order(vals)], 
-						xlab="Undirected geodesic distance", ylab=xlab[sdist],
+						xlab=xlab, ylab=ylabs[sdist],
 						#log="xy", 
 						las=1, col=cols[order(vals)],
 						#xlim=c(1,max(deg.vals)*1.1)
@@ -316,7 +317,8 @@ analyze.net.distance <- function(g, out.folder)
 		rownames(cor.tab) <- sdists
 		
 		# compute spatial average distances
-		xlab <- c(database=paste0(m.lab," Mean of the Spatial Distance (database)"), interpolation=paste0(m.lab," Mean of the Spatial Distance (interpolation)"))
+		ylabs <- c(database=paste0(m.lab," Mean of the Spatial Distance (database)"), interpolation=paste0(m.lab," Mean of the Spatial Distance (interpolation)"))
+		xlab <- paste0(m.lab," Mean of the ",mode," Geodesic Distance")
 		for(sdist in sdists)
 		{	tlog(6,"Computing spatial distance (",sdist,")")
 			if(sdist=="database")
@@ -362,7 +364,7 @@ analyze.net.distance <- function(g, out.folder)
 				plot.file <- file.path(distance.folder,paste0(fname,"_histo_spatial-",sdist))
 				tlog(8,"Plotting in \"",plot.file,"\"")
 				if(length(svals)>2)
-					custom.hist(vals=svals, xlab[sdist], file=plot.file)
+					custom.hist(vals=svals, name=ylabs[sdist], file=plot.file)
 				
 				# compute correlations
 				tlog(8,"Computing correlation between graph and spatial distances (",length(gvals)," values vs. ",length(svals)," values)")
@@ -390,16 +392,17 @@ analyze.net.distance <- function(g, out.folder)
 							png(paste0(plot.file,".png"))
 						plot(
 							x=gvals, y=svals, 
-							xlab="Undirected average geodesic distance", ylab=xlab[sdist],
+							xlab=xlab, ylab=ylabs[sdist],
 							#log="xy", 
 							las=1, col=make.color.transparent("RED",75)
 							#xlim=c(1,max(deg.vals)*1.1)
 						)
 						# mean
-						lines(	
-							x=sort(unique(gvals)), y=avg.dist,
-							col="BLACK"
-						)
+# the average follows the individual points, plot not readable
+#						lines(	
+#							x=sort(unique(gvals)), y=avg.dist,
+#							col="BLACK"
+#						)
 						dev.off()
 					}
 					
@@ -419,16 +422,17 @@ analyze.net.distance <- function(g, out.folder)
 							png(paste0(plot.file,".png"))
 						plot(
 							x=gvals[order(vals)], y=svals[order(vals)], 
-							xlab="Undirected average geodesic distance", ylab=xlab[sdist],
+							xlab=xlab, ylab=ylabs[sdist],
 							#log="xy", 
 							las=1, col=cols[order(vals)],
 							#xlim=c(1,max(deg.vals)*1.1)
 						)
 						# mean
-						lines(	
-							x=sort(unique(gvals)), y=avg.dist,
-							col="BLACK"
-						)
+# the average follows the individual points, plot not readable
+#						lines(	
+#							x=sort(unique(gvals)), y=avg.dist,
+#							col="BLACK"
+#						)
 						# legend
 						gradientLegend(range(vals), color=viridis(fine,direction=-1), inside=TRUE)
 						dev.off()
@@ -452,16 +456,17 @@ analyze.net.distance <- function(g, out.folder)
 								png(paste0(plot.file,".png"))
 							plot(
 								x=gvals[order(edf)], y=svals[order(edf)], 
-								xlab="Undirected average geodesic distance", ylab=xlab[sdist],
+								xlab=xlab, ylab=ylabs[sdist],
 								#log="xy", 
 								las=1, col=cols[order(edf)],
 								#xlim=c(1,max(deg.vals)*1.1)
 							)
 							# mean
-							lines(	
-								x=sort(unique(gvals)), avg.dist,
-								col="BLACK"
-							)
+# the average follows the individual points, plot not readable
+#							lines(	
+#								x=sort(unique(gvals)), avg.dist,
+#								col="BLACK"
+#							)
 							# legend
 							legend(
 								x="bottomright",

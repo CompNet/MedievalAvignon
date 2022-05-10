@@ -1507,7 +1507,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 # - distance géodésique moyenne : passer à l'harmonique ? (mais aussi pour la spatiale, du coup ?)
 #   + virer les zéros pour la spatiale
 #   + rajouter ce calcul dans le script des distances (y compris moyennes)
-#   - rajouter le calcul de correlation dans les scripts de distance et de simstruct
+#   - correlation non lin : garder les valeurs infinies (ça semble possible)
 # + street removal :
 #   + rajouter des stats spatiales :
 #     + distance moyenne géodésique/spatiale

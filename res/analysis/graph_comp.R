@@ -125,7 +125,11 @@ plot.street.removal <- function()
 			MEAS_COMMUNITY_NBR, MEAS_MODULARITY, MEAS_NMI, MEAS_RI, MEAS_ARI,
 			MEAS_DISTANCE_AVG_SPATIAL, MEAS_DISTANCE_AVG_GEODESIC, MEAS_DISTANCE_HARM_SPATIAL, MEAS_DISTANCE_HARM_GEODESIC
 		)
-		cor.names <- c(MEAS_DISTANCE_COR_PEARSON, MEAS_DISTANCE_COR_SPEARMAN, MEAS_DISTANCE_COR_KENDALL)
+		cor.names <- c(
+			MEAS_DISTANCE_COR_PEARSON, 
+			MEAS_DISTANCE_COR_SPEARMAN, paste0(MEAS_DISTANCE_COR_SPEARMAN,"-finite"), 
+			MEAS_DISTANCE_COR_KENDALL, paste0(MEAS_DISTANCE_COR_KENDALL,"-finite")
+		)
 		tab.stats <- data.frame(1:length(gs), street.names, street.lengths, matrix(NA, nrow=length(gs), ncol=length(meas.names)))
 		colnames(tab.stats) <- c("NumberDeletedStreets", "LastDeletedStreetId", "LastDeletedStreetLength", meas.names)
 		tlog(4,"Computing stats")
@@ -172,10 +176,9 @@ plot.street.removal <- function()
 			gt <- gs[[i]]
 			gvals <- distances(graph=gt, mode="all")
 			gvals <- gvals[upper.tri(gvals)]
-			tab.stats[i,MEAS_DISTANCE_HARM_GEODESIC] <- 1/mean(1/gvals)
 			idx <- !is.infinite(gvals)
-			gvals <- gvals[idx]
-			tab.stats[i,MEAS_DISTANCE_AVG_GEODESIC] <- mean(gvals)
+			tab.stats[i,MEAS_DISTANCE_AVG_GEODESIC] <- mean(gvals[idx])
+			tab.stats[i,MEAS_DISTANCE_HARM_GEODESIC] <- 1/mean(1/gvals)
 			
 			# distance correlation
 			tlog(8,"Compute distance correlation")
@@ -185,9 +188,11 @@ plot.street.removal <- function()
 			idx <- !is.infinite(gvals)
 			gvals <- gvals[idx]
 			svals <- svals[idx]
-			tab.stats[i,MEAS_DISTANCE_COR_PEARSON] <- cor(x=gvals,y=svals,method="pearson")
+			tab.stats[i,MEAS_DISTANCE_COR_PEARSON] <- cor(x=gvals[idx],y=svals[idx],method="pearson")
 			tab.stats[i,MEAS_DISTANCE_COR_SPEARMAN] <- cor(x=gvals,y=svals,method="spearman")
+			tab.stats[i,paste0(MEAS_DISTANCE_COR_SPEARMAN,"-finite")] <- cor(x=gvals[idx],y=svals[idx],method="spearman")
 			tab.stats[i,MEAS_DISTANCE_COR_KENDALL] <- cor(x=gvals,y=svals,method="kendall")
+			tab.stats[i,paste0(MEAS_DISTANCE_COR_KENDALL,"-finite")] <- cor(x=gvals[idx],y=svals[idx],method="kendall")
 			
 			# plot geodesic vs. spatial distance
 			vals <- igraph::degree(graph=gt, mode="all")
