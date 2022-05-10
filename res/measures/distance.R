@@ -57,7 +57,8 @@ analyze.net.distance <- function(g, out.folder)
 		
 		# distance distribution
 		vals <- distances(graph=g, mode=if(mode==MEAS_MODE_UNDIR) "all" else mode)
-		flat.vals <- vals[upper.tri(vals)]
+		diag(vals) <- NA
+		flat.vals <- vals[upper.tri(vals,diag=FALSE)]
 		if(length(flat.vals)>2)
 			custom.hist(vals=flat.vals, name=paste(MEAS_LONG_NAMES[mode],MEAS_LONG_NAMES[MEAS_DISTANCE]), file=file.path(distance.folder,paste0(fname,"_histo")))
 		
@@ -68,11 +69,11 @@ analyze.net.distance <- function(g, out.folder)
 			
 			# compute mean
 			if(avg.type=="arith")
-			{	avg.vals <- apply(X=vals,MARGIN=1,FUN=function(v) mean(v[!is.infinite(v)]))
+			{	avg.vals <- apply(X=vals,MARGIN=1,FUN=function(v) mean(v[!is.infinite(v)], na.rm=TRUE))
 				xlab <- paste0("Average ",MEAS_LONG_NAMES[mode]," Geodesic ",MEAS_LONG_NAMES[MEAS_DISTANCE])
 			}
 			else if(avg.type=="harmo")
-			{	avg.vals <- apply(X=vals,MARGIN=1,FUN=function(v) 1/mean(1/v[v>0]))
+			{	avg.vals <- apply(X=vals,MARGIN=1,FUN=function(v) 1/mean(1/v[v>0], na.rm=TRUE))
 				xlab <- paste0("Harmonic Mean of the ",MEAS_LONG_NAMES[mode]," Geodesic ",MEAS_LONG_NAMES[MEAS_DISTANCE])
 			}
 			
@@ -91,9 +92,9 @@ analyze.net.distance <- function(g, out.folder)
 				
 				# add results to the graph (as attributes) and stats table
 				g <- set_vertex_attr(graph=g, name=paste0(fname,"-",avg.type,"_avg"), value=avg.vals)
-				g <- set_graph_attr(graph=g, name=paste0(fname,"-",avg.type,"_mean"), value=mean(flat.vals[!is.infinite(flat.vals)]))
-				g <- set_graph_attr(graph=g, name=paste0(fname,"-",avg.type,"_stdev"), value=sd(flat.vals[!is.infinite(flat.vals)]))
-				stats[paste0(fname,"-",avg.type), ] <- list(Value=NA, Mean=mean(vals[!is.infinite(vals)]), Stdv=sd(vals[!is.infinite(vals)]))
+				g <- set_graph_attr(graph=g, name=paste0(fname,"-",avg.type,"_mean"), value=mean(flat.vals[!is.infinite(flat.vals)], na.rm=TRUE))
+				g <- set_graph_attr(graph=g, name=paste0(fname,"-",avg.type,"_stdev"), value=sd(flat.vals[!is.infinite(flat.vals)], na.rm=TRUE))
+				stats[paste0(fname,"-",avg.type), ] <- list(Value=NA, Mean=mean(vals[!is.infinite(vals)], na.rm=TRUE), Stdv=sd(vals[!is.infinite(vals)], na.rm=TRUE))
 				
 				# plot graph using color for average distance
 				plot.file <- file.path(distance.folder,paste0(fname,"_avg-",avg.type,"_graph"))
@@ -171,12 +172,12 @@ analyze.net.distance <- function(g, out.folder)
 			coords <- cbind(vertex_attr(g, name=COL_LOC_X), vertex_attr(g, name=COL_LOC_Y))
 		else
 			coords <- cbind(V(g)$x, V(g)$y)
-		idx <- which(!is.na(coords[,1]) & !is.na(coords[,2]))
-		rem <- which(is.na(coords[,1]) | is.na(coords[,2]))
-		svals <- as.matrix(dist(x=coords[idx,], method="euclidean", diag=TRUE, upper=TRUE))
+		idx0 <- which(!is.na(coords[,1]) & !is.na(coords[,2]))
+		svals <- as.matrix(dist(x=coords[idx0,], method="euclidean", diag=TRUE, upper=TRUE))
+		diag(svals) <- NA
 		svals.avg.arith <- apply(X=svals, MARGIN=1, FUN=function(v) mean(v[!is.na(v)]))
 		svals.avg.harmo <- apply(X=svals, MARGIN=1, FUN=function(v) 1/mean(1/v[!is.na(v) & v>0]))
-		svals <- svals[upper.tri(svals)]
+		svals <- svals[upper.tri(svals,diag=FALSE)]
 		
 		# compute distribution
 		plot.file <- file.path(distance.folder,paste0(fname,"_histo_spatial-",sdist))
@@ -192,9 +193,9 @@ analyze.net.distance <- function(g, out.folder)
 			
 			avg.vals <- rep(NA,gorder(g))
 			if(avg.type=="arith")
-				avg.vals[idx] <- svals.avg.arith
+				avg.vals[idx0] <- svals.avg.arith
 			else
-				avg.vals[idx] <- svals.avg.harmo
+				avg.vals[idx0] <- svals.avg.harmo
 			g <- set_vertex_attr(graph=g, name=satt, value=avg.vals)
 			V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
 			g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
@@ -205,12 +206,9 @@ analyze.net.distance <- function(g, out.folder)
 		
 		# compute undirected graph distance
 		tlog(8,"Computing undirected geodesic distance")
-		if(length(rem)>0) 
-			gt <- delete_vertices(g,rem)
-		else
-			gt <- g
-		gvals <- distances(graph=gt, mode="all")
-		gvals <- gvals[upper.tri(gvals)]
+		gvals <- distances(graph=g, mode="all", v=idx0, to=idx0)
+		diag(gvals) <- NA
+		gvals <- gvals[upper.tri(gvals,diag=FALSE)]
 		idx <- !is.infinite(gvals)
 		gvals <- gvals[idx]	# TODO shouldn't we keep all nodes for cor measure supporting Inf values?
 		svals <- svals[idx]
@@ -226,7 +224,7 @@ analyze.net.distance <- function(g, out.folder)
 			tmp <- rcorr(x=gvals, y=svals, type="spearman")
 			cor.tab[sdist,"SpearmanCoef"] <- tmp$r[1,2]
 			cor.tab[sdist,"SpearmanPval"] <- tmp$P[1,2]
-			tmp <- cor.test(x=gvals, y=svals, method="kendall")
+			tmp <- cor.test(x=gvals, y=svals, method="kendall")	# alternative: cor.fk(x=gvals, y=svals) # problem: it does not compute the p-value
 			cor.tab[sdist,"KendallCoef"] <- tmp$estimate
 			cor.tab[sdist,"KendallPval"] <- tmp$p.value
 			# NOTE: null hypothesis=zero correlation >> small p means this hypothesis is rejected
@@ -246,7 +244,7 @@ analyze.net.distance <- function(g, out.folder)
 						#xlim=c(1,max(deg.vals)*1.1)
 					)
 					# mean
-					avg.dist <- sapply(min(gvals):max(gvals), function(deg) mean(svals[gvals==deg]))
+					avg.dist <- sapply(min(gvals):max(gvals), function(v) mean(svals[gvals==v],na.rm=TRUE))
 					lines(	
 						x=min(gvals):max(gvals), avg.dist,
 						col="BLACK"
@@ -256,8 +254,8 @@ analyze.net.distance <- function(g, out.folder)
 			
 			# same using degree for colors
 			meas <- MEAS_DEGREE
-			vals <- igraph::degree(graph=gt, mode="all")
-			cb <- t(combn(1:gorder(gt),2))
+			vals <- igraph::degree(graph=g, mode="all", v=idx0)
+			cb <- t(combn(1:length(idx0),2))
 			vals <- (vals[cb[,1]] * vals[cb[,2]])[idx]
 			# set colors
 			fine <- 500 									# granularity of the color gradient
@@ -277,7 +275,7 @@ analyze.net.distance <- function(g, out.folder)
 						#xlim=c(1,max(deg.vals)*1.1)
 					)
 					# mean
-					avg.dist <- sapply(min(gvals):max(gvals), function(deg) mean(svals[gvals==deg]))
+					avg.dist <- sapply(min(gvals):max(gvals), function(v) mean(svals[gvals==v],na.rm=TRUE))
 					lines(	
 						x=min(gvals):max(gvals), avg.dist,
 						col="BLACK"
@@ -325,19 +323,14 @@ analyze.net.distance <- function(g, out.folder)
 				coords <- cbind(vertex_attr(g, name=COL_LOC_X), vertex_attr(g, name=COL_LOC_Y))
 			else
 				coords <- cbind(V(g)$x, V(g)$y)
-			idx <- which(!is.na(coords[,1]) & !is.na(coords[,2]))
-			rem <- which(is.na(coords[,1]) | is.na(coords[,2]))
-			svals <- as.matrix(dist(x=coords[idx,], method="euclidean", diag=TRUE, upper=TRUE))
+			idx0 <- which(!is.na(coords[,1]) & !is.na(coords[,2]))
+			svals <- as.matrix(dist(x=coords[idx0,], method="euclidean", diag=TRUE, upper=TRUE))
 			diag(svals) <- NA
 			
 			# compute average undirected graph distance
 			tlog(8,"Computing undirected geodesic distance")
-			if(length(rem)>0) 
-				gt <- delete_vertices(g,rem)
-			else
-				gt <- g
-			if(gorder(gt)>2)
-			{	gvals <- distances(graph=gt, mode="all")
+#			if(gorder(gt)>2)
+			{	gvals <- distances(graph=g, mode="all", v=idx0, to=idx0)
 				diag(gvals) <- NA
 				
 				if(avg.type=="arith")
@@ -381,13 +374,13 @@ analyze.net.distance <- function(g, out.folder)
 					tmp <- rcorr(x=gvals, y=svals, type="spearman")
 					cor.tab[sdist,"SpearmanCoef"] <- tmp$r[1,2]
 					cor.tab[sdist,"SpearmanPval"] <- tmp$P[1,2]
-					tmp <- cor.test(x=gvals, y=svals, method="kendall")
+					tmp <- cor.test(x=gvals, y=svals, method="kendall")	# alternative: cor.fk(x=gvals, y=svals) # problem: it does not compute the p-value
 					cor.tab[sdist,"KendallCoef"] <- tmp$estimate
 					cor.tab[sdist,"KendallPval"] <- tmp$p.value
 					# NOTE: null hypothesis=zero correlation >> small p means this hypothesis is rejected
 					
 					# plot the spatial distance as a function of the graph-based one
-					avg.dist <- sapply(sort(unique(gvals)), function(deg) mean(svals[gvals==deg]))
+					avg.dist <- sapply(sort(unique(gvals)), function(v) mean(svals[gvals==v],na.rm=TRUE))
 					plot.file <- file.path(distance.folder, paste0(fname,"_vs_spatial-",sdist))
 					for(fformat in FORMAT)
 					{	if(fformat=="pdf")
@@ -412,12 +405,12 @@ analyze.net.distance <- function(g, out.folder)
 					
 					# same using degree for colors
 					meas <- MEAS_DEGREE
-					vals <- igraph::degree(graph=gt, mode="all")[flag.keep]
+					vals <- igraph::degree(graph=g, mode="all", v=idx0)[flag.keep]
 					# set colors
 					fine <- 500 									# granularity of the color gradient
 					cols <- viridis(fine,direction=-1)[as.numeric(cut(vals,breaks=fine))]
 					# produce files
-					avg.dist <- sapply(sort(unique(gvals)), function(deg) mean(svals[gvals==deg]))
+					avg.dist <- sapply(sort(unique(gvals)), function(v) mean(svals[gvals==v],na.rm=TRUE))
 					plot.file <- file.path(distance.folder, paste0(fname,"_vs_spatial-",sdist,"_col=",meas))
 					for(fformat in FORMAT)
 					{	if(fformat=="pdf")
@@ -443,8 +436,8 @@ analyze.net.distance <- function(g, out.folder)
 					}
 					
 					# same using colors for fixed buildings
-					edf <- vertex_attr(graph=g, name=COL_LOC_TYPE)[flag.keep] %in% c("Edifice","Porte","Repere")
-					types <- vertex_attr(graph=g, name=COL_LOC_TYPE)[flag.keep]
+					edf <- vertex_attr(graph=g, name=COL_LOC_TYPE, index=idx0)[flag.keep] %in% c("Edifice","Porte","Repere")
+					types <- vertex_attr(graph=g, name=COL_LOC_TYPE, index=idx0)[flag.keep]
 					if(any(edf))
 					{	plot.file <- file.path(distance.folder, paste0(fname,"_vs_spatial-",sdist,"_col=fixed"))
 						cols <- rep(make.color.transparent("BLACK",75), length(vals))

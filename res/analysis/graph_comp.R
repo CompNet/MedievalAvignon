@@ -191,7 +191,7 @@ plot.street.removal <- function()
 			tab.stats[i,MEAS_DISTANCE_COR_PEARSON] <- cor(x=gvals[idx], y=svals[idx], method="pearson")
 			tab.stats[i,MEAS_DISTANCE_COR_SPEARMAN] <- rcorr(x=gvals2, y=svals, type="spearman")$r[1,2]
 			tab.stats[i,paste0(MEAS_DISTANCE_COR_SPEARMAN,"-finite")] <- rcorr(x=gvals[idx], y=svals[idx], type="spearman")$r[1,2]
-			tab.stats[i,MEAS_DISTANCE_COR_KENDALL] <- cor(x=gvals,y=svals,method="kendall")
+			tab.stats[i,MEAS_DISTANCE_COR_KENDALL] <- cor.fk(x=gvals,y=svals)
 			tab.stats[i,paste0(MEAS_DISTANCE_COR_KENDALL,"-finite")] <- cor(x=gvals[idx], y=svals[idx], method="kendall")
 			gvals <- gvals[idx]
 			svals <- svals[idx]

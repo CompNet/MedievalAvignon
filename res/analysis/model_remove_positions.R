@@ -138,7 +138,7 @@ for(d in 1:length(del.rates))
 	cor.tab[d,"SpearmanCoef"] <- tmp$r[1,2]
 	cor.tab[d,"SpearmanPval"] <- tmp$P[1,2]
 	tlog(12,"Spearman: ",tmp$r[1,2]," (p=",tmp$P[1,2],")")
-	tmp <- cor.test(x=gvals, y=svals, method="kendall")
+	tmp <- cor.test(x=gvals, y=svals, method="kendall")	# alt: cor.fk(x=gvals, y=svals) # (but no p-value)
 	cor.tab[d,"KendallCoef"] <- tmp$estimate
 	cor.tab[d,"KendallPval"] <- tmp$p.value
 	tlog(12,"Kendall: ",tmp$estimate,"(p=",tmp$p.value,")")
