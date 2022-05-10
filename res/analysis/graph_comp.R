@@ -241,7 +241,7 @@ plot.street.removal <- function()
 				pdf(paste0(plot.file,".pdf"))
 			else if(fformat=="png")
 				png(paste0(plot.file,".png"))
-			plot(NULL, xlim=range(del.rates),ylim=c(0,1),xlab="Number of streets removed (by decreasing length)", ylab="Correlation value")
+			plot(NULL, xlim=1:length(gs),ylim=c(0,1),xlab="Number of streets removed (by decreasing length)", ylab="Correlation value")
 			for(i in 1:length(cor.names))
 			{	cor.name <- cor.names[i]
 				lines(x=1:length(gs), y=tab.stats[,cor.name],pal[i])
