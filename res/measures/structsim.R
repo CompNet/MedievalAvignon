@@ -138,9 +138,9 @@ analyze.net.structsim <- function(g, out.folder)
 			{	tmp <- cor.test(x=gvals, y=svals, method="pearson")
 				cor.tab[sdist,"PearsonCoef"] <- tmp$estimate
 				cor.tab[sdist,"PearsonPval"] <- tmp$p.value
-				tmp <- cor.test(x=gvals, y=svals, method="spearman")
-				cor.tab[sdist,"SpearmanCoef"] <- tmp$estimate
-				cor.tab[sdist,"SpearmanPval"] <- tmp$p.value
+				tmp <- rcorr(x=gvals, y=svals, type="spearman")
+				cor.tab[sdist,"SpearmanCoef"] <- tmp$r[1,2]
+				cor.tab[sdist,"SpearmanPval"] <- tmp$P[1,2]
 				tmp <- cor.test(x=gvals, y=svals, method="kendall")
 				cor.tab[sdist,"KendallCoef"] <- tmp$estimate
 				cor.tab[sdist,"KendallPval"] <- tmp$p.value

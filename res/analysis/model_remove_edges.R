@@ -126,10 +126,10 @@ for(d in 1:length(del.rates))
 	cor.tab[d,"PearsonCoef"] <- tmp$estimate
 	cor.tab[d,"PearsonPval"] <- tmp$p.value
 	tlog(12,"Pearson: ",tmp$estimate," (p=",tmp$p.value,")")
-#	tmp <- cor.test(x=gvals, y=svals, method="spearman")
-#	cor.tab[d,"SpearmanCoef"] <- tmp$estimate
-#	cor.tab[d,"SpearmanPval"] <- tmp$p.value
-#	tlog(12,"Spearman: ",tmp$estimate," (p=",tmp$p.value,")")
+	tmp <- rcorr(x=gvals, y=svals, type="spearman")
+	cor.tab[d,"SpearmanCoef"] <- tmp$r[1,2]
+	cor.tab[d,"SpearmanPval"] <- tmp$P[1,2]
+	tlog(12,"Spearman: ",tmp$r[1,2]," (p=",tmp$P[1,2],")")
 	tmp <- cor.test(x=gvals, y=svals, method="kendall")
 	cor.tab[d,"KendallCoef"] <- tmp$estimate
 	cor.tab[d,"KendallPval"] <- tmp$p.value

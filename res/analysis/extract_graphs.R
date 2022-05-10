@@ -1521,6 +1521,8 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #     - effet de la suppression des coordonnées
 #     - effet des rues longues. mais ça demanderait de partir d'un plan stochastique.
 # - visualisation : refaire tous les layouts
+# - vérifier s'il y a des positions spatiales égales dans les données brutes
+# - empêcher les positions spatiales égales lors de l'interpolation (bouger de var/10)
 
 # MARGOT:
 # - traduction de 'confront' en anglais ?

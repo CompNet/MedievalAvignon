@@ -186,13 +186,15 @@ plot.street.removal <- function()
 			gvals <- distances(graph=gt, mode="all")
 			gvals <- gvals[upper.tri(gvals)]
 			idx <- !is.infinite(gvals)
+			idx2 <- is.infinite(gvals)
+			gvals2 <- gvals; gvals2[idx2] <- rep(max(gvals[idx]), length(idx2))
+			tab.stats[i,MEAS_DISTANCE_COR_PEARSON] <- cor(x=gvals[idx], y=svals[idx], method="pearson")
+			tab.stats[i,MEAS_DISTANCE_COR_SPEARMAN] <- rcorr(x=gvals2, y=svals, type="spearman")$r[1,2]
+			tab.stats[i,paste0(MEAS_DISTANCE_COR_SPEARMAN,"-finite")] <- rcorr(x=gvals[idx], y=svals[idx], type="spearman")$r[1,2]
+			tab.stats[i,MEAS_DISTANCE_COR_KENDALL] <- cor(x=gvals,y=svals,method="kendall")
+			tab.stats[i,paste0(MEAS_DISTANCE_COR_KENDALL,"-finite")] <- cor(x=gvals[idx], y=svals[idx], method="kendall")
 			gvals <- gvals[idx]
 			svals <- svals[idx]
-			tab.stats[i,MEAS_DISTANCE_COR_PEARSON] <- cor(x=gvals[idx],y=svals[idx],method="pearson")
-			tab.stats[i,MEAS_DISTANCE_COR_SPEARMAN] <- cor(x=gvals,y=svals,method="spearman")
-			tab.stats[i,paste0(MEAS_DISTANCE_COR_SPEARMAN,"-finite")] <- cor(x=gvals[idx],y=svals[idx],method="spearman")
-			tab.stats[i,MEAS_DISTANCE_COR_KENDALL] <- cor(x=gvals,y=svals,method="kendall")
-			tab.stats[i,paste0(MEAS_DISTANCE_COR_KENDALL,"-finite")] <- cor(x=gvals[idx],y=svals[idx],method="kendall")
 			
 			# plot geodesic vs. spatial distance
 			vals <- igraph::degree(graph=gt, mode="all")

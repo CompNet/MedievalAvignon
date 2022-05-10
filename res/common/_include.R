@@ -31,6 +31,7 @@ library("DescTools")		# Cramér's V
 library("stringr")			# string operations
 library("plotfunctions")	# helper plotting functions
 library("viridis")			# palette
+library("Hmisc")			# fast spearman computation
 
 
 
