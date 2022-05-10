@@ -164,41 +164,40 @@ plot.street.removal <- function()
 			# spatial distance
 			tlog(8,"Compute spatial distance")
 			coords <- cbind(vertex_attr(gs[[i]], name=COL_LOC_X), vertex_attr(gs[[i]], name=COL_LOC_Y))
-			idx <- which(!is.na(coords[,1]) & !is.na(coords[,2]))
-			rem <- which(is.na(coords[,1]) | is.na(coords[,2]))
-			svals <- as.matrix(dist(x=coords[idx,], method="euclidean", diag=TRUE, upper=TRUE))
+			idx0 <- which(!is.na(coords[,1]) & !is.na(coords[,2]))
+			svals <- as.matrix(dist(x=coords[idx0,], method="euclidean", diag=TRUE, upper=TRUE))
+			diag(svals) <- NA
 			svals <- svals[upper.tri(svals)]
-			tab.stats[i,MEAS_DISTANCE_AVG_SPATIAL] <- mean(svals)
-			tab.stats[i,MEAS_DISTANCE_HARM_SPATIAL] <- 1/mean(1/svals[svals>0])
+			tab.stats[i,MEAS_DISTANCE_AVG_SPATIAL] <- mean(svals, na.rm=TRUE)
+			tab.stats[i,MEAS_DISTANCE_HARM_SPATIAL] <- 1/mean(1/svals[svals>0], na.rm=TRUE)
 			
 			# geodesic distance
 			tlog(8,"Compute geodesic distance")
-			gt <- gs[[i]]
-			gvals <- distances(graph=gt, mode="all")
+			gvals <- distances(graph=gs[[i]], mode="all")
+			diag(gvals) <- NA
 			gvals <- gvals[upper.tri(gvals)]
 			idx <- !is.infinite(gvals)
-			tab.stats[i,MEAS_DISTANCE_AVG_GEODESIC] <- mean(gvals[idx])
-			tab.stats[i,MEAS_DISTANCE_HARM_GEODESIC] <- 1/mean(1/gvals)
+			tab.stats[i,MEAS_DISTANCE_AVG_GEODESIC] <- mean(gvals[idx], na.rm=TRUE)
+			tab.stats[i,MEAS_DISTANCE_HARM_GEODESIC] <- 1/mean(1/gvals, na.rm=TRUE)
 			
-			# distance correlation
+			# distance correlations
 			tlog(8,"Compute distance correlation")
-			if(length(rem)>0) gt <- delete_vertices(gt,rem)
-			gvals <- distances(graph=gt, mode="all")
+			gvals <- distances(graph=gs[[i]], mode="all", v=idx0, to=idx0)
+			diag(gvals) <- NA
 			gvals <- gvals[upper.tri(gvals)]
 			idx <- !is.infinite(gvals)
-			idx2 <- is.infinite(gvals)
-			gvals2 <- gvals; gvals2[idx2] <- rep(max(gvals[idx]), length(idx2))
+			gvals2 <- gvals; gvals2[which(is.infinite(gvals))] <- rep(max(gvals[idx],na.rm=TRUE)+1, length(which(is.infinite(gvals))))	# values with max+1 instead of Inf (for rank-based correlation measures)
 			tab.stats[i,MEAS_DISTANCE_COR_PEARSON] <- cor(x=gvals[idx], y=svals[idx], method="pearson")
 			tab.stats[i,MEAS_DISTANCE_COR_SPEARMAN] <- rcorr(x=gvals2, y=svals, type="spearman")$r[1,2]
 			tab.stats[i,paste0(MEAS_DISTANCE_COR_SPEARMAN,"-finite")] <- rcorr(x=gvals[idx], y=svals[idx], type="spearman")$r[1,2]
-			tab.stats[i,MEAS_DISTANCE_COR_KENDALL] <- cor.fk(x=gvals,y=svals)
-			tab.stats[i,paste0(MEAS_DISTANCE_COR_KENDALL,"-finite")] <- cor(x=gvals[idx], y=svals[idx], method="kendall")
+			tab.stats[i,MEAS_DISTANCE_COR_KENDALL] <- cor.fk(x=gvals2,y=svals)
+			tab.stats[i,paste0(MEAS_DISTANCE_COR_KENDALL,"-finite")] <- cor.fk(x=gvals[idx], y=svals[idx])
 			gvals <- gvals[idx]
 			svals <- svals[idx]
 			
 			# plot geodesic vs. spatial distance
-			vals <- igraph::degree(graph=gt, mode="all")
-			cb <- t(combn(1:gorder(gt),2))
+			vals <- igraph::degree(graph=gs[[i]], mode="all", v=idx0)
+			cb <- t(combn(1:length(idx0),2))
 			vals <- (vals[cb[,1]] * vals[cb[,2]])[idx]
 			# set colors
 			fine <- 500 									# granularity of the color gradient
