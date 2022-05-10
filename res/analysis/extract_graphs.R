@@ -1276,7 +1276,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		# specific case of street removal test
 		if(startsWith(graph.types[i], paste0(GR_EST_FLAT_MINUS,"_")))
 		{	# setup file names
-			graph.folder <- file.path(FOLDER_OUT_ANAL_EST, GR_EST_FLAT_MINUS, "_removed_streets")
+			graph.folder <- file.path(FOLDER_OUT_ANAL_EST, GR_EST_FLAT_MINUS, "_removed_streets", "graphs")
 			dir.create(path=graph.folder, showWarnings=FALSE, recursive=TRUE)
 			graph.file <- file.path(graph.folder, paste0("graph_rem=",nbr,".graphml"))
 			lay.file <- file.path(FOLDER_OUT_ANAL_EST, GR_EST_FLAT_MINUS, "layout.txt")
