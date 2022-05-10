@@ -2631,8 +2631,6 @@
 2915,a-orient,1131,1544,NULL,NULL,confronte a l est avec
 2916,a-occident,1131,1543,NULL,NULL,confronte a l ouest avec
 2917,a-meridie,1131,1542,NULL,NULL,confronte au sud avec
-2288,ad,1132,NULL,44,NULL,vers
-2289,a-circio,1132,NULL,45,NULL,confronte au nord avec
 2290,a-orient,1132,NULL,533,NULL,confronte a l est avec
 2577,in,1132,NULL,NULL,6,a l interieur de
 2918,a-orient,1132,1420,NULL,NULL,confronte a l est avec
