@@ -1184,9 +1184,9 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	# extract one graph for each predefined modality
 	#################
 	tlog(2,"Extracting several variants of the graph")
-#	graph.types <- c(GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS)		# c(GR_EST_FULL, GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS, LK_TYPE_FLATREL_VALS)
-	measured.streets <- which(vertex_attr(g,COL_LOC_TYPE)=="Rue" & !is.na(vertex_attr(g,COL_STREET_LENGTH)))
-	graph.types <- paste0(GR_EST_FLAT_MINUS,"_",1:length(measured.streets))
+	graph.types <- c(GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS)		# c(GR_EST_FULL, GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS, LK_TYPE_FLATREL_VALS)
+#	measured.streets <- which(vertex_attr(g,COL_LOC_TYPE)=="Rue" & !is.na(vertex_attr(g,COL_STREET_LENGTH)))
+#	graph.types <- paste0(GR_EST_FLAT_MINUS,"_",1:length(measured.streets))
 	for(i in 1:length(graph.types))
 	{	tlog(4,"Extracting graph \"",graph.types[i],"\" (",i,"/",length(graph.types),")")
 		
@@ -1505,8 +1505,8 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #
 # TODO
 # - distance géodésique moyenne : passer à l'harmonique ? (mais aussi pour la spatiale, du coup ?)
-#   - virer les zéros pour la spatiale
-#   - rajouter ce calcul dans le script des distances (y compris moyennes)
+#   + virer les zéros pour la spatiale
+#   + rajouter ce calcul dans le script des distances (y compris moyennes)
 #   - rajouter le calcul de correlation dans les scripts de distance et de simstruct
 # + street removal :
 #   + rajouter des stats spatiales :
@@ -1520,6 +1520,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #     - effet de la suppression des liens
 #     - effet de la suppression des coordonnées
 #     - effet des rues longues. mais ça demanderait de partir d'un plan stochastique.
+# - visualisation : refaire tous les layouts
 
 # MARGOT:
 # - traduction de 'confront' en anglais ?

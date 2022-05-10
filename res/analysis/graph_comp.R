@@ -165,7 +165,7 @@ plot.street.removal <- function()
 			svals <- as.matrix(dist(x=coords[idx,], method="euclidean", diag=TRUE, upper=TRUE))
 			svals <- svals[upper.tri(svals)]
 			tab.stats[i,MEAS_DISTANCE_AVG_SPATIAL] <- mean(svals)
-			tab.stats[i,MEAS_DISTANCE_HARM_SPATIAL] <- 1/mean(1/svals)
+			tab.stats[i,MEAS_DISTANCE_HARM_SPATIAL] <- 1/mean(1/svals[svals>0])
 			
 			# geodesic distance
 			tlog(8,"Compute geodesic distance")

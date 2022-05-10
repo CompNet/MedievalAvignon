@@ -62,8 +62,11 @@ analyze.net.distance <- function(g, out.folder)
 			custom.hist(vals=flat.vals, paste(MEAS_LONG_NAMES[mode],MEAS_LONG_NAMES[MEAS_DISTANCE]), file=file.path(distance.folder,paste0(fname,"_histo")))
 		
 		# average distance distributions
+		tlog(4,"Dealing with average distance distribution")
 		for(avg.type in c("arith","harmo"))
-		{	# compute mean
+		{	tlog(6,"Computing mean type ",avg.type)
+			
+			# compute mean
 			if(avg.type=="arith")
 			{	avg.vals <- apply(X=vals,MARGIN=1,FUN=function(v) mean(v[!is.infinite(v)]))
 				xlab <- paste0("Average ",MEAS_LONG_NAMES[mode]," Geodesic ",MEAS_LONG_NAMES[MEAS_DISTANCE])
@@ -75,12 +78,16 @@ analyze.net.distance <- function(g, out.folder)
 			
 			# record values and create plots
 			if(length(avg.vals)>2)
-			{	custom.hist(vals=avg.vals, name=xlab, file=file.path(distance.folder,paste0(fname,"_avg-",avg.type,"_histo")))
+			{	plot.file <- file.path(distance.folder,paste0(fname,"_avg-",avg.type,"_histo"))
+				tlog(8,"Plotting histogram in '",plot.file,"'")
+				custom.hist(vals=avg.vals, name=xlab, file=plot.file)
 				
 				# export CSV with average distance
 				df <- data.frame(vertex_attr(g, ND_NAME), get.names(g), avg.vals)
 				colnames(df) <- c("Id","Name",paste0(fname,"_avg")) 
-				write.csv(df, file=file.path(distance.folder,paste0(fname,"_avg-",avg.type,"_values.csv")), row.names=FALSE)
+				tab.file <- file.path(distance.folder,paste0(fname,"_avg-",avg.type,"_values.csv"))
+				tlog(8,"Recording values in '",tab.file,"'")
+				write.csv(df, file=tab.file, row.names=FALSE)
 				
 				# add results to the graph (as attributes) and stats table
 				g <- set_vertex_attr(graph=g, name=paste0(fname,"-",avg.type,"_avg"), value=avg.vals)
@@ -89,52 +96,56 @@ analyze.net.distance <- function(g, out.folder)
 				stats[paste0(fname,"-",avg.type), ] <- list(Value=NA, Mean=mean(vals[!is.infinite(vals)]), Stdv=sd(vals[!is.infinite(vals)]))
 				
 				# plot graph using color for average distance
+				plot.file <- file.path(distance.folder,paste0(fname,"_avg-",avg.type,"_graph"))
+				tlog(8,"Plotting graph in '",plot.file,"'")
 				#g <- update.node.labels(g, avg.vals)
 				V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
 				g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-				custom.gplot(g=g1, col.att=paste0(fname,"-",avg.type,"_avg"), file=file.path(distance.folder,paste0(fname,"_avg-",avg.type,"_graph_lambert")), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+				custom.gplot(g=g1, col.att=paste0(fname,"-",avg.type,"_avg"), file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
 				g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-				custom.gplot(g=g1, col.att=paste0(fname,"-",avg.type,"_avg"), file=file.path(distance.folder,paste0(fname,"_avg-",avg.type,"_graph_kk")), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+				custom.gplot(g=g1, col.att=paste0(fname,"-",avg.type,"_avg"), file=paste0(plot.file,"_kk"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
 			}
 		}
 		
-		# for each node, plot graph using color for distance
-		mode.folder <- file.path(distance.folder,mode)
-		dir.create(path=mode.folder, showWarnings=FALSE, recursive=TRUE)
-		plot.folder <- file.path(mode.folder,"lambert")
-		dir.create(path=plot.folder, showWarnings=FALSE, recursive=TRUE)
-		plot.folder <- file.path(mode.folder,"kk")
-		dir.create(path=plot.folder, showWarnings=FALSE, recursive=TRUE)
-		for(n in 1:gorder(g))
-		{	id <- vertex_attr(g, COL_LOC_ID, n)
-			nname <- get.names(g, n)
-			nname <- trimws(gsub("?", "", nname, fixed=TRUE))
-			
-			# only for significant nodes
-			if(igraph::degree(g, v=n, mode="all")<3)
-				tlog(4,"NOT plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),"), as its degree is <3")
-			else
-			{	g <- set_vertex_attr(graph=g, name=fname, value=vals[n,])
-				if(all(is.infinite(vals[n,-n])))
-					tlog(4,"NOT plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),"), as all values are infinite")
-				else
-				{	tlog(4,"Plotting graph for node #",id," (",nname, ", ",n,"/",gorder(g),")")
-					g <- update.node.labels(g, vals[n,])
-					shrt.nm <- substr(nname,1,30)		# to avoid long file names
-					id.cln <- gsub(":", "-", id, fixed=TRUE)
-					id.cln <- gsub("/", "_", id.cln, fixed=TRUE)
-					V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
-					g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-					custom.gplot(g=g1, col.att=fname, v.hl=n, file=file.path(mode.folder,"lambert",paste0(id.cln,"_",shrt.nm )), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
-					g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-					custom.gplot(g=g1, col.att=fname, v.hl=n, file=file.path(mode.folder,"kk",paste0(id.cln,"_",shrt.nm )), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
-				}
-				g <- delete_vertex_attr(graph=g, name=fname)
-			}
-		}
+#		# for each node, plot graph using color for distance
+#		tlog(4,"Dealing with individual node plots")
+#		mode.folder <- file.path(distance.folder,mode)
+#		dir.create(path=mode.folder, showWarnings=FALSE, recursive=TRUE)
+#		plot.folder <- file.path(mode.folder,"lambert")
+#		dir.create(path=plot.folder, showWarnings=FALSE, recursive=TRUE)
+#		plot.folder <- file.path(mode.folder,"kk")
+#		dir.create(path=plot.folder, showWarnings=FALSE, recursive=TRUE)
+#		for(n in 1:gorder(g))
+#		{	id <- vertex_attr(g, COL_LOC_ID, n)
+#			nname <- get.names(g, n)
+#			nname <- trimws(gsub("?", "", nname, fixed=TRUE))
+#			
+#			# only for significant nodes
+#			if(igraph::degree(g, v=n, mode="all")<3)
+#				tlog(6,"NOT plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),"), as its degree is <3")
+#			else
+#			{	g <- set_vertex_attr(graph=g, name=fname, value=vals[n,])
+#				if(all(is.infinite(vals[n,-n])))
+#					tlog(6,"NOT plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),"), as all values are infinite")
+#				else
+#				{	tlog(6,"Plotting graph for node #",id," (",nname, ", ",n,"/",gorder(g),")")
+#					g <- update.node.labels(g, vals[n,])
+#					shrt.nm <- substr(nname,1,30)		# to avoid long file names
+#					id.cln <- gsub(":", "-", id, fixed=TRUE)
+#					id.cln <- gsub("/", "_", id.cln, fixed=TRUE)
+#					V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
+#					g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+#					custom.gplot(g=g1, col.att=fname, v.hl=n, file=file.path(mode.folder,"lambert",paste0(id.cln,"_",shrt.nm )), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+#					g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+#					custom.gplot(g=g1, col.att=fname, v.hl=n, file=file.path(mode.folder,"kk",paste0(id.cln,"_",shrt.nm )), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+#				}
+#				g <- delete_vertex_attr(graph=g, name=fname)
+#			}
+#		}
 	}
 	
 	# export CSV with average distance
+	tlog(2,"Recording stats in '",stat.file,"'")
 	write.csv(stats, file=stat.file, row.names=TRUE)
 	
 	
@@ -162,25 +173,34 @@ analyze.net.distance <- function(g, out.folder)
 		idx <- which(!is.na(coords[,1]) & !is.na(coords[,2]))
 		rem <- which(is.na(coords[,1]) | is.na(coords[,2]))
 		svals <- as.matrix(dist(x=coords[idx,], method="euclidean", diag=TRUE, upper=TRUE))
-		svals.avg <- apply(X=svals, MARGIN=1, FUN=function(v) mean(v[!is.na(v)]))
+		svals.avg.arith <- apply(X=svals, MARGIN=1, FUN=function(v) mean(v[!is.na(v)]))
+		svals.avg.harmo <- apply(X=svals, MARGIN=1, FUN=function(v) 1/mean(1/v[!is.na(v) & v>0]))
 		svals <- svals[upper.tri(svals)]
 		
 		# compute distribution
-		plot.file <- file.path(distance.folder,paste0(fname,"_histo_spatial_",sdist))
-		tlog(8,"Plotting in \"",plot.file,"\"")
+		plot.file <- file.path(distance.folder,paste0(fname,"_histo_spatial-",sdist))
+		tlog(8,"Plotting histogram in \"",plot.file,"\"")
 		if(length(svals)>2)
 			custom.hist(vals=svals, xlab[sdist], file=plot.file)
 		
 		# plot graph using color for average distance
-		satt <- "SpatialDist_avg"
-		avg.vals <- rep(NA,gorder(g))
-		avg.vals[idx] <- svals.avg
-		g <- set_vertex_attr(graph=g, name=satt, value=avg.vals)
-		V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
-		g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-		custom.gplot(g=g1, col.att=satt, file=file.path(distance.folder,paste0("distance_spatial_",sdist,"_avg_graph_lambert")), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
-		g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-		custom.gplot(g=g1, col.att=satt, file=file.path(distance.folder,paste0("distance_spatial_",sdist,"_avg_graph_kk")), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+		for(avg.type in c("arith","harmo"))
+		{	satt <- paste0("SpatialDist_avg-",avg.type)
+			plot.file <- file.path(distance.folder,paste0("distance_spatial-",sdist,"_avg-",avg.type,"_graph"))
+			tlog(8,"Plotting graph in \"",plot.file,"\"")
+			
+			avg.vals <- rep(NA,gorder(g))
+			if(avg.type=="arith")
+				avg.vals[idx] <- svals.avg.arith
+			else
+				avg.vals[idx] <- svals.avg.harmo
+			g <- set_vertex_attr(graph=g, name=satt, value=avg.vals)
+			V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
+			g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+			custom.gplot(g=g1, col.att=satt, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+			g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+			custom.gplot(g=g1, col.att=satt, file=paste0(plot.file,"_kk"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+		}
 		
 		# compute undirected graph distance
 		tlog(8,"Computing undirected geodesic distance")
@@ -211,7 +231,7 @@ analyze.net.distance <- function(g, out.folder)
 			# NOTE: null hypothesis=zero correlation >> small p means this hypothesis is rejected
 			
 			# plot the spatial distance as a function of the graph-based one
-			plot.file <- file.path(distance.folder, paste0(fname,"_vs_spatial_",sdist))
+			plot.file <- file.path(distance.folder, paste0(fname,"_vs_spatial-",sdist))
 			for(fformat in FORMAT)
 			{	if(fformat=="pdf")
 					pdf(paste0(plot.file,".pdf"))
@@ -242,7 +262,7 @@ analyze.net.distance <- function(g, out.folder)
 			fine <- 500 									# granularity of the color gradient
 #			cols <- sapply(viridis(fine,direction=-1)[as.numeric(cut(vals,breaks=fine))], function(col) make.color.transparent(col,75))
 			cols <- viridis(fine,direction=-1)[as.numeric(cut(vals,breaks=fine))]
-			plot.file <- file.path(distance.folder, paste0(fname,"_vs_spatial_",sdist,"_col=",meas))
+			plot.file <- file.path(distance.folder, paste0(fname,"_vs_spatial-",sdist,"_col=",meas))
 			for(fformat in FORMAT)
 			{	if(fformat=="pdf")
 					pdf(paste0(plot.file,".pdf"))
@@ -339,7 +359,7 @@ analyze.net.distance <- function(g, out.folder)
 				svals <- svals[flag.keep]
 				
 				# compute distribution
-				plot.file <- file.path(distance.folder,paste0(fname,"_histo_spatial_",sdist))
+				plot.file <- file.path(distance.folder,paste0(fname,"_histo_spatial-",sdist))
 				tlog(8,"Plotting in \"",plot.file,"\"")
 				if(length(svals)>2)
 					custom.hist(vals=svals, xlab[sdist], file=plot.file)
@@ -362,7 +382,7 @@ analyze.net.distance <- function(g, out.folder)
 					
 					# plot the spatial distance as a function of the graph-based one
 					avg.dist <- sapply(sort(unique(gvals)), function(deg) mean(svals[gvals==deg]))
-					plot.file <- file.path(distance.folder, paste0(fname,"_vs_spatial_",sdist))
+					plot.file <- file.path(distance.folder, paste0(fname,"_vs_spatial-",sdist))
 					for(fformat in FORMAT)
 					{	if(fformat=="pdf")
 							pdf(paste0(plot.file,".pdf"))
@@ -391,7 +411,7 @@ analyze.net.distance <- function(g, out.folder)
 					cols <- viridis(fine,direction=-1)[as.numeric(cut(vals,breaks=fine))]
 					# produce files
 					avg.dist <- sapply(sort(unique(gvals)), function(deg) mean(svals[gvals==deg]))
-					plot.file <- file.path(distance.folder, paste0(fname,"_vs_spatial_",sdist,"_col=",meas))
+					plot.file <- file.path(distance.folder, paste0(fname,"_vs_spatial-",sdist,"_col=",meas))
 					for(fformat in FORMAT)
 					{	if(fformat=="pdf")
 							pdf(paste0(plot.file,".pdf"))
@@ -418,7 +438,7 @@ analyze.net.distance <- function(g, out.folder)
 					edf <- vertex_attr(graph=g, name=COL_LOC_TYPE)[flag.keep] %in% c("Edifice","Porte","Repere")
 					types <- vertex_attr(graph=g, name=COL_LOC_TYPE)[flag.keep]
 					if(any(edf))
-					{	plot.file <- file.path(distance.folder, paste0(fname,"_vs_spatial_",sdist,"_col=fixed"))
+					{	plot.file <- file.path(distance.folder, paste0(fname,"_vs_spatial-",sdist,"_col=fixed"))
 						cols <- rep(make.color.transparent("BLACK",75), length(vals))
 						pal <- get.palette(3)[1:3]
 						cols[edf & types=="Edifice"] <- pal[1]
