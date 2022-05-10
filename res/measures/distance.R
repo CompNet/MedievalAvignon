@@ -359,7 +359,7 @@ analyze.net.distance <- function(g, out.folder)
 					custom.hist(vals=svals, name=ylabs[sdist], file=plot.file)
 				
 				# clean NA values
-				flag.keep <- !is.na(gvals) & !is.na(svals)
+				flag.keep <- !is.na(gvals) & !is.infinite(gvals) & !is.na(svals)
 				gvals <- gvals[flag.keep]
 				svals <- svals[flag.keep]
 				
