@@ -328,6 +328,7 @@ analyze.net.distance <- function(g, out.folder)
 			idx <- which(!is.na(coords[,1]) & !is.na(coords[,2]))
 			rem <- which(is.na(coords[,1]) | is.na(coords[,2]))
 			svals <- as.matrix(dist(x=coords[idx,], method="euclidean", diag=TRUE, upper=TRUE))
+			diag(svals) <- NA
 			
 			# compute average undirected graph distance
 			tlog(8,"Computing undirected geodesic distance")
@@ -337,6 +338,7 @@ analyze.net.distance <- function(g, out.folder)
 				gt <- g
 			if(gorder(gt)>2)
 			{	gvals <- distances(graph=gt, mode="all")
+				diag(gvals) <- NA
 				
 				if(avg.type=="arith")
 				{	idx <- which(is.infinite(gvals), arr.ind=TRUE)
@@ -356,9 +358,6 @@ analyze.net.distance <- function(g, out.folder)
 					gvals <- sapply(1:nrow(gvals), function(r) 1/mean(1/gvals[r,-r], na.rm=TRUE))
 					svals <- sapply(1:nrow(svals), function(r) 1/mean(1/svals[r,-r], na.rm=TRUE))
 				}
-				flag.keep <- !is.na(gvals) & !is.na(svals)
-				gvals <- gvals[flag.keep]
-				svals <- svals[flag.keep]
 				
 				# compute distribution
 				plot.file <- file.path(distance.folder,paste0(fname,"_histo_spatial-",sdist))
@@ -366,9 +365,14 @@ analyze.net.distance <- function(g, out.folder)
 				if(length(svals)>2)
 					custom.hist(vals=svals, name=ylabs[sdist], file=plot.file)
 				
+				# clean NA values
+				flag.keep <- !is.na(gvals) & !is.na(svals)
+				gvals <- gvals[flag.keep]
+				svals <- svals[flag.keep]
+				
 				# compute correlations
 				tlog(8,"Computing correlation between graph and spatial distances (",length(gvals)," values vs. ",length(svals)," values)")
-				if(length(gvals)<3)
+				if(length(gvals)<4)
 					tlog(10,"WARNING: not enough values to compute correlation or produce plots")
 				else
 				{	tmp <- cor.test(x=gvals, y=svals, method="pearson")
