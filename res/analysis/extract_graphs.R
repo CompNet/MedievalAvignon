@@ -1502,9 +1502,12 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #     + nbre de communités
 #     + nbre de composants
 #     + modularité
-#     - faudrait qq ch de plus spatial
+#
 # TODO
-# - distance géodésique moyenne : passer à l'harmonique ? mais aussi pour la spatiale, du coup ? (faire les deux) 
+# - distance géodésique moyenne : passer à l'harmonique ? (mais aussi pour la spatiale, du coup ?)
+#   - virer les zéros pour la spatiale
+#   - rajouter ce calcul dans le script des distances (y compris moyennes)
+#   - rajouter le calcul de correlation dans les scripts de distance et de simstruct
 # + street removal :
 #   + rajouter des stats spatiales :
 #     + distance moyenne géodésique/spatiale
@@ -1517,6 +1520,9 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #     - effet de la suppression des liens
 #     - effet de la suppression des coordonnées
 #     - effet des rues longues. mais ça demanderait de partir d'un plan stochastique.
+
+# MARGOT:
+# - traduction de 'confront' en anglais ?
 
 # idées papiers: 
 # 1) intérêt du réseau de confront pour approximer la distance spatiale
