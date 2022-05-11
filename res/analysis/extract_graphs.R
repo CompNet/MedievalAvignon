@@ -1111,6 +1111,19 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	tlog(2,"Using spatial coordinates to define layout")
 	V(g)$x <- vertex_attr(g, name=COL_LOC_X)	# COL_LOC_X	COL_LOC_HYP_LON
 	V(g)$y <- vertex_attr(g, name=COL_LOC_Y)	# COL_LOC_Y	COL_LOC_HYP_LAT
+	#####
+#	# check unicity of coordinates
+#	tt <- table(paste0(V(g)$x,"_",V(g)$y))
+#	idx <- which(tt>1); idx <- idx[names(idx)!="NA_NA"]
+#	print(tt[idx])
+#	crds <- strsplit(names(tt[idx]),"_",fixed=TRUE)
+#	for(crd in crds)
+#	{	x <- as.numeric(crd[1]); y <- as.numeric(crd[2])
+#		tlog(6,"x=",sprintf("%.10f",x)," y=",sprintf("%.10f",y))
+#		idx <- which(V(g)$x==x & V(g)$y==y)
+#		print(V(g)[idx])
+#	}
+	#####
 	# missing coordinates: use the average of the neighbors
 	changed <- TRUE
 	while(changed)
@@ -1124,7 +1137,8 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			ry <- range(V(g)$y, na.rm=TRUE)
 			gapy <- 2*(ry[2]-ry[1])/100
 			tmp <- sapply(1:length(idx), function(v)
-			{	ns <- as.integer(neighs[[v]])
+			{	#tlog(6,"node=",v)
+				ns <- as.integer(neighs[[v]])
 				vals.x <- V(g)$x[ns]
 				vals.y <- V(g)$y[ns]
 				vals.x <- vals.x[!is.na(vals.x)]
@@ -1140,6 +1154,14 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 				else
 				{	#res <- c(runif(1,rx[1],rx[2]), runif(1,ry[1],ry[2]))
 					res <- c(NA, NA)
+				}
+				# make sure that the position is unique
+				if(!all(is.na(res)) && any(V(g)$x[!is.na(V(g)$x)]==res[1] & V(g)$y[!is.na(V(g)$y)]==res[2]))
+				{	ww <- which(V(g)$x[!is.na(V(g)$x)]==res[1] & V(g)$y[!is.na(V(g)$y)]==res[2])
+					tlog(6,"Must fix non-unique position: ",paste(res,collapse=", "))
+					for(w in ww) 
+						tlog(8,"(",V(g)$x[!is.na(V(g)$x)][w],", ",V(g)$y[!is.na(V(g)$y)][w],")")
+					res <- res + c(runif(1,0,gapx), runif(1,0,gapy))
 				}
 				return(res)
 			})
@@ -1507,24 +1529,26 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 # - distance géodésique moyenne : passer à l'harmonique ? (mais aussi pour la spatiale, du coup ?)
 #   + virer les zéros pour la spatiale
 #   + rajouter ce calcul dans le script des distances (y compris moyennes)
-#   - correlation non lin : tester en gardant les valeurs infinies dans graph_comp
+#   + correlation non lin : tester en gardant les valeurs infinies dans graph_comp
 #   - avec inf ou sans inf dans les scripts généraux ?
 #   - mettre à jour les scripts des modèles de la même façon que les 2 autres
-# + street removal :
+# - street removal :
 #   + rajouter des stats spatiales :
 #     + distance moyenne géodésique/spatiale
 #     + correlation
 #     + générer les plots des données non-moyennées, pour comparaison (?)
 #     + similarité entre deux struct com successives
+#   - améliorer la comparaison entre comstruct consécutives
+#   - pq a t on de brusques changements de distance spatiale moyenne ?
 # - modèle :
 #   - rajouter le concept de rue
 #   - questions :
 #     - effet de la suppression des liens
 #     - effet de la suppression des coordonnées
 #     - effet des rues longues. mais ça demanderait de partir d'un plan stochastique.
+# + vérifier s'il y a des positions spatiales égales dans les données brutes
+# + empêcher les positions spatiales égales lors de l'interpolation (bouger de var/10)
 # - visualisation : refaire tous les layouts
-# - vérifier s'il y a des positions spatiales égales dans les données brutes
-# - empêcher les positions spatiales égales lors de l'interpolation (bouger de var/10)
 
 # MARGOT:
 # - traduction de 'confront' en anglais ?
