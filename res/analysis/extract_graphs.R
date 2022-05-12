@@ -1112,17 +1112,21 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	V(g)$x <- vertex_attr(g, name=COL_LOC_X)	# COL_LOC_X	COL_LOC_HYP_LON
 	V(g)$y <- vertex_attr(g, name=COL_LOC_Y)	# COL_LOC_Y	COL_LOC_HYP_LAT
 	#####
-#	# check unicity of coordinates
-#	tt <- table(paste0(V(g)$x,"_",V(g)$y))
-#	idx <- which(tt>1); idx <- idx[names(idx)!="NA_NA"]
-#	print(tt[idx])
-#	crds <- strsplit(names(tt[idx]),"_",fixed=TRUE)
-#	for(crd in crds)
-#	{	x <- as.numeric(crd[1]); y <- as.numeric(crd[2])
-#		tlog(6,"x=",sprintf("%.10f",x)," y=",sprintf("%.10f",y))
-#		idx <- which(V(g)$x==x & V(g)$y==y)
-#		print(V(g)[idx])
-#	}
+	# check unicity of spatial coordinates
+	tlog(4,"Check unicity of spatial coordinates")
+	tt <- table(paste0(V(g)$x,"_",V(g)$y))
+	idx <- which(tt>1); idx <- idx[names(idx)!="NA_NA"]
+	if(length(idx)>0)
+	{	print(tt[idx])
+		crds <- strsplit(names(tt[idx]),"_",fixed=TRUE)
+		for(crd in crds)
+		{	x <- as.numeric(crd[1]); y <- as.numeric(crd[2])
+			tlog(6,"x=",sprintf("%.10f",x)," y=",sprintf("%.10f",y))
+			idx <- which(V(g)$x==x & V(g)$y==y)
+			print(V(g)[idx])
+		}
+		stop("ERROR: found several nodes with the exact same spatial position")
+	}
 	#####
 	# missing coordinates: use the average of the neighbors
 	changed <- TRUE
@@ -1344,7 +1348,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			graph.folder <- file.path(FOLDER_OUT_ANAL_EST, paste0(GR_EST_FLAT_MINUS,"_filtered"), "_removed_streets", "kk")
 			dir.create(path=graph.folder, showWarnings=FALSE, recursive=TRUE)
 			plot.file <- file.path(graph.folder, paste0("graph_rem=",nbr))
-			tlog(4,"Plotting graph using layouting algorithm in \"",plot.file,"\"")
+			tlog(8,"Plotting graph using layouting algorithm in \"",plot.file,"\"")
 			V(g2)$x <- V(g2)$x2; V(g2)$y <- V(g2)$y2
 			E(g2)$weight <- 0.5
 			custom.gplot(g=g2, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), vertex.label.cex=0.1, size.att=6)
