@@ -1530,8 +1530,8 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #   + virer les zéros pour la spatiale
 #   + rajouter ce calcul dans le script des distances (y compris moyennes)
 #   + correlation non lin : tester en gardant les valeurs infinies dans graph_comp
-#   - avec inf ou sans inf dans les scripts généraux ?
-#   - mettre à jour les scripts des modèles de la même façon que les 2 autres
+#   - avec inf ou sans inf dans les scripts généraux ? (sans semble plus avantageux, car grde dist graph = approxi spatiale médiocre)
+#   + mettre à jour les scripts des modèles de la même façon que les 2 autres
 # - street removal :
 #   + rajouter des stats spatiales :
 #     + distance moyenne géodésique/spatiale

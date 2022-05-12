@@ -167,7 +167,7 @@ plot.street.removal <- function()
 			idx0 <- which(!is.na(coords[,1]) & !is.na(coords[,2]))
 			svals <- as.matrix(dist(x=coords[idx0,], method="euclidean", diag=TRUE, upper=TRUE))
 			diag(svals) <- NA
-			svals <- svals[upper.tri(svals)]
+			svals <- svals[upper.tri(svals, diag=FALSE)]
 			tab.stats[i,MEAS_DISTANCE_AVG_SPATIAL] <- mean(svals, na.rm=TRUE)
 			tab.stats[i,MEAS_DISTANCE_HARM_SPATIAL] <- 1/mean(1/svals[svals>0], na.rm=TRUE)
 			
@@ -175,7 +175,7 @@ plot.street.removal <- function()
 			tlog(8,"Compute geodesic distance")
 			gvals <- distances(graph=gs[[i]], mode="all")
 			diag(gvals) <- NA
-			gvals <- gvals[upper.tri(gvals)]
+			gvals <- gvals[upper.tri(gvals, diag=FALSE)]
 			idx <- !is.infinite(gvals)
 			tab.stats[i,MEAS_DISTANCE_AVG_GEODESIC] <- mean(gvals[idx], na.rm=TRUE)
 			tab.stats[i,MEAS_DISTANCE_HARM_GEODESIC] <- 1/mean(1/gvals, na.rm=TRUE)
@@ -184,7 +184,7 @@ plot.street.removal <- function()
 			tlog(8,"Compute distance correlation")
 			gvals <- distances(graph=gs[[i]], mode="all", v=idx0, to=idx0)
 			diag(gvals) <- NA
-			gvals <- gvals[upper.tri(gvals)]
+			gvals <- gvals[upper.tri(gvals, diag=FALSE)]
 			idx <- !is.infinite(gvals)
 			gvals2 <- gvals; gvals2[which(is.infinite(gvals))] <- rep(max(gvals[idx],na.rm=TRUE)+1, length(which(is.infinite(gvals))))	# values with max+1 instead of Inf (for rank-based correlation measures)
 			tab.stats[i,MEAS_DISTANCE_COR_PEARSON] <- cor(x=gvals[idx], y=svals[idx], method="pearson")

@@ -177,7 +177,7 @@ analyze.net.distance <- function(g, out.folder)
 		diag(svals) <- NA
 		svals.avg.arith <- apply(X=svals, MARGIN=1, FUN=function(v) mean(v[!is.na(v)]))
 		svals.avg.harmo <- apply(X=svals, MARGIN=1, FUN=function(v) 1/mean(1/v[!is.na(v) & v>0]))
-		svals <- svals[upper.tri(svals,diag=FALSE)]
+		svals <- svals[upper.tri(svals, diag=FALSE)]
 		
 		# compute distribution
 		plot.file <- file.path(distance.folder,paste0(fname,"_histo_spatial-",sdist))
@@ -208,7 +208,7 @@ analyze.net.distance <- function(g, out.folder)
 		tlog(8,"Computing undirected geodesic distance")
 		gvals <- distances(graph=g, mode="all", v=idx0, to=idx0)
 		diag(gvals) <- NA
-		gvals <- gvals[upper.tri(gvals,diag=FALSE)]
+		gvals <- gvals[upper.tri(gvals, diag=FALSE)]
 		idx <- !is.infinite(gvals)
 		gvals <- gvals[idx]	# TODO shouldn't we keep all nodes for cor measure supporting Inf values?
 		svals <- svals[idx]

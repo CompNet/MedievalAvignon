@@ -76,9 +76,10 @@ epal <- get.palette(length(types))
 
 # init correlation table
 tlog(6,"Initializing correlation table")
-cor.tab <- matrix(NA,nrow=length(del.rates),ncol=6)	
+cnames <- c("DeletionRate", "PearsonCoef", "PearsonPval", "SpearmanCoef", "SpearmanPval", "SpearmanFiniteCoef", "SpearmanFinitePval", "KendallCoef", "KendallPval", "KendallFiniteCoef", "KendallFinitePval")
+cor.tab <- matrix(NA,nrow=length(del.rates),ncol=length(cnames))	
 cor.tab <- data.frame(sprintf("%.2f", del.rates), cor.tab)
-colnames(cor.tab) <- c("DeletionRate", "PearsonCoef", "PearsonPval", "SpearmanCoef", "SpearmanPval", "KendallCoef", "KendallPval")
+colnames(cor.tab) <- cnames
 
 tlog(6,"Looping over deletion rates")
 for(d in 1:length(del.rates))
@@ -105,45 +106,51 @@ for(d in 1:length(del.rates))
 	# compute spatial distance
 	tlog(10,"Computing spatial distances")
 	coords <- cbind(vertex_attr(graph=g1, name=COL_LOC_X), vertex_attr(graph=g1, name=COL_LOC_Y))
-	idx <- which(!is.na(coords[,1]) & !is.na(coords[,2]))
-	rem <- which(is.na(coords[,1]) | is.na(coords[,2]))
-	svals <- as.matrix(dist(x=coords[idx,], method="euclidean", diag=TRUE, upper=TRUE))
-	svals <- svals[upper.tri(svals)]
+	idx0 <- which(!is.na(coords[,1]) & !is.na(coords[,2]))
+	svals <- as.matrix(dist(x=coords[idx0,], method="euclidean", diag=TRUE, upper=TRUE))
+	diag(svals) <- NA
+	svals <- svals[upper.tri(svals, diag=FALSE)]
 	# plot distribution
 	plot.file <- file.path(out.folder,paste0("histo_spatial_del-rate=",dr))
 	custom.hist(vals=svals, "Spatial distance", file=plot.file)
 	
 	# compute undirected graph distance
 	tlog(10,"Computing undirected geodesic distance")
-	if(length(rem)>0) 
-		gt <- delete_vertices(g1,rem)
-	else
-		gt <- g1
-	gvals <- distances(graph=gt, mode="all")
-	gvals <- gvals[upper.tri(gvals)]
+	gvals <- distances(graph=g1, mode="all", v=idx0, to=idx0)
+	diag(gvals) <- NA
+	gvals <- gvals[upper.tri(gvals, diag=FALSE)]
 	idx <- !is.infinite(gvals)
-	gvals <- gvals[idx]
-	svals <- svals[idx]
 	# plot distribution
 	plot.file <- file.path(out.folder,paste0("histo_graph_del-rate=",dr))
-	custom.hist(vals=gvals, "Geodesic distance", file=plot.file)
+	custom.hist(vals=gvals[idx], "Geodesic distance", file=plot.file)
 	
 	# compute correlations
 	tlog(10,"Computting correlations:")
-	tmp <- cor.test(x=gvals, y=svals, method="pearson")
+	gvals2 <- gvals; gvals2[which(is.infinite(gvals))] <- rep(max(gvals[idx],na.rm=TRUE)+1, length(which(is.infinite(gvals))))	# values with max+1 instead of Inf (for rank-based correlation measures)
+	tmp <- cor.test(x=gvals[idx], y=svals[idx], method="pearson")
 	cor.tab[d,"PearsonCoef"] <- tmp$estimate
 	cor.tab[d,"PearsonPval"] <- tmp$p.value
 	tlog(12,"Pearson: ",tmp$estimate," (p=",tmp$p.value,")")
-	tmp <- rcorr(x=gvals, y=svals, type="spearman")
+	tmp <- rcorr(x=gvals2, y=svals, type="spearman")
 	cor.tab[d,"SpearmanCoef"] <- tmp$r[1,2]
 	cor.tab[d,"SpearmanPval"] <- tmp$P[1,2]
-	tlog(12,"Spearman: ",tmp$r[1,2]," (p=",tmp$P[1,2],")")
-	tmp <- cor.test(x=gvals, y=svals, method="kendall")	# alt: cor.fk(x=gvals, y=svals) # (but no p-value)
+	tlog(12,"Spearman (all): ",tmp$r[1,2]," (p=",tmp$P[1,2],")")
+	if(any(idx)) tmp <- rcorr(x=gvals[idx], y=svals[idx], type="spearman")
+	cor.tab[d,"SpearmanFiniteCoef"] <- tmp$r[1,2]
+	cor.tab[d,"SpearmanFinitePval"] <- tmp$P[1,2]
+	tlog(12,"Spearman (finite): ",tmp$r[1,2]," (p=",tmp$P[1,2],")")
+	tmp <- cor.test(x=gvals2, y=svals, method="kendall")	# alt: cor.fk(x=gvals, y=svals) # (but no p-value)
 	cor.tab[d,"KendallCoef"] <- tmp$estimate
 	cor.tab[d,"KendallPval"] <- tmp$p.value
-	tlog(12,"Kendall: ",tmp$estimate,"(p=",tmp$p.value,")")
+	tlog(12,"Kendall (all): ",tmp$estimate,"(p=",tmp$p.value,")")
+	if(any(idx)) tmp <- cor.test(x=gvals[idx], y=svals[idx], method="kendall")	# alt: cor.fk(x=gvals, y=svals) # (but no p-value)
+	cor.tab[d,"KendallFiniteCoef"] <- tmp$estimate
+	cor.tab[d,"KendallFinitePval"] <- tmp$p.value
+	tlog(12,"Kendall (finite): ",tmp$estimate,"(p=",tmp$p.value,")")
 	# NOTE: null hypothesis=zero correlation >> small p means this hypothesis is rejected
-	
+	gvals <- gvals[idx]
+	svals <- svals[idx]
+
 	# plot the spatial distance as a function of the graph-based one
 	plot.file <- file.path(out.folder, paste0("graph_vs_spatial_del-rate=",dr))
 	tlog(10,"Plotting spatial vs. geodesic distances in ",plot.file)
@@ -170,8 +177,8 @@ for(d in 1:length(del.rates))
 		
 	# same using degree for colors
 	meas <- MEAS_DEGREE
-	vals <- igraph::degree(graph=gt, mode="all")
-	cb <- t(combn(1:gorder(gt),2))
+	vals <- igraph::degree(graph=g1, mode="all", v=idx0)
+	cb <- t(combn(1:length(idx0),2))
 	vals <- (vals[cb[,1]] * vals[cb[,2]])[idx]
 	# set colors
 	fine <- 500 									# granularity of the color gradient
