@@ -132,7 +132,7 @@ analyze.net.structsim <- function(g, out.folder)
 			
 			# compute correlations
 			tlog(8,"Computing correlation between structural similarity and spatial distances (",length(gvals)," values vs. ",length(svals)," values)")
-			if(length(gvals)<3)
+			if(length(gvals)<5)
 				tlog(10,"WARNING: not enough values to compute correlation or produce plots")
 			else
 			{	tmp <- cor.test(x=gvals, y=svals, method="pearson")
