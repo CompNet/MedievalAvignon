@@ -1553,7 +1553,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #     - effet des rues longues. mais ça demanderait de partir d'un plan stochastique.
 #
 # TODO
-# - extraire le i=39 réseau et lancer l'analyse complète
+# + extraire le i=39 réseau et lancer l'analyse complète
 # - correlation : 
 #   - décomposer en fonction de la distance géodesique ou spatiale
 #   - distinguer extra/intra muros
