@@ -78,14 +78,20 @@ for(i in 1:length(graph.types))
 	
 	# gname=GR_EST_ESTATE_LEVEL; out.folder=FOLDER_OUT_ANAL_EST
 	
+	# gname="flat_minus_39_filtered"; out.folder=FOLDER_OUT_ANAL_EST
+	
 	# compute all topological measures
 	g <- analyze.network(gname=graph.types[i], out.folder=FOLDER_OUT_ANAL_EST)
 	
 	# filtered version
 	g <- analyze.network(gname=paste0(graph.types[i],"_filtered"), out.folder=FOLDER_OUT_ANAL_EST)
+	
 }
 tlog.end.loop("Measure computation over")
 plot.comstruct.comparison()
+
+# selected version
+g <- analyze.network(gname="flat_minus_39_filtered", out.folder=FOLDER_OUT_ANAL_EST)
 
 
 

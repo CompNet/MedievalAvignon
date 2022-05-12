@@ -1329,6 +1329,26 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			graph.file <- file.path(graph.folder, paste0("graph_rem=",nbr,".graphml"))
 			tlog(8,"Recording graph in \"",graph.file,"\"")
 			write.graphml.file(g=g1, file=graph.file)
+			
+			# plot using geographic coordinates
+			#FORMAT <<- c("png")
+			V(g1)$label <- paste(vertex_attr(g1,name=COL_LOC_ID), get.location.names(g1),sep="_")
+			graph.folder <- file.path(FOLDER_OUT_ANAL_EST, paste0(GR_EST_FLAT_MINUS,"_filtered"), "_removed_streets", "lambert")
+			dir.create(path=graph.folder, showWarnings=FALSE, recursive=TRUE)
+			plot.file <- file.path(graph.folder, paste0("graph_rem=",nbr))
+			tlog(8,"Plotting graph using geographic coordinates in \"",plot.file,"\"")
+			custom.gplot(g=g1, file=plot.file, asp=1, size.att=2, vertex.label.cex=0.1)
+			
+			# plot using a layouting algorithm 
+			g2 <- g1#; V(g2)$x <- V(g2)$x2; V(g2)$y <- V(g2)$y2
+			graph.folder <- file.path(FOLDER_OUT_ANAL_EST, paste0(GR_EST_FLAT_MINUS,"_filtered"), "_removed_streets", "kk")
+			dir.create(path=graph.folder, showWarnings=FALSE, recursive=TRUE)
+			plot.file <- file.path(graph.folder, paste0("graph_rem=",nbr))
+			tlog(4,"Plotting graph using layouting algorithm in \"",plot.file,"\"")
+			V(g2)$x <- V(g2)$x2; V(g2)$y <- V(g2)$y2
+			E(g2)$weight <- 0.5
+			custom.gplot(g=g2, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), vertex.label.cex=0.1, size.att=6)
+			#FORMAT <<- c("pdf", "png")
 		}
 		
 		# regular case
@@ -1507,26 +1527,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #      > différence avec sim structurelle ?
 
 # TODO
-# + simstruct : ne pas comparer les paires de sim=0
-# + rajouter la ligne de moyenne dans les graphiques de comparaison avg géodesic dist vs. spatial dist
-# + graphique distance spatiale moyenne = couleur de noeud (comme attribut)
-# + calculer aire des communautés (rectangle)
-# + ajouter la légende pour l'épaisseur des liens
-# + générer graphes avec filigrannes pour chaque communauté
-# - modèle : 
-#   + définir un modèle pour tester comment la dégradation d'un réseau de confront artificiel affecte la correlation des distances
-#   + dégrader en termes de coordonnées, voir si l'interpolation fonctionne
-# + critère pour l'extraction de graphes :
-#   + longueur de la rue
-#   + descripteurs possibles :
-#     + nbre de noeuds
-#     + nbre de liens
-#     + nbre de communités
-#     + nbre de composants
-#     + modularité
-#
-# TODO
-# - distance géodésique moyenne : passer à l'harmonique ? (mais aussi pour la spatiale, du coup ?)
+# - distances moyennes : passer à l'harmonique
 #   + virer les zéros pour la spatiale
 #   + rajouter ce calcul dans le script des distances (y compris moyennes)
 #   + correlation non lin : tester en gardant les valeurs infinies dans graph_comp
@@ -1538,14 +1539,27 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #     + correlation
 #     + générer les plots des données non-moyennées, pour comparaison (?)
 #     + similarité entre deux struct com successives
+#     - rajouter nom des rues + indicateurs topologiques dans les stats
 #   - améliorer la comparaison entre comstruct consécutives
-#   - pq a t on de brusques changements de distance spatiale moyenne ?
+#   + pq a t on de brusques changements de distance spatiale moyenne ? 
+#     >> car bcp de noeuds sont retirés en une seule fois
+#        ne pas oublier que chaque réseau est nettoyé des composants mineur
+#   - rajouter les plots des graphes produits, avec la rue concernée et ses liens en rouge (avant suppression, donc ?)
 # - modèle :
-#   - rajouter le concept de rue
+#   - rajouter le concept de noeud de type "rue"
 #   - questions :
 #     - effet de la suppression des liens
 #     - effet de la suppression des coordonnées
 #     - effet des rues longues. mais ça demanderait de partir d'un plan stochastique.
+#
+# TODO
+# - extraire le i=39 réseau et lancer l'analyse complète
+# - correlation : 
+#   - décomposer en fonction de la distance géodesique ou spatiale
+#   - distinguer extra/intra muros
+# - calculer le "diamètre" de chaque rue (distance entre les noeuds confrontés à la rue les plus éloignés)
+#   - lien avec longueur de rue ?
+#   - distinguer intra/extra-muros ?
 
 # MARGOT:
 # - traduction de 'confront' en anglais ?
