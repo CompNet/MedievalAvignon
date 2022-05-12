@@ -1112,17 +1112,21 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	V(g)$x <- vertex_attr(g, name=COL_LOC_X)	# COL_LOC_X	COL_LOC_HYP_LON
 	V(g)$y <- vertex_attr(g, name=COL_LOC_Y)	# COL_LOC_Y	COL_LOC_HYP_LAT
 	#####
-#	# check unicity of coordinates
-#	tt <- table(paste0(V(g)$x,"_",V(g)$y))
-#	idx <- which(tt>1); idx <- idx[names(idx)!="NA_NA"]
-#	print(tt[idx])
-#	crds <- strsplit(names(tt[idx]),"_",fixed=TRUE)
-#	for(crd in crds)
-#	{	x <- as.numeric(crd[1]); y <- as.numeric(crd[2])
-#		tlog(6,"x=",sprintf("%.10f",x)," y=",sprintf("%.10f",y))
-#		idx <- which(V(g)$x==x & V(g)$y==y)
-#		print(V(g)[idx])
-#	}
+	# check unicity of spatial coordinates
+	tlog(4,"Check unicity of spatial coordinates")
+	tt <- table(paste0(V(g)$x,"_",V(g)$y))
+	idx <- which(tt>1); idx <- idx[names(idx)!="NA_NA"]
+	if(length(idx)>0)
+	{	print(tt[idx])
+		crds <- strsplit(names(tt[idx]),"_",fixed=TRUE)
+		for(crd in crds)
+		{	x <- as.numeric(crd[1]); y <- as.numeric(crd[2])
+			tlog(6,"x=",sprintf("%.10f",x)," y=",sprintf("%.10f",y))
+			idx <- which(V(g)$x==x & V(g)$y==y)
+			print(V(g)[idx])
+		}
+		stop("ERROR: found several nodes with the exact same spatial position")
+	}
 	#####
 	# missing coordinates: use the average of the neighbors
 	changed <- TRUE
@@ -1206,9 +1210,9 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	# extract one graph for each predefined modality
 	#################
 	tlog(2,"Extracting several variants of the graph")
-#	graph.types <- c(GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS)		# c(GR_EST_FULL, GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS, LK_TYPE_FLATREL_VALS)
-	measured.streets <- which(vertex_attr(g,COL_LOC_TYPE)=="Rue" & !is.na(vertex_attr(g,COL_STREET_LENGTH)))
-	graph.types <- paste0(GR_EST_FLAT_MINUS,"_",1:length(measured.streets))
+	graph.types <- c(GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS)		# c(GR_EST_FULL, GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS, LK_TYPE_FLATREL_VALS)
+#	measured.streets <- which(vertex_attr(g,COL_LOC_TYPE)=="Rue" & !is.na(vertex_attr(g,COL_STREET_LENGTH)))
+#	graph.types <- paste0(GR_EST_FLAT_MINUS,"_",1:length(measured.streets))
 	for(i in 1:length(graph.types))
 	{	tlog(4,"Extracting graph \"",graph.types[i],"\" (",i,"/",length(graph.types),")")
 		
