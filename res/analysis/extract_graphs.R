@@ -1564,6 +1564,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 # - calculer le "diamètre" de chaque rue (distance entre les noeuds confrontés à la rue les plus éloignés)
 #   - lien avec longueur de rue ?
 #   - distinguer intra/extra-muros ?
+# - graphiques de type binned scaterplot pr comparer les données complètes des deux distances 
 
 # MARGOT:
 # - traduction de 'confront' en anglais ?
