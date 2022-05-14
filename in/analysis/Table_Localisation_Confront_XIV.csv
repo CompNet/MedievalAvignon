@@ -91,7 +91,6 @@
 32,a-occident,18,806,NULL,NULL,confronte a l ouest avec
 33,a-meridie,18,40,NULL,NULL,confronte au sud avec
 34,a-orient,18,19,NULL,NULL,confronte a l est avec
-1290,a-meridie,18,NULL,16,NULL,confronte au sud avec
 1388,a-circio,18,NULL,55,NULL,confronte au nord avec
 5489,in,18,NULL,NULL,5,a l interieur de
 35,a-occident,19,18,NULL,NULL,confronte a l ouest avec
@@ -207,11 +206,11 @@
 1018,juxta,40,NULL,131,NULL,a cote de
 1019,a-orient,40,NULL,131,NULL,confronte a l est avec
 1020,a-meridie,40,NULL,131,NULL,confronte au sud avec
-1368,a-occident,40,NULL,54,NULL,confronte a l ouest avec
+1368,a-occident,40,NULL,76,NULL,confronte a l ouest avec
 5511,in,40,NULL,NULL,5,a l interieur de
 1021,a-orient,41,NULL,131,NULL,confronte a l est avec
 1022,a-circio,41,NULL,131,NULL,confronte au nord avec
-1369,a-occident,41,NULL,54,NULL,confronte a l ouest avec
+1369,a-occident,41,NULL,76,NULL,confronte a l ouest avec
 5512,in,41,NULL,NULL,5,a l interieur de
 88,a-occident,42,43,NULL,NULL,confronte a l ouest avec
 89,a-occident,42,44,NULL,NULL,confronte a l ouest avec
@@ -220,8 +219,8 @@
 5513,in,42,NULL,NULL,5,a l interieur de
 91,a-orient,43,42,NULL,NULL,confronte a l est avec
 92,a-meridie,43,44,NULL,NULL,confronte au sud avec
-1370,a-occident,43,NULL,54,NULL,confronte a l ouest avec
-1371,a-circio,43,NULL,54,NULL,confronte au nord avec
+1370,a-occident,43,NULL,76,NULL,confronte a l ouest avec
+1371,a-circio,43,NULL,76,NULL,confronte au nord avec
 5514,in,43,NULL,NULL,5,a l interieur de
 93,a-orient,44,42,NULL,NULL,confronte a l est avec
 94,a-circio,44,43,NULL,NULL,confronte au nord avec
@@ -761,7 +760,6 @@
 1119,in,134,NULL,8,NULL,dans
 1120,a-occident,134,NULL,8,NULL,confronte a l ouest avec
 5605,in,134,NULL,NULL,7,a l interieur de
-372,a-circio,135,129,NULL,NULL,confronte au nord avec
 373,a-occident,135,847,NULL,NULL,confronte a l ouest avec
 374,a-orient,135,848,NULL,NULL,confronte a l est avec
 1084,retro,135,NULL,224,NULL,derriere
@@ -1939,7 +1937,7 @@
 2467,in,1021,NULL,NULL,2,a l interieur de
 2636,a-circio,1021,1618,NULL,NULL,confronte au nord avec
 2637,a-meridie,1021,1020,NULL,NULL,confronte au sud avec
-1974,a-meridie,1022,NULL,90,NULL,confronte au sud avec
+1974,a-meridie,1022,NULL,33,NULL,confronte au sud avec
 2468,in,1022,NULL,NULL,2,a l interieur de
 2638,a-orient,1022,1619,NULL,NULL,confronte a l est avec
 2639,a-occident,1022,1023,NULL,NULL,confronte a l ouest avec
@@ -1997,7 +1995,7 @@
 2662,a-occident,1030,1412,NULL,NULL,confronte a l ouest avec
 2663,a-meridie,1030,1412,NULL,NULL,confronte au sud avec
 2664,a-circio,1030,1031,NULL,NULL,confronte au nord avec
-1996,in,1031,NULL,72,NULL,dans
+1996,in,1031,NULL,100,NULL,dans
 1997,ab-una-part,1031,NULL,496,NULL,confronte avec
 2477,in,1031,NULL,NULL,2,a l interieur de
 2665,ab-una-part,1031,1640,NULL,NULL,confronte avec
@@ -2026,7 +2024,6 @@
 2481,in,1035,NULL,NULL,2,a l interieur de
 2676,a-duabus-part,1035,1034,NULL,NULL,confronte de deux cotes avec
 2007,in,1036,NULL,45,NULL,dans
-2008,ab-una-part,1036,NULL,100,NULL,confronte avec
 2482,in,1036,NULL,NULL,2,a l interieur de
 2677,retro,1036,1035,NULL,NULL,derriere
 2678,a-circio,1036,1033,NULL,NULL,confronte au nord avec
@@ -2075,7 +2072,6 @@
 2696,a-circio,1044,1423,NULL,NULL,confronte au nord avec
 2697,a-meridie,1044,1043,NULL,NULL,confronte au sud avec
 2026,juxta,1045,NULL,101,NULL,a cote de
-2027,a-occident,1045,NULL,100,NULL,confronte a l ouest avec
 2028,a-circio,1045,NULL,40,NULL,confronte au nord avec
 2029,in,1045,NULL,40,NULL,dans
 2491,in,1045,NULL,NULL,2,a l interieur de
@@ -2217,7 +2213,6 @@
 2763,a-occident,1067,1053,NULL,NULL,confronte a l ouest avec
 2764,a-meridie,1067,1063,NULL,NULL,confronte au sud avec
 2079,in,1068,NULL,42,NULL,dans
-2080,in,1068,NULL,46,NULL,dans
 2514,in,1068,NULL,NULL,2,a l interieur de
 2765,prope,1068,1452,NULL,NULL,a cote de
 2766,a-orient,1068,1450,NULL,NULL,confronte a l est avec
@@ -3019,10 +3014,7 @@
 3215,ab-una-part,2010,NULL,719,NULL,confronte avec
 3613,ab-una-part,2010,2411,NULL,NULL,confronte avec
 3076,in,2011,NULL,NULL,3,a l interieur de
-3216,in,2011,NULL,37,NULL,dans
 3217,prope,2011,NULL,709,NULL,a cote de
-3218,ab-una-part,2011,NULL,37,NULL,confronte avec
-3219,ab-una-part,2011,NULL,37,NULL,confronte avec
 3614,ab-una-part,2011,2412,NULL,NULL,confronte avec
 3615,ab-una-part,2011,2413,NULL,NULL,confronte avec
 3616,ab-una-part,2011,2414,NULL,NULL,confronte avec
@@ -3310,7 +3302,6 @@
 3331,ante,2067,NULL,736,NULL,devant
 3332,ante,2067,NULL,226,NULL,devant
 3333,ab-una-part,2067,NULL,22,NULL,confronte avec
-3334,ab-una-part,2067,NULL,6,NULL,confronte avec
 3732,ab-una-part,2067,2470,NULL,NULL,confronte avec
 3733,ab-una-part,2067,2471,NULL,NULL,confronte avec
 3133,in,2068,NULL,NULL,7,a l interieur de
@@ -3457,7 +3448,7 @@
 3795,ab-una-part,2096,2097,NULL,NULL,confronte avec
 3162,in,2097,NULL,NULL,4,a l interieur de
 3386,in,2097,NULL,56,NULL,dans
-3387,prope,2097,NULL,745,NULL,a cote de
+3387,prope,2097,NULL,218,NULL,a cote de
 3796,ab-una-part,2097,2517,NULL,NULL,confronte avec
 3163,in,2098,NULL,NULL,6,a l interieur de
 3388,in,2098,NULL,746,NULL,dans
@@ -4073,24 +4064,19 @@
 1864,retro,6001,NULL,158,NULL,derriere
 1865,ab-una-part,6001,NULL,488,NULL,confronte avec
 1912,in,6001,NULL,NULL,7,a l interieur de
-1824,ab-una-part,6002,2069,NULL,NULL,confronte avec
 1825,ab-una-part,6002,6402,NULL,NULL,confronte avec
 1866,prope,6002,NULL,7,NULL,a cote de
 1867,supra,6002,NULL,151,NULL,au dessus de
-1868,ab-una-part,6002,NULL,6,NULL,confronte avec
-1869,ab-una-part,6002,NULL,22,NULL,confronte avec
 1913,in,6002,NULL,NULL,7,a l interieur de
-1826,ab-una-part,6003,2069,NULL,NULL,confronte avec
 1827,ab-una-part,6003,6002,NULL,NULL,confronte avec
 1870,supra,6003,NULL,151,NULL,au dessus de
 1871,prope,6003,NULL,699,NULL,a cote de
-1872,ab-una-part,6003,NULL,22,NULL,confronte avec
+1872,ab-una-part,6003,NULL,7,NULL,confronte avec
 1914,in,6003,NULL,NULL,7,a l interieur de
 1828,ab-una-part,6004,7292,NULL,NULL,confronte avec
 1829,ab-una-part,6004,2069,NULL,NULL,confronte avec
 1873,in,6004,NULL,22,NULL,dans
 1874,ab-una-part,6004,NULL,22,NULL,confronte avec
-1875,ab-una-part,6004,NULL,6,NULL,confronte avec
 1915,in,6004,NULL,NULL,7,a l interieur de
 1830,ab-una-part,6005,6401,NULL,NULL,confronte avec
 1831,ab-una-part,6005,6402,NULL,NULL,confronte avec
@@ -4970,7 +4956,6 @@
 5304,ab-una-part,7210,7711,NULL,NULL,confronte avec
 5305,ab-una-part,7210,7712,NULL,NULL,confronte avec
 4510,in,7211,NULL,54,NULL,dans
-4511,in,7211,NULL,52,NULL,dans
 4957,in,7211,NULL,NULL,4,a l interieur de
 5306,ab-una-part,7211,7210,NULL,NULL,confronte avec
 4513,in,7212,NULL,18,NULL,dans
@@ -5205,7 +5190,6 @@
 5000,in,7252,NULL,NULL,6,a l interieur de
 5390,ab-una-part,7252,7762,NULL,NULL,confronte avec
 5391,ab-una-part,7252,7763,NULL,NULL,confronte avec
-5392,ab-una-part,7252,7255,NULL,NULL,confronte avec
 4610,extra,7253,NULL,248,NULL,est a l exterieur de
 4611,prope,7253,NULL,412,NULL,a cote de
 5001,in,7253,NULL,NULL,6,a l interieur de
@@ -5370,12 +5354,11 @@
 4678,in,7294,NULL,7,NULL,dans
 5041,in,7294,NULL,NULL,7,a l interieur de
 5446,retro,7294,7789,NULL,NULL,derriere
-4679,in,7295,NULL,206,NULL,a l interieur de
-4680,ab-una-part,7295,NULL,22,NULL,confronte avec
+4679,in,7295,NULL,221,NULL,a l interieur de
 4681,ab-una-part,7295,NULL,701,NULL,confronte avec
 4682,ab-una-part,7295,NULL,702,NULL,confronte avec
 4683,ab-una-part,7295,NULL,128,NULL,confronte avec
-4684,ab-una-part,7295,NULL,206,NULL,confronte avec
+4684,ab-una-part,7295,NULL,221,NULL,confronte avec
 5042,in,7295,NULL,NULL,7,a l interieur de
 4685,ante,7296,NULL,700,NULL,devant
 4686,ad,7296,NULL,477,NULL,vers
@@ -6264,16 +6247,16 @@
 7248,in,60083,NULL,NULL,19,a l interieur de
 7249,in,60084,NULL,NULL,19,a l interieur de
 7046,iuxta,60085,60913,NULL,NULL,a cote de
-7109,in,60085,NULL,82,NULL,dans
+7109,in,60085,NULL,83,NULL,dans
 7250,in,60085,NULL,NULL,19,a l interieur de
-7519,in,60085,NULL,82,NULL,dans
+7519,in,60085,NULL,83,NULL,dans
 7251,in,60086,NULL,NULL,19,a l interieur de
 7086,iuxta,60087,NULL,402,NULL,a cote de
 7252,in,60087,NULL,NULL,19,a l interieur de
 7047,iuxta,60088,60914,NULL,NULL,a cote de
-7110,iuxta,60088,NULL,82,NULL,a cote de
+7110,iuxta,60088,NULL,83,NULL,a cote de
 7253,in,60088,NULL,NULL,19,a l interieur de
-7520,in,60088,NULL,82,NULL,dans
+7520,in,60088,NULL,83,NULL,dans
 7254,in,60089,NULL,NULL,19,a l interieur de
 7255,in,60090,NULL,NULL,19,a l interieur de
 7256,in,60091,NULL,NULL,19,a l interieur de
