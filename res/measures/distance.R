@@ -329,7 +329,7 @@ analyze.net.distance <- function(g, out.folder)
 			
 			# compute average undirected graph distance
 			tlog(8,"Computing undirected geodesic distance")
-#			if(gorder(gt)>2)
+			if(length(idx0)>4)
 			{	gvals <- distances(graph=g, mode="all", v=idx0, to=idx0)
 				diag(gvals) <- NA
 				
