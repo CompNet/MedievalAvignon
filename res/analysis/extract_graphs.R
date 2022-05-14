@@ -1091,8 +1091,10 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	if(any(is.na(lay.idx))) {print(V(g)[which(is.na(lay.idx))]); stop("Could not match node ids with ids from the layout file")}
 	######
 	# debug
-	# which(V(g)$idExterne=="Rue:1810")
-	# neighbors(graph=g, v=988, mode="all")
+	# idx <- which(V(g)$idExterne=="Rue:83");print(idx)
+	# neis <- unique(neighbors(graph=g, v=idx, mode="all"))$name;print(neis)
+	# sprintf("%.14f",mean(layout[match(neis,layout[,"idExterne"]),"x"]))
+	# sprintf("%.14f",mean(layout[match(neis,layout[,"idExterne"]),"y"]))
 	######
 	V(g)$x2 <- layout[lay.idx,"x"]; V(g)$y2 <- layout[lay.idx,"y"]
 	# plot graph
@@ -1210,9 +1212,9 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	# extract one graph for each predefined modality
 	#################
 	tlog(2,"Extracting several variants of the graph")
-#	graph.types <- c(GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS)		# c(GR_EST_FULL, GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS, LK_TYPE_FLATREL_VALS)
-	measured.streets <- which(vertex_attr(g,COL_LOC_TYPE)=="Rue" & !is.na(vertex_attr(g,COL_STREET_LENGTH)))
-	graph.types <- paste0(GR_EST_FLAT_MINUS,"_",1:length(measured.streets))
+	graph.types <- c(GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS)		# c(GR_EST_FULL, GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS, LK_TYPE_FLATREL_VALS)
+#	measured.streets <- which(vertex_attr(g,COL_LOC_TYPE)=="Rue" & !is.na(vertex_attr(g,COL_STREET_LENGTH)))
+#	graph.types <- paste0(GR_EST_FLAT_MINUS,"_",1:length(measured.streets))
 	for(i in 1:length(graph.types))
 	{	tlog(4,"Extracting graph \"",graph.types[i],"\" (",i,"/",length(graph.types),")")
 		
@@ -1450,8 +1452,10 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			if(any(is.na(lay.idx))) {print(V(g2)[which(is.na(lay.idx))]); stop("Could not match node ids with ids from the layout file")}
 			######
 			# debug
-			# which(V(g2)$idExterne=="Rue:1810")
-			# neighbors(graph=g2, v=969, mode="all")
+			# idx <- which(V(g2)$idExterne=="Rue:1810");print(idx)
+			# neis <- unique(neighbors(graph=g2, v=idx, mode="all"))$name;print(neis)
+			# sprintf("%.14f",mean(layout[match(neis,layout[,"idExterne"]),"x"]))
+			# sprintf("%.14f",mean(layout[match(neis,layout[,"idExterne"]),"y"]))
 			######
 			V(g2)$x <- layout[lay.idx,"x"]; V(g2)$y <- layout[lay.idx,"y"]
 			E(g2)$weight <- 0.5
