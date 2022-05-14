@@ -1452,7 +1452,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			if(any(is.na(lay.idx))) {print(V(g2)[which(is.na(lay.idx))]); stop("Could not match node ids with ids from the layout file")}
 			######
 			# debug
-			# idx <- which(V(g2)$idExterne=="Rue:1810");print(idx)
+			# idx <- which(V(g2)$idExterne=="Rue:83");print(idx)
 			# neis <- unique(neighbors(graph=g2, v=idx, mode="all"))$name;print(neis)
 			# sprintf("%.14f",mean(layout[match(neis,layout[,"idExterne"]),"x"]))
 			# sprintf("%.14f",mean(layout[match(neis,layout[,"idExterne"]),"y"]))
