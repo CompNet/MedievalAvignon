@@ -1077,6 +1077,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #	file <- file.path(FOLDER_OUT_ANAL_EST,"graph_kk.graphml")
 #	write.graphml.file(g=g, file=file)
 #	# <do your magic with gephi, then record graph with new layout>
+#	# <procedure: 1) detect components and use as vertex color (largest only); 2) vertex size 50; 3) random layout; 4) standard Yifan-Hu; 5) FR layout speed=10 grav~=1; 6) manually adjust while layouting on.
 #	g0 <- read.graph(file, format="graphml")
 #	layout <- data.frame(V(g0)$idExterne, V(g0)$x, V(g0)$y)
 #	colnames(layout) <- c("idExterne", "x","y")
@@ -1091,7 +1092,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	if(any(is.na(lay.idx))) {print(V(g)[which(is.na(lay.idx))]); stop("Could not match node ids with ids from the layout file")}
 	######
 	# debug
-	# idx <- which(V(g)$idExterne=="Rue:83");print(idx)
+	# idx <- which(V(g)$idExterne=="Rue:103");print(idx)
 	# neis <- unique(neighbors(graph=g, v=idx, mode="all"))$name;print(neis)
 	# sprintf("%.14f",mean(layout[match(neis,layout[,"idExterne"]),"x"]))
 	# sprintf("%.14f",mean(layout[match(neis,layout[,"idExterne"]),"y"]))
@@ -1202,6 +1203,24 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	)
 	short.street.flag <- vertex_attr(graph=g, name=COL_LOC_ID) %in% paste("Rue:",short.tab[,COL_STREET_ID],sep="")
 	
+	# compute street width, i.e. spatial distance between its farthest confronted vertices 
+	street.idx <- which(vertex_attr(g, name=COL_LOC_TYPE)=="Rue")		
+	if(length(idx)>0)
+	{	for(street.i in street.idx)
+		{	neis <- neighbors(graph=g,v=street.i,mode="all")
+			width <- NA
+			if(length(neis)>2)
+			{	coords <- cbind(vertex_attr(g, name=COL_LOC_X, index=neis), vertex_attr(g, name=COL_LOC_Y, index=neis))
+				coords <- coords[which(!is.na(coords[,1])),]
+				if(nrow(coords)>2)
+				{	dd <- as.matrix(dist(x=coords, method="euclidean", diag=FALSE, upper=FALSE))
+					width <- max(dd,na.rm=TRUE) 
+				}
+			}
+			V(g)[street.i]$width <- width
+		}
+	}
+	
 #	# possibly filter to focus on a single historical source
 #	sources <- list(
 #		S1=list(src.ids=c(1, 2, 3, 4, 5, 7, 18, 19, 20), re.ids=c(1:3999,6001:9999,60001:60999))
@@ -1212,9 +1231,9 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	# extract one graph for each predefined modality
 	#################
 	tlog(2,"Extracting several variants of the graph")
-	graph.types <- c(GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS)		# c(GR_EST_FULL, GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS, LK_TYPE_FLATREL_VALS)
-#	measured.streets <- which(vertex_attr(g,COL_LOC_TYPE)=="Rue" & !is.na(vertex_attr(g,COL_STREET_LENGTH)))
-#	graph.types <- paste0(GR_EST_FLAT_MINUS,"_",1:length(measured.streets))
+#	graph.types <- c(GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS)		# c(GR_EST_FULL, GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS, LK_TYPE_FLATREL_VALS)
+	measured.streets <- which(vertex_attr(g,COL_LOC_TYPE)=="Rue" & !is.na(vertex_attr(g,COL_STREET_LENGTH)))
+	graph.types <- paste0(GR_EST_FLAT_MINUS,"_",1:length(measured.streets))
 	for(i in 1:length(graph.types))
 	{	tlog(4,"Extracting graph \"",graph.types[i],"\" (",i,"/",length(graph.types),")")
 		
@@ -1280,10 +1299,12 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 				#vertex_attr(g, name=COL_STREET_LENGTH, index=measured.streets[idx])
 				ldsi <- V(g)$idExterne[measured.streets[idx[nbr]]]
 				ldsl <- V(g)$length[measured.streets[idx[nbr]]]
-				tlog(8,"Removing the ",length(idx)," longest street(s) (last one=",ldsi," -- length=",ldsl,")")
+				ldsw <- V(g)$width[measured.streets[idx[nbr]]]
+				tlog(8,"Removing the ",length(idx)," longest street(s) (last one=",ldsi," -- length=",ldsl," -- width=",ldsw,")")
 				g1 <- delete_vertices(graph=g1, v=measured.streets[idx])
 				g1$LastDeletedStreetId <- ldsi
 				g1$LastDeletedStreetLength <-ldsl
+				g1$LastDeletedStreetWidth <-ldsw
 			}
 		}
 		# keep only one type of link
@@ -1435,11 +1456,12 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			###### init layout quasi-manually
 #			# export to graphml and use gephi, then import back
 #			g0 <- g1
-#			layout <- layout_with_kk(g0, kkconst=5)
+#			layout <- layout_with_kk(g0, kkconst=1)
 #			V(g0)$x <- layout[,1]; V(g0)$y <- layout[,2]; 
 #			custom.gplot(g=g0, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g0)$x), ylim=range(V(g0)$y), vertex.label.cex=0.1, size.att=6)
 #			write.graphml.file(g=g0, file=paste0(plot.file,".graphml"))
 #			# <do your magic with gephi, then record graph with new layout>
+#			# <procedure: 1) detect components and use as vertex color (largest only); 2) vertex size 50; 3) random layout; 4) standard Yifan-Hu; 5) FR layout speed=10 grav~=1; 6) manually adjust while layouting on.
 #			g0 <- read.graph(paste0(plot.file,".graphml"), format="graphml")
 #			layout <- data.frame(V(g0)$idExterne, V(g0)$x, V(g0)$y)
 #			colnames(layout) <- c("idExterne", "x","y")
@@ -1452,7 +1474,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			if(any(is.na(lay.idx))) {print(V(g2)[which(is.na(lay.idx))]); stop("Could not match node ids with ids from the layout file")}
 			######
 			# debug
-			# idx <- which(V(g2)$idExterne=="Rue:83");print(idx)
+			# idx <- which(V(g2)$idExterne=="Rue:103");print(idx)
 			# neis <- unique(neighbors(graph=g2, v=idx, mode="all"))$name;print(neis)
 			# sprintf("%.14f",mean(layout[match(neis,layout[,"idExterne"]),"x"]))
 			# sprintf("%.14f",mean(layout[match(neis,layout[,"idExterne"]),"y"]))
@@ -1565,10 +1587,10 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 # - correlation : 
 #   - décomposer en fonction de la distance géodesique ou spatiale
 #   - distinguer extra/intra muros
-# - calculer le "diamètre" de chaque rue (distance entre les noeuds confrontés à la rue les plus éloignés)
+# + calculer le "diamètre" de chaque rue (distance entre les noeuds confrontés à la rue les plus éloignés)
 #   - lien avec longueur de rue ?
 #   - distinguer intra/extra-muros ?
-# - graphiques de type binned scaterplot pr comparer les données complètes des deux distances 
+# - graphiques de type binned scaterplot pr comparer les données complètes des deux distances ?
 
 # MARGOT:
 # - traduction de 'confront' en anglais ?
