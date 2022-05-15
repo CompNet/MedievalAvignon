@@ -87,6 +87,8 @@ plot.street.removal <- function()
 {	tlog(2,"Plotting stats related to street removal")
 	
 	folders <- c(GR_EST_FLAT_MINUS, paste0(GR_EST_FLAT_MINUS,"_filtered"))
+#	folders <- c(GR_EST_FLAT_MINUS)
+#	folders <- c(paste0(GR_EST_FLAT_MINUS,"_filtered"))
 	for(f in 1:length(folders))
 	{	folder <- folders[f]
 		tlog(2,"Dealing with folder '",folder,"' (",f,"/",length(folders),")")
@@ -106,6 +108,7 @@ plot.street.removal <- function()
 		gs <- list()
 		street.names <- rep(NA, length(ll))
 		street.lengths <- rep(NA, length(ll))
+		street.widths <- rep(NA, length(ll))
 		for(i in 1:length(ll))
 		{	graph.file <- ll[[i]]
 			tlog(6,"Reading file '",graph.file,"'")
@@ -115,6 +118,7 @@ plot.street.removal <- function()
 			gs[[r]] <- g 
 			street.names[r] <- g$LastDeletedStreetId
 			street.lengths[r] <- g$LastDeletedStreetLength
+			street.widths[r] <- g$LastDeletedStreetWidth
 		}
 		#sapply(gs,function(g) g$name)
 		
@@ -130,8 +134,8 @@ plot.street.removal <- function()
 			MEAS_DISTANCE_COR_SPEARMAN, paste0(MEAS_DISTANCE_COR_SPEARMAN,"-finite"), 
 			MEAS_DISTANCE_COR_KENDALL, paste0(MEAS_DISTANCE_COR_KENDALL,"-finite")
 		)
-		tab.stats <- data.frame(1:length(gs), street.names, street.lengths, matrix(NA, nrow=length(gs), ncol=length(meas.names)))
-		colnames(tab.stats) <- c("NumberDeletedStreets", "LastDeletedStreetId", "LastDeletedStreetLength", meas.names)
+		tab.stats <- data.frame(1:length(gs), street.names, street.lengths, street.widths, matrix(NA, nrow=length(gs), ncol=length(meas.names)))
+		colnames(tab.stats) <- c("NumberDeletedStreets", "LastDeletedStreetId", "LastDeletedStreetLength", "LastDeletedStreetWidth", meas.names)
 		tlog(4,"Computing stats")
 		mbr.prev <- NA
 		for(i in 1:nrow(tab.stats))
