@@ -2886,7 +2886,6 @@
 2408,a-orient,1173,NULL,478,NULL,confronte a l est avec
 3022,a-circio,1173,7803,NULL,NULL,confronte au nord avec
 2409,a-occident,1174,NULL,480,NULL,confronte a l ouest avec
-2410,a-circio,1174,NULL,540,NULL,confronte au nord avec
 3023,a-orient,1174,1170,NULL,NULL,confronte a l est avec
 3024,a-meridie,1174,1594,NULL,NULL,confronte au sud avec
 2411,in,1175,NULL,225,NULL,a l interieur de
@@ -2896,10 +2895,10 @@
 2414,juxta,1176,NULL,492,NULL,a cote de
 2415,a-orient,1176,NULL,481,NULL,confronte a l est avec
 2416,subtus,1176,NULL,117,NULL,sous
-2417,a-occident,1176,NULL,541,NULL,confronte a l ouest avec
+2417,a-occident,1176,NULL,1541,NULL,confronte a l ouest avec
 2418,a-meridie,1176,NULL,768,NULL,confronte au sud avec
 3026,a-circio,1176,1646,NULL,NULL,confronte au nord avec
-2419,a-occident,1177,NULL,541,NULL,confronte a l ouest avec
+2419,a-occident,1177,NULL,1541,NULL,confronte a l ouest avec
 3027,a-orient,1177,1172,NULL,NULL,confronte a l est avec
 3028,a-meridie,1177,1175,NULL,NULL,confronte au sud avec
 2420,a-meridie,1178,NULL,769,NULL,confronte au sud avec
@@ -2921,7 +2920,7 @@
 3041,a-meridie,1183,1622,NULL,NULL,confronte au sud avec
 3042,ab-una-part,1184,1600,NULL,NULL,confronte avec
 3043,ab-una-part,1184,1601,NULL,NULL,confronte avec
-2429,a-orient,1185,NULL,545,NULL,confronte a l est avec
+2429,a-orient,1185,NULL,1545,NULL,confronte a l est avec
 2430,a-occident,1185,NULL,3,NULL,confronte a l ouest avec
 2431,subtus,1185,NULL,243,NULL,sous
 3044,a-circio,1185,1602,NULL,NULL,confronte au nord avec
