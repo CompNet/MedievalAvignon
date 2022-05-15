@@ -1417,7 +1417,6 @@
 711,a-orient,241,875,NULL,NULL,confronte a l est avec
 712,a-meridie,241,876,NULL,NULL,confronte au sud avec
 713,a-meridie,241,877,NULL,NULL,confronte au sud avec
-967,a-circio,241,NULL,51,NULL,confronte au nord avec
 968,a-circio,241,NULL,419,NULL,confronte au nord avec
 1057,prope,241,NULL,158,NULL,a cote de
 1062,prope,241,NULL,160,NULL,a cote de
@@ -2467,20 +2466,20 @@
 2550,in,1105,NULL,NULL,4,a l interieur de
 2852,a-circio,1105,1497,NULL,NULL,confronte au nord avec
 2853,a-occident,1105,1496,NULL,NULL,confronte a l ouest avec
-2216,in,1106,NULL,52,NULL,dans
-2217,a-orient,1106,NULL,52,NULL,confronte a l est avec
+2216,in,1106,NULL,103,NULL,dans
+2217,a-orient,1106,NULL,103,NULL,confronte a l est avec
 2551,in,1106,NULL,NULL,4,a l interieur de
 2854,a-occident,1106,1498,NULL,NULL,confronte a l ouest avec
 2855,a-meridie,1106,1498,NULL,NULL,confronte au sud avec
 2856,a-circio,1106,1499,NULL,NULL,confronte au nord avec
-2218,in,1107,NULL,52,NULL,dans
-2219,a-orient,1107,NULL,52,NULL,confronte a l est avec
+2218,in,1107,NULL,103,NULL,dans
+2219,a-orient,1107,NULL,103,NULL,confronte a l est avec
 2552,in,1107,NULL,NULL,4,a l interieur de
 2857,a-occident,1107,1500,NULL,NULL,confronte a l ouest avec
 2858,a-circio,1107,1502,NULL,NULL,confronte au nord avec
 2859,a-meridie,1107,1501,NULL,NULL,confronte au sud avec
-2220,in,1108,NULL,52,NULL,dans
-2221,a-occident,1108,NULL,52,NULL,confronte a l ouest avec
+2220,in,1108,NULL,103,NULL,dans
+2221,a-occident,1108,NULL,103,NULL,confronte a l ouest avec
 2553,in,1108,NULL,NULL,4,a l interieur de
 2860,a-orient,1108,1503,NULL,NULL,confronte a l est avec
 2861,a-meridie,1108,1505,NULL,NULL,confronte au sud avec
@@ -3030,8 +3029,8 @@
 3621,ab-una-part,2013,2417,NULL,NULL,confronte avec
 3622,ab-una-part,2013,7042,NULL,NULL,confronte avec
 3079,in,2014,NULL,NULL,3,a l interieur de
-3223,in,2014,NULL,27,NULL,dans
-3224,ab-una-part,2014,NULL,27,NULL,confronte avec
+3223,in,2014,NULL,28,NULL,dans
+3224,ab-una-part,2014,NULL,28,NULL,confronte avec
 3225,juxta,2014,NULL,232,NULL,a cote de
 3623,ab-una-part,2014,7046,NULL,NULL,confronte avec
 3624,ab-una-part,2014,2418,NULL,NULL,confronte avec
@@ -4339,7 +4338,7 @@
 5121,ab-una-part,7044,7614,NULL,NULL,confronte avec
 4236,in,7045,NULL,27,NULL,dans
 4791,in,7045,NULL,NULL,3,a l interieur de
-4237,in,7046,NULL,27,NULL,dans
+4237,in,7046,NULL,28,NULL,dans
 4792,in,7046,NULL,NULL,3,a l interieur de
 4238,in,7047,NULL,27,NULL,dans
 4239,ante,7047,NULL,543,NULL,devant
