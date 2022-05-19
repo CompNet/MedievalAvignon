@@ -1241,6 +1241,8 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #	graph.types <- c(GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS)		# c(GR_EST_FULL, GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS, LK_TYPE_FLATREL_VALS)
 	measured.streets <- which(vertex_attr(g,COL_LOC_TYPE)=="Rue" & !is.na(vertex_attr(g,COL_STREET_LENGTH)))
 	graph.types <- paste0(GR_EST_FLAT_MINUS,"_",1:length(measured.streets))
+	prev.g1 <- NA
+	prev.g1.filt <- NA
 	for(i in 1:length(graph.types))
 	{	tlog(4,"Extracting graph \"",graph.types[i],"\" (",i,"/",length(graph.types),")")
 		
@@ -1287,18 +1289,6 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		else if(startsWith(graph.types[i], GR_EST_FLAT_MINUS))
 		{	g1 <- g
 			tlog(6,"Cleaning the graph (n=",gorder(g1),", m=",gsize(g1),")")
-			# removing membership relations
-			idx <- which(E(g1)$type==VAL_CONF_TYPE_INTERIEUR)
-			tlog(8,"Removing ",length(idx)," \"inside\" confronts")
-			g1 <- delete_edges(graph=g1, edges=idx)
-			# remove walls
-			idx <- startsWith(V(g1)$name,"Rempart:")
-			tlog(8,"Removing ",length(which(idx))," walls")
-			g1 <- delete_vertices(graph=g1, v=idx)
-			# remove certain geological objects
-			idx <- startsWith(V(g1)$name,"Repere:") & vertex_attr(g1,COL_LDMRK_TYPE)!="Rocher"
-			tlog(8,"Removing ",length(which(idx))," geological object(s)")
-			g1 <- delete_vertices(graph=g1, v=idx)
 			# possibly remove the longest streets
 			if(graph.types[i]!=GR_EST_FLAT_MINUS)
 			{	nbr <- as.integer(strsplit(graph.types[i],"_")[[1]][3])
@@ -1313,6 +1303,20 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 				g1$LastDeletedStreetLength <-ldsl
 				g1$LastDeletedStreetWidth <-ldsw
 			}
+# TODO supprime t on le bon noeud ?
+# TODO vérifier le 3 graphe est sans lien
+			# removing membership relations
+			idx <- which(E(g1)$type==VAL_CONF_TYPE_INTERIEUR)
+			tlog(8,"Removing ",length(idx)," \"inside\" confronts")
+			g1 <- delete_edges(graph=g1, edges=idx)
+			# remove walls
+			idx <- startsWith(V(g1)$name,"Rempart:")
+			tlog(8,"Removing ",length(which(idx))," walls")
+			g1 <- delete_vertices(graph=g1, v=idx)
+			# remove certain geological objects
+			idx <- startsWith(V(g1)$name,"Repere:") & vertex_attr(g1,COL_LDMRK_TYPE)!="Rocher"
+			tlog(8,"Removing ",length(which(idx))," geological object(s)")
+			g1 <- delete_vertices(graph=g1, v=idx)
 		}
 		# keep only one type of link
 		else
@@ -1341,11 +1345,12 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			layout <- read.table(file=lay.file, sep="\t", header=TRUE, check.names=FALSE)
 			lay.idx <- match(V(g1)$idExterne, layout[,"idExterne"])
 			if(any(is.na(lay.idx))) {print(V(g1)[which(is.na(lay.idx))]); stop("Could not match node ids with ids from the layout file")}
-			V(g1)$x2 <- layout[lay.idx,"x"]; V(g1)$y <- layout[lay.idx,"y"]
+			V(g1)$x2 <- layout[lay.idx,"x"]; V(g1)$y2 <- layout[lay.idx,"y"]
 			
 			# record graphml file
 			tlog(8,"Recording graph in \"",graph.file,"\"")
 			write.graphml.file(g=g1, file=graph.file)
+			prev.g1 <- g1
 			
 			# filter graph by keeping only the main components
 			cmp.thre <- 25
@@ -1364,6 +1369,19 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			tlog(8,"Recording graph in \"",graph.file,"\"")
 			write.graphml.file(g=g1, file=graph.file)
 			
+			# reverse to previous graph before plotting
+			if(all(is.na(prev.g1.filt)))
+				prev.g1.filt <- load.graphml.file(file=file.path(FOLDER_OUT_ANAL_EST, paste0(GR_EST_FLAT_MINUS,"_filtered"), FILE_GRAPH))
+			tmp <- prev.g1.filt
+			prev.g1.filt <- g1
+			g1 <- tmp
+			# highlighted vertex and its edges
+			g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+			v.hl <- which(V(g1)$idExterne==ldsi)
+			g2 <- g1; g2 <- delete_vertex_attr(g2,name="name")
+			e.hl <- as_ids(incident(graph=g2, v=v.hl, mode="all"))
+			#e.hl <- c(t(ends(graph=g1, es=incident(graph=g2, v=v.hl, mode="all"), names=FALSE)))
+			
 			# plot using geographic coordinates
 			#FORMAT <<- c("png")
 			V(g1)$label <- paste(vertex_attr(g1,name=COL_LOC_ID), get.location.names(g1),sep="_")
@@ -1371,7 +1389,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			dir.create(path=graph.folder, showWarnings=FALSE, recursive=TRUE)
 			plot.file <- file.path(graph.folder, paste0("graph_rem=",nbr))
 			tlog(8,"Plotting graph using geographic coordinates in \"",plot.file,"\"")
-			custom.gplot(g=g1, file=plot.file, asp=1, size.att=2, vertex.label.cex=0.1)
+			custom.gplot(g=g1, file=plot.file, asp=1, size.att=2, vertex.label.cex=0.1, v.hl=v.hl, e.hl=e.hl)
 			
 			# plot using a layouting algorithm 
 			g2 <- g1#; V(g2)$x <- V(g2)$x2; V(g2)$y <- V(g2)$y2
@@ -1381,7 +1399,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			tlog(8,"Plotting graph using layouting algorithm in \"",plot.file,"\"")
 			V(g2)$x <- V(g2)$x2; V(g2)$y <- V(g2)$y2
 			E(g2)$weight <- 0.5
-			custom.gplot(g=g2, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), vertex.label.cex=0.1, size.att=6)
+			custom.gplot(g=g2, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), vertex.label.cex=0.1, size.att=6, v.hl=v.hl, e.hl=e.hl)
 			#FORMAT <<- c("pdf", "png")
 		}
 		
