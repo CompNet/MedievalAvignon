@@ -34,8 +34,8 @@ FORMAT <- c("pdf", "png")	# plot file format: pdf png
 #		   it is categorical or not.
 # size.att: (optional) name of a vertex attribute used to determine
 #		    node size. It has to be numerical, cannot be categorical. 
-# v.hl: vertices to highlight (these are represented as squares).
-# e.hl: edges to highlight (these are represented as thick lines).
+# v.hl: ids of the vertices to highlight (these are represented as squares).
+# e.hl: ids of the edges to highlight (these are represented as thick lines).
 # color.isolates: force isolates to be colored (by default they are not)
 # col.att.cap: caption of the node colors, to be used for certain pie-charts. 
 # file: (optional) file name, to record the plot.
@@ -67,8 +67,6 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 	vshapes <- rep("circle",n)
 	if(gtype==GR_TYPE_EST)
 		vshapes[which(vertex_attr(g, COL_LOC_TYPE)!="Bien")] <- "triangle"
-	if(hasArg(v.hl))
-		vshapes[v.hl] <- "csquare"
 	# vertex colors
 	outline.cols <- rep("BLACK", n)
 	vlab.cols <- rep("BLACK", n)
@@ -137,13 +135,23 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 			vshapes[v] <- "csquare"
 		}
 	}
+
+	# possibly highlight certain vertices
+	if(hasArg(v.hl))
+	{	if(length(v.hl)>0)
+		{	outline.cols[v.hl] <- "RED"
+			vshapes[v.hl] <- "csquare"
+		}
+	}
 	
 	# possibly highlight certain links
 	if(hasArg(e.hl))
 	{	if(length(e.hl)>0)
-			ewidth[e.hl] <- weights[e.hl]*3
+		{	ewidth[e.hl] <- 2*weights[e.hl]
+			ecols[e.hl] <- "RED"
+		}
 	}
-	
+
 	# vertex color
 	if(hasArg(col.att))
 	{	# isolates have no color (or rather, they're white)
@@ -376,7 +384,7 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 	{	# possibly use other parameters if no top edge specified
 		if(length(top.edges)==0)
 		{	if(hasArg(e.hl))
-				top.edges <- e.hl
+				top.edges <- c(t(ends(graph=g2, es=e.hl, names=FALSE)))
 			else if(hasArg(paths))
 				top.edges <- unlist(lapply(paths, function(p) c(t(cbind(p[1:(length(p)-1)],p[2:length(p)])))))
 		}
