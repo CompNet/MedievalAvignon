@@ -384,7 +384,7 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 	{	# possibly use other parameters if no top edge specified
 		if(length(top.edges)==0)
 		{	if(hasArg(e.hl))
-				top.edges <- c(t(ends(graph=g2, es=e.hl, names=FALSE)))
+				top.edges <- c(t(ends(graph=g, es=e.hl, names=FALSE)))
 			else if(hasArg(paths))
 				top.edges <- unlist(lapply(paths, function(p) c(t(cbind(p[1:(length(p)-1)],p[2:length(p)])))))
 		}
