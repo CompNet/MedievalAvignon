@@ -1303,8 +1303,6 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 				g1$LastDeletedStreetLength <-ldsl
 				g1$LastDeletedStreetWidth <-ldsw
 			}
-# TODO supprime t on le bon noeud ?
-# TODO vérifier le 3 graphe est sans lien
 			# removing membership relations
 			idx <- which(E(g1)$type==VAL_CONF_TYPE_INTERIEUR)
 			tlog(8,"Removing ",length(idx)," \"inside\" confronts")
