@@ -1132,11 +1132,12 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	}
 	#####
 	# missing coordinates: use the average of the neighbors
+	tlog(4,"Interpolate missing positions")
 	changed <- TRUE
 	while(changed)
 	{	changed <- FALSE
 		idx <- which(is.na(V(g)$x))
-		tlog(4,"Nodes without position: ",length(idx),"/",gorder(g))
+		tlog(6,"Nodes without position: ",length(idx),"/",gorder(g))
 		if(length(idx)>0)
 		{	neighs <- ego(graph=g, order=1, nodes=idx, mode="all", mindist=1)
 			rx <- range(V(g)$x, na.rm=TRUE)
@@ -1203,11 +1204,15 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	)
 	short.street.flag <- vertex_attr(graph=g, name=COL_LOC_ID) %in% paste("Rue:",short.tab[,COL_STREET_ID],sep="")
 	
-	# compute street width, i.e. spatial distance between its farthest confronted vertices 
-	street.idx <- which(vertex_attr(g, name=COL_LOC_TYPE)=="Rue")		
+	# compute street width, i.e. spatial distance between its farthest confronted vertices
+	tlog(2,"Compute street widths")
+	street.idx <- which(vertex_attr(g, name=COL_LOC_TYPE)=="Rue")
+	tlog(4,"Found ",length(street.idx)," streets remaining in the whole graph")
 	if(length(idx)>0)
 	{	for(street.i in street.idx)
-		{	neis <- neighbors(graph=g,v=street.i,mode="all")
+		{	tlog(6,"Processing street ",V(g)[street.i]$idExterne," (#",street.i,")")
+			neis <- neighbors(graph=g,v=street.i,mode="all")
+			tlog(8,"Found ",length(neis)," neighbors: ",paste(V(g)[neis]$idExterne,collapse=", ")," (#",paste(neis,collapse=", "),")")
 			width <- NA
 			if(length(neis)>2)
 			{	coords <- cbind(vertex_attr(g, name=COL_LOC_X, index=neis), vertex_attr(g, name=COL_LOC_Y, index=neis))
@@ -1218,6 +1223,8 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 				}
 			}
 			V(g)[street.i]$width <- width
+			tlog(8,"Width: ",width)
+			
 		}
 	}
 	
