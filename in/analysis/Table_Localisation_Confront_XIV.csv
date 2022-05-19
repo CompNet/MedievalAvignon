@@ -4231,7 +4231,7 @@
 5088,a-circio,7017,7814,NULL,NULL,confronte au nord avec
 4191,retro,7018,NULL,540,NULL,derriere
 4192,ab-una-part,7018,NULL,541,NULL,confronte avec
-4193,ab-una-part,7018,NULL,618,NULL,confronte avec
+4193,ab-una-part,7018,NULL,619,NULL,confronte avec
 4764,in,7018,NULL,NULL,3,a l interieur de
 5089,ab-una-part,7018,7019,NULL,NULL,confronte avec
 4194,contigu,7019,NULL,541,NULL,contigu
@@ -4240,7 +4240,7 @@
 4766,in,7020,NULL,NULL,3,a l interieur de
 5091,retro,7020,7019,NULL,NULL,derriere
 4195,retro,7021,NULL,541,NULL,derriere
-4196,ab-una-part,7021,NULL,618,NULL,confronte avec
+4196,ab-una-part,7021,NULL,619,NULL,confronte avec
 4767,in,7021,NULL,NULL,3,a l interieur de
 5092,a-orient,7021,7020,NULL,NULL,confronte a l est avec
 5093,a-meridie,7021,7020,NULL,NULL,confronte au sud avec
