@@ -22,7 +22,7 @@ options(error=recover)		# debug
 #############################################################################################
 # packages
 library("igraph")			# graphs
-library("SDMTools")		# colors
+library("SDMTools")			# colors
 library("CINNA")			# additional centrality measures
 library("future.apply")		# parallel processing
 library("sjstats")			# eta correlation ratio
@@ -33,7 +33,7 @@ library("plotfunctions")	# helper plotting functions
 library("viridis")			# palette
 library("Hmisc")			# fast spearman correlation computation
 library("pcaPP")			# fast kendall correlation computation
-
+library("ggplot2")			# additional plot types
 
 
 
