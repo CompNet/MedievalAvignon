@@ -1601,6 +1601,10 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #     - effet de la suppression des coordonnées
 #     - effet des rues longues. mais ça demanderait de partir d'un plan stochastique.
 # + extraire le i=39 réseau et lancer l'analyse complète
+# - approcher la distance infinie avec la somme des diamètres des deux composants concernés ?
+# - étudier l'évolution de la distance graphe entre deux noeuds quand on supprime les rues? 
+#   >> indicateur de la stabilité de l'estimation de la distance spatiale par la distance géodesique
+# - on doit pouvoir estimer la position des biens non placés avec un GNN tenant compte de la nature des liens
 
 # MARGOT:
 # - traduction de 'confront' en anglais ?
@@ -1609,6 +1613,16 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 # 1) intérêt du réseau de confront pour approximer la distance spatiale
 # 2) comment utiliser les graphes pour détecter les erreurs de saisie
 #              + effet des erreurs sur les graphes extraits
+
+# arguments suppression de rues :
+# - pour :
+#   - certaines rues connectent des biens spatialement éloignés
+#     >> ça crée des raccourcis qui ammoindrissent la qualité de l'estimation pour les noeuds éloignés
+#     dans les graphiques montrant toutes les paires de distances, on voit la courbe moyenne décroitre à droite.
+# - contre :
+#   - ca morcelle trop le graphe (composants) 
+#     >> mauvaise approximation des longues distances
+#     dans les graphiques montrant toutes les paires de distances, on voit la courbe moyenne décroitre à droite car les distances infinies ne sont pas représentées.
 
 
 
