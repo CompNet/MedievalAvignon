@@ -1204,8 +1204,8 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	)
 	short.street.flag <- vertex_attr(graph=g, name=COL_LOC_ID) %in% paste("Rue:",short.tab[,COL_STREET_ID],sep="")
 	
-	# compute street width, i.e. spatial distance between its farthest confronted vertices
-	tlog(2,"Compute street widths")
+	# compute street span, i.e. spatial distance between its farthest confronted vertices
+	tlog(2,"Compute street spans")
 	street.idx <- which(vertex_attr(g, name=COL_LOC_TYPE)=="Rue")
 	tlog(4,"Found ",length(street.idx)," streets remaining in the whole graph")
 	if(length(idx)>0)
@@ -1213,17 +1213,17 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		{	tlog(6,"Processing street ",V(g)[street.i]$idExterne," (#",street.i,")")
 			neis <- neighbors(graph=g,v=street.i,mode="all")
 			tlog(8,"Found ",length(neis)," neighbors: ",paste(V(g)[neis]$idExterne,collapse=", ")," (#",paste(neis,collapse=", "),")")
-			width <- NA
+			span <- NA
 			if(length(neis)>2)
 			{	coords <- cbind(vertex_attr(g, name=COL_LOC_X, index=neis), vertex_attr(g, name=COL_LOC_Y, index=neis))
 				coords <- coords[which(!is.na(coords[,1])),]
 				if(nrow(coords)>2)
 				{	dd <- as.matrix(dist(x=coords, method="euclidean", diag=FALSE, upper=FALSE))
-					width <- max(dd,na.rm=TRUE) 
+					span <- max(dd,na.rm=TRUE) 
 				}
 			}
-			V(g)[street.i]$width <- width
-			tlog(8,"Width: ",width)
+			V(g)[street.i]$span <- span
+			tlog(8,"Span: ",span)
 			
 		}
 	}
@@ -1289,6 +1289,11 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		else if(startsWith(graph.types[i], GR_EST_FLAT_MINUS))
 		{	g1 <- g
 			tlog(6,"Cleaning the graph (n=",gorder(g1),", m=",gsize(g1),")")
+			# removing membership relations
+			idx <- which(E(g1)$type==VAL_CONF_TYPE_INTERIEUR)
+			tlog(8,"Removing ",length(idx)," \"inside\" confronts")
+			g1 <- delete_edges(graph=g1, edges=idx)
+			degs <- igraph::degree(g1,mode="all")
 			# possibly remove the longest streets
 			if(graph.types[i]!=GR_EST_FLAT_MINUS)
 			{	nbr <- as.integer(strsplit(graph.types[i],"_")[[1]][3])
@@ -1296,17 +1301,17 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 				#vertex_attr(g, name=COL_STREET_LENGTH, index=measured.streets[idx])
 				ldsi <- V(g)$idExterne[measured.streets[idx[nbr]]]
 				ldsl <- V(g)$length[measured.streets[idx[nbr]]]
-				ldsw <- V(g)$width[measured.streets[idx[nbr]]]
-				tlog(8,"Removing the ",length(idx)," longest street(s) (last one=",ldsi," -- length=",ldsl," -- width=",ldsw,")")
+				ldss <- V(g)$span[measured.streets[idx[nbr]]]
+				ldscd <- igraph::degree(g,mode="all")[measured.streets[idx[nbr]]]
+				ldsod <- degs[measured.streets[idx[nbr]]]
+				tlog(8,"Removing the ",length(idx)," longest street(s) (last one=",ldsi," -- length=",ldsl," -- span=",ldss,")")
 				g1 <- delete_vertices(graph=g1, v=measured.streets[idx])
 				g1$LastDeletedStreetId <- ldsi
 				g1$LastDeletedStreetLength <-ldsl
-				g1$LastDeletedStreetWidth <-ldsw
+				g1$LastDeletedStreetSpan <-ldss
+				g1$LastDeletedStreetCurrentDegree <-ldscd
+				g1$LastDeletedStreetOriginalDegree <-ldsod
 			}
-			# removing membership relations
-			idx <- which(E(g1)$type==VAL_CONF_TYPE_INTERIEUR)
-			tlog(8,"Removing ",length(idx)," \"inside\" confronts")
-			g1 <- delete_edges(graph=g1, edges=idx)
 			# remove walls
 			idx <- startsWith(V(g1)$name,"Rempart:")
 			tlog(8,"Removing ",length(which(idx))," walls")
@@ -1580,40 +1585,26 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #      > différence avec sim structurelle ?
 
 # TODO
-# - distances moyennes : passer à l'harmonique
-#   + virer les zéros pour la spatiale
-#   + rajouter ce calcul dans le script des distances (y compris moyennes)
-#   + correlation non lin : tester en gardant les valeurs infinies dans graph_comp
-#   - avec inf ou sans inf dans les scripts généraux ? (sans semble plus avantageux, car grde dist graph = approxi spatiale médiocre)
-#   + mettre à jour les scripts des modèles de la même façon que les 2 autres
 # - street removal :
-#   + rajouter des stats spatiales :
-#     + distance moyenne géodésique/spatiale
-#     + correlation
-#     + générer les plots des données non-moyennées, pour comparaison (?)
-#     + similarité entre deux struct com successives
-#     - rajouter nom des rues + indicateurs topologiques dans les stats
 #   - améliorer la comparaison entre comstruct consécutives
-#   + pq a t on de brusques changements de distance spatiale moyenne ? 
-#     >> car bcp de noeuds sont retirés en une seule fois
-#        ne pas oublier que chaque réseau est nettoyé des composants mineur
-#   - rajouter les plots des graphes produits, avec la rue concernée et ses liens en rouge (avant suppression, donc ?)
+# - correlation : 
+#   - décomposer en fonction de la distance géodesique ou spatiale
+#   - distinguer extra/intra muros
+# + calculer l'envergure de chaque rue (distance entre les noeuds confrontés à la rue les plus éloignés)
+#   + correlation entre caracs des rues
+#   - distinguer intra/extra-muros ?
+# - graphiques de type binned scaterplot pr comparer les données complètes des deux distances ?
 # - modèle :
 #   - rajouter le concept de noeud de type "rue"
 #   - questions :
 #     - effet de la suppression des liens
 #     - effet de la suppression des coordonnées
 #     - effet des rues longues. mais ça demanderait de partir d'un plan stochastique.
-#
-# TODO
 # + extraire le i=39 réseau et lancer l'analyse complète
-# - correlation : 
-#   - décomposer en fonction de la distance géodesique ou spatiale
-#   - distinguer extra/intra muros
-# + calculer le "diamètre" de chaque rue (distance entre les noeuds confrontés à la rue les plus éloignés)
-#   - lien avec longueur de rue ?
-#   - distinguer intra/extra-muros ?
-# - graphiques de type binned scaterplot pr comparer les données complètes des deux distances ?
+# - approcher la distance infinie avec la somme des diamètres des deux composants concernés ?
+# - étudier l'évolution de la distance graphe entre deux noeuds quand on supprime les rues? 
+#   >> indicateur de la stabilité de l'estimation de la distance spatiale par la distance géodesique
+# - on doit pouvoir estimer la position des biens non placés avec un GNN tenant compte de la nature des liens
 
 # MARGOT:
 # - traduction de 'confront' en anglais ?
@@ -1622,6 +1613,16 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 # 1) intérêt du réseau de confront pour approximer la distance spatiale
 # 2) comment utiliser les graphes pour détecter les erreurs de saisie
 #              + effet des erreurs sur les graphes extraits
+
+# arguments suppression de rues :
+# - pour :
+#   - certaines rues connectent des biens spatialement éloignés
+#     >> ça crée des raccourcis qui ammoindrissent la qualité de l'estimation pour les noeuds éloignés
+#     dans les graphiques montrant toutes les paires de distances, on voit la courbe moyenne décroitre à droite.
+# - contre :
+#   - ca morcelle trop le graphe (composants) 
+#     >> mauvaise approximation des longues distances
+#     dans les graphiques montrant toutes les paires de distances, on voit la courbe moyenne décroitre à droite car les distances infinies ne sont pas représentées.
 
 
 
