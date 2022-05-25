@@ -97,7 +97,10 @@ plot.street.removal <- function()
 		main.folder <- file.path(FOLDER_OUT_ANAL_EST, folder, "_removed_streets")
 		graph.folder <- file.path(main.folder, "graphs")
 		dist.folder <- file.path(main.folder, "dist_geodesic_vs_spatial")
-		dir.create(path=dist.folder, showWarnings=FALSE, recursive=TRUE)
+		binned.folder <- file.path(dist.folder, "binned")
+		dir.create(path=binned.folder, showWarnings=FALSE, recursive=TRUE)
+		hexa.folder <- file.path(dist.folder, "hexa")
+		dir.create(path=hexa.folder, showWarnings=FALSE, recursive=TRUE)
 		
 		# list graph files
 		ll <- list.files(path=graph.folder, pattern="graph_rem=[0-9]+\\.graphml", full.names=TRUE)
@@ -108,7 +111,9 @@ plot.street.removal <- function()
 		gs <- list()
 		street.names <- rep(NA, length(ll))
 		street.lengths <- rep(NA, length(ll))
-		street.widths <- rep(NA, length(ll))
+		street.spans <- rep(NA, length(ll))
+		street.cur.degs <- rep(NA, length(ll))
+		street.orig.degs <- rep(NA, length(ll))
 		for(i in 1:length(ll))
 		{	graph.file <- ll[[i]]
 			tlog(6,"Reading file '",graph.file,"'")
@@ -118,9 +123,18 @@ plot.street.removal <- function()
 			gs[[r]] <- g 
 			street.names[r] <- g$LastDeletedStreetId
 			street.lengths[r] <- g$LastDeletedStreetLength
-			street.widths[r] <- g$LastDeletedStreetWidth
+			street.spans[r] <- g$LastDeletedStreetSpan
+			street.cur.degs[r] <- g$LastDeletedStreetCurrentDegree
+			street.orig.degs[r] <- g$LastDeletedStreetOriginalDegree
 		}
 		#sapply(gs,function(g) g$name)
+		
+		# record correlation for street measures
+		cor.data <- cbind(street.lengths, street.spans, street.cur.degs, street.orig.degs)
+		colnames(cor.data) <- c("Length", "Span", "CurrentDegree", "OriginalDegree")
+		cor.mat <- cor(cor.data, use="pairwise.complete.obs")
+		tab.file <- file.path(main.folder, "street_stats.csv")
+		write.csv(cor.mat, file=tab.file, row.names=TRUE)
 		
 		# compute stats
 		meas.names <- c(
@@ -134,8 +148,8 @@ plot.street.removal <- function()
 			MEAS_DISTANCE_COR_SPEARMAN, paste0(MEAS_DISTANCE_COR_SPEARMAN,"-finite"), 
 			MEAS_DISTANCE_COR_KENDALL, paste0(MEAS_DISTANCE_COR_KENDALL,"-finite")
 		)
-		tab.stats <- data.frame(1:length(gs), street.names, street.lengths, street.widths, matrix(NA, nrow=length(gs), ncol=length(meas.names)))
-		colnames(tab.stats) <- c("NumberDeletedStreets", "LastDeletedStreetId", "LastDeletedStreetLength", "LastDeletedStreetWidth", meas.names)
+		tab.stats <- data.frame(1:length(gs), street.names, street.lengths, street.spans, street.cur.degs, street.orig.degs, matrix(NA, nrow=length(gs), ncol=length(meas.names)))
+		colnames(tab.stats) <- c("NumberDeletedStreets", "LastDeletedStreetId", "LastDeletedStreetLength", "LastDeletedStreetSpan", "LastDeletedStreetCurrentDegree", "LastDeletedStreetOriginalDegree", meas.names)
 		tlog(4,"Computing stats")
 		mbr.prev <- NA
 		for(i in 1:nrow(tab.stats))
@@ -203,9 +217,13 @@ plot.street.removal <- function()
 			vals <- igraph::degree(graph=gs[[i]], mode="all", v=idx0)
 			cb <- t(combn(1:length(idx0),2))
 			vals <- (vals[cb[,1]] * vals[cb[,2]])[idx]
+			xs <- sort(unique(gvals))
+			avg.dist <- sapply(xs, function(x) mean(svals[gvals==x]))
+			stdev.dist <- sapply(xs, function(x) sd(svals[gvals==x]))
 			# set colors
 			fine <- 500 									# granularity of the color gradient
 			cols <- viridis(fine,direction=-1)[as.numeric(cut(vals,breaks=fine))]
+			# produce plot
 			plot.file <- file.path(dist.folder, paste0("dist_geodesic_vs_spatial_rem=",i))
 			tlog(8,"Plot geodesic vs. spatial distance in file '",plot.file,"'")
 			for(fformat in c("png"))	# FORMAT
@@ -221,13 +239,65 @@ plot.street.removal <- function()
 					#xlim=c(1,max(deg.vals)*1.1)
 				)
 				# mean
-				avg.dist <- sapply(min(gvals):max(gvals), function(deg) mean(svals[gvals==deg]))
 				lines(	
-					x=min(gvals):max(gvals), avg.dist,
+					x=xs, y=avg.dist,
 					col="BLACK"
 				)
 				# legend
 				gradientLegend(range(vals), color=viridis(fine,direction=-1), inside=TRUE)
+				dev.off()
+			}
+			
+			# same thing, but with error bars
+			plot.file <- file.path(binned.folder, paste0("dist_geodesic_vs_spatial_rem=",i))
+			tlog(8,"Plot binned version in  '",plot.file,"'")
+			for(fformat in c("png"))	# FORMAT
+			{	if(fformat=="pdf")
+					pdf(paste0(plot.file,".pdf"))
+				else if(fformat=="png")
+					png(paste0(plot.file,".png"))
+				plot(
+					NULL,
+					xlab="Undirected geodesic distance", ylab="Spatial distance",
+					las=1, #log="xy", 
+					ylim=range(svals,na.rm=TRUE),
+					xlim=range(gvals,na.rm=TRUE)
+				)
+				arrows(
+					x0=xs, y0=avg.dist-stdev.dist, 
+					x1=xs, y1=avg.dist+stdev.dist, 
+					code=3, angle=90, length=0.05, 
+					col="PINK", lwd=2
+				)
+				points(
+					x=xs, y=avg.dist, 
+					col="RED", pch=19
+				)
+				dev.off()
+			}
+			
+			# same thing, but hexa map
+			plot.file <- file.path(hexa.folder, paste0("dist_geodesic_vs_spatial_rem=",i))
+			tlog(8,"Plot hexbin version in  '",plot.file,"'")
+			for(fformat in c("png"))	# FORMAT
+			{	if(fformat=="pdf")
+					pdf(paste0(plot.file,".pdf"))
+				else if(fformat=="png")
+					png(paste0(plot.file,".png"))
+				data <- data.frame(gvals, svals)
+				avg.data <- data.frame(xs,avg.dist)
+				p=ggplot(data, aes(x=gvals, y=svals)) +
+					geom_hex(aes(colour=..count..)) + 
+#					coord_fixed() +
+					scale_fill_viridis(begin=0.1, limits=c(0,NA), aesthetics=c("colour", "fill")) + 
+					theme_bw() +
+					theme_classic() +	# base_size=18
+					xlab("Undirected geodesic distance") + ylab("Spatial distance") +
+					theme(legend.position="left") +
+					geom_point(aes(x=gvals, y=svals), alpha=0) +
+					geom_line(data=avg.data, aes(x=xs, y=avg.dist), size=0.75, color="WHITE")
+#				ggMarginal(p, type="histogram", fill="GRAY")
+				print(p)
 				dev.off()
 			}
 		}

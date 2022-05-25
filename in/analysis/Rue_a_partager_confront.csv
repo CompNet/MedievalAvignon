@@ -1,0 +1,396 @@
+﻿idConfront;localisation;idBien1;idBien2;idInvariant;idInvariant_ajout;idQuartierParoisse;localisationTN
+2350;a-circio;1155;NULL;1;1_2;NULL;confronte au nord avec
+2451;a-occident;1192;NULL;2;2_2;NULL;confronte a l ouest avec
+2448;in;1192;NULL;2;2_2;NULL;dans
+2453;a-occident;1193;NULL;2;2_2;NULL;confronte a l ouest avec
+2452;in;1193;NULL;2;2_2;NULL;dans
+3200;in;2001;NULL;2;2_2;NULL;dans
+3203;ab-una-part;2002;NULL;2;2_1;NULL;confronte avec
+3202;in;2002;NULL;2;2_1;NULL;dans
+1908;in;6025;NULL;2;2_2;NULL;dans
+1910;in;6026;NULL;2;2_2;NULL;dans
+4692;retro;7299;NULL;2;2_2;NULL;derriere
+4694;ab-una-part;7299;NULL;2;2_2;NULL;confronte avec
+2432;in;1186;NULL;4;4_1;NULL;dans
+2433;a-orient;1186;NULL;4;4_1;NULL;confronte a l est avec
+3204;in;2003;NULL;4;4_1;NULL;dans
+3206;in;2004;NULL;4;4_1;NULL;dans
+3205;ab-una-part;2004;NULL;4;4_1;NULL;confronte avec
+1911;in;6027;NULL;4;4_1;NULL;dans
+4702;ab-una-part;7303;NULL;4;4_1;NULL;confronte avec
+4701;in;7303;NULL;4;4_1;NULL;dans
+4705;ab-una-part;7304;NULL;4;4_1;NULL;confronte avec
+4703;in;7304;NULL;4;4_1;NULL;dans
+1109;a-occident;102;NULL;8;8_2;NULL;confronte a l ouest avec
+1108;in;102;NULL;8;8_2;NULL;dans
+1110;a-orient;107;NULL;8;8_1;NULL;confronte a l est avec
+1111;a-orient;109;NULL;8;8_1;NULL;confronte a l est avec
+1112;a-orient;118;NULL;8;8_1;NULL;confronte a l est avec
+1113;a-orient;119;NULL;8;8_1;NULL;confronte a l est avec
+1114;a-orient;120;NULL;8;8_1;NULL;confronte a l est avec
+1115;in;132;NULL;8;8_2;NULL;dans
+1116;a-orient;132;NULL;8;8_2;NULL;confronte a l est avec
+1117;in;133;NULL;8;8_2;NULL;dans
+1118;a-occident;133;NULL;8;8_2;NULL;confronte a l ouest avec
+1120;a-occident;134;NULL;8;8_2;NULL;confronte a l ouest avec
+1119;in;134;NULL;8;8_2;NULL;dans
+1121;a-orient;140;NULL;8;8_1;NULL;confronte a l est avec
+1122;a-orient;141;NULL;8;8_1;NULL;confronte a l est avec
+1123;a-orient;142;NULL;8;8_1;NULL;confronte a l est avec
+1124;a-orient;143;NULL;8;8_1;NULL;confronte a l est avec
+1125;in;145;NULL;8;8_1;NULL;dans
+1126;a-occident;145;NULL;8;8_1;NULL;confronte a l ouest avec
+1127;a-occident;146;NULL;8;8_1;NULL;confronte a l ouest avec
+1129;a-occident;161;NULL;8;8_2;NULL;confronte a l ouest avec
+1128;in compito-sive-cantono;161;NULL;8;8_2;NULL;a l angle de
+1130;a-occident;162;NULL;8;8_2;NULL;confronte a l ouest avec
+1132;a-orient;167;NULL;8;8_2;NULL;confronte a l est avec
+1131;in compito-sive-cantono;167;NULL;8;8_2;NULL;a l angle de
+1134;a-occident;170;NULL;8;8_2;NULL;confronte a l ouest avec
+1135;in compito-sive-cantono;171;NULL;8;8_2;NULL;a l angle de
+1136;a-meridie;171;NULL;8;8_2;NULL;confronte au sud avec
+1138;a-occident;176;NULL;8;8_2;NULL;confronte a l ouest avec
+1137;in;176;NULL;8;8_2;NULL;dans
+1139;in;190;NULL;8;8_2;NULL;dans
+1140;a-circio;190;NULL;8;8_2;NULL;confronte au nord avec
+1141;in;193;NULL;8;8_2;NULL;dans
+1142;a-occident;194;NULL;8;8_2;NULL;confronte a l ouest avec
+1143;a-occident;195;NULL;8;8_2;NULL;confronte a l ouest avec
+1144;a-occident;196;NULL;8;8_2;NULL;confronte a l ouest avec
+1145;in;201;NULL;8;8_2;NULL;dans
+1146;in;202;NULL;8;8_2;NULL;dans
+1148;a-orient;203;NULL;8;8_2;NULL;confronte a l est avec
+1147;a-occident;203;NULL;8;8_2;NULL;confronte a l ouest avec
+1551;a-occident;443;NULL;8;8_1;NULL;confronte a l ouest avec
+1149;a-orient;447;NULL;8;8_1;NULL;confronte a l est avec
+1150;juxta;449;NULL;8;8_2;NULL;a cote de
+1151;a-occident;450;NULL;8;8_1;NULL;confronte a l ouest avec
+1152;a-circio;451;NULL;8;8_2;NULL;confronte au nord avec
+1154;a-occident;454;NULL;8;8_2;NULL;confronte a l ouest avec
+1153;in;454;NULL;8;8_2;NULL;dans
+2301;a-part-ante;1136;NULL;8;8_2;NULL;confronte du cote avant avec
+2300;a-orient;1136;NULL;8;8_2;NULL;confronte a l est avec
+2299;in;1136;NULL;8;8_2;NULL;dans
+2305;a-orient;1137;NULL;8;8_2;NULL;confronte a l est avec
+2304;in;1137;NULL;8;8_2;NULL;dans
+2307;a-orient;1138;NULL;8;8_2;NULL;confronte a l est avec
+2306;in;1138;NULL;8;8_2;NULL;dans
+2308;in;1139;NULL;8;8_2;NULL;dans
+2309;a-orient;1139;NULL;8;8_2;NULL;confronte a l est avec
+2310;in;1140;NULL;8;8_2;NULL;dans
+2311;a-orient;1140;NULL;8;8_2;NULL;confronte a l est avec
+2312;in;1141;NULL;8;8_2;NULL;dans
+2315;a-occident;1142;NULL;8;8_2;NULL;confronte a l ouest avec
+2314;in;1142;NULL;8;8_2;NULL;dans
+2316;a-circio;1142;NULL;8;8_2;NULL;confronte au nord avec
+2319;in;1143;NULL;8;8_2;NULL;dans
+2320;a-occident;1143;NULL;8;8_2;NULL;confronte a l ouest avec
+2321;in;1144;NULL;8;8_2;NULL;dans
+3354;ab-una-part;2078;NULL;8;8_1;NULL;confronte avec
+1188;in compito-sive-cantono;149;NULL;10;10_1;NULL;a l angle de
+1190;a-orient;149;NULL;10;10_1;NULL;confronte a l est avec
+1189;a-circio;149;NULL;10;10_1;NULL;confronte au nord avec
+1192;a-orient;150;NULL;10;10_1;NULL;confronte a l est avec
+1191;in;150;NULL;10;10_1;NULL;dans
+1193;in;151;NULL;10;10_2;NULL;dans
+1194;a-orient;151;NULL;10;10_2;NULL;confronte a l est avec
+1196;a-orient;152;NULL;10;10_2;NULL;confronte a l est avec
+1195;in;152;NULL;10;10_2;NULL;dans
+1198;a-orient;153;NULL;10;10_2;NULL;confronte a l est avec
+1197;in;153;NULL;10;10_2;NULL;dans
+1199;in;154;NULL;10;10_2;NULL;dans
+1201;a-orient;155;NULL;10;10_2;NULL;confronte a l est avec
+1200;in;155;NULL;10;10_2;NULL;dans
+1202;in;156;NULL;10;10_2;NULL;dans
+1203;a-orient;156;NULL;10;10_2;NULL;confronte a l est avec
+1205;a-orient;157;NULL;10;10_2;NULL;confronte a l est avec
+1204;in;157;NULL;10;10_2;NULL;dans
+1206;in;457;NULL;10;10_2;NULL;dans
+1207;a-occident;457;NULL;10;10_2;NULL;confronte a l ouest avec
+1208;a-circio;457;NULL;10;10_2;NULL;confronte au nord avec
+1209;in;458;NULL;10;10_2;NULL;dans
+1210;a-circio;458;NULL;10;10_2;NULL;confronte au nord avec
+1212;in;459;NULL;10;10_2;NULL;dans
+1213;a-meridie;459;NULL;10;10_2;NULL;confronte au sud avec
+1215;a-meridie;460;NULL;10;10_2;NULL;confronte au sud avec
+1214;in;460;NULL;10;10_2;NULL;dans
+1216;in;461;NULL;10;10_2;NULL;dans
+1217;a-meridie;461;NULL;10;10_2;NULL;confronte au sud avec
+1219;a-occident;462;NULL;10;10_2;NULL;confronte a l ouest avec
+1218;in;462;NULL;10;10_2;NULL;dans
+1221;a-occident;463;NULL;10;10_2;NULL;confronte a l ouest avec
+1220;in;463;NULL;10;10_2;NULL;dans
+2323;in;1145;NULL;10;10_2;NULL;dans
+2962;in;1146;NULL;10;10_1;NULL;dans
+1311;in-capite;56;NULL;17;17_1;NULL;au debut de
+1312;a-orient;56;NULL;17;17_1;NULL;confronte a l est avec
+1313;a-orient;58;NULL;17;17_1;NULL;confronte a l est avec
+1314;a-orient;59;NULL;17;17_1;NULL;confronte a l est avec
+1315;a-orient;60;NULL;17;17_1;NULL;confronte a l est avec
+1316;a-orient;62;NULL;17;17_1;NULL;confronte a l est avec
+1317;a-orient;63;NULL;17;17_1;NULL;confronte a l est avec
+1318;a-orient;64;NULL;17;17_1;NULL;confronte a l est avec
+1319;a-orient;66;NULL;17;17_1;NULL;confronte a l est avec
+1320;a-orient;69;NULL;17;17_1;NULL;confronte a l est avec
+1321;a-orient;70;NULL;17;17_2;NULL;confronte a l est avec
+1322;a-orient;73;NULL;17;17_2;NULL;confronte a l est avec
+1323;a-orient;74;NULL;17;17_2;NULL;confronte a l est avec
+1324;a-orient;76;NULL;17;17_2;NULL;confronte a l est avec
+1325;a-orient;77;NULL;17;17_2;NULL;confronte a l est avec
+1326;in;80;NULL;17;17_2;NULL;dans
+1327;a-occident;80;NULL;17;17_2;NULL;confronte a l ouest avec
+1329;a-orient;465;NULL;17;17_2;NULL;confronte a l est avec
+1328;in-capite;465;NULL;17;17_1;NULL;au debut de
+2292;a-occident;1133;NULL;17;17_1;NULL;confronte a l ouest avec
+2291;in;1133;NULL;17;17_1;NULL;dans
+3221;ab-una-part;2012;NULL;26;26_2;NULL;confronte avec
+3220;in;2012;NULL;26;26_2;NULL;dans
+3222;in;2013;NULL;26;26_2;NULL;dans
+1885;in;6011;NULL;26;26_2;NULL;dans
+1886;ab-una-part;6011;NULL;26;26_2;NULL;confronte avec
+1888;in;6012;NULL;26;26_2;NULL;dans
+1887;ab-una-part;6012;NULL;26;26_2;NULL;confronte avec
+4230;in;7042;NULL;26;26_2;NULL;dans
+4231;ab-una-part;7042;NULL;26;26_2;NULL;confronte avec
+8035;NULL;9055;NULL;26;26_2;NULL;confronte au nord avec
+8037;NULL;9056;NULL;26;26_2;NULL;confronte au nord avec
+2188;a-meridie;1097;NULL;28;28_1;NULL;confronte au sud avec
+2186;in;1097;NULL;28;28_1;NULL;dans
+3223;in;2014;NULL;28;28_1;NULL;dans
+3224;ab-una-part;2014;NULL;28;28_1;NULL;confronte avec
+4237;in;7046;NULL;28;28_1;NULL;dans
+2169;in;1090;NULL;29;29_1;NULL;dans
+2173;ab-una-part;1091;NULL;29;29_1;NULL;confronte avec
+2175;in;1091;NULL;29;29_1;NULL;dans
+2178;in;1093;NULL;29;29_1;NULL;dans
+2181;in;1094;NULL;29;29_1;NULL;dans
+2183;in;1095;NULL;29;29_1;NULL;dans
+3232;in;2018;NULL;29;29_1;NULL;dans
+3234;in;2019;NULL;29;29_1;NULL;dans
+3235;in;2020;NULL;29;29_1;NULL;dans
+3236;ab-una-part;2020;NULL;29;29_1;NULL;confronte avec
+3238;ab-una-part;2021;NULL;29;29_1;NULL;confronte avec
+3239;in;2022;NULL;29;29_1;NULL;dans
+3241;ab-una-part;2023;NULL;29;29_1;NULL;confronte avec
+3243;ab-una-part;2024;NULL;29;29_1;NULL;confronte avec
+3244;in;2025;NULL;29;29_1;NULL;dans
+3245;ab-una-part;2025;NULL;29;29_1;NULL;confronte avec
+3381;ab-una-part;2093;NULL;29;29_2;NULL;confronte avec
+3380;in;2093;NULL;29;29_2;NULL;dans
+3382;ab-una-part;2094;NULL;29;29_2;NULL;confronte avec
+3383;ab-una-part;2095;NULL;29;29_2;NULL;confronte avec
+4267;in;7061;NULL;29;29_1;NULL;dans
+7973;NULL;9002;NULL;29;29_1;NULL;confronte a l est avec
+7974;NULL;9003;NULL;29;29_1;NULL;confronte a l ouest avec
+7975;NULL;9004;NULL;29;29_1;NULL;confronte a l ouest avec
+7976;NULL;9005;NULL;29;29_1;NULL;confronte a l ouest avec
+7978;NULL;9006;NULL;29;29_1;NULL;confronte a l ouest avec
+7979;NULL;9007;NULL;29;29_1;NULL;confronte a l ouest avec
+7980;NULL;9009;NULL;29;29_1;NULL;confronte a l est avec
+7982;NULL;9010;NULL;29;29_1;NULL;confronte au nord avec
+7981;NULL;9010;NULL;29;29_1;NULL;confronte a l est avec
+7983;NULL;9011;NULL;29;29_1;NULL;confronte a l ouest avec
+7986;NULL;9013;NULL;29;29_1;NULL;confronte a l est avec
+7988;NULL;9015;NULL;29;29_1;NULL;confronte a l est avec
+7997;NULL;9022;NULL;29;29_1;NULL;confronte a l ouest avec
+7999;NULL;9023;NULL;29;29_1;NULL;confronte au sud avec
+8000;NULL;9024;NULL;29;29_1;NULL;confronte a l ouest avec
+5797;a-occident;81;NULL;32;32_2;NULL;confronte a l ouest avec
+1927;a-occident;1010;NULL;32;32_2;NULL;confronte a l ouest avec
+1926;in;1010;NULL;32;32_2;NULL;dans
+1931;a-occident;1011;NULL;32;32_2;NULL;confronte a l ouest avec
+1932;in;1011;NULL;32;32_2;NULL;dans
+1936;a-occident;1012;NULL;32;32_2;NULL;confronte a l ouest avec
+1934;in;1012;NULL;32;32_2;NULL;dans
+1943;a-orient;1015;NULL;32;32_2;NULL;confronte a l est avec
+1949;a-orient;1016;NULL;32;32_2;NULL;confronte a l est avec
+1948;in;1016;NULL;32;32_2;NULL;dans
+1953;a-orient;1017;NULL;32;32_2;NULL;confronte a l est avec
+1952;in;1017;NULL;32;32_2;NULL;dans
+1957;a-orient;1018;NULL;32;32_2;NULL;confronte a l est avec
+1955;in;1018;NULL;32;32_2;NULL;dans
+2010;in;1038;NULL;40;40_1;NULL;dans
+2011;a-circio;1038;NULL;40;40_1;NULL;confronte au nord avec
+2012;ab-una-part;1039;NULL;40;40_1;NULL;confronte avec
+2013;in;1039;NULL;40;40_1;NULL;dans
+2016;in;1040;NULL;40;40_1;NULL;dans
+2015;a-occident;1040;NULL;40;40_1;NULL;confronte a l ouest avec
+2018;a-meridie;1041;NULL;40;40_1;NULL;confronte au sud avec
+2020;a-orient;1042;NULL;40;40_1;NULL;confronte a l est avec
+2023;a-orient;1043;NULL;40;40_1;NULL;confronte a l est avec
+2022;in;1043;NULL;40;40_1;NULL;dans
+2025;a-orient;1044;NULL;40;40_1;NULL;confronte a l est avec
+2024;in;1044;NULL;40;40_1;NULL;dans
+2029;in;1045;NULL;40;40_2;NULL;dans
+2028;a-circio;1045;NULL;40;40_2;NULL;confronte au nord avec
+2032;a-circio;1046;NULL;40;40_2;NULL;confronte au nord avec
+2031;in;1046;NULL;40;40_2;NULL;dans
+2034;a-circio;1047;NULL;40;40_2;NULL;confronte au nord avec
+2033;in;1047;NULL;40;40_2;NULL;dans
+2036;ab-una-part;1048;NULL;40;40_1;NULL;confronte avec
+2035;in;1048;NULL;40;40_1;NULL;dans
+2038;in;1049;NULL;40;40_2;NULL;dans
+2084;a-circio;1069;NULL;40;40_2;NULL;confronte au nord avec
+1774;a-orient;3054;NULL;40;40_1;NULL;confronte a l est avec
+4446;in;7182;NULL;40;40_2;NULL;dans
+4447;a-parte-retro;7182;NULL;40;40_2;NULL;confronte du cote arriere avec
+4451;a-circio;7183;NULL;40;40_2;NULL;confronte au nord avec
+4453;ab-una-part;7184;NULL;40;40_2;NULL;confronte avec
+2065;a-meridie;1061;NULL;43;43_2;NULL;confronte au sud avec
+2067;a-circio;1061;NULL;43;43_2;NULL;confronte au nord avec
+2064;in;1061;NULL;43;43_2;NULL;dans
+2069;a-circio;1062;NULL;43;43_2;NULL;confronte au nord avec
+2068;in;1062;NULL;43;43_2;NULL;dans
+2070;in;1063;NULL;43;43_2;NULL;dans
+2071;a-meridie;1063;NULL;43;43_2;NULL;confronte au sud avec
+2072;in;1064;NULL;43;43_2;NULL;dans
+2073;a-meridie;1064;NULL;43;43_2;NULL;confronte au sud avec
+2074;in;1065;NULL;43;43_2;NULL;dans
+2075;a-circio;1065;NULL;43;43_2;NULL;confronte au nord avec
+2076;in;1066;NULL;43;43_2;NULL;dans
+2077;in;1067;NULL;43;43_2;NULL;dans
+2078;a-circio;1067;NULL;43;43_2;NULL;confronte au nord avec
+2083;a-meridie;1069;NULL;43;43_2;NULL;confronte au sud avec
+3294;in;2049;NULL;43;43_1;NULL;dans
+3302;a-occident;2051;NULL;43;43_2;NULL;confronte a l ouest avec
+3303;in;2052;NULL;43;43_2;NULL;dans
+3305;ab-una-part;2053;NULL;43;43_2;NULL;confronte avec
+3304;in;2053;NULL;43;43_2;NULL;dans
+3306;in;2054;NULL;43;43_2;NULL;dans
+3308;in;2055;NULL;43;43_2;NULL;dans
+3311;ab-una-part;2056;NULL;43;43_2;NULL;confronte avec
+3310;in;2056;NULL;43;43_2;NULL;dans
+2163;a-part-ante;1088;NULL;49;49_2;NULL;confronte du cote avant avec
+2164;in;1088;NULL;49;49_2;NULL;dans
+2231;a-orient;1113;NULL;56;56_1;NULL;confronte a l est avec
+2233;a-circio;1114;NULL;56;56_1;NULL;confronte au nord avec
+2240;in;1115;NULL;56;56_1;NULL;dans
+2236;a-circio;1115;NULL;56;56_1;NULL;confronte au nord avec
+3373;ab-una-part;2089;NULL;56;56_1;NULL;confronte avec
+3378;in;2092;NULL;56;56_1;NULL;dans
+3379;ab-una-part;2092;NULL;56;56_1;NULL;confronte avec
+3385;ab-una-part;2096;NULL;56;56_2;NULL;confronte avec
+3384;in;2096;NULL;56;56_1;NULL;dans
+3386;in;2097;NULL;56;56_1;NULL;dans
+1905;in;6023;NULL;56;56_1;NULL;dans
+1906;ab-una-part;6023;NULL;56;56_1;NULL;confronte avec
+4549;a-part-ante;7226;NULL;56;56_1;NULL;confronte du cote avant avec
+4547;in;7226;NULL;56;56_1;NULL;dans
+4550;in;7227;NULL;56;56_1;NULL;dans
+4551;ab-una-part;7227;NULL;56;56_1;NULL;confronte avec
+4552;in;7228;NULL;56;56_1;NULL;dans
+4554;ab-una-part;7229;NULL;56;56_1;NULL;confronte avec
+4553;in;7229;NULL;56;56_1;NULL;dans
+8096;NULL;9097;NULL;56;56_1;NULL;confronte au sud avec
+8098;NULL;9098;NULL;56;56_1;NULL;confronte au sud avec
+8097;NULL;9098;NULL;56;56_1;NULL;confronte a l ouest avec
+4271;in;7066;NULL;67;67_1;NULL;dans
+4273;ab-una-part;7066;NULL;67;67_1;NULL;confronte avec
+4325;ab-una-part;7103;NULL;67;67_2;NULL;confronte avec
+4332;ab-una-part;7108;NULL;67;67_2;NULL;confronte avec
+4470;ab-una-part;7190;NULL;67;67_2;NULL;confronte avec
+4475;ab-una-part;7192;NULL;67;67_2;NULL;confronte avec
+4477;ab-una-part;7193;NULL;67;67_2;NULL;confronte avec
+4480;ante;7194;NULL;67;67_2;NULL;devant
+4483;ante;7195;NULL;67;67_2;NULL;devant
+4487;in;7197;NULL;67;67_2;NULL;dans
+4490;in;7198;NULL;67;67_2;NULL;dans
+4493;ab-una-part;7199;NULL;67;67_2;NULL;confronte avec
+4498;ante;7202;NULL;67;67_2;NULL;devant
+2091;a-circio;1071;NULL;70;70_1;NULL;confronte au nord avec
+2092;a-meridie;1071;NULL;70;70_1;NULL;confronte au sud avec
+2131;ab-una-part;1078;NULL;70;70_1;NULL;confronte avec
+3265;ab-una-part;2033;NULL;70;70_1;NULL;confronte avec
+3268;in;2035;NULL;70;70_1;NULL;dans
+3564;ab-una-part;2173;NULL;70;70_1;NULL;confronte avec
+3587;ab-una-part;2184;NULL;70;70_1;NULL;confronte avec
+1729;ab-una-part;3043;NULL;72;72_1;NULL;confronte avec
+1732;ab-una-part;3044;NULL;72;72_1;NULL;confronte avec
+1734;ab-una-part;3045;NULL;72;72_1;NULL;confronte avec
+1739;ab-una-part;3046;NULL;72;72_1;NULL;confronte avec
+1738;ab-una-part;3046;NULL;72;72_1;NULL;confronte avec
+1741;ab-una-part;3047;NULL;72;72_1;NULL;confronte avec
+1744;ab-una-part;3048;NULL;72;72_1;NULL;confronte avec
+1750;ab-una-part;3049;NULL;72;72_1;NULL;confronte avec
+1749;ab-una-part;3049;NULL;72;72_1;NULL;confronte avec
+1752;ab-una-part;3050;NULL;72;72_1;NULL;confronte avec
+1476;a-meridie;106;NULL;82;82_1;NULL;confronte au sud avec
+2331;ab-una-part;1149;NULL;82;82_1;NULL;confronte avec
+2335;ab-una-part;1150;NULL;82;82_1;NULL;confronte avec
+2333;in;1150;NULL;82;82_1;NULL;dans
+2338;a-circio;1151;NULL;82;82_1;NULL;confronte au nord avec
+7519;in;60085;NULL;83;83_2;NULL;dans
+7109;in;60085;NULL;83;83_2;NULL;dans
+7520;in;60088;NULL;83;83_2;NULL;dans
+7110;iuxta;60088;NULL;83;83_2;NULL;a cote de
+1468;a-occident;219;NULL;99;99_1;NULL;confronte a l ouest avec
+1469;a-occident;220;NULL;99;99_2;NULL;confronte a l ouest avec
+1470;a-occident;221;NULL;99;99_2;NULL;confronte a l ouest avec
+1471;a-occident;222;NULL;99;99_2;NULL;confronte a l ouest avec
+1472;a-occident;456;NULL;99;99_1;NULL;confronte a l ouest avec
+3523;ab-una-part;2155;NULL;99;99_1;NULL;confronte avec
+1477;a-orient;228;NULL;110;110_1;NULL;confronte a l est avec
+1478;a-orient;229;NULL;110;110_1;NULL;confronte a l est avec
+1479;a-orient;230;NULL;110;110_1;NULL;confronte a l est avec
+1480;a-orient;231;NULL;110;110_1;NULL;confronte a l est avec
+1481;a-orient;232;NULL;110;110_1;NULL;confronte a l est avec
+1482;a-orient;233;NULL;110;110_1;NULL;confronte a l est avec
+1483;a-orient;234;NULL;110;110_1;NULL;confronte a l est avec
+1484;a-orient;235;NULL;110;110_2;NULL;confronte a l est avec
+1545;a-circio;236;NULL;110;110_2;NULL;confronte au nord avec
+1546;a-circio;237;NULL;110;110_2;NULL;confronte au nord avec
+1485;a-orient;238;NULL;110;110_2;NULL;confronte a l est avec
+1486;a-orient;239;NULL;110;110_2;NULL;confronte a l est avec
+1487;a-occident;252;NULL;110;110_1;NULL;confronte a l ouest avec
+1488;a-occident;253;NULL;110;110_1;NULL;confronte a l ouest avec
+1489;a-occident;254;NULL;110;110_1;NULL;confronte a l ouest avec
+1490;a-occident;255;NULL;110;110_1;NULL;confronte a l ouest avec
+1491;a-occident;256;NULL;110;110_1;NULL;confronte a l ouest avec
+1492;a-occident;257;NULL;110;110_2;NULL;confronte a l ouest avec
+1493;a-meridie;223;NULL;111;111_1;NULL;confronte au sud avec
+1494;a-meridie;224;NULL;111;111_1;NULL;confronte au sud avec
+1495;a-meridie;225;NULL;111;111_1;NULL;confronte au sud avec
+1496;a-circio;244;NULL;111;111_2;NULL;confronte au nord avec
+1497;a-circio;245;NULL;111;111_2;NULL;confronte au nord avec
+1498;a-circio;246;NULL;111;111_2;NULL;confronte au nord avec
+1499;a-circio;247;NULL;111;111_1;NULL;confronte au nord avec
+1500;a-circio;248;NULL;111;111_1;NULL;confronte au nord avec
+1501;a-circio;249;NULL;111;111_1;NULL;confronte au nord avec
+2360;a-circio;1158;NULL;111;111_2;NULL;confronte au nord avec
+4688;ab-una-part;7296;NULL;111;111_2;NULL;confronte avec
+4689;ab-una-part;7297;NULL;111;111_2;NULL;confronte avec
+4690;ab-una-part;7298;NULL;111;111_2;NULL;confronte avec
+2128;a-meridie;1077;NULL;467;467_1;NULL;confronte au sud avec
+2127;a-occident;1077;NULL;467;467_1;NULL;confronte a l ouest avec
+2140;a-occident;1080;NULL;467;467_1;NULL;confronte a l ouest avec
+2141;a-meridie;1080;NULL;467;467_1;NULL;confronte au sud avec
+2132;ab-una-part;1078;NULL;468;468_2;NULL;confronte avec
+2138;juxta;1080;NULL;468;468_2;NULL;a cote de
+4639;ab-una-part;7271;NULL;659;659_2;NULL;confronte avec
+4643;ab-una-part;7274;NULL;659;659_2;NULL;confronte avec
+4645;ab-una-part;7275;NULL;659;659_2;NULL;confronte avec
+3399;ab-una-part;2103;NULL;690;690_1;NULL;confronte avec
+3404;ab-una-part;2105;NULL;690;690_1;NULL;confronte avec
+3410;ab-una-part;2107;NULL;690;690_1;NULL;confronte avec
+3414;ab-una-part;2109;NULL;690;690_1;NULL;confronte avec
+3423;ab-una-part;2111;NULL;690;690_1;NULL;confronte avec
+3426;prope;2112;NULL;690;690_1;NULL;a cote de
+3434;ab-una-part;2115;NULL;690;690_1;NULL;confronte avec
+3439;ab-una-part;2117;NULL;690;690_1;NULL;confronte avec
+3443;ab-una-part;2119;NULL;690;690_1;NULL;confronte avec
+3451;ab-una-part;2122;NULL;690;690_1;NULL;confronte avec
+3453;ab-una-part;2123;NULL;690;690_1;NULL;confronte avec
+3591;ab-una-part;2185;NULL;690;690_1;NULL;confronte avec
+4583;juxta;7241;NULL;690;690_2;NULL;a cote de
+4596;ab-una-part;7247;NULL;690;690_2;NULL;confronte avec
+4599;ab-una-part;7248;NULL;690;690_2;NULL;confronte avec
+4604;ab-una-part;7250;NULL;690;690_2;NULL;confronte avec
+4606;ab-una-part;7251;NULL;690;690_1;NULL;confronte avec
+4387;ab-una-part;7242;NULL;691;691_2;NULL;confronte avec
+4584;ab-una-part;7243;NULL;691;691_2;NULL;confronte avec
+4587;ab-una-part;7244;NULL;691;691_1;NULL;confronte avec
+4590;ab-una-part;7245;NULL;691;691_2;NULL;confronte avec
+4593;ab-una-part;7246;NULL;691;691_2;NULL;confronte avec
+2227;a-orient;1111;NULL;745;745_1;NULL;confronte a l est avec
+2229;a-orient;1112;NULL;745;745_1;NULL;confronte a l est avec
+3377;in;2091;NULL;745;745_1;NULL;dans
