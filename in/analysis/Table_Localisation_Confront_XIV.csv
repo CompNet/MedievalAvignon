@@ -2494,17 +2494,16 @@
 2224,juxta,1110,NULL,469,NULL,a cote de
 2225,ab-una-part,1110,NULL,527,NULL,confronte avec
 2555,in,1110,NULL,NULL,5,a l interieur de
-2867,ab-una-part,1110,1511,NULL,NULL,confronte avec
 2868,ab-una-part,1110,1510,NULL,NULL,confronte avec
 2869,ab-una-part,1110,1507,NULL,NULL,confronte avec
 2226,subtus,1111,NULL,469,NULL,sous
-2227,a-orient,1111,NULL,766,NULL,confronte a l est avec
+2227,a-orient,1111,NULL,745,NULL,confronte a l est avec
 2556,in,1111,NULL,NULL,5,a l interieur de
 2870,a-occident,1111,1512,NULL,NULL,confronte a l ouest avec
 2871,a-circio,1111,1512,NULL,NULL,confronte au nord avec
 2872,a-meridie,1111,1112,NULL,NULL,confronte au sud avec
 2228,subtus,1112,NULL,469,NULL,sous
-2229,a-orient,1112,NULL,766,NULL,confronte a l est avec
+2229,a-orient,1112,NULL,745,NULL,confronte a l est avec
 2557,in,1112,NULL,NULL,5,a l interieur de
 2873,a-occident,1112,1512,NULL,NULL,confronte a l ouest avec
 2874,a-meridie,1112,1513,NULL,NULL,confronte au sud avec
@@ -2627,9 +2626,9 @@
 2917,a-meridie,1131,1542,NULL,NULL,confronte au sud avec
 2290,a-orient,1132,NULL,533,NULL,confronte a l est avec
 2577,in,1132,NULL,NULL,6,a l interieur de
-2918,a-orient,1132,1420,NULL,NULL,confronte a l est avec
-2919,a-meridie,1132,1418,NULL,NULL,confronte au sud avec
-2920,a-occident,1132,1419,NULL,NULL,confronte a l ouest avec
+2918,a-orient,1037,1420,NULL,NULL,confronte a l est avec
+2919,a-meridie,1037,1418,NULL,NULL,confronte au sud avec
+2920,a-occident,1037,1419,NULL,NULL,confronte a l ouest avec
 2921,a-occident,1132,1547,NULL,NULL,confronte a l ouest avec
 2922,a-circio,1132,1546,NULL,NULL,confronte au nord avec
 2923,a-meridie,1132,1545,NULL,NULL,confronte au sud avec
@@ -2649,7 +2648,6 @@
 2297,a-orient,1135,NULL,474,NULL,confronte a l est avec
 2298,a-circio,1135,NULL,205,NULL,confronte au nord avec
 2580,in,1135,NULL,NULL,6,a l interieur de
-2929,a-occident,1135,1133,NULL,NULL,confronte a l ouest avec
 2930,a-meridie,1135,1553,NULL,NULL,confronte au sud avec
 2299,in,1136,NULL,8,NULL,dans
 2300,a-orient,1136,NULL,8,NULL,confronte a l est avec
@@ -2714,7 +2712,7 @@
 2323,in,1145,NULL,10,NULL,dans
 2590,in,1145,NULL,NULL,7,a l interieur de
 2958,a-orient,1145,1560,NULL,NULL,confronte a l est avec
-2959,a-occident,1145,1152,NULL,NULL,confronte a l ouest avec
+2959,a-occident,1145,152,NULL,NULL,confronte a l ouest avec
 2960,a-meridie,1145,1559,NULL,NULL,confronte au sud avec
 2961,a-circio,1145,1642,NULL,NULL,confronte au nord avec
 2324,subtus,1146,NULL,209,NULL,sous
@@ -2740,12 +2738,12 @@
 2594,in,1149,NULL,NULL,7,a l interieur de
 2970,ab-una-part,1149,1567,NULL,NULL,confronte avec
 2333,in,1150,NULL,82,NULL,dans
-2334,extra,1150,NULL,245,NULL,est a l exterieur de
+2334,extra,1150,NULL,242,NULL,est a l exterieur de
 2335,ab-una-part,1150,NULL,82,NULL,confronte avec
 2595,in,1150,NULL,NULL,7,a l interieur de
 2971,a-orient,1150,1151,NULL,NULL,confronte a l est avec
 2972,a-meridie,1150,1568,NULL,NULL,confronte au sud avec
-2336,extra,1151,NULL,245,NULL,est a l exterieur de
+2336,extra,1151,NULL,242,NULL,est a l exterieur de
 2337,a-orient,1151,NULL,150,NULL,confronte a l est avec
 2338,a-circio,1151,NULL,82,NULL,confronte au nord avec
 2596,in,1151,NULL,NULL,7,a l interieur de
@@ -5443,7 +5441,7 @@
 4724,prope,7456,NULL,491,NULL,a cote de
 5063,in,7456,NULL,NULL,3,a l interieur de
 7522,in,7456,NULL,226,NULL,a l interieur de
-4726,supra,7457,NULL,683,NULL,au dessus de
+4726,supra,7457,NULL,483,NULL,au dessus de
 5064,in,7457,NULL,NULL,3,a l interieur de
 7523,in,7457,NULL,226,NULL,a l interieur de
 5065,in,7458,NULL,NULL,3,a l interieur de
