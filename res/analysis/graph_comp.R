@@ -101,6 +101,8 @@ plot.street.removal <- function()
 		dir.create(path=binned.folder, showWarnings=FALSE, recursive=TRUE)
 		hexa.folder <- file.path(dist.folder, "hexa")
 		dir.create(path=hexa.folder, showWarnings=FALSE, recursive=TRUE)
+		muros.folder <- file.path(dist.folder, "muros")
+		dir.create(path=muros.folder, showWarnings=FALSE, recursive=TRUE)
 		
 		# list graph files
 		ll <- list.files(path=graph.folder, pattern="graph_rem=[0-9]+\\.graphml", full.names=TRUE)
@@ -213,7 +215,7 @@ plot.street.removal <- function()
 			gvals <- gvals[idx]
 			svals <- svals[idx]
 			
-			# plot geodesic vs. spatial distance
+			# plot geodesic vs. spatial distance using degree for color
 			vals <- igraph::degree(graph=gs[[i]], mode="all", v=idx0)
 			cb <- t(combn(1:length(idx0),2))
 			vals <- (vals[cb[,1]] * vals[cb[,2]])[idx]
@@ -248,7 +250,104 @@ plot.street.removal <- function()
 				dev.off()
 			}
 			
-			# same thing, but with error bars
+			# plot geodesic vs. spatial distance using intra- vs extra-muros for color
+			ie.vals <- V(gs[[i]])[idx0]$loc
+			cb <- t(combn(1:length(idx0),2))
+			ie.vals <- apply(cb, 1, function(row) paste0((ie.vals[row]),collapse="--"))[idx]
+# the plot is a mess, nothing to read there
+#			# set colors
+#			plain.col <- make.color.transparent("BLACK",75)
+#			cols <- rep(plain.col, length(ie.vals))								# at least one NA
+#			pal <- get.palette(3)[1:3]
+#			cols[ie.vals=="intra--intra"] <- pal[1]								# two intra-muros
+#			cols[ie.vals=="intra--extra" | ie.vals=="extra--intra"] <- pal[2]	# one intra- and one extra-muros
+#			cols[ie.vals=="extra--extra"] <- pal[3]								# two extra-muros
+#			ord <- which(cols!=plain.col)
+#			# produce plot
+#			plot.file <- file.path(muros.folder, paste0("dist_geodesic_vs_spatial_rem=",i))
+#			tlog(8,"Plot geodesic vs. spatial distance in file '",plot.file,"'")
+#			for(fformat in c("png"))	# FORMAT
+#			{	if(fformat=="pdf")
+#					pdf(paste0(plot.file,".pdf"))
+#				else if(fformat=="png")
+#					png(paste0(plot.file,".png"))
+#				plot(
+#					x=gvals[order(ord)], y=svals[order(ord)], 
+#					xlab="Undirected geodesic distance", ylab="Spatial distance",
+#					#log="xy", 
+#					las=1, col=cols[order(ord)],
+#					#xlim=c(1,max(deg.vals)*1.1)
+#				)
+#				# mean
+#				lines(	
+#					x=xs, y=avg.dist,
+#					col="BLACK"
+#				)
+#				# legend
+#				legend(
+#					x="bottomright",
+#					fill=c(pal,"BLACK"),
+#					legend=c("intra--intra","intra--extra","extra--extra","Others")
+#				)
+#				dev.off()
+#			}
+			
+			# plot geodesic vs. spatial distance as a binned scatterplot, distinguishing intra/extra muros pairs
+			avg.dists <- list(); xss <- list(); stdev.dists <- list(); sles <- list(); rgs <- list()
+			sles[[1]] <- ie.vals=="intra--intra"; sles[[2]] <- (ie.vals=="intra--extra" | ie.vals=="extra--intra"); sles[[3]] <- ie.vals=="extra--extra"
+			sles[[4]] <- !sles[[1]] & !sles[[2]] & !sles[[3]]
+			for(s in 1:length(sles))
+			{	sle <- sles[[s]]
+				xss[[s]] <- sort(unique(gvals[sle]))
+				avg.dists[[s]] <- sapply(xss[[s]], function(x) mean(svals[sle][gvals[sle]==x]))
+				stdev.dists[[s]] <- sapply(xss[[s]], function(x) sd(svals[sle][gvals[sle]==x]))
+				stdev.dists[[s]][is.na(stdev.dists[[s]])] <- 0
+				rgs[[s]] <- range(c(avg.dists[[s]]-stdev.dists[[s]],avg.dists[[s]]+stdev.dists[[s]]))
+			}
+			# colors
+			plain.col <- make.color.transparent("BLACK",75)
+			pal <- c(get.palette(3)[1:3],plain.col)
+			# produce plot
+			plot.file <- file.path(muros.folder, paste0("dist_geodesic_vs_spatial_rem=",i))
+			tlog(8,"Plot muros version in  '",plot.file,"'")
+			for(fformat in c("png"))	# FORMAT
+			{	if(fformat=="pdf")
+					pdf(paste0(plot.file,".pdf"))
+				else if(fformat=="png")
+					png(paste0(plot.file,".png"))
+				plot(
+					NULL,
+					xlab="Undirected geodesic distance", ylab="Spatial distance",
+					las=1, #log="xy", 
+					ylim=range(unlist(rgs),na.rm=TRUE),
+					xlim=range(unlist(xss),na.rm=TRUE)
+				)
+				for(s in 1:length(xss))
+				{	polygon(
+						x=c(xss[[s]],rev(xss[[s]])), y=c(avg.dists[[s]]-stdev.dists[[s]],rev(avg.dists[[s]]+stdev.dists[[s]])), 
+						col=make.color.transparent(pal[s],95), border=NA
+					)
+#					arrows(
+#						x0=xss[[s]], y0=avg.dists[[s]]-stdev.dist[[s]], 
+#						x1=xss[[s]], y1=avg.dists[[s]]+stdev.dist[[s]], 
+#						code=3, angle=90, length=0.05, 
+#						col=make.color.transparent(pal[s],85), lwd=2
+#					)
+					lines(
+						x=xss[[s]], y=avg.dists[[s]], 
+						col=pal[s], pch=19
+					)
+				}
+				# legend
+				legend(
+					x="bottomright",
+					fill=c(pal,"BLACK"),
+					legend=c("intra--intra","intra--extra","extra--extra","Others")
+				)
+				dev.off()
+			}
+			
+			# plot geodesic vs. spatial distance as a binned scatterplot
 			plot.file <- file.path(binned.folder, paste0("dist_geodesic_vs_spatial_rem=",i))
 			tlog(8,"Plot binned version in  '",plot.file,"'")
 			for(fformat in c("png"))	# FORMAT
@@ -263,20 +362,24 @@ plot.street.removal <- function()
 					ylim=range(svals,na.rm=TRUE),
 					xlim=range(gvals,na.rm=TRUE)
 				)
-				arrows(
-					x0=xs, y0=avg.dist-stdev.dist, 
-					x1=xs, y1=avg.dist+stdev.dist, 
-					code=3, angle=90, length=0.05, 
-					col="PINK", lwd=2
+				polygon(
+					x=c(xs,rev(xs)), y=c(avg.dist-stdev.dist,rev(avg.dist+stdev.dist)), 
+					col=make.color.transparent("RED",85), border=NA
 				)
-				points(
+#				arrows(
+#					x0=xs, y0=avg.dist-stdev.dist, 
+#					x1=xs, y1=avg.dist+stdev.dist, 
+#					code=3, angle=90, length=0.05, 
+#					col="PINK", lwd=2
+#				)
+				lines(
 					x=xs, y=avg.dist, 
 					col="RED", pch=19
 				)
 				dev.off()
 			}
 			
-			# same thing, but hexa map
+			# plot geodesic vs. spatial distance, but as an hexa map
 			plot.file <- file.path(hexa.folder, paste0("dist_geodesic_vs_spatial_rem=",i))
 			tlog(8,"Plot hexbin version in  '",plot.file,"'")
 			for(fformat in c("png"))	# FORMAT

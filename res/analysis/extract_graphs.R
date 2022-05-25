@@ -1585,25 +1585,22 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #      > différence avec sim structurelle ?
 
 # TODO
-# - street removal :
-#   - améliorer la comparaison entre comstruct consécutives
-# - correlation : 
+# - améliorer la comparaison entre comstruct consécutives
+# + correlation : 
 #   - décomposer en fonction de la distance géodesique ou spatiale
 #   - distinguer extra/intra muros
-# + calculer l'envergure de chaque rue (distance entre les noeuds confrontés à la rue les plus éloignés)
-#   + correlation entre caracs des rues
-#   - distinguer intra/extra-muros ?
-# - graphiques de type binned scaterplot pr comparer les données complètes des deux distances ?
+# - approcher la distance infinie avec la somme des diamètres des deux composants concernés ? + 1
+#   >> pb : on suppose que les composants sont connectés par un seul lien, alors qu'il faut peut être passer par d'autres composants.
+#           si bcp de composants, ça un effet contraire (raccourcis pour aller partout, cas extrement de tous les noeuds isolés)
+# - étudier l'évolution de la distance graphe entre deux noeuds quand on supprime les rues? 
+#   >> indicateur de la stabilité de l'estimation de la distance spatiale par la distance géodesique
+#
 # - modèle :
 #   - rajouter le concept de noeud de type "rue"
 #   - questions :
 #     - effet de la suppression des liens
 #     - effet de la suppression des coordonnées
 #     - effet des rues longues. mais ça demanderait de partir d'un plan stochastique.
-# + extraire le i=39 réseau et lancer l'analyse complète
-# - approcher la distance infinie avec la somme des diamètres des deux composants concernés ?
-# - étudier l'évolution de la distance graphe entre deux noeuds quand on supprime les rues? 
-#   >> indicateur de la stabilité de l'estimation de la distance spatiale par la distance géodesique
 # - on doit pouvoir estimer la position des biens non placés avec un GNN tenant compte de la nature des liens
 
 # MARGOT:
