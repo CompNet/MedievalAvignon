@@ -222,6 +222,7 @@ plot.street.removal <- function()
 			xs <- sort(unique(gvals))
 			avg.dist <- sapply(xs, function(x) mean(svals[gvals==x]))
 			stdev.dist <- sapply(xs, function(x) sd(svals[gvals==x]))
+			stdev.dist[is.na(stdev.dist)] <- 0
 			# set colors
 			fine <- 500 									# granularity of the color gradient
 			cols <- viridis(fine,direction=-1)[as.numeric(cut(vals,breaks=fine))]
