@@ -967,7 +967,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_DEBUT & startsWith(edge.list[,2], "Livree:"), COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_INTERIEUR
 	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_DEBUT & startsWith(edge.list[,2], "Bourg:"), COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_INTERIEUR
 	# VAL_CONF_TYPE_DELA
-	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_DELA, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
+#	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_DELA, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
 	# VAL_CONF_TYPE_MILIEU
 #	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_MILIEU, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
 	# VAL_CONF_TYPE_EST
@@ -1009,7 +1009,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	# VAL_CONF_TYPE_ENTRE
 #	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_ENTRE, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
 	# VAL_CONF_TYPE_EXTERIEUR
-	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_EXTERIEUR, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
+#	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_EXTERIEUR, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
 	# VAL_CONF_TYPE_DESSOUS
 	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_DESSOUS, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
 	# VAL_CONF_TYPE_SOUS
@@ -1272,7 +1272,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			tlog(8,"Removing ",length(which(idx))," areas/villages/walls")
 			g1 <- delete_vertices(graph=g1, v=idx)
 			# remove certain geological objects
-			idx <- startsWith(V(g1)$name,"Repere:") & vertex_attr(g1,COL_LDMRK_TYPE)!="Rocher"
+			idx <- startsWith(V(g1)$name,"Repere:") #& vertex_attr(g1,COL_LDMRK_TYPE)!="Rocher"
 			tlog(8,"Removing ",length(which(idx))," geological object(s)")
 			g1 <- delete_vertices(graph=g1, v=idx)
 		}
@@ -1284,6 +1284,12 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			idx <- which(E(g1)$type==VAL_CONF_TYPE_INTERIEUR)
 			tlog(8,"Removing ",length(idx)," \"inside\" confronts")
 			g1 <- delete_edges(graph=g1, edges=idx)
+			idx <- which(E(g1)$type==VAL_CONF_TYPE_DELA)
+			tlog(8,"Removing ",length(idx)," \"beyond\" confronts")
+			g1 <- delete_edges(graph=g1, edges=idx)
+			idx <- which(E(g1)$type==VAL_CONF_TYPE_EXTERIEUR)
+			tlog(8,"Removing ",length(idx)," \"outside\" confronts")
+			g1 <- delete_edges(graph=g1, edges=idx)
 		}
 		# keep everything but the membership relations and long entities (walls, rivers)
 		else if(startsWith(graph.types[i], GR_EST_FLAT_MINUS))
@@ -1293,10 +1299,16 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			idx <- which(E(g1)$type==VAL_CONF_TYPE_INTERIEUR)
 			tlog(8,"Removing ",length(idx)," \"inside\" confronts")
 			g1 <- delete_edges(graph=g1, edges=idx)
-			degs <- igraph::degree(g1,mode="all")
+			idx <- which(E(g1)$type==VAL_CONF_TYPE_DELA)
+			tlog(8,"Removing ",length(idx)," \"beyond\" confronts")
+			g1 <- delete_edges(graph=g1, edges=idx)
+			idx <- which(E(g1)$type==VAL_CONF_TYPE_EXTERIEUR)
+			tlog(8,"Removing ",length(idx)," \"outside\" confronts")
+			g1 <- delete_edges(graph=g1, edges=idx)
 			# possibly remove the longest streets
 			if(graph.types[i]!=GR_EST_FLAT_MINUS)
-			{	nbr <- as.integer(strsplit(graph.types[i],"_")[[1]][3])
+			{	degs <- igraph::degree(g1,mode="all")
+				nbr <- as.integer(strsplit(graph.types[i],"_")[[1]][3])
 				idx <- order(vertex_attr(g, name=COL_STREET_LENGTH, index=measured.streets),decreasing=TRUE)[1:nbr]
 				#vertex_attr(g, name=COL_STREET_LENGTH, index=measured.streets[idx])
 				ldsi <- V(g)$idExterne[measured.streets[idx[nbr]]]
@@ -1317,7 +1329,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			tlog(8,"Removing ",length(which(idx))," walls")
 			g1 <- delete_vertices(graph=g1, v=idx)
 			# remove certain geological objects
-			idx <- startsWith(V(g1)$name,"Repere:") & vertex_attr(g1,COL_LDMRK_TYPE)!="Rocher"
+			idx <- startsWith(V(g1)$name,"Repere:") #& vertex_attr(g1,COL_LDMRK_TYPE)!="Rocher"
 			tlog(8,"Removing ",length(which(idx))," geological object(s)")
 			g1 <- delete_vertices(graph=g1, v=idx)
 		}

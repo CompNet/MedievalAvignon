@@ -91,7 +91,7 @@ tlog.end.loop("Measure computation over")
 plot.comstruct.comparison()
 
 # selected version
-g <- analyze.network(gname="flat_minus_39_filtered", out.folder=FOLDER_OUT_ANAL_EST)
+g <- analyze.network(gname="flat_minus_28_filtered", out.folder=FOLDER_OUT_ANAL_EST)
 
 
 
