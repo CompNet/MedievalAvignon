@@ -341,7 +341,7 @@ plot.street.removal <- function()
 				}
 				# legend
 				legend(
-					x="bottomright",
+					x="topleft",
 					fill=c(pal,"BLACK"),
 					legend=c("intra--intra","intra--extra","extra--extra","Others")
 				)
