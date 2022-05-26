@@ -2453,8 +2453,6 @@ idConfront,localisation,idBien1,idBien2,idInvariant,idQuartierParoisse,localisat
 2848,a-orient,1103,1492,NULL,NULL,confronte a l est avec
 2849,a-orient,1103,1494,NULL,NULL,confronte a l est avec
 2850,a-occident,1103,1493,NULL,NULL,confronte a l ouest avec
-2208,versus,1104,NULL,205,NULL,vers
-2209,in,1104,NULL,422,NULL,a l interieur de
 2210,a-duabus-part,1104,NULL,525,NULL,confronte de deux cotes avec
 2211,ab-una-part,1104,NULL,526,NULL,confronte avec
 2212,in,1104,NULL,451,NULL,a l interieur de
@@ -2734,7 +2732,7 @@ idConfront,localisation,idBien1,idBien2,idInvariant,idQuartierParoisse,localisat
 2329,juxta,1149,NULL,150,NULL,a cote de
 2330,ab-una-part,1149,NULL,150,NULL,confronte avec
 2331,ab-una-part,1149,NULL,82,NULL,confronte avec
-2332,ab-una-part,1149,NULL,205,NULL,confronte avec
+2332,ab-una-part,1149,NULL,195,NULL,confronte avec
 2594,in,1149,NULL,NULL,7,a l interieur de
 2970,ab-una-part,1149,1567,NULL,NULL,confronte avec
 2333,in,1150,NULL,82,NULL,dans
@@ -2774,7 +2772,7 @@ idConfront,localisation,idBien1,idBien2,idInvariant,idQuartierParoisse,localisat
 2600,in,1155,NULL,NULL,7,a l interieur de
 2981,a-orient,1155,1154,NULL,NULL,confronte a l est avec
 2982,a-occident,1155,1569,NULL,NULL,confronte a l ouest avec
-2352,super,1156,NULL,205,NULL,sur
+2352,super,1156,NULL,195,NULL,sur
 2353,a-circio,1156,NULL,78,NULL,confronte au nord avec
 2601,in,1156,NULL,NULL,7,a l interieur de
 2983,a-orient,1156,1572,NULL,NULL,confronte a l est avec
@@ -2794,7 +2792,7 @@ idConfront,localisation,idBien1,idBien2,idInvariant,idQuartierParoisse,localisat
 2360,a-circio,1158,NULL,111,NULL,confronte au nord avec
 2603,in,1158,NULL,NULL,7,a l interieur de
 2990,a-meridie,1158,1575,NULL,NULL,confronte au sud avec
-2361,super,1159,NULL,205,NULL,sur
+2361,super,1159,NULL,195,NULL,sur
 2362,a-circio,1159,NULL,78,NULL,confronte au nord avec
 2604,in,1159,NULL,NULL,7,a l interieur de
 2991,a-orient,1159,1160,NULL,NULL,confronte a l est avec
@@ -2802,30 +2800,30 @@ idConfront,localisation,idBien1,idBien2,idInvariant,idQuartierParoisse,localisat
 2993,a-meridie,1159,1576,NULL,NULL,confronte au sud avec
 2363,in,1160,NULL,78,NULL,dans
 2364,a-circio,1160,NULL,78,NULL,confronte au nord avec
-2365,super,1160,NULL,205,NULL,sur
+2365,super,1160,NULL,195,NULL,sur
 2605,in,1160,NULL,NULL,7,a l interieur de
 2994,a-orient,1160,1578,NULL,NULL,confronte a l est avec
 2995,a-occident,1160,1159,NULL,NULL,confronte a l ouest avec
 2996,a-meridie,1160,1577,NULL,NULL,confronte au sud avec
-2366,super,1161,NULL,205,NULL,sur
+2366,super,1161,NULL,195,NULL,sur
 2367,a-occident,1161,NULL,487,NULL,confronte a l ouest avec
-2368,ab-una-part,1161,NULL,205,NULL,confronte avec
+2368,ab-una-part,1161,NULL,195,NULL,confronte avec
 2606,in,1161,NULL,NULL,7,a l interieur de
 2997,a-orient,1161,1643,NULL,NULL,confronte a l est avec
-2369,super,1162,NULL,205,NULL,sur
+2369,super,1162,NULL,195,NULL,sur
 2371,a-occident,1162,NULL,487,NULL,confronte a l ouest avec
-2372,a-meridie,1162,NULL,205,NULL,confronte au sud avec
+2372,a-meridie,1162,NULL,195,NULL,confronte au sud avec
 2607,in,1162,NULL,NULL,7,a l interieur de
 2998,a-orient,1162,1644,NULL,NULL,confronte a l est avec
 2999,a-meridie,1162,1579,NULL,NULL,confronte au sud avec
-2373,super,1163,NULL,205,NULL,sur
-2374,ad,1163,NULL,150,NULL,vers
+2373,super,1163,NULL,195,NULL,sur
+2374,ad,1163,NULL,195,NULL,vers
 2375,a-occident,1163,NULL,487,NULL,confronte a l ouest avec
-2376,a-meridie,1163,NULL,205,NULL,confronte au sud avec
-2377,a-circio,1163,NULL,205,NULL,confronte au nord avec
+2376,a-meridie,1163,NULL,195,NULL,confronte au sud avec
+2377,a-circio,1163,NULL,195,NULL,confronte au nord avec
 2608,in,1163,NULL,NULL,7,a l interieur de
 3000,a-orient,1163,1645,NULL,NULL,confronte a l est avec
-2378,juxta,1164,NULL,205,NULL,a cote de
+2378,juxta,1164,NULL,195,NULL,a cote de
 2379,retro,1164,NULL,5,NULL,derriere
 2380,a-occident,1164,NULL,487,NULL,confronte a l ouest avec
 2609,in,1164,NULL,NULL,7,a l interieur de
@@ -2854,11 +2852,11 @@ idConfront,localisation,idBien1,idBien2,idInvariant,idQuartierParoisse,localisat
 2613,in,1168,NULL,NULL,7,a l interieur de
 3010,a-circio,1168,1167,NULL,NULL,confronte au nord avec
 3011,a-meridie,1168,1586,NULL,NULL,confronte au sud avec
-2395,super,1169,NULL,205,NULL,sur
+2395,super,1169,NULL,195,NULL,sur
 2396,intra,1169,NULL,233,NULL,a l interieur de
 2397,ante,1169,NULL,233,NULL,devant
 2398,a-orient,1169,NULL,1810,NULL,confronte a l est avec
-2399,a-occident,1169,NULL,205,NULL,confronte a l ouest avec
+2399,a-occident,1169,NULL,195,NULL,confronte a l ouest avec
 2400,a-meridie,1169,NULL,487,NULL,confronte au sud avec
 2614,in,1169,NULL,NULL,7,a l interieur de
 3012,a-circio,1169,1587,NULL,NULL,confronte au nord avec
@@ -6377,7 +6375,7 @@ idConfront,localisation,idBien1,idBien2,idInvariant,idQuartierParoisse,localisat
 7146,egal,60190,NULL,252,NULL,egal
 7357,in,60190,NULL,NULL,23,a l interieur de
 7358,in,60191,NULL,NULL,23,a l interieur de
-7158,supra,60192,NULL,205,NULL,au dessus de
+7158,supra,60192,NULL,195,NULL,au dessus de
 7359,in,60192,NULL,NULL,23,a l interieur de
 7360,in,60193,NULL,NULL,23,a l interieur de
 7361,in,60194,NULL,NULL,24,a l interieur de
