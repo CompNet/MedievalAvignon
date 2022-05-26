@@ -548,7 +548,7 @@ idConfront,localisation,idBien1,idBien2,idInvariant,idInvariant_ajout,idQuartier
 7158,supra,60192,NULL,195,195_21,NULL,au dessus de
 7125,supra,60212,NULL,666,666_24,NULL,au dessus de
 7157,iuxta,60252,NULL,483,483_3,NULL,a cote de
-7138,confront a l est,60293,NULL,402,,NULL,confronte a l est avec
+7138,confront a l est,60293,NULL,402,NULL,NULL,confronte a l est avec
 7123,in,60297,NULL,666,666_24,NULL,dans
 7159,supra,60298,NULL,205,205_12,NULL,au dessus de
 7083,iuxta,60331,NULL,402,402_13,NULL,a cote de
@@ -557,4 +557,4 @@ idConfront,localisation,idBien1,idBien2,idInvariant,idInvariant_ajout,idQuartier
 7126,in,60355,NULL,666,666_16,NULL,dans
 7127,in,60358,NULL,666,666_16,NULL,dans
 7156,subtus,60382,NULL,185,185_9,NULL,sous
-7115,ultra,60404,NULL,195,,NULL,au dela de
+7115,ultra,60404,NULL,195,NULL,NULL,au dela de
