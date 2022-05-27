@@ -92,12 +92,12 @@ analyze.net.comstruct <- function(g, out.folder)
 						weights=NULL),
 			modes=c(MEAS_MODE_UNDIR)
 	)
-#	algos[["spinglass"]] <- list(	# does not work with disconnected graphs
-#			fun=function(g, mode) 
-#				cluster_spinglass(graph=if(mode==MEAS_MODE_UNDIR) as.undirected(g) else g,
-#						weights=NA),
-#			modes=c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
-#	)
+##	algos[["spinglass"]] <- list(	# does not work with disconnected graphs
+##			fun=function(g, mode) 
+##				cluster_spinglass(graph=if(mode==MEAS_MODE_UNDIR) as.undirected(g) else g,
+##						weights=NA),
+##			modes=c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
+##	)
 	algos[["walktrap"]] <- list(
 			fun=function(g, mode) 
 				cluster_walktrap(graph=if(mode==MEAS_MODE_UNDIR) as.undirected(g) else g,

@@ -5,7 +5,7 @@
 #
 # setwd("C:/users/Vincent/Eclipse/workspaces/Extraction/MedievalAvignon")
 # setwd("~/eclipse/workspaces/Extraction/MedievalAvignon")
-# source("res/measures/compute_measures.R")
+# source("res/measures/_compute_measures.R")
 #############################################################################################
 #############################################################
 # measure names
