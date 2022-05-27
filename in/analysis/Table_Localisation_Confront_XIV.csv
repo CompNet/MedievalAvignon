@@ -2778,7 +2778,6 @@ idConfront,localisation,idBien1,idBien2,idInvariant,idQuartierParoisse,localisat
 2984,a-occident,1156,1571,NULL,NULL,confronte a l ouest avec
 2985,a-meridie,1156,1570,NULL,NULL,confronte au sud avec
 2354,extra,1157,NULL,245,NULL,est a l exterieur de
-2355,a-circio,1157,NULL,767,NULL,confronte au nord avec
 2602,in,1157,NULL,NULL,7,a l interieur de
 2986,a-orient,1157,1573,NULL,NULL,confronte a l est avec
 2987,a-occident,1157,1616,NULL,NULL,confronte a l ouest avec
