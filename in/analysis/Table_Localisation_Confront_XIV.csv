@@ -3524,7 +3524,6 @@ idConfront,localisation,idBien1,idBien2,idInvariant,idQuartierParoisse,localisat
 3424,in,2112,NULL,443,NULL,a l interieur de
 3425,extra,2112,NULL,666,NULL,est a l exterieur de
 3426,prope,2112,NULL,690,NULL,a cote de
-3427,entre /BD_2112 et /BD_2115,2112,NULL,751,NULL,dans
 3826,ab-una-part,2112,2534,NULL,NULL,confronte avec
 3827,ab-una-part,2112,2115,NULL,NULL,confronte avec
 3178,in,2113,NULL,NULL,6,a l interieur de
@@ -3565,7 +3564,6 @@ idConfront,localisation,idBien1,idBien2,idInvariant,idQuartierParoisse,localisat
 3844,a-occident,2118,2131,NULL,NULL,confronte a l ouest avec
 3184,in,2119,NULL,NULL,6,a l interieur de
 3441,extra,2119,NULL,248,NULL,est a l exterieur de
-3442,entre /BD_2119 et /BD_2128,2119,NULL,751,NULL,dans
 3443,ab-una-part,2119,NULL,690,NULL,confronte avec
 3845,a-orient,2119,2123,NULL,NULL,confronte a l est avec
 3185,in,2120,NULL,NULL,6,a l interieur de
@@ -6619,3 +6617,7 @@ idConfront,localisation,idBien1,idBien2,idInvariant,idQuartierParoisse,localisat
 7418,in,60461,NULL,NULL,31,a l interieur de
 7419,in,60462,NULL,NULL,31,a l interieur de
 7451,in,60498,NULL,NULL,18,a l interieur de
+8257,NULL,2112,NULL,751,NULL,entre
+8258,NULL,2115,NULL,751,NULL,entre
+8259,NULL,2119,NULL,751,NULL,entre
+8260,NULL,2118,NULL,751,NULL,entre

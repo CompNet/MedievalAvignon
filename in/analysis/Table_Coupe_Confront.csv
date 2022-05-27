@@ -417,8 +417,8 @@ idConfront,localisation,idBien1,idBien2,idInvariant,idInvariant_ajout,idQuartier
 1101,a-occident,237,NULL,412,412_16,NULL,confronte a l ouest avec
 1102,a-occident,239,NULL,412,412_16,NULL,confronte a l ouest avec
 1963,subtus,1019,NULL,483,483_4,NULL,sous
-1967,a-occident,1020,NULL,483,483_1,NULL,confronte a l ouest avec
-1966,subtus,1020,NULL,483,483_1,NULL,sous
+1967,a-occident,1020,NULL,483,483_4,NULL,confronte a l ouest avec
+1966,subtus,1020,NULL,483,483_4,NULL,sous
 1973,a-occident,1021,NULL,483,483_4,NULL,confronte a l ouest avec
 1971,subtus,1021,NULL,483,483_4,NULL,sous
 2047,versus,1052,NULL,195,195_24,NULL,vers
