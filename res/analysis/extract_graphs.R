@@ -477,13 +477,13 @@ load.location.table <- function(tab.file, type)
 {	# load table
 	tlog(2,"Loading ",type," information")
 	tab <- read.table(
-			file=tab.file,
-			sep=",",
-			header=TRUE,
-			stringsAsFactors=FALSE,
-			na.strings="NULL",
-			quote='"',
-			check.names=FALSE
+		file=tab.file,
+		sep=",",
+		header=TRUE,
+		stringsAsFactors=FALSE,
+		na.strings="NULL",
+		quote='"',
+		check.names=FALSE
 	)
 	tlog(4,"Found ",nrow(tab)," ",type,"(s)")
 	
@@ -683,11 +683,17 @@ normalize.components <- function(comps)
 # Loads the raw data, extracts the different types of estate networks,
 # records them as graphml files, and plots them.
 #
+# split.surf: whether to split linear or surface vertices using additional data.
 # returns: vector of all the link types.
 ########################################################################
-extract.estate.networks <- function()
+extract.estate.networks <- function(split.surf=FALSE)
 {	# load the data and create various versions of the graph
 	tlog(0,"Extracting various versions of the estate graph")
+	{	if(split.surf)
+			FOLDER_OUT_ANAL_EST <- file.path(FOLDER_OUT_ANAL,"estate","split")
+		else
+			FOLDER_OUT_ANAL_EST <- file.path(FOLDER_OUT_ANAL,"estate","whole")
+	}
 	
 	# load estate information
 	tlog(2,"Loading estate information")
@@ -796,16 +802,62 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	info.all[(last+1):(last+nrow(info.street)),com.cols] <- info.street[,com.cols]
 	last <- last + nrow(info.street)
 	
+	# possibly split certain linear or surface vertices
+	if(split.surf)
+	{	tlog(4,"Splitting linear and surface vertices")
+		# load list of split vertices
+		info.split <- load.location.table(FILE_IN_ANAL_SPLIT_FIX,"vertex")
+		# replace in main table
+		tlog(6,"Iterating over all corrections")
+		r <- 1
+		while(r<=nrow(info.split))
+		{	tlog(8,"Splitting vertex '",info.split[r,COL_STREET_ID],"' (row #",r,"/",nrow(info.split),")")
+			# process new street
+			idx <- which(info.all[,COL_EDIF_ID]==info.split[r,COL_EDIF_ID]
+				| info.all[,COL_VILG_ID]==info.split[r,COL_VILG_ID]
+				| info.all[,COL_CARD_ID]==info.split[r,COL_CARD_ID]
+				| info.all[,COL_GATE_ID]==info.split[r,COL_GATE_ID]
+				| info.all[,COL_WALL_ID]==info.split[r,COL_WALL_ID]
+				| info.all[,COL_LDMRK_ID]==info.split[r,COL_LDMRK_ID]
+				| info.all[,COL_STREET_ID]==info.split[r,COL_STREET_ID]
+			)
+			if(length(idx)!=1)
+				stop("Could not find fix vertex #",idx," when splitting vertices")
+			info.all[idx,COL_LOC_ID] <- paste0(info.all[idx,COL_LOC_TYPE],":",info.split[r,COL_STREET_ID_SPLIT])
+			info.all[idx,COL_STREET_ID] <- info.split[r,COL_STREET_ID_SPLIT]
+			info.all[idx,COL_STREET_LENGTH] <- info.split[r,COL_STREET_LENGTH]
+			info.all[idx,COL_LOC_X] <- info.split[r,COL_LOC_X]
+			info.all[idx,COL_LOC_Y] <- info.split[r,COL_LOC_Y]
+			tlog(10,"New id: ",info.all[idx,COL_LOC_ID])
+			
+			# process rest of splits for same street
+			r2 <- r + 1
+			while(r2<=nrow(info.split) && info.split[r2,COL_STREET_ID]==info.split[r,COL_STREET_ID])
+			{	tlog(8,"Continuing by processing vertex '",info.split[r2,COL_STREET_ID],"' (row ",r2,"/",nrow(info.split),")")
+				info.all <- rbind(info.all, info.all[idx,])
+				idx <- nrow(info.all)
+				info.all[idx,COL_LOC_ID] <- paste0(info.all[idx,COL_LOC_TYPE],":",info.split[r2,COL_STREET_ID_SPLIT])
+				info.all[idx,COL_STREET_ID] <- info.split[r2,COL_STREET_ID_SPLIT]
+				info.all[idx,COL_STREET_LENGTH] <- info.split[r2,COL_STREET_LENGTH]
+				info.all[idx,COL_LOC_X] <- info.split[r2,COL_LOC_X]
+				info.all[idx,COL_LOC_Y] <- info.split[r2,COL_LOC_Y]
+				tlog(10,"New id: ",info.all[idx,COL_LOC_ID])
+				r2 <- r2 + 1
+			}
+			r <- r2
+		}
+	}
+	
 	# remove empty columns
 	empty.cols <- which(apply(info.all, 2, function(col) all(is.na(col))))
 	tlog(4,"Found ",length(empty.cols)," all-NA columns: removing them (",paste(colnames(info.all)[empty.cols],collapse=", "),")")
 	info.all <- info.all[,-empty.cols]
 	
 	# load relationships
-	tlog(2,"Loading relational information")
+	rel.file <- FILE_IN_ANAL_CONFR_LINKS_14c		# FILE_IN_ANAL_CONFR_LINKS_ALL
+	tlog(2,"Loading relational information in file '",rel.file,"'")
 	data <- read.table(
-#		file=FILE_IN_ANAL_CONFR_LINKS_ALL,
-		file=FILE_IN_ANAL_CONFR_LINKS_14c,
+		file=rel.file,
 		sep=",",
 		header=TRUE,
 		stringsAsFactors=FALSE,
@@ -814,6 +866,46 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		check.names=FALSE
 	)
 	tlog(4,"Found ",nrow(data)," relations")
+	
+	# possibly split certain relations corresponding to linear or surface vertices
+	if(split.surf)
+	{	tlog(4,"Rewiring confronts due to the split of linear and surface vertex")
+		# load list of split confronts
+		rel.file <- FILE_IN_ANAL_SPLIT_CONFR
+		tlog(6,"Loading corrective relational information in file '",rel.file,"'")
+		data.split <- read.table(
+			file=rel.file,
+			sep=",",
+			header=TRUE,
+			stringsAsFactors=FALSE,
+			na.strings="NULL",
+			quote='"',
+			check.names=FALSE
+		)
+		# replace in main table
+		tlog(6,"Iterating over all corrections")
+		for(r in 1:nrow(data.split))
+		{	tlog(8,"Rewiring confront '",data.split[r,COL_CONF_ID],"' (row #",r,"/",nrow(data.split),")")
+			# process new confront
+			idx <- which(data[,COL_CONF_ID]==data.split[r,COL_CONF_ID])
+			if(length(idx)!=1)
+				stop("Could not find confront #",idx," when splitting confronts")
+			if(is.na(data.split[r,COL_CONF_FIX_ID_SPLIT]))
+			{	# if reviewing not indicated: just remove confront
+				tlog(10,"No new vertex specified: removing the confront")
+				data <- data[-idx,]
+			}
+			else
+			{	# otherwise, perform the rewiring
+				data[idx,COL_CONF_LOC_LAT] <- data.split[r,COL_CONF_LOC_LAT]
+				data[idx,COL_CONF_LOC_NORM] <- data.split[r,COL_CONF_LOC_NORM]
+				data[idx,COL_CONF_EST1_ID] <- data.split[r,COL_CONF_EST1_ID]
+				data[idx,COL_CONF_EST2_ID] <- data.split[r,COL_CONF_EST2_ID]
+				data[idx,COL_CONF_FIX_ID] <- data.split[r,COL_CONF_FIX_ID_SPLIT]
+				data[idx,COL_CONF_AREA_ID] <- data.split[r,COL_CONF_AREA_ID]
+			}
+		}
+	}
 	
 	# collapse the ids from 3 to 2 columns and convert them to internal ids
 	edge.list <- t(sapply(1:nrow(data), function(r)
@@ -1075,7 +1167,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	######
 #	# export to graphml and use gephi, then import back
 #	file <- file.path(FOLDER_OUT_ANAL_EST,"graph_kk.graphml")
-#	write.graphml.file(g=g, file=file)
+#	write.graphml.file(g=as.undirected(g), file=file)
 #	# <do your magic with gephi, then record graph with new layout>
 #	# <procedure: 1) detect components and use as vertex color (largest only); 2) vertex size 50; 3) random layout; 4) standard Yifan-Hu; 5) FR layout speed=10 grav~=1; 6) manually adjust while layouting on.
 #	g0 <- read.graph(file, format="graphml")
@@ -1238,7 +1330,11 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	# extract one graph for each predefined modality
 	#################
 	tlog(2,"Extracting several variants of the graph")
-#	graph.types <- c(GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS)		# c(GR_EST_FULL, GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS, LK_TYPE_FLATREL_VALS)
+#	{	if(split.surf) 
+#			graph.types <- GR_EST_FLAT_REL
+#		else
+#			graph.types <- c(GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS)		# c(GR_EST_FULL, GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS, LK_TYPE_FLATREL_VALS)
+#	}
 	measured.streets <- which(vertex_attr(g,COL_LOC_TYPE)=="Rue" & !is.na(vertex_attr(g,COL_STREET_LENGTH)))
 	graph.types <- paste0(GR_EST_FLAT_MINUS,"_",1:length(measured.streets))
 	prev.g1 <- NA
@@ -1499,7 +1595,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #			layout <- layout_with_kk(g0, kkconst=1)
 #			V(g0)$x <- layout[,1]; V(g0)$y <- layout[,2]; 
 #			custom.gplot(g=g0, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g0)$x), ylim=range(V(g0)$y), vertex.label.cex=0.1, size.att=6)
-#			write.graphml.file(g=g0, file=paste0(plot.file,".graphml"))
+#			write.graphml.file(g=as.undirected(g0), file=paste0(plot.file,".graphml"))
 #			# <do your magic with gephi, then record graph with new layout>
 #			# <procedure: 1) detect components and use as vertex color (largest only); 2) vertex size 50; 3) random layout; 4) standard Yifan-Hu; 5) FR layout speed=10 grav~=1; 6) manually adjust while layouting on.
 #			g0 <- read.graph(paste0(plot.file,".graphml"), format="graphml")
@@ -1534,12 +1630,13 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			write.graphml.file(g=g1, file=graph.file)
 			
 			# record the filtered version keeping only the main components
-			if(graph.types[i]==GR_EST_ESTATE_LEVEL)
-				cmp.thre <- 15
-			else if(graph.types[i]==GR_EST_FLAT_REL)
-				cmp.thre <- 25
-			else if(graph.types[i]==GR_EST_FLAT_MINUS)
-				cmp.thre <- 25
+			{	if(graph.types[i]==GR_EST_ESTATE_LEVEL)
+					cmp.thre <- 15
+				else if(graph.types[i]==GR_EST_FLAT_REL)
+					cmp.thre <- 25
+				else if(graph.types[i]==GR_EST_FLAT_MINUS)
+					cmp.thre <- 25
+			}
 			tmp <- components(graph=g1, mode="weak")
 			cmps <- which(tmp$csize<cmp.thre)
 			idx <- which(tmp$membership %in% cmps)
@@ -1606,6 +1703,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #           si bcp de composants, ça un effet contraire (raccourcis pour aller partout, cas extrement de tous les noeuds isolés)
 # - étudier l'évolution de la distance graphe entre deux noeuds quand on supprime les rues? 
 #   >> indicateur de la stabilité de l'estimation de la distance spatiale par la distance géodesique
+# - implémenter le système de décomposition des noeuds surfaciques
 #
 # - modèle :
 #   - rajouter le concept de noeud de type "rue"

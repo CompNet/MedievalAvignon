@@ -32,7 +32,9 @@ FOLDER_IN <- "in"
 		FILE_IN_ANAL_STREET_NODES <- file.path(FOLDER_IN_ANAL,"Table_Rue.csv")
 		FILE_IN_ANAL_SRC_NODES <- file.path(FOLDER_IN_ANAL,"Table_Source.csv")
 		#
-		FILE_IN_ANAL_STRT_SHORT <- file.path(FOLDER_IN_ANAL,"Rue_Courte.csv")
+		FILE_IN_ANAL_STRT_SHORT <- file.path(FOLDER_IN_ANAL,"Table_Rue_Courte.csv")
+		FILE_IN_ANAL_SPLIT_FIX <- file.path(FOLDER_IN_ANAL,"Table_Coupe_Invariant.csv")
+		FILE_IN_ANAL_SPLIT_CONFR <- file.path(FOLDER_IN_ANAL,"Table_Coupe_Confront.csv")
 	FOLDER_OUT <- "out"
 		FOLDER_OUT_POS <- file.path(FOLDER_OUT,"positioning")
 		FOLDER_OUT_ANAL <- file.path(FOLDER_OUT,"analysis")
@@ -259,6 +261,7 @@ FILE_GRAPH <- "graph.graphml"
 
 # street table
 	COL_STREET_ID <- "id"
+	COL_STREET_ID_SPLIT <- "id_ajout"
 	COL_STREET_NAME <- "nom"
 	COL_STREET_NAME_CURR <- "nomActuel"
 	COL_STREET_GEOMETRY <- "the_geom"
@@ -283,6 +286,7 @@ FILE_GRAPH <- "graph.graphml"
 	COL_CONF_EST1_ID <- "idBien1"
 	COL_CONF_EST2_ID <- "idBien2"
 	COL_CONF_FIX_ID <- "idInvariant"
+	COL_CONF_FIX_ID_SPLIT <- "idInvariant_ajout"
 	COL_CONF_AREA_ID <- "idQuartierParoisse"
 
 # estate fee table
@@ -324,7 +328,7 @@ FILE_GRAPH <- "graph.graphml"
 	VAL_CONF_TYPE_INTERIEUR <- "a l interieur de"
 	VAL_CONF_TYPE_OPPOSE <- "a l oppose de"
 	VAL_CONF_TYPE_DEBUT <- "au debut de"
-#	VAL_CONF_TYPE_DELA <- "au dela de"
+	VAL_CONF_TYPE_DELA <- "au dela de"
 	VAL_CONF_TYPE_DESSOUS <- "en dessous de"
 	VAL_CONF_TYPE_DESSUS <- "au dessus de"
 #	VAL_CONF_TYPE_MILIEU <- "au milieu"
