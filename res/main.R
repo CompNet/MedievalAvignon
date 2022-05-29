@@ -55,11 +55,12 @@ start.rec.log(text="Nets")
 
 ########################################################################
 # possibly create folder
+FOLDER_OUT_ANAL_EST <- file.path(FOLDER_OUT_ANAL,"estate","whole")
 dir.create(path=FOLDER_OUT_ANAL_EST, showWarnings=FALSE, recursive=TRUE)
+
 # load the data and create various versions of the spatial graph
 graph.types <- extract.estate.networks(split.surf=FALSE)
 #graph.types <- c(GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS)
-#graph.types <- c(GR_EST_FLAT_REL)
 
 # plot comparison graphs
 plot.graph.comparisons(graph.names=graph.types, folder=FOLDER_OUT_ANAL_EST)
@@ -77,10 +78,6 @@ tlog.start.loop(0,length(graph.types), "Processing the measures for each extract
 for(i in 1:length(graph.types))
 {	tlog.loop(2, i, "Processing the measures for graph ",graph.types[i]," (",i,"/",length(graph.types),")")
 	
-	# FOLDER_OUT_ANAL_EST <- file.path(FOLDER_OUT_ANAL,"estate","split")
-	# FOLDER_OUT_ANAL_EST <- file.path(FOLDER_OUT_ANAL,"estate","whole")
-
-	
 	# gname=GR_EST_ESTATE_LEVEL; out.folder=FOLDER_OUT_ANAL_EST
 	
 	# gname="flat_minus_39_filtered"; out.folder=FOLDER_OUT_ANAL_EST
@@ -90,13 +87,27 @@ for(i in 1:length(graph.types))
 	
 	# filtered version
 	g <- analyze.network(gname=paste0(graph.types[i],"_filtered"), out.folder=FOLDER_OUT_ANAL_EST)
-	
 }
 tlog.end.loop("Measure computation over")
 plot.comstruct.comparison()
 
 # selected version
 g <- analyze.network(gname="flat_minus_28_filtered", out.folder=FOLDER_OUT_ANAL_EST)
+
+
+
+
+########################################################################
+# split version of the graph
+FOLDER_OUT_ANAL_EST <- file.path(FOLDER_OUT_ANAL,"estate","split")
+
+# load the data and create various versions of the spatial graph
+graph.types <- extract.estate.networks(split.surf=TRUE)
+#graph.types <- c(GR_EST_FLAT_REL)
+
+# compute topological measures for the extracted networks
+g <- analyze.network(gname=graph.types[1], out.folder=FOLDER_OUT_ANAL_EST)
+g <- analyze.network(gname=paste0(graph.types[1],"_filtered"), out.folder=FOLDER_OUT_ANAL_EST)
 
 
 

@@ -35,11 +35,12 @@ FOLDER_IN <- "in"
 		FILE_IN_ANAL_STRT_SHORT <- file.path(FOLDER_IN_ANAL,"Table_Rue_Courte.csv")
 		FILE_IN_ANAL_SPLIT_FIX <- file.path(FOLDER_IN_ANAL,"Table_Coupe_Invariant.csv")
 		FILE_IN_ANAL_SPLIT_CONFR <- file.path(FOLDER_IN_ANAL,"Table_Coupe_Confront.csv")
-	FOLDER_OUT <- "out"
-		FOLDER_OUT_POS <- file.path(FOLDER_OUT,"positioning")
-		FOLDER_OUT_ANAL <- file.path(FOLDER_OUT,"analysis")
-			FOLDER_OUT_ANAL_SOC <- file.path(FOLDER_OUT_ANAL,"social")
-			FOLDER_OUT_ANAL_EST <- file.path(FOLDER_OUT_ANAL,"estate")
+		FILE_IN_ANAL_SPLIT_CONFR_ARTIF <- file.path(FOLDER_IN_ANAL,"Table_Coupe_Confront_Artificiel.csv")
+FOLDER_OUT <- "out"
+	FOLDER_OUT_POS <- file.path(FOLDER_OUT,"positioning")
+	FOLDER_OUT_ANAL <- file.path(FOLDER_OUT,"analysis")
+		FOLDER_OUT_ANAL_SOC <- file.path(FOLDER_OUT_ANAL,"social")
+		FOLDER_OUT_ANAL_EST <- file.path(FOLDER_OUT_ANAL,"estate")
 FOLDER_LOG <- "log"
 
 FILE_GRAPH <- "graph.graphml"
@@ -283,12 +284,15 @@ FILE_GRAPH <- "graph.graphml"
 	COL_CONF_ID <- "idConfront"
 	COL_CONF_LOC_LAT <- "localisation"
 	COL_CONF_LOC_NORM <- "localisationTN"
+	COL_CONF_LOC_NORM_ARTIF <- "lienArtificiel"
 	COL_CONF_EST1_ID <- "idBien1"
 	COL_CONF_EST2_ID <- "idBien2"
 	COL_CONF_FIX_ID <- "idInvariant"
+	COL_CONF_FIX1_ID <- "idInvariant1"
+	COL_CONF_FIX2_ID <- "idInvariant2"
 	COL_CONF_FIX_ID_SPLIT <- "idInvariant_ajout"
 	COL_CONF_AREA_ID <- "idQuartierParoisse"
-
+	
 # estate fee table
 	COL_FEE_ID <- "idRedevance"
 	COL_FEE_TYPE <- "type"
@@ -351,7 +355,7 @@ FILE_GRAPH <- "graph.graphml"
 	VAL_CONF_TYPE_DERRIERE <- "derriere"
 	VAL_CONF_TYPE_DEVANT <- "devant"
 	VAL_CONF_TYPE_EGALE <- "egal"
-#	VAL_CONF_TYPE_ENTRE <- "entre"
+	VAL_CONF_TYPE_ENTRE <- "entre"
 	VAL_CONF_TYPE_EXTERIEUR <- "est a l exterieur de"
 	VAL_CONF_TYPE_SOUS <- "sous"
 	VAL_CONF_TYPE_SUR <- "sur"

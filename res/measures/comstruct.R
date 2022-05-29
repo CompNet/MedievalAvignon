@@ -439,14 +439,14 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 					vals <- c(vals, grp.pur.total, att.pur.total)
 					meas <- c(meas, "GrpPurity", "ValPurity")
 					# chi-squared test of independence (dpt if p<0.05)
-					if(all(is.na(tmp)) || length(unique(tmp))==1 || any(is.na(tmp)) && length(unique(tmp))==2)
+					if(all(is.na(tmp)) || length(unique(tmp))==2 || any(is.na(tmp)) && length(unique(tmp))==3)
 						chisq <- NA
 					else
 						chisq <- suppressWarnings(chisq.test(tmp, membership[est.idx], correct=FALSE))$p.value # warning=groups too small
 					vals <- c(vals, chisq)
 					meas <- c(meas, "Chi2_pval")
 					# Cramér's V
-					if(all(is.na(tmp)) || length(unique(tmp))==1 || any(is.na(tmp)) && length(unique(tmp))==2)
+					if(all(is.na(tmp)) || length(unique(tmp))==2 || any(is.na(tmp)) && length(unique(tmp))==3)
 						cram <- NA
 					else
 						cram <- CramerV(x=tmp, y=membership[est.idx])
@@ -706,7 +706,7 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 				vals <- c()
 				meas <- c()
 					# anova
-					if(length(unique(membership[!is.na(membership[est.idx])]))<2 || length(unique(membership[!is.na(att.vals)]))<2)
+					if(length(unique(membership[!is.na(membership[est.idx])]))<3 || length(unique(membership[!is.na(att.vals)]))<3)
 						pval <- NA
 					else
 					{	fit <- suppressWarnings(aov(att.vals[!is.na(att.vals)]~as.factor(membership[est.idx][!is.na(att.vals)])))	# warning=perfect fit

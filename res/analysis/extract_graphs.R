@@ -867,7 +867,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	)
 	tlog(4,"Found ",nrow(data)," relations")
 	
-	# possibly split certain relations corresponding to linear or surface vertices
+	# possibly rewire certain relations corresponding to linear or surface vertices
 	if(split.surf)
 	{	tlog(4,"Rewiring confronts due to the split of linear and surface vertex")
 		# load list of split confronts
@@ -1117,6 +1117,46 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	# ii <- which(E(g)$type==VAL_CONF_TYPE_INTERIEUR); cbind(get.edgelist(g)[ii,], E(g)$type[ii])
 	# ii <- match(sort(unique(data[,COL_CONF_LOC_NORM])), data[,COL_CONF_LOC_NORM]); data[ii,c(COL_CONF_LOC_LAT,COL_CONF_LOC_NORM)]
 	
+	# possibly insert additional confront between the pieces of the same (original) vertex
+	if(split.surf)
+	{	tlog(4,"Inserting additional confronts between the pieces of the same (original) vertex")
+		# load list of artificial confronts
+		rel.file <- FILE_IN_ANAL_SPLIT_CONFR_ARTIF
+		tlog(6,"Loading additional relational information in file '",rel.file,"'")
+		data.split <- read.table(
+			file=rel.file,
+			sep=",",
+			header=TRUE,
+			stringsAsFactors=FALSE,
+			na.strings="NULL",
+			quote='"',
+			check.names=FALSE
+		)
+		# add to edge list
+		tlog(6,"Iterating over all additions")
+		for(r in 1:nrow(data.split))
+		{	tlog(8,"Adding artificial confront ",data.split[r,COL_CONF_FIX1_ID],"--",data.split[r,COL_CONF_FIX2_ID]," (row #",r,"/",nrow(data.split),")")
+			# get vertex ids
+			id1 <- which(info.all[,"id"]==data.split[r,COL_CONF_FIX1_ID])
+			id2 <- which(info.all[,"id"]==data.split[r,COL_CONF_FIX2_ID])
+			v1 <- info.all[id1,COL_LOC_ID]
+			v2 <- info.all[id2,COL_LOC_ID]
+			
+			# add to edge list
+			edge.list <- rbind(edge.list,c(v1,v2))
+			
+			# add to main table
+			idx <- nrow(data) + 1
+			data[idx,COL_CONF_ID] <- "split"
+			data[idx,COL_CONF_LOC_LAT] <- "split"
+			data[idx,COL_CONF_LOC_NORM] <- data.split[r,COL_CONF_LOC_NORM_ARTIF]
+			data[idx,COL_CONF_EST1_ID] <- data.split[r,COL_CONF_FIX1_ID]
+			data[idx,COL_CONF_EST2_ID] <- NA
+			data[idx,COL_CONF_FIX_ID] <- data.split[r,COL_CONF_FIX2_ID]
+			data[idx,COL_CONF_AREA_ID] <- NA
+		}
+	}
+	
 	# build whole graph
 	tlog(2,"Building graph")
 	link.type.attr <- COL_CONF_LOC_NORM	# COL_CONF_LOC_LAT
@@ -1147,6 +1187,26 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	comp.names <- get.location.names(g)
 	#print(which(is.na(comp.names)))
 	V(g)$label <- comp.names
+	
+	# possibly remove certain leaves attached to artificial confronts
+	if(split.surf)
+	{	tlog(4,"Removing artificially introduced vertices that are not needed")
+		cnt <- 0
+		idx <- which(
+				degree(g,mode="all")==1								# leave 
+				& grepl("_",vertex_attr(g,COL_LOC_ID),fixed=TRUE)	# artificial node
+				& sapply(1:gorder(g), function(v)					# at least one artificial neighbor 
+						any(grepl("_",as_ids(neighbors(graph=g,v=v,mode="all")),fixed=TRUE))))
+		goOn <- length(idx)>0
+		while(goOn)
+		{	tlog(6,"Found ",length(idx)," artificial leaves with an artificial neighbors >> removing them")
+			cnt <- cnt + length(idx)
+			g <- delete_vertices(graph=g, v=idx)
+			idx <- which(degree(g,mode="all")==1 & grepl("_",vertex_attr(g,COL_LOC_ID),fixed=TRUE) & sapply(1:gorder(g), function(v) any(grepl("_",as_ids(neighbors(graph=g,v=v,mode="all")),fixed=TRUE))))
+			goOn <- length(idx)>0
+		}
+		tlog(6,"Removed a total of ",cnt," unneeded leaves")
+	}
 	
 	# init layout
 	tlog(2,"Set up layout")
@@ -1330,13 +1390,13 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	# extract one graph for each predefined modality
 	#################
 	tlog(2,"Extracting several variants of the graph")
-#	{	if(split.surf) 
-#			graph.types <- GR_EST_FLAT_REL
-#		else
-#			graph.types <- c(GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS)		# c(GR_EST_FULL, GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS, LK_TYPE_FLATREL_VALS)
-#	}
-	measured.streets <- which(vertex_attr(g,COL_LOC_TYPE)=="Rue" & !is.na(vertex_attr(g,COL_STREET_LENGTH)))
-	graph.types <- paste0(GR_EST_FLAT_MINUS,"_",1:length(measured.streets))
+	{	if(split.surf) 
+			graph.types <- GR_EST_FLAT_REL
+		else
+			graph.types <- c(GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS)		# c(GR_EST_FULL, GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS, LK_TYPE_FLATREL_VALS)
+	}
+#	measured.streets <- which(vertex_attr(g,COL_LOC_TYPE)=="Rue" & !is.na(vertex_attr(g,COL_STREET_LENGTH)))
+#	graph.types <- paste0(GR_EST_FLAT_MINUS,"_",1:length(measured.streets))
 	prev.g1 <- NA
 	prev.g1.filt <- NA
 	for(i in 1:length(graph.types))
@@ -1371,6 +1431,10 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			idx <- startsWith(V(g1)$name,"Repere:") #& vertex_attr(g1,COL_LDMRK_TYPE)!="Rocher"
 			tlog(8,"Removing ",length(which(idx))," geological object(s)")
 			g1 <- delete_vertices(graph=g1, v=idx)
+			# remove certain long distance relationships
+			idx <- which(E(g1)$type==VAL_CONF_TYPE_ENTRE)
+			tlog(8,"Removing ",length(idx)," \"between\" confronts")
+			g1 <- delete_edges(graph=g1, edges=idx)
 		}
 		# keep everything but the membership relations
 		else if(graph.types[i]==GR_EST_FLAT_REL)
@@ -1386,6 +1450,9 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			idx <- which(E(g1)$type==VAL_CONF_TYPE_EXTERIEUR)
 			tlog(8,"Removing ",length(idx)," \"outside\" confronts")
 			g1 <- delete_edges(graph=g1, edges=idx)
+			idx <- which(E(g1)$type==VAL_CONF_TYPE_ENTRE)
+			tlog(8,"Removing ",length(idx)," \"between\" confronts")
+			g1 <- delete_edges(graph=g1, edges=idx)
 		}
 		# keep everything but the membership relations and long entities (walls, rivers)
 		else if(startsWith(graph.types[i], GR_EST_FLAT_MINUS))
@@ -1400,6 +1467,9 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			g1 <- delete_edges(graph=g1, edges=idx)
 			idx <- which(E(g1)$type==VAL_CONF_TYPE_EXTERIEUR)
 			tlog(8,"Removing ",length(idx)," \"outside\" confronts")
+			g1 <- delete_edges(graph=g1, edges=idx)
+			idx <- which(E(g1)$type==VAL_CONF_TYPE_ENTRE)
+			tlog(8,"Removing ",length(idx)," \"between\" confronts")
 			g1 <- delete_edges(graph=g1, edges=idx)
 			# possibly remove the longest streets
 			if(graph.types[i]!=GR_EST_FLAT_MINUS)
@@ -1718,6 +1788,9 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 
 # idées papiers: 
 # 1) intérêt du réseau de confront pour approximer la distance spatiale
+#    quelles méthodes marchent le mieux pour extraire le réseau ?
+#    et pour corriger ? par ex. peut on trouver un moyen de rajouter les liens connectant les composants de façon appropriée ? 
+#    (eg prédiction de lien sur la base des distances spatiales?)
 # 2) comment utiliser les graphes pour détecter les erreurs de saisie
 #              + effet des erreurs sur les graphes extraits
 
