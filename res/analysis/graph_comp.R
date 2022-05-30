@@ -13,9 +13,12 @@
 # folder: root folder to find the graph and record the plots.
 #############################################################################################
 plot.graph.comparisons <- function(graph.names, folder)
-{	for(i in 1:(length(graph.names)-1))
+{	tlog(2,"Comparing graphs")
+	
+	for(i in 1:(length(graph.names)-1))
 	{	# read the first graph
 		file.path <- file.path(folder, graph.names[i], FILE_GRAPH)
+		tlog(4,"Reading graph file '",file.path,"'")
 		g1 <- load.graphml.file(file=file.path)
 		# clean it
 		V(g1)$label <- paste(vertex_attr(g1,name=COL_LOC_ID), get.location.names(g1),sep="_")
@@ -25,6 +28,7 @@ plot.graph.comparisons <- function(graph.names, folder)
 		for(j in (i+1):length(graph.names))
 		{	# read the second graph
 			file.path <- file.path(folder, graph.names[j], FILE_GRAPH)
+			tlog(6,"Reading graph file '",file.path,"'")
 			g2 <- load.graphml.file(file=file.path)
 			# clean it
 			V(g2)$label <- paste(vertex_attr(g2,name=COL_LOC_ID), get.location.names(g2),sep="_")
@@ -65,15 +69,44 @@ plot.graph.comparison <- function(g1, g2, folder)
 	V(g1)$comparison <- att1
 	V(g2)$comparison <- att2
 	
+	# build result matrix
+	cn <- c(g1$name,g2$name)
+	rn <- c("Graph-specific vertices","Common vertices","Total")
+	tab <- matrix(0,nrow=length(rn),ncol=length(cn))
+	rownames(tab) <- rn
+	colnames(tab) <- cn
+	tab["Graph-specific vertices",] <- c(length(idx1),length(idx2))
+	tab["Common vertices",] <- c(gorder(g1)-length(idx1), gorder(g2)-length(idx2))
+	tab["Total",] <- colSums(tab)
+	print(tab)
+	
+	# record result matrix in split folder
+	tab.file <- paste0(plot.file1,".csv")
+	tlog(8,"Record results in file '",tab.file,"'")
+	write.csv(tab, file=tab.file, row.names=TRUE)
+	tab.file <- paste0(plot.file2,".csv")
+	tlog(8,"Record results in file '",tab.file,"'")
+	write.csv(tab, file=tab.file, row.names=TRUE)
+	
 	# create the geo plots
-	custom.gplot(g=g1, col.att="comparison", cat.att=TRUE, file=paste0(plot.file1,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
-	custom.gplot(g=g2, col.att="comparison", cat.att=TRUE, file=paste0(plot.file2,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+	plot.file <- paste0(plot.file1,"_lambert")
+	tlog(8,"Plotting in file '",plot.file,"'")
+	custom.gplot(g=g1, col.att="comparison", cat.att=TRUE, file=plot.file, asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+	#
+	plot.file <- paste0(plot.file2,"_lambert")
+	tlog(8,"Plotting in file '",plot.file,"'")
+	custom.gplot(g=g2, col.att="comparison", cat.att=TRUE, file=plot.file, asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
 	
 	# create the algo plots
+	plot.file <- paste0(plot.file1,"_kk")
+	tlog(8,"Plotting in file '",plot.file,"'")
 	V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5
-	custom.gplot(g=g1, col.att="comparison", cat.att=TRUE, file=paste0(plot.file1,"_kk"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+	custom.gplot(g=g1, col.att="comparison", cat.att=TRUE, file=plot.file, rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+	#
+	plot.file <- paste0(plot.file2,"_kk")
+	tlog(8,"Plotting in file '",plot.file,"'")
 	V(g2)$x <- V(g2)$x2; V(g2)$y <- V(g2)$y2; E(g2)$weight <- 0.5
-	custom.gplot(g=g2, col.att="comparison", cat.att=TRUE, file=paste0(plot.file2,"_kk"), rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+	custom.gplot(g=g2, col.att="comparison", cat.att=TRUE, file=plot.file, rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
 }
 
 
@@ -469,79 +502,93 @@ compare.split.net <- function()
 			fn <- ""
 		
 		tlog(2,"Comparing the",fn," non-split and split graphs:")
-		# load both networks
-		file.non <- file.path(FOLDER_OUT_ANAL,"estate","whole",paste0(GR_EST_FLAT_REL,fn),FILE_GRAPH)
-		tlog(4,"Non-split graph: '",file.non,"'")
-		g.non <- load.graphml.file(file=file.non)
-		vnames.non <- V(g.non)$idExterne
-		#
-		file.split <- file.path(FOLDER_OUT_ANAL,"estate","split",paste0(GR_EST_FLAT_REL,fn),FILE_GRAPH)
-		tlog(4,"Split graph: '",file.split,"'")
-		g.split <- load.graphml.file(file=file.split)
-		vnames.split <- V(g.split)$idExterne
 		
-		# find split vertices in split graph
-		v.split <- vnames.split[grepl("_",vnames.split,fixed=TRUE)]
-		vnames.split <- setdiff(vnames.split, v.split)
-		
-		# find split vertices in non-split graph
-		v.unsplit <- unique(sapply(strsplit(v.split, "_"),function(x) x[1]))
-		vnames.non <- setdiff(vnames.non, v.unsplit)
-		
-		# count other vertices
-		v.common <- intersect(vnames.split, vnames.non)
-		v.only.non <- setdiff(vnames.non, vnames.split)
-		v.only.split <- setdiff(vnames.split, vnames.non)
-		
-		# display results
-		tlog(4,"Results:")
-		tlog(6,"Number of original vertices that are split: ",length(v.unsplit))
-		tlog(6,"Number of such pieces in the split graph: ",length(v.split))
-		tlog(6,"Number of other vertices only in the non-split graph: ",length(v.only.non))
-		tlog(6,"Number of other vertices only in the split graph: ",length(v.only.split))
-		tlog(6,"Number of other vertices common to both graphs: ",length(v.common))
-		
-		# build result matrix
-		tab <- matrix(0,nrow=4,ncol=2)
-		rownames(tab) <- c("Split vertices","Graph-specific vertices","Common vertices","Total")
-		colnames(tab) <- c("Non-split graph","Split graph")
-		tab["Split vertices",] <- c(length(v.unsplit),length(v.split))
-		tab["Graph-specific vertices",] <- c(length(v.only.non),length(v.only.split))
-		tab["Common vertices",] <- rep(length(v.common), 2)
-		tab["Total",] <- colSums(tab)
-		print(tab)
-		
-		# record result matrix in split folder
-		tab.file <- file.path(FOLDER_OUT_ANAL,"estate","split",paste0(GR_EST_FLAT_REL,fn),"graph_comparison_non-split.csv")
-		write.csv(tab, file=tab.file, row.names=TRUE)
-		
-		######
-		tlog(4,"Plotting the comparisons:")
-		
-		# init file names
-		plot.file.non <- file.path(FOLDER_OUT_ANAL,"estate","split", paste0(GR_EST_FLAT_REL,fn), "graph_comparison_non-split")
-		tlog(4,"Creating files '",plot.file.non,"'")
-		plot.file.split <- file.path(FOLDER_OUT_ANAL,"estate","split", paste0(GR_EST_FLAT_REL,fn), "graph_comparison_split")
-		tlog(4,"Creating files '",plot.file.split,"'")
-		
-		# perform comparison
-		att.non <- rep("Present",gorder(g.non))
-		att.split <- rep("Present",gorder(g.split))
-		att.non[V(g.non)$idExterne==v.only.non] <- "Absent"
-		att.split[V(g.split)$idExterne==v.only.split] <- "Absent"
-		V(g.non)$comparison <- att.non
-		V(g.split)$comparison <- att.split
-		
-		# create the geo plots
-		custom.gplot(g=g.non, col.att="comparison", cat.att=TRUE, file=paste0(plot.file.non,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
-		custom.gplot(g=g.split, col.att="comparison", cat.att=TRUE, file=paste0(plot.file.split,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
-		
-		# create the algo plots
-		V(g.non)$x <- V(g.non)$x2; V(g.non)$y <- V(g.non)$y2; g.non <- delete_edge_attr(g.non, LK_TYPE); g.non <- simplify(g.non); E(g.non)$weight <- 0.5
-		custom.gplot(g=g.non, col.att="comparison", cat.att=TRUE, file=paste0(plot.file.non,"_kk"), rescale=FALSE, xlim=range(V(g.non)$x), ylim=range(V(g.non)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
-		V(g.split)$x <- V(g.split)$x2; V(g.split)$y <- V(g.split)$y2; g.split <- delete_edge_attr(g.split, LK_TYPE); g.split <- simplify(g.split); E(g.split)$weight <- 0.5
-		custom.gplot(g=g.split, col.att="comparison", cat.att=TRUE, file=paste0(plot.file.split,"_kk"), rescale=FALSE, xlim=range(V(g.split)$x), ylim=range(V(g.split)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+		# loop over network types
+		gns <- c(GR_EST_FLAT_REL, GR_EST_FLAT_MINUS)
+		for(gn in gns)
+		{	tlog(4,"Dealing with non-split network '",gn,"'")
+			
+			# load both networks
+			file.non <- file.path(FOLDER_OUT_ANAL,"estate","whole",paste0(gn,fn),FILE_GRAPH)
+			tlog(4,"Non-split graph: '",file.non,"'")
+			g.non <- load.graphml.file(file=file.non)
+			vnames.non <- V(g.non)$idExterne
+			#
+			file.split <- file.path(FOLDER_OUT_ANAL,"estate","split",paste0(GR_EST_FLAT_REL,fn),FILE_GRAPH)
+			tlog(4,"Split graph: '",file.split,"'")
+			g.split <- load.graphml.file(file=file.split)
+			vnames.split <- V(g.split)$idExterne
+			
+			# find split vertices in split graph
+			v.split <- vnames.split[grepl("_",vnames.split,fixed=TRUE)]
+			vnames.split <- setdiff(vnames.split, v.split)
+			
+			# find split vertices in non-split graph
+			v.unsplit <- intersect(vnames.non, unique(sapply(strsplit(v.split, "_"),function(x) x[1])))
+			vnames.non <- setdiff(vnames.non, v.unsplit)
+			
+			# count other vertices
+			v.common <- intersect(vnames.split, vnames.non)
+			v.only.non <- setdiff(vnames.non, vnames.split)
+			v.only.split <- setdiff(vnames.split, vnames.non)
+			
+			# display results
+			tlog(4,"Results:")
+			#
+			tlog(6,"Number of original vertices that are split: ",length(v.unsplit))
+			tlog(6,"Number of such pieces in the split graph: ",length(v.split))
+			#
+			tlog(6,"Number of other vertices only in the non-split graph: ",length(v.only.non))
+			tlog(6,"Number of other vertices only in the split graph: ",length(v.only.split))
+			#
+			tlog(6,"Number of other vertices common to both graphs: ",length(v.common))
+			#
+			tlog(6,"Total number of vertices in non-split graph: ",gorder(g.non))
+			tlog(6,"Total number of vertices in split graph: ",gorder(g.split))
+			
+			# build result matrix
+			rn <- c("Split vertices","Graph-specific vertices","Common vertices","Total")
+			cn <- c("Non-split graph","Split graph")
+			tab <- matrix(0,nrow=length(rn),ncol=length(cn))
+			rownames(tab) <- rn
+			colnames(tab) <- cn
+			tab["Split vertices",] <- c(length(v.unsplit),length(v.split))
+			tab["Graph-specific vertices",] <- c(length(v.only.non),length(v.only.split))
+			tab["Common vertices",] <- rep(length(v.common), 2)
+			tab["Total",] <- colSums(tab)
+			print(tab)
+			
+			# record result matrix in split folder
+			tab.file <- file.path(FOLDER_OUT_ANAL,"estate","split",paste0(GR_EST_FLAT_REL,fn),paste0("graph_comparison_split-",GR_EST_FLAT_REL,"_vs_non-split-",gn,".csv"))
+			write.csv(tab, file=tab.file, row.names=TRUE)
+			
+			######
+			tlog(4,"Plotting the comparisons:")
+			
+			# init file names
+			plot.file.non <- file.path(FOLDER_OUT_ANAL,"estate","split", paste0(GR_EST_FLAT_REL,fn), paste0("graph_comparison_non-split-",gn,"_vs_split-",GR_EST_FLAT_REL))
+			tlog(4,"Creating files '",plot.file.non,"'")
+			plot.file.split <- file.path(FOLDER_OUT_ANAL,"estate","split", paste0(GR_EST_FLAT_REL,fn), paste0("graph_comparison_split-",GR_EST_FLAT_REL,"_vs_non-split-",gn))
+			tlog(4,"Creating files '",plot.file.split,"'")
+			
+			# perform comparison
+			att.non <- rep("Present",gorder(g.non))
+			att.split <- rep("Present",gorder(g.split))
+			att.non[V(g.non)$idExterne %in% v.only.non] <- "Absent"
+			att.split[V(g.split)$idExterne %in% v.only.split] <- "Absent"
+			V(g.non)$comparison <- att.non
+			V(g.split)$comparison <- att.split
+			
+			# create the geo plots
+			custom.gplot(g=g.non, col.att="comparison", cat.att=TRUE, file=paste0(plot.file.non,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+			custom.gplot(g=g.split, col.att="comparison", cat.att=TRUE, file=paste0(plot.file.split,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+			
+			# create the algo plots
+			V(g.non)$x <- V(g.non)$x2; V(g.non)$y <- V(g.non)$y2; g.non <- delete_edge_attr(g.non, LK_TYPE); g.non <- simplify(g.non); E(g.non)$weight <- 0.5
+			custom.gplot(g=g.non, col.att="comparison", cat.att=TRUE, file=paste0(plot.file.non,"_kk"), rescale=FALSE, xlim=range(V(g.non)$x), ylim=range(V(g.non)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+			V(g.split)$x <- V(g.split)$x2; V(g.split)$y <- V(g.split)$y2; g.split <- delete_edge_attr(g.split, LK_TYPE); g.split <- simplify(g.split); E(g.split)$weight <- 0.5
+			custom.gplot(g=g.split, col.att="comparison", cat.att=TRUE, file=paste0(plot.file.split,"_kk"), rescale=FALSE, xlim=range(V(g.split)$x), ylim=range(V(g.split)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+		}
 	}
-		
 #		"Bien:1103" "Edifice:522"
 }
