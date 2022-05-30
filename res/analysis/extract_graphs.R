@@ -1200,6 +1200,8 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		goOn <- length(idx)>0
 		while(goOn)
 		{	tlog(6,"Found ",length(idx)," artificial leaves with an artificial neighbors >> removing them")
+			for(ii in idx)
+				tlog(8,V(g)$idExterne[ii])
 			cnt <- cnt + length(idx)
 			g <- delete_vertices(graph=g, v=idx)
 			idx <- which(degree(g,mode="all")==1 & grepl("_",vertex_attr(g,COL_LOC_ID),fixed=TRUE) & sapply(1:gorder(g), function(v) any(grepl("_",as_ids(neighbors(graph=g,v=v,mode="all")),fixed=TRUE))))
@@ -1805,8 +1807,8 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #     dans les graphiques montrant toutes les paires de distances, on voit la courbe moyenne décroitre à droite car les distances infinies ne sont pas représentées.
 
 # TODO
-# - copier fct dist-dist dans script principal
-# - cb de noeuds significatifs différents entre split et pas split
+# - copier fct dist-dist dans script principal, y compris corrélations
+# + cb de noeuds significatifs différents entre split et pas split
 
 
 ###### SOCIAL ######

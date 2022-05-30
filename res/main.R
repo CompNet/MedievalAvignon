@@ -105,6 +105,9 @@ FOLDER_OUT_ANAL_EST <- file.path(FOLDER_OUT_ANAL,"estate","split")
 graph.types <- extract.estate.networks(split.surf=TRUE)
 #graph.types <- c(GR_EST_FLAT_REL)
 
+# compare with non-split network
+compare.split.net()
+
 # compute topological measures for the extracted networks
 g <- analyze.network(gname=graph.types[1], out.folder=FOLDER_OUT_ANAL_EST)
 g <- analyze.network(gname=paste0(graph.types[1],"_filtered"), out.folder=FOLDER_OUT_ANAL_EST)
