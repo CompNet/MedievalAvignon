@@ -1773,6 +1773,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #           si bcp de composants, ça un effet contraire (raccourcis pour aller partout, cas extrement de tous les noeuds isolés)
 # - étudier l'évolution de la distance graphe entre deux noeuds quand on supprime les rues? 
 #   >> indicateur de la stabilité de l'estimation de la distance spatiale par la distance géodesique
+# - implémenter le système de décomposition des noeuds surfaciques
 #
 # - modèle :
 #   - rajouter le concept de noeud de type "rue"
