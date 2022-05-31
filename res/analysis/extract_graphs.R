@@ -1807,8 +1807,9 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #     dans les graphiques montrant toutes les paires de distances, on voit la courbe moyenne décroitre à droite car les distances infinies ne sont pas représentées.
 
 # TODO
-# - copier fct dist-dist dans script principal, y compris corrélations
+# + copier fct dist-dist dans script principal, y compris corrélations
 # + cb de noeuds significatifs différents entre split et pas split
+# - màj données
 
 
 ###### SOCIAL ######
