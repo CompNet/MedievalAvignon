@@ -381,7 +381,7 @@ plot.street.removal <- function()
 				dev.off()
 			}
 			
-			# plot geodesic vs. spatial distance as a binned scatterplot
+			# plot geodesic vs. spatial distance as a binned scatterplot, no distinct color
 			plot.file <- file.path(binned.folder, paste0("dist_geodesic_vs_spatial_rem=",i))
 			tlog(8,"Plot binned version in  '",plot.file,"'")
 			for(fformat in c("png"))	# FORMAT
