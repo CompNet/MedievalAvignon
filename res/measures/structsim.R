@@ -2,6 +2,8 @@
 # Functions used during network analysis.
 # 
 # 10/2021 Vincent Labatut
+# 
+# source("res/measures/structsim.R")
 #############################################################################################
 
 
@@ -126,7 +128,7 @@ analyze.net.structsim <- function(g, out.folder)
 			gvals <- gvals[upper.tri(gvals)]
 			dd <- as.matrix(distances(graph=gt, mode="all"))
 			dd <- dd[upper.tri(dd)]
-			idx <- !is.infinite(dd) & svals>0
+			idx <- !is.infinite(dd) & gvals>0	# we ignore pairs with infinite distance or zero structural sim 
 			gvals <- gvals[idx]
 			svals <- svals[idx]
 			

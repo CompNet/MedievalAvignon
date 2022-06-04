@@ -179,9 +179,9 @@ plot.street.removal <- function()
 			MEAS_DISTANCE_AVG_SPATIAL, MEAS_DISTANCE_AVG_GEODESIC, MEAS_DISTANCE_HARM_SPATIAL, MEAS_DISTANCE_HARM_GEODESIC
 		)
 		cor.names <- c(
-			MEAS_DISTANCE_COR_PEARSON, 
-			MEAS_DISTANCE_COR_SPEARMAN, paste0(MEAS_DISTANCE_COR_SPEARMAN,"-finite"), 
-			MEAS_DISTANCE_COR_KENDALL, paste0(MEAS_DISTANCE_COR_KENDALL,"-finite")
+			paste0(MEAS_DISTANCE_COR_PEARSON,"-finite"), 
+			paste0(MEAS_DISTANCE_COR_SPEARMAN,"-infinite"), paste0(MEAS_DISTANCE_COR_SPEARMAN,"-finite"), 
+			paste0(MEAS_DISTANCE_COR_KENDALL,"-infinite"), paste0(MEAS_DISTANCE_COR_KENDALL,"-finite")
 		)
 		tab.stats <- data.frame(1:length(gs), street.names, street.lengths, street.spans, street.cur.degs, street.orig.degs, matrix(NA, nrow=length(gs), ncol=length(meas.names)))
 		colnames(tab.stats) <- c("NumberDeletedStreets", "LastDeletedStreetId", "LastDeletedStreetLength", "LastDeletedStreetSpan", "LastDeletedStreetCurrentDegree", "LastDeletedStreetOriginalDegree", meas.names)
@@ -240,10 +240,10 @@ plot.street.removal <- function()
 			gvals <- gvals[upper.tri(gvals, diag=FALSE)]
 			idx <- !is.infinite(gvals)
 			gvals2 <- gvals; gvals2[which(is.infinite(gvals))] <- rep(max(gvals[idx],na.rm=TRUE)+1, length(which(is.infinite(gvals))))	# values with max+1 instead of Inf (for rank-based correlation measures)
-			tab.stats[i,MEAS_DISTANCE_COR_PEARSON] <- cor(x=gvals[idx], y=svals[idx], method="pearson")
-			tab.stats[i,MEAS_DISTANCE_COR_SPEARMAN] <- rcorr(x=gvals2, y=svals, type="spearman")$r[1,2]
+			tab.stats[i,paste0(MEAS_DISTANCE_COR_PEARSON,"-finite")] <- cor(x=gvals[idx], y=svals[idx], method="pearson")
+			tab.stats[i,paste0(MEAS_DISTANCE_COR_SPEARMAN,"-infinite")] <- rcorr(x=gvals2, y=svals, type="spearman")$r[1,2]
 			tab.stats[i,paste0(MEAS_DISTANCE_COR_SPEARMAN,"-finite")] <- rcorr(x=gvals[idx], y=svals[idx], type="spearman")$r[1,2]
-			tab.stats[i,MEAS_DISTANCE_COR_KENDALL] <- cor.fk(x=gvals2,y=svals)
+			tab.stats[i,paste0(MEAS_DISTANCE_COR_KENDALL,"-infinite")] <- cor.fk(x=gvals2,y=svals)
 			tab.stats[i,paste0(MEAS_DISTANCE_COR_KENDALL,"-finite")] <- cor.fk(x=gvals[idx], y=svals[idx])
 			gvals <- gvals[idx]
 			svals <- svals[idx]

@@ -2,6 +2,8 @@
 # Functions used during network analysis.
 # 
 # 09/2019 Vincent Labatut
+# 
+# source("res/measures/distance.R")
 #############################################################################################
 
 
@@ -159,7 +161,7 @@ analyze.net.distance <- function(g, out.folder)
 		cor.tab <- matrix(NA,nrow=2,ncol=10)	
 		cor.tab <- data.frame(cor.tab)
 		cor.tab <- cbind(c("Database","Interpolation"), cor.tab)
-		colnames(cor.tab) <- c("Coordinates", "PearsonCoef", "PearsonPval", "SpearmanFiniteCoef", "SpearmanFinitePval", "SpearmanInfiniteCoef", "SpearmanInfinitePval", "KendallFiniteCoef", "KendallFinitePval", "KendallInfiniteCoef", "KendallInfinitePval")
+		colnames(cor.tab) <- c("Coordinates", "PearsonFiniteCoef", "PearsonFinitePval", "SpearmanFiniteCoef", "SpearmanFinitePval", "SpearmanInfiniteCoef", "SpearmanInfinitePval", "KendallFiniteCoef", "KendallFinitePval", "KendallInfiniteCoef", "KendallInfinitePval")
 		rownames(cor.tab) <- sdists
 		
 		# compute spatial distances
@@ -220,8 +222,8 @@ analyze.net.distance <- function(g, out.folder)
 				tlog(10,"WARNING: not enough values to compute correlation or produce plots")
 			else
 			{	tmp <- cor.test(x=gvals, y=svals, method="pearson")
-				cor.tab[sdist,"PearsonCoef"] <- tmp$estimate
-				cor.tab[sdist,"PearsonPval"] <- tmp$p.value
+				cor.tab[sdist,"PearsonFiniteCoef"] <- tmp$estimate
+				cor.tab[sdist,"PearsonFinitePval"] <- tmp$p.value
 				tmp <- rcorr(x=gvals, y=svals, type="spearman")
 				cor.tab[sdist,"SpearmanFiniteCoef"] <- tmp$r[1,2]
 				cor.tab[sdist,"SpearmanFinitePval"] <- tmp$P[1,2]
