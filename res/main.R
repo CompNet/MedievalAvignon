@@ -63,7 +63,9 @@ graph.types <- extract.estate.networks(split.surf=FALSE)
 #graph.types <- c(GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS)
 
 # plot comparison graphs
+#graph.types <- c(GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS, paste0(GR_EST_ESTATE_LEVEL,"_filtered"), paste0(GR_EST_FLAT_REL,"_filtered"), paste0(GR_EST_FLAT_MINUS,"_filtered"), "flat_minus_6_filtered")
 plot.graph.comparisons(graph.names=graph.types, folder=FOLDER_OUT_ANAL_EST)
+#graph.types <- c(GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS, "flat_minus_6")
 plot.graph.comparisons(graph.names=paste0(graph.types,"_filtered"), folder=FOLDER_OUT_ANAL_EST)
 
 # check street removal step

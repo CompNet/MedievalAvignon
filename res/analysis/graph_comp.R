@@ -54,8 +54,8 @@ plot.graph.comparisons <- function(graph.names, folder)
 #############################################################################################
 plot.graph.comparison <- function(g1, g2, folder)
 {	# init file names
-	plot.file1 <- file.path(folder, g1$name, paste0("graph_comparison_", g2$name))
-	plot.file2 <- file.path(folder, g2$name, paste0("graph_comparison_", g1$name))
+	plot.file1 <- file.path(folder, g1$name, "comparison", paste0("graph_comparison_", g2$name))
+	plot.file2 <- file.path(folder, g2$name, "comparison", paste0("graph_comparison_", g1$name))
 	
 	# perform comparison
 	att1 <- rep("Present",gorder(g1))
@@ -559,16 +559,18 @@ compare.split.net <- function()
 			print(tab)
 			
 			# record result matrix in split folder
-			tab.file <- file.path(FOLDER_OUT_ANAL,"estate","split",paste0(GR_EST_FLAT_REL,fn),paste0("graph_comparison_split-",GR_EST_FLAT_REL,"_vs_non-split-",gn,".csv"))
+			out.folder <- file.path(FOLDER_OUT_ANAL, "estate", "split", paste0(GR_EST_FLAT_REL,fn), "comparison")
+			dir.create(path=out.folder, showWarnings=FALSE, recursive=TRUE)
+			tab.file <- file.path(out.folder,paste0("graph_comparison_split-",GR_EST_FLAT_REL,"_vs_non-split-",gn,".csv"))
 			write.csv(tab, file=tab.file, row.names=TRUE)
 			
 			######
 			tlog(4,"Plotting the comparisons:")
 			
 			# init file names
-			plot.file.non <- file.path(FOLDER_OUT_ANAL,"estate","split", paste0(GR_EST_FLAT_REL,fn), paste0("graph_comparison_non-split-",gn,"_vs_split-",GR_EST_FLAT_REL))
+			plot.file.non <- file.path(out.folder, paste0("graph_comparison_non-split-",gn,"_vs_split-",GR_EST_FLAT_REL))
 			tlog(4,"Creating files '",plot.file.non,"'")
-			plot.file.split <- file.path(FOLDER_OUT_ANAL,"estate","split", paste0(GR_EST_FLAT_REL,fn), paste0("graph_comparison_split-",GR_EST_FLAT_REL,"_vs_non-split-",gn))
+			plot.file.split <- file.path(out.folder, paste0("graph_comparison_split-",GR_EST_FLAT_REL,"_vs_non-split-",gn))
 			tlog(4,"Creating files '",plot.file.split,"'")
 			
 			# perform comparison
