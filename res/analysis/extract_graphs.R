@@ -1786,7 +1786,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 # - on doit pouvoir estimer la position des biens non placés avec un GNN tenant compte de la nature des liens
 
 # MARGOT:
-# - traduction de 'confront' en anglais ?
+# - traduction de 'confront' en anglais ? urbarium ?
 
 # idées papiers: 
 # 1) intérêt du réseau de confront pour approximer la distance spatiale

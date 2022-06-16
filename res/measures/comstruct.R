@@ -2,6 +2,8 @@
 # Functions used during network analysis.
 # 
 # 09/2019 Vincent Labatut
+# 
+# source("res/measures/comstruct.R")
 #############################################################################################
 
 
@@ -34,58 +36,61 @@ MEAS_LONG_NAMES[MEAS_ARI] <- "Adjusted Rand Index"
 # returns: same graph, updated with the results.
 #############################################################
 analyze.net.comstruct <- function(g, out.folder)
-{	# get the stat table
+{	# whether to compute the communities or use previously detected (and cached) ones
+	COMPUTE <- FALSE
+	
+	# get the stat table
 	stat.file <- file.path(out.folder, g$name, "stats.csv")
 	stats <- retrieve.stats(stat.file)
 	
 	# community detection algorithms
 	algos <- list()
-	algos[["edgebetweenness"]] <- list(
-		fun=function(g, mode) 
-			cluster_edge_betweenness(graph=g,
-					weights=NULL,
-					directed=mode==MEAS_MODE_DIR,
-					edge.betweenness=FALSE,
-					merges=FALSE,
-					bridges=FALSE,
-					modularity=TRUE,
-					membership=TRUE),
-		modes=c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
-	)
-	algos[["fastgreedy"]] <- list(
-		fun=function(g, mode) 
-			cluster_fast_greedy(graph=as.undirected(g),
-					merges=FALSE,
-					modularity=TRUE,
-					membership=TRUE,
-					weights=NULL),
-		modes=c(MEAS_MODE_UNDIR)
-	)
-	algos[["infomap"]] <- list(
-			fun=function(g, mode) 
-				cluster_infomap(graph=if(mode==MEAS_MODE_UNDIR) as.undirected(g) else g,
-					e.weights=NULL,
-					v.weights=NULL,
-					nb.trials=10,
-					modularity=TRUE),
-			modes=c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
-	)
-	algos[["labelprop"]] <- list(
-			fun=function(g, mode) 
-				cluster_label_prop(graph=as.undirected(g),
-					weights=NA, 
-					initial=NULL, 
-					fixed=NULL),
-			modes=c(MEAS_MODE_UNDIR)
-	)
-	algos[["leadingeigen"]] <- list(
-			fun=function(g, mode) 
-				cluster_leading_eigen(graph=as.undirected(g),
-						weights=NULL,
-						start=NULL,
-						options=list(maxiter=1000000)),
-			modes=c(MEAS_MODE_UNDIR)
-	)
+#	algos[["edgebetweenness"]] <- list(
+#		fun=function(g, mode) 
+#			cluster_edge_betweenness(graph=g,
+#					weights=NULL,
+#					directed=mode==MEAS_MODE_DIR,
+#					edge.betweenness=FALSE,
+#					merges=FALSE,
+#					bridges=FALSE,
+#					modularity=TRUE,
+#					membership=TRUE),
+#		modes=c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
+#	)
+#	algos[["fastgreedy"]] <- list(
+#		fun=function(g, mode) 
+#			cluster_fast_greedy(graph=as.undirected(g),
+#					merges=FALSE,
+#					modularity=TRUE,
+#					membership=TRUE,
+#					weights=NULL),
+#		modes=c(MEAS_MODE_UNDIR)
+#	)
+#	algos[["infomap"]] <- list(
+#			fun=function(g, mode) 
+#				cluster_infomap(graph=if(mode==MEAS_MODE_UNDIR) as.undirected(g) else g,
+#					e.weights=NULL,
+#					v.weights=NULL,
+#					nb.trials=10,
+#					modularity=TRUE),
+#			modes=c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
+#	)
+#	algos[["labelprop"]] <- list(
+#			fun=function(g, mode) 
+#				cluster_label_prop(graph=as.undirected(g),
+#					weights=NA, 
+#					initial=NULL, 
+#					fixed=NULL),
+#			modes=c(MEAS_MODE_UNDIR)
+#	)
+#	algos[["leadingeigen"]] <- list(
+#			fun=function(g, mode) 
+#				cluster_leading_eigen(graph=as.undirected(g),
+#						weights=NULL,
+#						start=NULL,
+#						options=list(maxiter=1000000)),
+#			modes=c(MEAS_MODE_UNDIR)
+#	)
 	algos[["louvain"]] <- list(
 			fun=function(g, mode) 
 				cluster_louvain(graph=as.undirected(g),
@@ -129,14 +134,26 @@ analyze.net.comstruct <- function(g, out.folder)
 				coms.folder <- file.path(out.folder, g$name, MEAS_COMMUNITIES, mode, algo.name)
 				dir.create(path=coms.folder, showWarnings=FALSE, recursive=TRUE)
 				
-				# detect communities
-				##coms <- cluster_optimal(graph=simplify(g))		# much slower, obviously
-				##coms <- cluster_spinglass(graph=simplify(g))
-				##coms <- cluster_infomap(graph=simplify(g))
-				#coms <- cluster_edge_betweenness(graph=simplify(g), directed=mode)
-				coms <- algos[[a]]$fun(simplify(g), mode)
-				mod <- modularity(coms)
-				mbrs <- as.integer(membership(coms))
+				# detect/load communities
+				if(COMPUTE)
+				{	# compute communities
+					tlog(6,"Computing the communities (that may take a while)")
+					##coms <- cluster_optimal(graph=simplify(g))		# much slower, obviously
+					##coms <- cluster_spinglass(graph=simplify(g))
+					##coms <- cluster_infomap(graph=simplify(g))
+					#coms <- cluster_edge_betweenness(graph=simplify(g), directed=mode)
+					coms <- algos[[a]]$fun(simplify(g), mode)
+					mod <- modularity(coms)
+					mbrs <- as.integer(membership(coms))
+				}
+				else
+				{	# load previously detected communities
+					com.file <- file.path(coms.folder,paste0(fname,"_membership.csv"))
+					tlog(6,"Loading the previously detected communitites in '",com.file,"'")
+					df <- read.csv(file=com.file)
+					mbrs <- df[,"Community"]
+					mod <- stats[paste0(fname,"_mod"), "Value"]
+				}
 				com.nbr <- length(unique(mbrs))
 				tlog(6,"Number of communities: ",com.nbr)
 				tlog(6,"Modularity: ",mod)
@@ -153,9 +170,11 @@ analyze.net.comstruct <- function(g, out.folder)
 				custom.barplot(sizes, text=names(sizes), xlab="Community", ylab="Size", file=file.path(coms.folder,paste0(fname,"_size_bars")))
 				
 				# export CSV with community membership
-				df <- data.frame(vertex_attr(g, ND_NAME), get.names(g), mbrs)
-				colnames(df) <- c("Id","Name","Community") 
-				write.csv(df, file=file.path(coms.folder,paste0(fname,"_membership.csv")), row.names=FALSE)
+				if(COMPUTE)
+				{	df <- data.frame(vertex_attr(g, ND_NAME), get.names(g), mbrs)
+					colnames(df) <- c("Id","Name","Community") 
+					write.csv(df, file=file.path(coms.folder,paste0(fname,"_membership.csv")), row.names=FALSE)
+				}
 				
 				# add results to the graph (as attributes) and stats table
 				g <- set_vertex_attr(graph=g, name=fname, value=mbrs)
@@ -212,8 +231,8 @@ analyze.net.comstruct <- function(g, out.folder)
 						# record as graphml
 						write.graphml.file(g=g.com, file=paste0(plot.file,".graphml"))
 						
-#						# compute attribute stats 
-#						g.com <- analyze.net.attributes(g.com, out.folder)
+						# compute attribute stats 
+						g.com <- analyze.net.attributes(g.com, out.folder)
 						# compute diameters, eccentricity, radius
 						g.com <- analyze.net.eccentricity(g.com, out.folder)
 						# compute degree
@@ -399,8 +418,38 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 				tab <- as.data.frame(tt)
 				tab <- cbind(coms, tab)
 				colnames(tab)[1] <- "Group"
-				tab.file <- file.path(attr.folder, paste0(attr,"_distribution.csv"))
-				write.csv(tab, file=tab.file, row.names=FALSE)
+				tab.file <- file.path(attr.folder, paste0(attr,"_distribution"))
+				write.csv(tab, file=paste0(tab.file,".csv"), row.names=FALSE)
+				
+				# produce bar plot for the whome community structure
+				cols <- COLS_ATT[[attr]]
+				if(is.null(cols))
+					cols <- get.palette(ncol(tt))
+				for(fformat in FORMAT)
+				{	if(fformat=="pdf")
+						pdf(paste0(tab.file,".pdf"), width=25, height=25)
+					else if(fformat=="png")
+						png(paste0(tab.file,".png"), width=1024, height=1024)
+					barplot(
+						height=t(tt), 
+						beside=FALSE, 
+						names.arg=paste0("C",1:nrow(tt)), 
+						col=cols, 
+						main=NA, ylab="Frequency",
+						las=2
+					)
+					text2 <- colnames(tt)
+					idx <- which(is.na(text2))
+					if(length(idx)>0)
+						text2[idx] <- VAL_UNKNOWN
+					legend(
+						x="topleft",
+						fill=cols,
+						title=attr,
+						legend=text2
+					)
+					dev.off()
+				}
 				
 				# plot as graph with pie-charts as nodes
 				tlog(4,"Plotting group graph with the distribution of \"",attr,"\"")
@@ -499,8 +548,58 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 			tab <- as.data.frame(tt)
 			tab <- cbind(coms, tab)
 			colnames(tab)[1] <- "Group"
-			tab.file <- file.path(attr.folder, paste0(attr,"_distribution.csv"))
-			write.csv(tab, file=tab.file, row.names=FALSE)
+			tab.file <- file.path(attr.folder, paste0(attr,"_distribution"))
+			write.csv(tab, file=paste0(tab.file,".csv"), row.names=FALSE)
+			
+			# produce bar plot for the whome community structure
+			cols <- COLS_ATT[[attr]]
+			if(is.null(cols))
+				cols <- get.palette(ncol(tt))
+			else
+				cols <- cols[colnames(tt)]
+			for(fformat in FORMAT)
+			{	if(fformat=="pdf")
+					pdf(paste0(tab.file,".pdf"), width=25, height=25)
+				else if(fformat=="png")
+					png(paste0(tab.file,".png"), width=1024, height=1024)
+				barplot(
+					height=t(tt), 
+					beside=FALSE, 
+					names.arg=paste0("C",1:nrow(tt)), 
+					col=cols, 
+					main=NA, ylab="Frequency",
+					las=2
+				)
+				text2 <- colnames(tt)
+				idx <- which(is.na(text2))
+				if(length(idx)>0)
+					text2[idx] <- VAL_UNKNOWN
+				# legend in separate plot
+				if(length(text2)>7)
+				{	dev.off()
+					if(fformat=="pdf")
+						pdf(paste0(tab.file,"_legend.pdf"))
+					else if(fformat=="png")
+						png(paste0(tab.file,"_legend.png"))
+					plot(NULL, xaxt="n", yaxt="n", bty="n", ylab="", xlab="", xlim=0:1, ylim=0:1)
+					legend(
+						x="topleft",
+						fill=cols,
+						title=attr,
+						legend=text2
+					)
+				}
+				# legend inside the plot
+				else
+				{	legend(
+						x="topleft",
+						fill=cols,
+						title=attr,
+						legend=text2
+					)
+				}
+				dev.off()
+			}
 			
 			# plot as graph with pie-charts as nodes
 			tlog(6,"Plotting group graph with the distribution of \"",attr,"\"")
