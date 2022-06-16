@@ -210,9 +210,9 @@ for(i in 1:length(idx))
 			others <- setdiff(1:gsize(g), ee)
 			inter.pts <- t(sapply(others, function(e) get.inter.point(x1=V(g)[el[e,1]]$x, y1=V(g)[el[e,1]]$y, x2=V(g)[el[e,2]]$x, y2=V(g)[el[e,2]]$y, x3=V(g)[v]$x, y3=V(g)[v]$y)))
 			dd <- apply(inter.pts, 1, function(r) (V(g)[v]$x-r[1])^2 + (V(g)[v]$y-r[2])^2)
-			idx <- which.min(dd)
+			i <- which.min(dd)
 			# apply modification
-			g <- split.edge(g, v1=el[others[idx],1], v2=el[others[idx],2], x=inter.pts[idx,1], y=inter.pts[idx,2], v.name="tertiary")
+			g <- split.edge(g, v1=el[others[i],1], v2=el[others[i],2], x=inter.pts[i,1], y=inter.pts[i,2], v.name="tertiary")
 			u <- V(g)[gorder(g)]
 			g <- add_edges(graph=g, edges=c(v,u), attr=list(name=paste0("street_",z), type="street"))
 			z <- z + 1
