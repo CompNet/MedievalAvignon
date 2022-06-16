@@ -45,10 +45,11 @@ split.edge <- function(g, v1, v2, x, y, v.name)
 	g <- delete_edges(graph=g, edges=E(g)[v1 %--% v2])
 	
 	# add new vertex
-	g <- add_vertices(graph=g, nv=1, attr=list(name=v.name, x=x, y=y))
+	g <- add_vertices(graph=g, nv=1, attr=list(name=v.name, type="tertiary", x=x, y=y))
+	v3 <- gorder(g)
 	
 	# create new edges
-	g <- add_edges(graph=g, edges=c(v1,v.name,v.name,v2), attr=list(name=rep(e.name,2)))
+	g <- add_edges(graph=g, edges=c(v1,v3,v3,v2), attr=list(name=rep(e.name,2), type=rep("street",2)))
 	
 	return(g)
 }
@@ -62,12 +63,13 @@ split.edge <- function(g, v1, v2, x, y, v.name)
 # g: graph.
 # start: index of the starting vertex.
 # end: index of the end vertex.
+# e.type: type of the created edges.
 # e.name: name of the created edges.
 # tolerance: maximal angle when selecting next vertex.
 #
 # return: a list containing the completed graph and the created path.
 ###############################################################################
-build.path <- function(g, start, end, e.name, tolerance=45)
+build.path <- function(g, start, end, e.type, e.name, tolerance=45)
 {	u <- start
 	remaining <- (1:gorder(g))[-start]
 	path <- u
@@ -82,7 +84,7 @@ build.path <- function(g, start, end, e.name, tolerance=45)
 		if(are.connected(graph=g, v1=u, v2=v))
 			v <- end
 		else
-			g <- add_edges(graph=g, edges=c(u,v), attr=list(name=e.name))
+			g <- add_edges(graph=g, edges=c(u,v), attr=list(name=e.name, type=e.type))
 		u <- v
 		path <- c(path, u)
 	}
@@ -95,42 +97,38 @@ build.path <- function(g, start, end, e.name, tolerance=45)
 
 
 ###############################################################################
+# Computes the intersection point between the line going through points 1 & 2,
+# and the perpendicular going through point 3.
+# Taken from: https://stackoverflow.com/a/12499474/1254730
+#
+# x1,y1: position of the first point of the line.
+# x2,y2: position of the second point of the line.
+# x3,y3: position of the point of the perpendicular.
+#
+# returns: coordinates of the intersection point.
+###############################################################################
+get.inter.point <- function(x1, y1, x2, y2, x3, y3)
+{	px <- x2 - x1
+	py <- y2 - y1
+	d12 <- px*px + py*py
+	u <- ((x3 - x1) * px + (y3 - y1) * py) / d12;
+	x <- x1 + u * px
+	y <- y1 + u * py
+	
+	res <- c(x,y)
+	return(res)
+}
+
+
+
+
+###############################################################################
 g <- make_empty_graph(n=0, directed=FALSE)
 
 # create city center
 center.x <- 0
 center.y <- 0
-points.ys <- c(points.ys, center.y)
 g <- add_vertices(graph=g, nv=1, attr=list(name="center", type="center", x=center.x, y=center.y))
-
-## external wall
-#ext.xs <- runif(n=n.av, min=-1, max=1)
-#ext.ys <- runif(n=n.av, min=-1, max=1)
-#points.ys <- c(points.ys, ext.ys)
-#g <- add_vertices(graph=g, nv=n.av, attr=list(name=paste0("ext_wall_",1:n.av), x=ext.xs, y=ext.ys))
-#g <- add_edges(graph=g, edges=c(rbind(rep("center",n.av),paste0("ext_wall_",1:n.av))), attr=list(name=paste0("avenue_",1:n.av)))
-#types <- c(types, rep("ext_wall",n.av))
-#
-## internal wall
-#tmp <- runif(n=n.av, min=0.5, max=0.8)
-#int.xs <- tmp*ext.xs
-#int.ys <- tmp*ext.ys
-#points.ys <- c(points.ys, int.ys)
-#for(a in 1:n.av)
-#{	g <- split.edge(
-#		g=g, 
-#		v1="center", v2=paste0("ext_wall_",a),
-#		x=int.xs[a], y=int.ys[a], 
-#		v.name=paste0("int_wall_",a)
-#	)
-#}
-#types <- c(types, rep("int_wall",n.av))
-#
-## additional points
-#sec.xs <- runif(n=n.sec, min=min(ext.xs), max=max(ext.xs))
-#sec.ys <- runif(n=n.sec, min=min(ext.ys), max=max(ext.ys))
-#g <- add_vertices(graph=g, nv=n.sec, attr=list(name=paste0("secondary_",1:n.sec), x=sec.xs, y=sec.ys))
-#types <- c(types, rep("secondary",n.sec))
 
 # create additional points
 r <- sqrt(runif(n=n.sec, min=0, max=1))
@@ -150,7 +148,7 @@ while(nrow(hull)>0)
 	V(g)[v1+1]$type <- "ext_wall"
 	V(g)[v2+1]$type <- "ext_wall"
 	wall <- c(wall, v2+1)
-	g <- add_edges(graph=g, edges=c(v1+1,v2+1), attr=list(name="ext_wall"))
+	g <- add_edges(graph=g, edges=c(v1+1,v2+1), attr=list(name="ext_wall", type="ext_wall"))
 	# update
 	hull <- hull[-r,,drop=FALSE]
 	r <- which(hull[,1]==v2)
@@ -169,7 +167,7 @@ mids <- c()
 a <- 1
 for(i in sq)
 {	tlog("Adding avenue starting at vertex #",i)
-	tmp <- build.path(g, start=wall[i], end=which(V(g)$name=="center"), e.name=paste0("avenue_",a))
+	tmp <- build.path(g, start=wall[i], end=which(V(g)$name=="center"), e.type="avenue", e.name=paste0("avenue_",a))
 	g <- tmp$g
 	path <- tmp$path
 print(path)	
@@ -179,12 +177,12 @@ print(path)
 mids <- c(mids, mids[1])
 
 # add internal wall
-for(i in 1:n.av)
-	g <- build.path(g, start=mids[i], end=mids[i+1], e.name="int_wall")$g
+for(i in 1:length(sq))
+	g <- build.path(g, start=mids[i], end=mids[i+1], e.type="int_wall", e.name="int_wall")$g
 
 # add minor streets
 idx <- which(V(g)$type=="secondary")
-V(g)[idx]$deg <- sample(x=1, size=length(idx), replace=TRUE)
+V(g)[idx]$deg <- sample(x=2:4, size=length(idx), replace=TRUE)
 z <- 1
 for(i in 1:length(idx))
 {	v <- idx[i]
@@ -192,24 +190,38 @@ for(i in 1:length(idx))
 	while(V(g)[v]$deg>0)
 	{	cx <- sample(c("v","e"), size=1)
 		# connect to existing vertex
-#		if(cx=="v")
-		{	neis <- neighbors(graph=g, v=v, mode="all")
-			others <- (1:gorder(g))[-c(v,neis)]
+		if(cx=="v")
+		{	# select possible vertices
+			neis <- as.integer(neighbors(graph=g, v=v, mode="all"))
+			full <- which(V(g)$deg<1)
+			others <- setdiff(1:gorder(g), c(v,neis,full))
 			dd <- sapply(others, function(u) (V(g)[v]$x-V(g)[u]$x)^2 + (V(g)[v]$y-V(g)[u]$y)^2)
 			u <- others[which.min(dd)]
+			# create new edge
 			g <- add_edges(graph=g, edges=c(v,u), attr=list(name=paste0("street_",z), type="street"))
 			z <- z + 1
 			V(g)[u]$deg <- V(g)[u]$deg - 1
 		}
 		# connect to street, requires creating vertex
-#		else if(cx=="e")
-#		{	
-#			
-#		}
+		else if(cx=="e")
+		{	# select closest street
+			el <- as_edgelist(graph=g, names=FALSE)
+			ee <- as.integer(incident(graph=g, v=v, mode="all"))
+			others <- setdiff(1:gsize(g), ee)
+			inter.pts <- t(sapply(others, function(e) get.inter.point(x1=V(g)[el[e,1]]$x, y1=V(g)[el[e,1]]$y, x2=V(g)[el[e,2]]$x, y2=V(g)[el[e,2]]$y, x3=V(g)[v]$x, y3=V(g)[v]$y)))
+			dd <- apply(inter.pts, 1, function(r) (V(g)[v]$x-r[1])^2 + (V(g)[v]$y-r[2])^2)
+			idx <- which.min(dd)
+			# apply modification
+			g <- split.edge(g, v1=el[others[idx],1], v2=el[others[idx],2], x=inter.pts[idx,1], y=inter.pts[idx,2], v.name="tertiary")
+			u <- V(g)[gorder(g)]
+			g <- add_edges(graph=g, edges=c(v,u), attr=list(name=paste0("street_",z), type="street"))
+			z <- z + 1
+			V(g)[u]$deg <- sample(x=0:1, size=1)
+		}
 		V(g)[v]$deg <- V(g)[v]$deg - 1
 	}
-	plot(g, vertex.label=1:gorder(g), vertex.color=match(V(g)$type,unique(V(g)$type)), vertex.size=4)
-	readline(prompt="Press [enter] to continue")
+#	plot(g, vertex.label=1:gorder(g), vertex.color=match(V(g)$type,unique(V(g)$type)), vertex.size=4)
+#	readline(prompt="Press [enter] to continue")
 }
 
 # faut récupérer le graphe dual ?
@@ -221,5 +233,6 @@ for(i in 1:length(idx))
 plot(g, 
 	vertex.label=1:gorder(g), 	# 1:gorder(g)
 	vertex.color=match(V(g)$type,unique(V(g)$type)), 
-	vertex.size=4
+	edge.color=CAT_COLORS_8[match(E(g)$type,unique(E(g)$type))],
+	vertex.size=3
 )
