@@ -245,16 +245,18 @@ for(i in 1:length(idx))
 		else if(cx=="e")
 		{	# select closest street
 			el <- as_edgelist(graph=g, names=FALSE)
-			ee <- as.integer(incident(graph=g, v=v, mode="all"))
+			neis <- c(as.integer(neighbors(graph=g, v=v, mode="all")), v)
+			ee <- unique(unlist(sapply(neis, function(u) as.integer(incident(graph=g, v=u, mode="all")))))
 			others <- setdiff(1:gsize(g), ee)
-			inter.pts <- t(sapply(others, function(e) get.inter.point(x1=V(g)[el[e,1]]$x, y1=V(g)[el[e,1]]$y, x2=V(g)[el[e,2]]$x, y2=V(g)[el[e,2]]$y, x3=V(g)[v]$x, y3=V(g)[v]$y)))
-			inside <- sapply(1:length(others), function(i) # check if intersection point is on segment
-					{	rg.x <- range(V(g)[el[others[i],1]]$x, V(g)[el[others[i],2]]$x)
-						rg.y <- range(V(g)[el[others[i],1]]$y, V(g)[el[others[i],2]]$y)
-						inter.pts[i,1]>=rg.x[1] && inter.pts[i,1]<=rg.x[2] && inter.pts[i,2]>=rg.y[1] && inter.pts[i,2]<=rg.y[2]
-					})
-			others <- others[inside]
-			inter.pts <- inter.pts[inside,]
+#			inter.pts <- t(sapply(others, function(e) get.inter.point(x1=V(g)[el[e,1]]$x, y1=V(g)[el[e,1]]$y, x2=V(g)[el[e,2]]$x, y2=V(g)[el[e,2]]$y, x3=V(g)[v]$x, y3=V(g)[v]$y)))
+#			inside <- sapply(1:length(others), function(i) # check if intersection point is on segment
+#					{	rg.x <- range(V(g)[el[others[i],1]]$x, V(g)[el[others[i],2]]$x)
+#						rg.y <- range(V(g)[el[others[i],1]]$y, V(g)[el[others[i],2]]$y)
+#						inter.pts[i,1]>=rg.x[1] && inter.pts[i,1]<=rg.x[2] && inter.pts[i,2]>=rg.y[1] && inter.pts[i,2]<=rg.y[2]
+#					})
+#			others <- others[inside]
+#			inter.pts <- inter.pts[inside,]
+			inter.pts <- t(sapply(others, function(e) c(mean(c(V(g)[el[e,1]]$x,V(g)[el[e,2]]$x)), mean(c(V(g)[el[e,1]]$y, V(g)[el[e,2]]$y)))))
 			dd <- apply(inter.pts, 1, function(r) (V(g)[v]$x-r[1])^2 + (V(g)[v]$y-r[2])^2)
 			i <- which.min(dd)
 			tlog(6,"Connecting to edge ",el[others[i],1],"--",el[others[i],2]," (new vertex ",gorder(g)+1,")")
@@ -266,16 +268,20 @@ for(i in 1:length(idx))
 			V(g)[u]$deg <- sample(x=0:1, size=1)
 		}
 		
-		v.cols <- match(V(g)$type,unique(V(g)$type))
-		e.cols <- CAT_COLORS_8[match(E(g)$type,unique(E(g)$type))]
-		v.sizes <- rep(3, gorder(g)); v.sizes[c(u,v)] <- rep(9,2)
-		e.widths <- rep(1,gsize(g)); e.widths[gsize(g)] <- 3
-		plot(g, vertex.label=1:gorder(g), vertex.color=v.cols, vertex.size=v.sizes, edge.color=e.cols, edge.width=e.widths)
-		readline(prompt="Press [enter] to continue")
+#		v.cols <- match(V(g)$type,unique(V(g)$type))
+#		e.cols <- CAT_COLORS_8[match(E(g)$type,unique(E(g)$type))]
+#		v.sizes <- rep(3, gorder(g)); v.sizes[c(u,v)] <- rep(9,2)
+#		e.widths <- rep(1,gsize(g)); e.widths[gsize(g)] <- 3
+#		plot(g, vertex.label=1:gorder(g), vertex.color=v.cols, vertex.size=v.sizes, edge.color=e.cols, edge.width=e.widths)
+#		readline(prompt="Press [enter] to continue")
 		
 		V(g)[v]$deg <- V(g)[v]$deg - 1
 	}
 }
+
+# pb: 
+# - création de noeuds alignés
+# - prioriser la connexion à liens: passer à noeud si lien trop court pr splitter
 
 # faut récupérer le graphe dual ?
 # simplifier les noeuds de degré 2 => même rue
