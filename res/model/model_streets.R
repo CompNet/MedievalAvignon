@@ -218,6 +218,7 @@ for(i in 1:length(sq))
 	g <- build.path(g, start=mids[i], end=mids[i+1], e.type="int_wall", e.name="int_wall")$g
 
 # add minor streets
+min.length <- 0.2	# min length when splitting edges
 tlog(2,"Adding minor streets")	
 idx <- which(V(g)$type=="secondary")
 V(g)[idx]$deg <- sample(x=2:4, size=length(idx), replace=TRUE)
@@ -227,8 +228,28 @@ for(i in 1:length(idx))
 	tlog(4,"Processing node #",v," (",i,"/",length(idx),")")
 	while(V(g)[v]$deg>0)
 	{	cx <- sample(c("v","e"), size=1)
+		# connect to street, requires creating vertex
+			# select closest street
+			el <- as_edgelist(graph=g, names=FALSE)
+			lengths <- sapply(1:nrow(el), function(r) (V(g)[el[r,1]]$x-V(g)[el[r,2]]$x)^2 + (V(g)[el[r,1]]$y-V(g)[el[r,2]]$y)^2)
+			neis <- c(as.integer(neighbors(graph=g, v=v, mode="all")), v)
+			ee <- unique(unlist(sapply(neis, function(u) as.integer(incident(graph=g, v=u, mode="all")))))
+			ee <- union(ee, which(lengths<=min.length))
+			others <- setdiff(1:gsize(g), ee)
+		if(length(others)>0)
+		{	inter.pts <- t(sapply(others, function(e) c(mean(c(V(g)[el[e,1]]$x,V(g)[el[e,2]]$x)), mean(c(V(g)[el[e,1]]$y, V(g)[el[e,2]]$y)))))
+			dd <- apply(inter.pts, 1, function(r) (V(g)[v]$x-r[1])^2 + (V(g)[v]$y-r[2])^2)
+			i <- which.min(dd)
+			tlog(6,"Connecting to edge ",el[others[i],1],"--",el[others[i],2]," (new vertex ",gorder(g)+1,")")
+			# apply modification
+			g <- split.edge(g, v1=el[others[i],1], v2=el[others[i],2], x=inter.pts[i,1], y=inter.pts[i,2], v.name="tertiary")
+			u <- as.integer(V(g)[gorder(g)])
+			g <- add_edges(graph=g, edges=c(v,u), attr=list(name=paste0("street_",z), type="street"))
+			z <- z + 1
+			V(g)[u]$deg <- sample(x=0:1, size=1)
+		}
 		# connect to existing vertex
-		if(cx=="v")
+		else
 		{	# select possible vertices
 			neis <- as.integer(neighbors(graph=g, v=v, mode="all"))
 			full <- which(V(g)$deg<1)
@@ -241,39 +262,13 @@ for(i in 1:length(idx))
 			z <- z + 1
 			V(g)[u]$deg <- V(g)[u]$deg - 1
 		}
-		# connect to street, requires creating vertex
-		else if(cx=="e")
-		{	# select closest street
-			el <- as_edgelist(graph=g, names=FALSE)
-			neis <- c(as.integer(neighbors(graph=g, v=v, mode="all")), v)
-			ee <- unique(unlist(sapply(neis, function(u) as.integer(incident(graph=g, v=u, mode="all")))))
-			others <- setdiff(1:gsize(g), ee)
-#			inter.pts <- t(sapply(others, function(e) get.inter.point(x1=V(g)[el[e,1]]$x, y1=V(g)[el[e,1]]$y, x2=V(g)[el[e,2]]$x, y2=V(g)[el[e,2]]$y, x3=V(g)[v]$x, y3=V(g)[v]$y)))
-#			inside <- sapply(1:length(others), function(i) # check if intersection point is on segment
-#					{	rg.x <- range(V(g)[el[others[i],1]]$x, V(g)[el[others[i],2]]$x)
-#						rg.y <- range(V(g)[el[others[i],1]]$y, V(g)[el[others[i],2]]$y)
-#						inter.pts[i,1]>=rg.x[1] && inter.pts[i,1]<=rg.x[2] && inter.pts[i,2]>=rg.y[1] && inter.pts[i,2]<=rg.y[2]
-#					})
-#			others <- others[inside]
-#			inter.pts <- inter.pts[inside,]
-			inter.pts <- t(sapply(others, function(e) c(mean(c(V(g)[el[e,1]]$x,V(g)[el[e,2]]$x)), mean(c(V(g)[el[e,1]]$y, V(g)[el[e,2]]$y)))))
-			dd <- apply(inter.pts, 1, function(r) (V(g)[v]$x-r[1])^2 + (V(g)[v]$y-r[2])^2)
-			i <- which.min(dd)
-			tlog(6,"Connecting to edge ",el[others[i],1],"--",el[others[i],2]," (new vertex ",gorder(g)+1,")")
-			# apply modification
-			g <- split.edge(g, v1=el[others[i],1], v2=el[others[i],2], x=inter.pts[i,1], y=inter.pts[i,2], v.name="tertiary")
-			u <- as.integer(V(g)[gorder(g)])
-			g <- add_edges(graph=g, edges=c(v,u), attr=list(name=paste0("street_",z), type="street"))
-			z <- z + 1
-			V(g)[u]$deg <- sample(x=0:1, size=1)
-		}
 		
-#		v.cols <- match(V(g)$type,unique(V(g)$type))
-#		e.cols <- CAT_COLORS_8[match(E(g)$type,unique(E(g)$type))]
-#		v.sizes <- rep(3, gorder(g)); v.sizes[c(u,v)] <- rep(9,2)
-#		e.widths <- rep(1,gsize(g)); e.widths[gsize(g)] <- 3
-#		plot(g, vertex.label=1:gorder(g), vertex.color=v.cols, vertex.size=v.sizes, edge.color=e.cols, edge.width=e.widths)
-#		readline(prompt="Press [enter] to continue")
+		v.cols <- match(V(g)$type,unique(V(g)$type))
+		e.cols <- CAT_COLORS_8[match(E(g)$type,unique(E(g)$type))]
+		v.sizes <- rep(3, gorder(g)); v.sizes[c(u,v)] <- rep(9,2)
+		e.widths <- rep(1,gsize(g)); e.widths[gsize(g)] <- 3
+		plot(g, vertex.label=1:gorder(g), vertex.color=v.cols, vertex.size=v.sizes, edge.color=e.cols, edge.width=e.widths)
+		readline(prompt="Press [enter] to continue")
 		
 		V(g)[v]$deg <- V(g)[v]$deg - 1
 	}
