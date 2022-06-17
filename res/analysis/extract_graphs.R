@@ -1811,6 +1811,12 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 # + cb de noeuds significatifs différents entre split et pas split
 # - màj données
 
+# TODO évaluer la robustesse du graphe par rapport à corr dist (par ex)
+# quels noeuds ont un effet important (vitalité)
+
+# TODO comparer intra vs. tout pour montrer l'effet de la complétude des données
+
+# TODO mettre les proprios sur les biens
 
 ###### SOCIAL ######
 #
