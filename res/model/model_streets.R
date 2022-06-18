@@ -9,6 +9,7 @@
 ###############################################################################
 # load other scripts
 source("res/common/_include.R")
+source("res/model/intersect.R")
 
 
 
@@ -18,6 +19,7 @@ source("res/common/_include.R")
 n.sec <- 400
 n.av <- 5
 out.folder <- "out/analysis/estate/model/streets"
+dir.create(path=out.folder, showWarnings=FALSE, recursive=TRUE)
 
 
 
@@ -218,65 +220,89 @@ for(i in 1:length(sq))
 	g <- build.path(g, start=mids[i], end=mids[i+1], e.type="int_wall", e.name="int_wall")$g
 
 # add minor streets
-min.length <- 0.2	# min length when splitting edges
+min.length <- 0.1	# min length when splitting edges
 tlog(2,"Adding minor streets")	
 idx <- which(V(g)$type=="secondary")
-V(g)[idx]$deg <- sample(x=2:4, size=length(idx), replace=TRUE)
-z <- 1
-for(i in 1:length(idx))
-{	v <- idx[i]
-	tlog(4,"Processing node #",v," (",i,"/",length(idx),")")
-	while(V(g)[v]$deg>0)
-	{	cx <- sample(c("v","e"), size=1)
-		# connect to street, requires creating vertex
-			# select closest street
-			el <- as_edgelist(graph=g, names=FALSE)
-			lengths <- sapply(1:nrow(el), function(r) (V(g)[el[r,1]]$x-V(g)[el[r,2]]$x)^2 + (V(g)[el[r,1]]$y-V(g)[el[r,2]]$y)^2)
-			neis <- c(as.integer(neighbors(graph=g, v=v, mode="all")), v)
-			ee <- unique(unlist(sapply(neis, function(u) as.integer(incident(graph=g, v=u, mode="all")))))
-			ee <- union(ee, which(lengths<=min.length))
-			others <- setdiff(1:gsize(g), ee)
-		if(length(others)>0)
-		{	inter.pts <- t(sapply(others, function(e) c(mean(c(V(g)[el[e,1]]$x,V(g)[el[e,2]]$x)), mean(c(V(g)[el[e,1]]$y, V(g)[el[e,2]]$y)))))
-			dd <- apply(inter.pts, 1, function(r) (V(g)[v]$x-r[1])^2 + (V(g)[v]$y-r[2])^2)
-			i <- which.min(dd)
-			tlog(6,"Connecting to edge ",el[others[i],1],"--",el[others[i],2]," (new vertex ",gorder(g)+1,")")
-			# apply modification
-			g <- split.edge(g, v1=el[others[i],1], v2=el[others[i],2], x=inter.pts[i,1], y=inter.pts[i,2], v.name="tertiary")
-			u <- as.integer(V(g)[gorder(g)])
-			g <- add_edges(graph=g, edges=c(v,u), attr=list(name=paste0("street_",z), type="street"))
-			z <- z + 1
-			V(g)[u]$deg <- sample(x=0:1, size=1)
+V(g)$deg <- sample(x=2:4, size=gorder(g), replace=TRUE)  - degree(graph=g,mode="all")
+V(g)$deg <- sapply(V(g)$deg, function(d) max(0, d))
+z <- 0.5
+changed <- TRUE
+while(changed)
+{	idx <- sample(idx)
+	changed <- FALSE
+	
+	for(i in 1:length(idx))
+	{	v <- idx[i]
+		tlog(4,"Processing node #",v,": deg=",V(g)[v]$deg," (",i,"/",length(idx),")")
+		if(V(g)[v]$deg>0)
+		{	vrtx <- TRUE
+			# connect to street, requires creating vertex
+				el <- as_edgelist(graph=g, names=FALSE)
+				lengths <- sapply(1:nrow(el), function(r) sqrt((V(g)[el[r,1]]$x-V(g)[el[r,2]]$x)^2 + (V(g)[el[r,1]]$y-V(g)[el[r,2]]$y)^2))
+				neis <- c(as.integer(neighbors(graph=g, v=v, mode="all")), v)
+				# filter if attached to vertex or direct neighbors
+				ee <- unique(unlist(sapply(neis, function(u) as.integer(incident(graph=g, v=u, mode="all")))))
+				# or if already the result of previous split
+				ee <- union(ee, which(V(g)[el[,1]]$type=="tertiary" & V(g)[el[,2]]$type=="tertiary"))
+				# or if too short to be split
+				ee <- union(ee, which(lengths<=min.length))
+				others <- setdiff(1:gsize(g), ee)
+			if(length(others)>0)
+			{	# compute end points with target edge, and keep only intersection-free cases
+				end.pts <- t(sapply(others, function(e) c(mean(c(V(g)[el[e,1]]$x,V(g)[el[e,2]]$x)), mean(c(V(g)[el[e,1]]$y, V(g)[el[e,2]]$y)))))
+				intersections <- sapply(1:length(others), function(i) check.potential.link.crossing(delete_edges(g,c(others[i],incident(graph=g,v=v,mode="all"))), v1=v, x2=end.pts[i,1], y2=end.pts[i,2]))
+				#intersections <- sapply(1:length(others), function(i) check.segment.crossing(x1=V(g)[el[others[i],1]]$x, y1=V(g)[el[others[i],1]]$y, x2=V(g)[el[others[i],2]]$x, y2=V(g)[el[others[i],2]]$y, x3=V(g)[v]$x, y3=V(g)[v]$y, x4=end.pts[i,1], y4=end.pts[i,2]))
+				#print(cbind(el[others,],intersections))
+				others <- others[!intersections]
+				end.pts <- end.pts[!intersections,,drop=FALSE]
+				if(length(others)>0)
+				{	# compute distances and keep closest one
+					dd <- apply(end.pts, 1, function(r) (V(g)[v]$x-r[1])^2 + (V(g)[v]$y-r[2])^2)
+					s <- which.min(dd)
+					tlog(6,"Connecting to edge ",el[others[s],1],"--",el[others[s],2]," (new vertex ",gorder(g)+1,")")
+					# apply modification
+					g <- split.edge(g, v1=el[others[s],1], v2=el[others[s],2], x=end.pts[s,1], y=end.pts[s,2], v.name="tertiary")
+					u <- as.integer(V(g)[gorder(g)])
+					g <- add_edges(graph=g, edges=c(v,u), attr=list(name=paste0("street_",z), type="street"))
+					z <- z + 1
+					V(g)[u]$deg <- sample(x=0:1, size=1)
+					vrtx <- FALSE
+					changed <- TRUE
+				}
+			}
+			
+			# connect to existing vertex
+			if(vrtx)
+			{	# select possible vertices
+				neis <- as.integer(neighbors(graph=g, v=v, mode="all"))
+				full <- which(V(g)$deg<1)
+				others <- setdiff(1:gorder(g), c(v,neis,full))
+				dd <- sapply(others, function(u) (V(g)[v]$x-V(g)[u]$x)^2 + (V(g)[v]$y-V(g)[u]$y)^2)
+				u <- others[which.min(dd)]
+				tlog(6,"Connecting to vertex ",u)
+				# create new edge
+				g <- add_edges(graph=g, edges=c(v,u), attr=list(name=paste0("street_",z), type="street"))
+				z <- z + 1
+				V(g)[u]$deg <- V(g)[u]$deg - 1
+				changed <- TRUE
+			}
+			
+#			v.cols <- match(V(g)$type,unique(V(g)$type))
+#			e.cols <- CAT_COLORS_8[match(E(g)$type,unique(E(g)$type))]
+#			v.sizes <- rep(3, gorder(g)); v.sizes[c(u,v)] <- rep(9,2)
+#			e.widths <- rep(1,gsize(g)); e.widths[gsize(g)] <- 3
+#			v.labels <- 1:gorder(g)
+#			v.labels <- NA
+#			plot(g, vertex.label=v.labels, vertex.color=v.cols, vertex.size=v.sizes, edge.color=e.cols, edge.width=e.widths)
+#			readline(prompt="Press [enter] to continue")
+			
+			V(g)[v]$deg <- V(g)[v]$deg - 1
 		}
-		# connect to existing vertex
-		else
-		{	# select possible vertices
-			neis <- as.integer(neighbors(graph=g, v=v, mode="all"))
-			full <- which(V(g)$deg<1)
-			others <- setdiff(1:gorder(g), c(v,neis,full))
-			dd <- sapply(others, function(u) (V(g)[v]$x-V(g)[u]$x)^2 + (V(g)[v]$y-V(g)[u]$y)^2)
-			u <- others[which.min(dd)]
-			tlog(6,"Connecting to vertex ",u)
-			# create new edge
-			g <- add_edges(graph=g, edges=c(v,u), attr=list(name=paste0("street_",z), type="street"))
-			z <- z + 1
-			V(g)[u]$deg <- V(g)[u]$deg - 1
-		}
-		
-		v.cols <- match(V(g)$type,unique(V(g)$type))
-		e.cols <- CAT_COLORS_8[match(E(g)$type,unique(E(g)$type))]
-		v.sizes <- rep(3, gorder(g)); v.sizes[c(u,v)] <- rep(9,2)
-		e.widths <- rep(1,gsize(g)); e.widths[gsize(g)] <- 3
-		plot(g, vertex.label=1:gorder(g), vertex.color=v.cols, vertex.size=v.sizes, edge.color=e.cols, edge.width=e.widths)
-		readline(prompt="Press [enter] to continue")
-		
-		V(g)[v]$deg <- V(g)[v]$deg - 1
 	}
 }
 
-# pb: 
-# - création de noeuds alignés
-# - prioriser la connexion à liens: passer à noeud si lien trop court pr splitter
+# TODO: 
+# - nommer les rues à la construction: deg <3 = même nom pr tous les liens attachés si pas déjà un nom?
 
 # faut récupérer le graphe dual ?
 # simplifier les noeuds de degré 2 => même rue
@@ -290,3 +316,4 @@ plot(g,
 	vertex.size=3
 )
 write.graph(graph=g, file=file.path(out.folder,"test.graphml"), format="graphml")
+
