@@ -1,5 +1,4 @@
-############################################################################
-# Functions related to the processing of link intersections.
+# Functions related to the processing of edge intersections.
 #
 # Vincent Labatut 12/2015
 #
@@ -259,7 +258,7 @@ check.segment.crossing <- function(x1, y1, x2, y2, x3, y3, x4, y4)
 
 
 ############################################################################
-# Checks if the specified segment intersects with another link (i.e. if the
+# Checks if the specified segment intersects with another edge (i.e. if the
 # graph would still be planar after adding the edge corresponding to this 
 # segment).
 #
@@ -267,9 +266,9 @@ check.segment.crossing <- function(x1, y1, x2, y2, x3, y3, x4, y4)
 # v1: first end of the segment (a vertex).
 # x2,y2: coordinates of the other end.
 #
-# returns: TRUE iff the segment crosses an existing link.
+# returns: TRUE iff the segment crosses an existing edge.
 ############################################################################
-check.potential.link.crossing <- function(g, v1, x2, y2)
+check.potential.edge.crossing <- function(g, v1, x2, y2)
 {	result <- FALSE
 	
 	# get edge info
@@ -309,16 +308,16 @@ check.potential.link.crossing <- function(g, v1, x2, y2)
 
 
 ############################################################################
-# Checks if the specified link intersects with another link (i.e. if the
+# Checks if the specified edge intersects with another edge (i.e. if the
 # graph is still planar).
 #
 # g: graph to consider.
-# e: id of the link of interest in the graph g. If NA, we check all of them.
+# e: id of the edge of interest in the graph g. If NA, we check all of them.
 #
-# returns: TRUE iff link e is crossing another link in graph g (or iff there
-#		   is any link crossing in g, in the case of e=NA).
+# returns: TRUE iff edge e is crossing another edge in graph g (or iff there
+#		   is any edge crossing in g, in the case of e=NA).
 ############################################################################
-check.link.crossing <- function(g, e=NA)
+check.edge.crossing <- function(g, e=NA)
 {	result <- FALSE
 #cat("START\n")	
 	# possibly init e
@@ -332,7 +331,7 @@ check.link.crossing <- function(g, e=NA)
 	while(!result && j<=length(es))
 	{	e <- es[j]
 		
-		# get link list, remove considered link
+		# get edge list, remove considered edge
 		el <- get.edgelist(g)
 		n1 <- el[e,1]
 		x1 <- V(g)[n1]$x
@@ -343,13 +342,13 @@ check.link.crossing <- function(g, e=NA)
 		el <- el[-e,,drop=FALSE]
 		
 		i <- 1
-		# loop on all links, stop when intersection found
+		# loop on all edges, stop when intersection found
 		while(!result & i<=nrow(el))
 		{	# get the node indices
 			n3 <- el[i,1]
 			n4 <- el[i,2]
 			
-			# check if the link if it has no common nodes with e
+			# check if the edge if it has no common nodes with e
 			if(length(intersect(c(n1,n2),c(n3,n4)))==0)
 			{	# get the endpoints coordinates
 				x3 <- V(g)[n3]$x
@@ -376,13 +375,13 @@ if(result)
 
 
 ############################################################################
-# Adds a node at each intersection point between two links. Also checks if
-# two links overlap, in which case they are broken down to several links, in
+# Adds a node at each intersection point between two edges. Also checks if
+# two edges overlap, in which case they are broken down to several edges, in
 # order to avoid any overlap.
 #
 # g: the graph to process.
 #
-# returns: the modified graph, which is plane and without any overlapping links.
+# returns: the modified graph, which is plane and without any overlapping edges.
 ############################################################################
 add.intersection.nodes <- function(g)
 {	modified <- TRUE
@@ -392,13 +391,13 @@ add.intersection.nodes <- function(g)
 	{	modified <- FALSE
 		i <- 1
 		
-		# loop on all links
+		# loop on all edges
 		while(i<ecount(g) && !modified)
 		{	n <- rep(NA,4)
 			x <- rep(NA,4)
 			y <- rep(NA,4)
 			
-			# get the link matrix
+			# get the edge matrix
 			el <- as_edgelist(graph=g, names=FALSE)
 			n[1] <- el[i,1]
 			n[2] <- el[i,2]
@@ -408,14 +407,14 @@ add.intersection.nodes <- function(g)
 			x[2] <- V(g)[n[2]]$x
 			y[2] <- V(g)[n[2]]$y
 			
-			# loop on all other links
+			# loop on all other edges
 			j <- i + 1
 			while(j<=ecount(g) && !modified)
 			{	# get the node indices
 				n[3] <- el[j,1]
 				n[4] <- el[j,2]
 				
-				# check the second link only if it has no common nodes with the first one
+				# check the second edge only if it has no common nodes with the first one
 				if(length(intersect(c(n[1],n[2]),c(n[3],n[4])))==0)
 				{	# get the endpoints coordinates
 					x[3] <- V(g)[n[3]]$x
@@ -437,7 +436,7 @@ add.intersection.nodes <- function(g)
 						e.type2 <- E(g)[n[3] %--% n[4]]$type
 						e.name2 <- E(g)[n[3] %--% n[4]]$name
 						
-						# delete both existing links from the graph
+						# delete both existing edges from the graph
 						g <- delete.edges(graph=g,c(E(g)[n[1] %--% n[2]],E(g)[n[3] %--% n[4]]))
 						if(is.null(g$removed))
 							g$removed <- matrix(n,nrow=2,ncol=2,byrow=TRUE)
@@ -459,7 +458,7 @@ add.intersection.nodes <- function(g)
 							{	# identify overlap nodes
 								idx <- order(x)
 								ni <- n[idx]
-								# add 3 new links to the graph, no overlap
+								# add 3 new edges to the graph, no overlap
 #print(ni)
 								es <- c(ni[1],ni[2],ni[2],ni[3],ni[3],ni[4])
 								e.types <- c(e.type1, e.type1, e.type2)
@@ -471,7 +470,7 @@ add.intersection.nodes <- function(g)
 							{	# process the intersection point
 								xi <- (d-c)/(a-b)
 								yi <- (a*d-b*c)/(a-b)
-								# add 4 new links to the graph, no crossing
+								# add 4 new edges to the graph, no crossing
 								g <- add.vertices(graph=g,nv=1,attr=list(added=TRUE, x=xi, y=yi, type="tertiary", name="tertiary"))
 								nc <- vcount(g)
 								es <- c(n[1],nc,n[2],nc,n[3],nc,n[4],nc)
@@ -490,7 +489,7 @@ add.intersection.nodes <- function(g)
 								{	# identify overlap nodes
 									idx <- order(y)
 									ni <- n[idx]
-									# add 3 new links to the graph, no overlap
+									# add 3 new edges to the graph, no overlap
 									es <- c(ni[1],ni[2],ni[2],ni[3],ni[3],ni[4])
 									e.types <- c(e.type1, e.type1, e.type2)
 									e.names <- c(e.name1, e.name1, e.name2)
@@ -504,7 +503,7 @@ add.intersection.nodes <- function(g)
 									# process the intersection point
 									xi <- x[1]
 									yi <- b*xi + d
-									# add 4 new links to the graph, no crossing
+									# add 4 new edges to the graph, no crossing
 									g <- add.vertices(graph=g,nv=1,attr=list(added=TRUE, x=xi, y=yi, type="tertiary", name="tertiary"))
 									nc <- vcount(g)
 									es <- c(n[1],nc,n[2],nc,n[3],nc,n[4],nc)
@@ -521,7 +520,7 @@ add.intersection.nodes <- function(g)
 								# process the intersection point
 								xi <- x[3]
 								yi <- a*xi + c
-								# add 4 new links to the graph, no crossing
+								# add 4 new edges to the graph, no crossing
 								g <- add.vertices(graph=g,nv=1,attr=list(added=TRUE, x=xi, y=yi, type="tertiary", name="tertiary"))
 								nc <- vcount(g)
 								es <- c(n[1],nc,n[2],nc,n[3],nc,n[4],nc)
