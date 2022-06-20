@@ -16,9 +16,9 @@ source("res/model/intersect.R")
 
 ###############################################################################
 # parameters
-n.sec <- 400
+n.sec <- 200
 n.av <- 5
-out.folder <- "out/analysis/estate/model/streets"
+out.folder <- file.path("out/analysis/estate/model/streets",n.sec)
 dir.create(path=out.folder, showWarnings=FALSE, recursive=TRUE)
 
 
@@ -97,8 +97,9 @@ tlog(4,"Path of the wall: ",paste0(wall,collapsed=", "))
 
 # create avenues
 tlog(2,"Adding radial avenues")
-step <- floor((length(wall)-1) / n.av)
-sq <- seq(1,(length(wall)-1),step)
+wall <- wall[-length(wall)]
+step <- floor(length(wall) / n.av)
+sq <- seq(1,length(wall),step)
 tlog(2,"Adding ",length(sq)," radial avenues")
 mids <- c()
 a <- 1
@@ -115,7 +116,7 @@ mids <- c(mids, mids[1])
 
 # add internal wall
 tlog(6,"Adding internal wall = going through avenues midpoint, path: ",paste0(mids,collapse=", "))	
-for(i in 1:length(sq))
+for(i in 1:(length(mids)-1))
 	g <- build.path(g, start=mids[i], end=mids[i+1], e.type="int_wall", e.name="int_wall")$g
 
 # add minor streets
@@ -218,60 +219,84 @@ while(length(unnamed.edges)>0)
 	tlog(6,"Starting with edge #",e," (",path[1],"--",path[2],")")
 	
 	# possibly propagate name to adjacent edges
-	inc.edges <- unique(unlist(sapply(incident_edges(graph=g, v=ends(graph=g, es=e, names=FALSE), mode="all"), as.integer)))
+	inc.edges <- unique(unlist(lapply(incident_edges(graph=g, v=ends(graph=g, es=e, names=FALSE), mode="all"), as.integer)))
 	inc.edges <- setdiff(inc.edges, e)					# remove current edge
 	inc.edges <- intersect(inc.edges, unnamed.edges)	# keep only unnamed edges
+	#print(ends(g,inc.edges,F))
 	if(length(inc.edges)>0)
 	{	# keep edge with flatter angle
 		common.ends <- sapply(1:length(inc.edges), function(i) intersect(c(ends(graph=g, es=e, names=FALSE)), c(ends(graph=g, es=inc.edges[i], names=FALSE))))
 		old.ends <- sapply(1:length(inc.edges), function(i) setdiff(c(ends(graph=g, es=e, names=FALSE)), common.ends[i]))
 		new.ends <- sapply(1:length(inc.edges), function(i) setdiff(c(ends(graph=g, es=inc.edges[i], names=FALSE)), common.ends[i]))
-		angles <- (atan2(V(g)[common.ends]$y - V(g)[old.ends]$y, V(g)[common.ends]$x - V(g)[old.ends]$x) 
-					- atan2(V(g)[new.ends]$y - V(g)[common.ends]$y, V(g)[new.ends]$x - V(g)[common.ends]$x)) / pi * 180
+		angles <- (atan2(V(g)[common.ends]$y - V(g)[old.ends]$y, V(g)[common.ends]$x - V(g)[old.ends]$x) - 
+					atan2(V(g)[new.ends]$y - V(g)[common.ends]$y, V(g)[new.ends]$x - V(g)[common.ends]$x)) / pi * 180
 		angles[angles>180] <- angles[angles>180] - 360
 		angles[angles<(-180)] <- angles[angles<(-180)] + 360
 		angles[angles<0] <- -angles[angles<0]
-		i <- which.min(angles)
-		#tlog(6,common.ends[i],"--",new.ends[i])
-		e <- inc.edges[i]
-		unnamed.edges <- unnamed.edges[-which(unnamed.edges==e)]
-		E(g)[e]$name <- str.name
-		path <- c(old.ends[i], common.ends[i], new.ends[i])
-		
-		# try to continue, but vertex-based this time
-		goOn <- TRUE
-		while(goOn)
-		{	goOn <- FALSE
-			v <- new.ends[i]
-			inc.edges <- as.integer(incident(graph=g, v=v, mode="all"))
-			inc.edges <- setdiff(inc.edges, e)					# remove current edge
-			inc.edges <- intersect(inc.edges, unnamed.edges)	# keep only unnamed edges
-			if(length(inc.edges)>0)
-			{	goOn <- TRUE
-				# keep edge with flatter angle
-				common.ends <- sapply(1:length(inc.edges), function(i) intersect(c(ends(graph=g, es=e, names=FALSE)), c(ends(graph=g, es=inc.edges[i], names=FALSE))))
-				old.ends <- sapply(1:length(inc.edges), function(i) setdiff(c(ends(graph=g, es=e, names=FALSE)), common.ends[i]))
-				new.ends <- sapply(1:length(inc.edges), function(i) setdiff(c(ends(graph=g, es=inc.edges[i], names=FALSE)), common.ends[i]))
-				# remove edges leading to vertices already in the street 
-				is <- which(new.ends %in% path)
-				if(length(is)>0)
-				{	inc.edges <- inc.edges[-is]
-					common.ends <- common.ends[-is]
-					old.ends <- old.ends[-is]
-					new.ends <- new.ends[-is]
-				}
+		# filtering if angle too acute
+		is <- which(angles<90 | degree(graph=g,v=common.ends,mode="all")<3)
+		inc.edges <- inc.edges[is]
+		common.ends <- common.ends[is]
+		old.ends <- old.ends[is]
+		new.ends <- new.ends[is]
+		angles <- angles[is]
+		# using the edge of smallest angle
+		if(length(angles)>0)
+		{	i <- which.min(angles)
+			tlog(6,"Adding edge ",common.ends[i],"--",new.ends[i])
+			e <- inc.edges[i]
+			unnamed.edges <- unnamed.edges[-which(unnamed.edges==e)]
+			E(g)[e]$name <- str.name
+			path <- c(old.ends[i], common.ends[i], new.ends[i])
+			tlog(8,"Current path: ",paste0(path,colapse=", "))
+			
+			# try to continue, but vertex-based this time
+			goOn <- TRUE
+			while(goOn)
+			{	goOn <- FALSE
+				v <- new.ends[i]
+				inc.edges <- as.integer(incident(graph=g, v=v, mode="all"))
+				inc.edges <- setdiff(inc.edges, e)					# remove current edge
+				inc.edges <- intersect(inc.edges, unnamed.edges)	# keep only unnamed edges
+				#print(ends(g,inc.edges,F))
 				if(length(inc.edges)>0)
-				{	angles <- (atan2(V(g)[common.ends]$y - V(g)[old.ends]$y, V(g)[common.ends]$x - V(g)[old.ends]$x) 
-								- atan2(V(g)[new.ends]$y - V(g)[common.ends]$y, V(g)[new.ends]$x - V(g)[common.ends]$x)) / pi * 180
-					angles[angles>180] <- angles[angles>180] - 360
-					angles[angles<(-180)] <- angles[angles<(-180)] + 360
-					angles[angles<0] <- -angles[angles<0]
-					i <- which.min(angles)
-					tlog(6,common.ends[i],"--",new.ends[i])
-					e <- inc.edges[i]
-					unnamed.edges <- unnamed.edges[-which(unnamed.edges==e)]
-					E(g)[e]$name <- str.name
-					path <- c(path, new.ends[i])
+				{	# keep edge with flatter angle
+					common.ends <- sapply(1:length(inc.edges), function(i) intersect(c(ends(graph=g, es=e, names=FALSE)), c(ends(graph=g, es=inc.edges[i], names=FALSE))))
+					old.ends <- sapply(1:length(inc.edges), function(i) setdiff(c(ends(graph=g, es=e, names=FALSE)), common.ends[i]))
+					new.ends <- sapply(1:length(inc.edges), function(i) setdiff(c(ends(graph=g, es=inc.edges[i], names=FALSE)), common.ends[i]))
+					# ignore edges leading to vertices already in the street 
+					is <- which(new.ends %in% path)
+					if(length(is)>0)
+					{	inc.edges <- inc.edges[-is]
+						common.ends <- common.ends[-is]
+						old.ends <- old.ends[-is]
+						new.ends <- new.ends[-is]
+					}
+					if(length(inc.edges)>0)
+					{	angles <- (atan2(V(g)[common.ends]$y - V(g)[old.ends]$y, V(g)[common.ends]$x - V(g)[old.ends]$x) - 
+									atan2(V(g)[new.ends]$y - V(g)[common.ends]$y, V(g)[new.ends]$x - V(g)[common.ends]$x)) / pi * 180
+						angles[angles>180] <- angles[angles>180] - 360
+						angles[angles<(-180)] <- angles[angles<(-180)] + 360
+						angles[angles<0] <- -angles[angles<0]
+						# filtering if angle too acute
+						is <- which(angles<90 | degree(graph=g,v=common.ends,mode="all")<3)
+						inc.edges <- inc.edges[is]
+						common.ends <- common.ends[is]
+						old.ends <- old.ends[is]
+						new.ends <- new.ends[is]
+						angles <- angles[is]
+						# using the edge of smallest angle
+						if(length(angles)>0)
+						{	i <- which.min(angles)
+							tlog(6,"Adding edge ",common.ends[i],"--",new.ends[i])
+							e <- inc.edges[i]
+							unnamed.edges <- unnamed.edges[-which(unnamed.edges==e)]
+							E(g)[e]$name <- str.name
+							path <- c(path, new.ends[i])
+							tlog(8,"Current path: ",paste0(path,colapse=", "))
+							goOn <- TRUE
+						}
+					}
 				}
 			}
 		}
@@ -281,35 +306,71 @@ while(length(unnamed.edges)>0)
 	z <- z + 1
 	#unnamed.edges <- which(is.na(E(g)$name))
 	
-	plot(g, 
-#		vertex.label=1:gorder(g),
-		vertex.label=NA,
-		vertex.color=match(V(g)$type,unique(V(g)$type)), 
-		edge.color=CAT_COLORS_8[match(E(g)$type,unique(E(g)$type))],
-		edge.width=sapply(E(g)$name, function(nm) if(!is.na(nm) && nm==str.name) 3 else 1),
-		vertex.size=3
-	)
-	readline(prompt="Press [enter] to continue")
+#	plot(g, 
+##		vertex.label=1:gorder(g),
+#		vertex.label=NA,
+#		vertex.color=match(V(g)$type,unique(V(g)$type)), 
+#		edge.color=CAT_COLORS_8[match(E(g)$type,unique(E(g)$type))],
+#		edge.width=sapply(E(g)$name, function(nm) if(!is.na(nm) && nm==str.name) 3 else 1),
+#		vertex.size=3
+#	)
+#	readline(prompt="Press [enter] to continue")
 }
 
-# TODO: 
-# - nom des rues
-#   - aussi rectiligne que possible (limiter l'angle à 90 sauf si une seule possibilité ?
-#     >> possibilité d'explorer dans les deux sens à partir du lien de départ
-#   - mais casser la continuité si le noeud traversé appartient à une avenue
-#
+# draw each street with a different color
+plot(g, 
+#	vertex.label=1:gorder(g),
+	vertex.label=NA,
+	vertex.color=match(V(g)$type,unique(V(g)$type)), 
+	edge.color=CAT_COLORS_18[(match(E(g)$name,unique(E(g)$name))-1) %% length(CAT_COLORS_18) + 1],
+	edge.width=sapply(E(g)$name, function(nm) if(!is.na(nm)) 3 else 1),
+	vertex.size=3
+)
+
+# possible improvements for street names: 
+# - explore graph in both direction, from starting edge
+# - break street when crossing avenue
+
+# TODO
 # - faut-il récupérer le graphe dual ?
 # - simplifier les noeuds de degré 2 => même rue
 
 
 ###############################################################################
-plot(g, 
+#plot(g, 
 #	vertex.label=1:gorder(g),
-	vertex.label=NA,
-	vertex.color=match(V(g)$type,unique(V(g)$type)), 
-	edge.color=CAT_COLORS_8[match(E(g)$type,unique(E(g)$type))],
-	edge.width=sapply(E(g)$name, function(nm) if(is.na(nm)) 1 else 3),
-	vertex.size=3
-)
-write.graph(graph=g, file=file.path(out.folder,"test.graphml"), format="graphml")
+##	vertex.label=NA,
+#	vertex.color=match(V(g)$type,unique(V(g)$type)), 
+#	edge.color=CAT_COLORS_8[match(E(g)$type,unique(E(g)$type))],
+##	edge.width=sapply(E(g)$name, function(nm) if(is.na(nm)) 1 else 3),
+#	vertex.size=3
+#)
 
+# record next file
+ll <- list.files(path=out.folder, patter="+.graphml", full.names=FALSE)
+{	if(length(ll)==0)
+		i <- 1
+	else
+		i <- max(as.integer(unlist(strsplit(ll,split=".graphml",fixed=TRUE)))) + 1
+	
+	# record graphml file
+	net.file <- file.path(out.folder,i)
+	write.graph(graph=g, file=paste0(net.file,".graphml"), format="graphml")
+	
+	# record graph plots
+	for(fformat in FORMAT)
+	{	if(fformat=="pdf")
+			pdf(paste0(net.file,".pdf"))
+		else if(fformat=="png")
+			png(paste0(net.file,".png"))
+		plot(g, 
+#			vertex.label=1:gorder(g),
+			vertex.label=NA,
+			vertex.color=match(V(g)$type,unique(V(g)$type)), 
+			edge.color=CAT_COLORS_18[(match(E(g)$name,unique(E(g)$name))-1) %% length(CAT_COLORS_18) + 1],
+			edge.width=sapply(E(g)$name, function(nm) if(!is.na(nm)) 3 else 1),
+			vertex.size=3
+		)
+		dev.off()
+	}
+}

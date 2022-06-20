@@ -57,7 +57,7 @@ split.edge <- function(g, v1, v2, x, y, v.name)
 #
 # return: a list containing the completed graph and the created path.
 ###############################################################################
-build.path <- function(g, start, end, e.type, e.name, tolerance=30)
+build.path <- function(g, start, end, e.type, e.name, tolerance=25)
 {	u <- start
 	remaining <- (1:gorder(g))[-start]
 	path <- u
@@ -72,7 +72,7 @@ build.path <- function(g, start, end, e.type, e.name, tolerance=30)
 		#print(cbind(remaining,angles))
 		# select smaller angle
 		idx <- which(angles<=tolerance)
-		print(cbind(remaining[idx],angles[idx]))
+		#print(cbind(remaining[idx],angles[idx]))
 		dd <- sapply(remaining[idx], function(v) (V(g)[start]$x-V(g)[v]$x)^2 + (V(g)[start]$y-V(g)[v]$y)^2)
 		v <- remaining[idx[which.min(dd)]]
 		remaining <- remaining[-idx[which.min(dd)]]
@@ -575,3 +575,21 @@ add.intersection.nodes <- function(g)
 #g2 <- add.intersection.nodes(g)
 #plot(g,layout=matrix(runif(vcount(g)*2),ncol=2))
 #plot(g2,layout=matrix(runif(vcount(g2)*2),ncol=2))
+
+# temp code
+plot(g, 
+	vertex.label=1:gorder(g),
+#	vertex.label=NA,
+	vertex.color=match(V(g)$type,unique(V(g)$type)), 
+	edge.color=CAT_COLORS_8[match(E(g)$type,unique(E(g)$type))],
+#	edge.width=sapply(E(g)$name, function(nm) if(is.na(nm)) 1 else 3),
+	vertex.size=3
+)
+plot(g, 
+	vertex.label=1:gorder(g),
+#	vertex.label=NA,
+	vertex.color=match(V(g)$type,unique(V(g)$type)), 
+	edge.color=CAT_COLORS_8[match(E(g)$type,unique(E(g)$type))],
+	edge.width=sapply(E(g)$name, function(nm) if(!is.na(nm) && nm==str.name) 3 else 1),
+	vertex.size=3
+)
