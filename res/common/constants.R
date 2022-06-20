@@ -31,11 +31,17 @@ FOLDER_IN <- "in"
 		FILE_IN_ANAL_LDMRK_NODES <- file.path(FOLDER_IN_ANAL,"Table_RepereGeo.csv")
 		FILE_IN_ANAL_STREET_NODES <- file.path(FOLDER_IN_ANAL,"Table_Rue.csv")
 		FILE_IN_ANAL_SRC_NODES <- file.path(FOLDER_IN_ANAL,"Table_Source.csv")
-		#
+		# split streets
 		FILE_IN_ANAL_STRT_SHORT <- file.path(FOLDER_IN_ANAL,"Table_Rue_Courte.csv")
 		FILE_IN_ANAL_SPLIT_FIX <- file.path(FOLDER_IN_ANAL,"Table_Coupe_Invariant.csv")
 		FILE_IN_ANAL_SPLIT_CONFR <- file.path(FOLDER_IN_ANAL,"Table_Coupe_Confront.csv")
 		FILE_IN_ANAL_SPLIT_CONFR_ARTIF <- file.path(FOLDER_IN_ANAL,"Table_Coupe_Confront_Artificiel.csv")
+		# street confronts
+		FILE_IN_ANAL_CONFR_STRT_EDIFICES <- file.path(FOLDER_IN_ANAL,"Table_Confront_Edifice_Rue.csv")
+		FILE_IN_ANAL_CONFR_STRT_EDIFICES_SPLIT <- file.path(FOLDER_IN_ANAL,"Table_Confront_Edifice_Rue_Split.csv")
+		FILE_IN_ANAL_CONFR_STRT_STREETS <- file.path(FOLDER_IN_ANAL,"Table_Confront_Topo_Rue.csv")
+		FILE_IN_ANAL_CONFR_STRT_STREETS_SPLIT <- file.path(FOLDER_IN_ANAL,"Table_Confront_Topo_Rue_Split.csv")
+
 FOLDER_OUT <- "out"
 	FOLDER_OUT_POS <- file.path(FOLDER_OUT,"positioning")
 	FOLDER_OUT_ANAL <- file.path(FOLDER_OUT,"analysis")
