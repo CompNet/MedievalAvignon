@@ -94,6 +94,8 @@ while(nrow(hull)>0)
 	}
 }
 tlog(4,"Path of the wall: ",paste0(wall,collapsed=", "))
+plot(g, vertex.label=NA, vertex.color=match(V(g)$type,unique(V(g)$type)), edge.color=CAT_COLORS_8[match(E(g)$type,unique(E(g)$type))], vertex.size=3)
+g1 <- g
 
 # create avenues
 tlog(2,"Adding radial avenues")
@@ -113,11 +115,15 @@ for(i in sq)
 	a <- a + 1
 }
 mids <- c(mids, mids[1])
+plot(g, vertex.label=NA, vertex.color=match(V(g)$type,unique(V(g)$type)), edge.color=CAT_COLORS_8[match(E(g)$type,unique(E(g)$type))], vertex.size=3)
+g2 <- g
 
 # add internal wall
 tlog(6,"Adding internal wall = going through avenues midpoint, path: ",paste0(mids,collapse=", "))	
 for(i in 1:(length(mids)-1))
 	g <- build.path(g, start=mids[i], end=mids[i+1], e.type="int_wall", e.name="int_wall")$g
+plot(g, vertex.label=NA, vertex.color=match(V(g)$type,unique(V(g)$type)), edge.color=CAT_COLORS_8[match(E(g)$type,unique(E(g)$type))], vertex.size=3)
+g3 <- g
 
 # add minor streets
 min.length <- 0.1	# min length when splitting edges
@@ -127,8 +133,9 @@ V(g)$deg <- sample(x=2:4, size=gorder(g), replace=TRUE)  - degree(graph=g,mode="
 V(g)$deg <- sapply(V(g)$deg, function(d) max(0, d))
 changed <- TRUE
 while(changed)
-{	idx <- sample(idx)
+{	#idx <- sample(idx) # TODO disabled for debugging
 	changed <- FALSE
+	tlog(4,"----- Iteration -----")
 	
 	for(i in 1:length(idx))
 	{	v <- idx[i]
@@ -172,9 +179,12 @@ while(changed)
 			# connect to existing vertex
 			if(vrtx)
 			{	# select possible vertices
-				neis <- as.integer(neighbors(graph=g, v=v, mode="all"))
-				full <- which(V(g)$deg<1)
-				others <- setdiff(1:gorder(g), c(v,neis,full))
+				neis <- as.integer(neighbors(graph=g, v=v, mode="all"))		# ignore neighbors
+				full <- which(V(g)$deg<1)									# ignore vertices whose target degree is already met
+				tmp <- setdiff(1:gorder(g),c(neis,v,full))
+				aligned <- tmp[sapply(tmp, function(u)						# ignore vertices aligned with an incident edge
+							any(sapply(neis, function(nei) check.alignment(g, v, nei, u))))]
+				others <- setdiff(1:gorder(g), c(v,neis,full,aligned))
 				dd <- sapply(others, function(u) (V(g)[v]$x-V(g)[u]$x)^2 + (V(g)[v]$y-V(g)[u]$y)^2)
 				u <- others[which.min(dd)]
 				tlog(6,"Connecting to vertex ",u)
@@ -193,14 +203,28 @@ while(changed)
 #			plot(g, vertex.label=v.labels, vertex.color=v.cols, vertex.size=v.sizes, edge.color=e.cols, edge.width=e.widths)
 #			readline(prompt="Press [enter] to continue")
 			
+#			# verify if some vertices are aligned (debugging)
+#			neis <- as.integer(neighbors(graph=g, v=v, mode="all"))
+#			if(length(neis)>1)
+#			for(i in 1:(length(neis)-1))
+#			{	for(j in (i+1):length(neis))
+#				{	if(are.connected(g,neis[i],neis[j]) && check.alignment(g, v, neis[i], neis[j]))
+#						error("ERROR: Aligned and connected triad")
+#				}
+#			}
+			
 			V(g)[v]$deg <- V(g)[v]$deg - 1
 		}
 	}
 }
+plot(g, vertex.label=NA, vertex.color=match(V(g)$type,unique(V(g)$type)), edge.color=CAT_COLORS_8[match(E(g)$type,unique(E(g)$type))], vertex.size=3)
+g4 <- g
 
 # possibly add vertices for intersection points
 tlog(2,"Adding vertices for intersection points")
-g <- add.intersection.nodes(g)
+g <- add.intersection.vertices(g)
+plot(g, vertex.label=NA, vertex.color=match(V(g)$type,unique(V(g)$type)), edge.color=CAT_COLORS_8[match(E(g)$type,unique(E(g)$type))], vertex.size=3)
+g5 <- g
 
 # name unnamed streets
 tlog(2,"Adding street names")
@@ -355,6 +379,7 @@ ll <- list.files(path=out.folder, patter="+.graphml", full.names=FALSE)
 	
 	# record graphml file
 	net.file <- file.path(out.folder,i)
+	tlog(2,"Recording procuded graph in file '",net.file,"'")
 	write.graph(graph=g, file=paste0(net.file,".graphml"), format="graphml")
 	
 	# record graph plots

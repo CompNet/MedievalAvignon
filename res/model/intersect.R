@@ -9,6 +9,39 @@
 
 
 
+
+###############################################################################
+# Check whether three vertices are aligned.
+#
+# g: concerned graph.
+# v1: first vertex.
+# v2: second vertex.
+# v3: third vertex.
+# 
+# returns: TRUE iff the vertices are aligned.
+###############################################################################
+check.alignment <- function(g, v1, v2, v3)
+{	tolerance <- 0.0001	# completely arbitrary
+	
+	# get coordinates
+	x1 <- V(g)[v1]$x
+	y1 <- V(g)[v1]$y
+	x2 <- V(g)[v2]$x
+	y2 <- V(g)[v2]$y
+	x3 <- V(g)[v3]$x
+	y3 <- V(g)[v3]$y
+	
+	# compute slopes
+	s1 <- (y1-y2)/(x1-x2)
+	s2 <- (y1-y3)/(x1-x3)
+	
+	res <- abs(abs(s1)-abs(s2)) < tolerance
+	return(res)
+}
+
+
+
+
 ###############################################################################
 # Splits the specified edge at the specified point, creating a new vertex and
 # replacing the edge by two new edges. The name of the new edges stay the same.
@@ -21,13 +54,7 @@
 # returns: updated graph.
 ###############################################################################
 split.edge <- function(g, v1, v2, x, y, v.name)
-{	# verification
-#	a <- (V(g)[v1]$y - V(g)[v2]$y) / (V(g)[v1]$x - V(g)[v2]$x)
-#	b <- V(g)[v1]$y - a*V(g)[v1]$x
-#	if(y != a*x+b)
-#		stop("ERROR: intersection point (",x,";",y,") not located on edge ",v1,"--",v2)
-	
-	# delete old edge
+{	# delete old edge
 	e.name <- E(g)[v1 %--% v2]$name
 	e.type <- E(g)[v1 %--% v2]$type
 	g <- delete_edges(graph=g, edges=E(g)[v1 %--% v2])
@@ -36,7 +63,7 @@ split.edge <- function(g, v1, v2, x, y, v.name)
 	g <- add_vertices(graph=g, nv=1, attr=list(name=v.name, type="tertiary", x=x, y=y))
 	v3 <- gorder(g)
 	
-	# create new edges
+	# create both new edges
 	g <- add_edges(graph=g, edges=c(v1,v3,v3,v2), attr=list(name=rep(e.name,2), type=rep(e.type,2)))
 	
 	return(g)
@@ -322,7 +349,7 @@ check.edge.crossing <- function(g, e=NA)
 #cat("START\n")	
 	# possibly init e
 	if(is.na(e))
-		es <- 1:ecount(g)
+		es <- 1:gsize(g)
 	else
 		es <- e
 
@@ -383,53 +410,45 @@ if(result)
 #
 # returns: the modified graph, which is plane and without any overlapping edges.
 ############################################################################
-add.intersection.nodes <- function(g)
+add.intersection.vertices <- function(g)
 {	modified <- TRUE
+	inter.nbr <- 1
+	tlog(2,"Adding intersection vertices to the graph")
 	
 	# repeat as long as the graph is modified
-	while(ecount(g)>1 && modified)
+	while(gsize(g)>1 && modified)
 	{	modified <- FALSE
 		i <- 1
 		
 		# loop on all edges
-		while(i<ecount(g) && !modified)
-		{	n <- rep(NA,4)
-			x <- rep(NA,4)
-			y <- rep(NA,4)
+#		while(i<gsize(g) && !modified)
+		while(i<gsize(g))
+		{	tlog(4,"Dealing with edge ",i,"/",gsize(g))
 			
-			# get the edge matrix
-			el <- as_edgelist(graph=g, names=FALSE)
-			n[1] <- el[i,1]
-			n[2] <- el[i,2]
 			# get the endpoints coordinates
-			x[1] <- V(g)[n[1]]$x
-			y[1] <- V(g)[n[1]]$y
-			x[2] <- V(g)[n[2]]$x
-			y[2] <- V(g)[n[2]]$y
+			n <- c(ends(graph=g, es=i, names=FALSE), rep(NA,2))
+			x <- c(V(g)[n[c(1,2)]]$x, rep(NA,2))
+			y <- c(V(g)[n[c(1,2)]]$y, rep(NA,2))
 			
 			# loop on all other edges
+			modified2 <- FALSE
 			j <- i + 1
-			while(j<=ecount(g) && !modified)
-			{	# get the node indices
-				n[3] <- el[j,1]
-				n[4] <- el[j,2]
+			while(j<=gsize(g) && !modified2)
+			{	# get the endpoints coordinates
+				n[c(3,4)] <- ends(graph=g, es=j, names=FALSE)
+				x[c(3,4)] <- V(g)[n[c(3,4)]]$x
+				y[c(3,4)] <- V(g)[n[c(3,4)]]$y
 				
 				# check the second edge only if it has no common nodes with the first one
 				if(length(intersect(c(n[1],n[2]),c(n[3],n[4])))==0)
-				{	# get the endpoints coordinates
-					x[3] <- V(g)[n[3]]$x
-					y[3] <- V(g)[n[3]]$y
-					x[4] <- V(g)[n[4]]$x
-					y[4] <- V(g)[n[4]]$y
-					
-					# check segment intersection
-					modified <- check.segment.crossing(x[1], y[1], x[2], y[2], x[3], y[3], x[4], y[4])
-#print(modified)
-#cat("(",n[1],",",n[2],") vs. (",n[3],",",n[4],") => ",modified,"\n",sep="")
-					
-					# if there's an intersection
-					if(modified)
-					{	tlog(4,"Crossing detected for (",n[1],",",n[2],") vs. (",n[3],",",n[4],")")
+				{	# if there's an intersection
+					if(check.segment.crossing(x[1], y[1], x[2], y[2], x[3], y[3], x[4], y[4]))
+					{	tlog(4,"(",x[1],",",y[1],")--(",x[2],",",y[2], ") vs. (",x[3],",",y[3],")--(",x[4],",",y[4],")")
+						modified <- TRUE
+						modified2 <- TRUE
+						tlog(6,"Crossing detected for ",n[1],"--",n[2]," vs. ",n[3],"--",n[4])
+#plot(g, vertex.label=1:gorder(g), vertex.color=match(V(g)$type,unique(V(g)$type)), edge.color=CAT_COLORS_8[match(E(g)$type,unique(E(g)$type))], vertex.size=3)
+#readline(prompt="Press [enter] to continue")
 						# get old edge attributes
 						e.type1 <- E(g)[n[1] %--% n[2]]$type
 						e.name1 <- E(g)[n[1] %--% n[2]]$name
@@ -455,11 +474,11 @@ add.intersection.nodes <- function(g)
 							
 							# case of overlapping segments
 							if(a==b && c==d)
-							{	# identify overlap nodes
+							{	tlog(6,"Regular case, overlapping segments")
+								# identify overlap nodes
 								idx <- order(x)
 								ni <- n[idx]
 								# add 3 new edges to the graph, no overlap
-#print(ni)
 								es <- c(ni[1],ni[2],ni[2],ni[3],ni[3],ni[4])
 								e.types <- c(e.type1, e.type1, e.type2)
 								e.names <- c(e.name1, e.name1, e.name2)
@@ -467,12 +486,15 @@ add.intersection.nodes <- function(g)
 							}
 							# case of crossing segments
 							else
-							{	# process the intersection point
+							{	tlog(6,"Regular case, crossing segments")
+								# process the intersection point
 								xi <- (d-c)/(a-b)
 								yi <- (a*d-b*c)/(a-b)
 								# add 4 new edges to the graph, no crossing
-								g <- add.vertices(graph=g,nv=1,attr=list(added=TRUE, x=xi, y=yi, type="tertiary", name="tertiary"))
-								nc <- vcount(g)
+								g <- add.vertices(graph=g,nv=1,attr=list(added=TRUE, x=xi, y=yi, type="intersection", name=paste0("intersection_",inter.nbr)))
+								inter.nbr <- inter.nbr + 1
+								nc <- gorder(g)
+								tlog(6,"Creating vertex #",nc)
 								es <- c(n[1],nc,n[2],nc,n[3],nc,n[4],nc)
 								e.types <- c(e.type1, e.type1, e.type2, e.type2)
 								e.names <- c(e.name1, e.name1, e.name2, e.name2)
@@ -486,7 +508,8 @@ add.intersection.nodes <- function(g)
 							if(x[1]==x[2])
 							{	# both segments are vertical >> overlap
 								if(x[3]==x[4])
-								{	# identify overlap nodes
+								{	tlog(6,"Both segments are vertical")
+									# identify overlap nodes
 									idx <- order(y)
 									ni <- n[idx]
 									# add 3 new edges to the graph, no overlap
@@ -497,15 +520,18 @@ add.intersection.nodes <- function(g)
 								}
 								# only the first segment is vertical
 								else
-								{	# y = bx + d
+								{	tlog(6,"Only first segment is vertical")
+									# y = bx + d
 									b <- (y[3]-y[4])/(x[3]-x[4])
 									d <- y[3] - b*x[3]
 									# process the intersection point
 									xi <- x[1]
 									yi <- b*xi + d
 									# add 4 new edges to the graph, no crossing
-									g <- add.vertices(graph=g,nv=1,attr=list(added=TRUE, x=xi, y=yi, type="tertiary", name="tertiary"))
-									nc <- vcount(g)
+									g <- add.vertices(graph=g,nv=1,attr=list(added=TRUE, x=xi, y=yi, type="intersection", name=paste0("intersection_",inter.nbr)))
+									inter.nbr <- inter.nbr + 1
+									nc <- gorder(g)
+									tlog(6,"Creating vertex #",nc)
 									es <- c(n[1],nc,n[2],nc,n[3],nc,n[4],nc)
 									e.types <- c(e.type1, e.type1, e.type2, e.type2)
 									e.names <- c(e.name1, e.name1, e.name2, e.name2)
@@ -514,15 +540,18 @@ add.intersection.nodes <- function(g)
 							}
 							# only the second segment is vertical
 							else
-							{	# y = ax + c
+							{	tlog(6,"Only second segment is vertical")
+								# y = ax + c
 								a <- (y[1]-y[2])/(x[1]-x[2])
 								c <- y[1] - a*x[1]
 								# process the intersection point
 								xi <- x[3]
 								yi <- a*xi + c
 								# add 4 new edges to the graph, no crossing
-								g <- add.vertices(graph=g,nv=1,attr=list(added=TRUE, x=xi, y=yi, type="tertiary", name="tertiary"))
-								nc <- vcount(g)
+								g <- add.vertices(graph=g,nv=1,attr=list(added=TRUE, x=xi, y=yi, type="intersection", name=paste0("intersection_",inter.nbr)))
+								inter.nbr <- inter.nbr + 1
+								nc <- gorder(g)
+								tlog(6,"Creating vertex #",nc)
 								es <- c(n[1],nc,n[2],nc,n[3],nc,n[4],nc)
 								e.types <- c(e.type1, e.type1, e.type2, e.type2)
 								e.names <- c(e.name1, e.name1, e.name2, e.name2)
@@ -532,10 +561,23 @@ add.intersection.nodes <- function(g)
 					}
 				}
 				
+				# check whether some vertices are located at the same position (debug)
+				tt <- table(paste0(V(g)$x,"_",V(g)$y))
+				if(any(tt[tt>1]))
+				{	nn <- names(tt)[which(tt>1)][1]
+					coords <- strsplit(nn,split="_",fixed=TRUE)[[1]]
+					cvs <- which(as.character(V(g)$x)==coords[1] & as.character(V(g)$y)==coords[2])
+					tlog(6,"ERROR: coincident vertices: ",paste0(cvs,collapse=", "))
+					error("ERROR: coincident vertices: ",paste0(cvs,collapse=", "))
+				}
+				# check the presence of multiple links (debug)
+				if(has.multiple(g))
+					error("ERROR: multiple edges")
 				j <- j + 1
 			}
 			
-			i <- i + 1
+			if(!modified2)
+				i <- i + 1
 		}
 	}
 	
@@ -572,24 +614,24 @@ add.intersection.nodes <- function(g)
 #	V(g)$x <- c(0,0,1,1);V(g)$y <- c(0,1,0,1);plot(g)
 #	V(g)$x <- c(1,1,0,0);V(g)$y <- c(0,1,0,1);plot(g)
 	
-#g2 <- add.intersection.nodes(g)
-#plot(g,layout=matrix(runif(vcount(g)*2),ncol=2))
-#plot(g2,layout=matrix(runif(vcount(g2)*2),ncol=2))
+#g2 <- add.intersection.vertices(g)
+#plot(g,layout=matrix(runif(gorder(g)*2),ncol=2))
+#plot(g2,layout=matrix(runif(gorder(g2)*2),ncol=2))
 
-# temp code
-plot(g, 
-	vertex.label=1:gorder(g),
-#	vertex.label=NA,
-	vertex.color=match(V(g)$type,unique(V(g)$type)), 
-	edge.color=CAT_COLORS_8[match(E(g)$type,unique(E(g)$type))],
-#	edge.width=sapply(E(g)$name, function(nm) if(is.na(nm)) 1 else 3),
-	vertex.size=3
-)
-plot(g, 
-	vertex.label=1:gorder(g),
-#	vertex.label=NA,
-	vertex.color=match(V(g)$type,unique(V(g)$type)), 
-	edge.color=CAT_COLORS_8[match(E(g)$type,unique(E(g)$type))],
-	edge.width=sapply(E(g)$name, function(nm) if(!is.na(nm) && nm==str.name) 3 else 1),
-	vertex.size=3
-)
+## temp code
+#plot(g, 
+#	vertex.label=1:gorder(g),
+##	vertex.label=NA,
+#	vertex.color=match(V(g)$type,unique(V(g)$type)), 
+#	edge.color=CAT_COLORS_8[match(E(g)$type,unique(E(g)$type))],
+##	edge.width=sapply(E(g)$name, function(nm) if(is.na(nm)) 1 else 3),
+#	vertex.size=3
+#)
+#plot(g, 
+#	vertex.label=1:gorder(g),
+##	vertex.label=NA,
+#	vertex.color=match(V(g)$type,unique(V(g)$type)), 
+#	edge.color=CAT_COLORS_8[match(E(g)$type,unique(E(g)$type))],
+#	edge.width=sapply(E(g)$name, function(nm) if(!is.na(nm) && nm==str.name) 3 else 1),
+#	vertex.size=3
+#)
