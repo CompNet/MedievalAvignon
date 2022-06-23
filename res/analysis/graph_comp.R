@@ -117,8 +117,9 @@ plot.graph.comparison <- function(g1, g2, folder)
 # plots some graph-related stats.
 #############################################################################################
 plot.street.removal <- function()
-{	tlog(2,"Plotting stats related to street removal")
-	
+{	mode <- "whole_raw"
+	tlog(2,"Plotting stats related to street removal: mode=",mode)
+			
 	folders <- c(GR_EST_FLAT_MINUS, paste0(GR_EST_FLAT_MINUS,"_filtered"))
 #	folders <- c(GR_EST_FLAT_MINUS)
 #	folders <- c(paste0(GR_EST_FLAT_MINUS,"_filtered"))
@@ -127,7 +128,7 @@ plot.street.removal <- function()
 		tlog(2,"Dealing with folder '",folder,"' (",f,"/",length(folders),")")
 		
 		# get folder path 
-		main.folder <- file.path(FOLDER_OUT_ANAL_EST, folder, "_removed_streets")
+		main.folder <- file.path(FOLDER_OUT_ANAL_EST, mode, folder, "_removed_streets")
 		graph.folder <- file.path(main.folder, "graphs")
 		dist.folder <- file.path(main.folder, "dist_geodesic_vs_spatial")
 		binned.folder <- file.path(dist.folder, "binned")

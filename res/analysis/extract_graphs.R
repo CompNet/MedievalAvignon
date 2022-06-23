@@ -684,15 +684,22 @@ normalize.components <- function(comps)
 # records them as graphml files, and plots them.
 #
 # split.surf: whether to split linear or surface vertices using additional data.
+# compl.streets: whether to complete the data with confronts between streets.
+# 
 # returns: vector of all the link types.
 ########################################################################
-extract.estate.networks <- function(split.surf=FALSE)
+extract.estate.networks <- function(split.surf=FALSE, compl.streets=FALSE)
 {	# load the data and create various versions of the graph
 	tlog(0,"Extracting various versions of the estate graph")
 	{	if(split.surf)
-			FOLDER_OUT_ANAL_EST <- file.path(FOLDER_OUT_ANAL,"estate","split")
+			split.folder <- "split"
 		else
-			FOLDER_OUT_ANAL_EST <- file.path(FOLDER_OUT_ANAL,"estate","whole")
+			split.folder <- "whole"
+		if(compl.streets)
+			streets.folder <- "ext"
+		else
+			streets.folder <- "raw"
+		base.folder <- paste0(split.folder,"_",streets.folder)
 	}
 	
 	# load estate information
@@ -1117,7 +1124,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	# ii <- which(E(g)$type==VAL_CONF_TYPE_INTERIEUR); cbind(get.edgelist(g)[ii,], E(g)$type[ii])
 	# ii <- match(sort(unique(data[,COL_CONF_LOC_NORM])), data[,COL_CONF_LOC_NORM]); data[ii,c(COL_CONF_LOC_LAT,COL_CONF_LOC_NORM)]
 	
-	# possibly insert additional confront between the pieces of the same (original) vertex
+	# possibly insert additional confronts between the pieces of the same (original) vertex
 	if(split.surf)
 	{	tlog(4,"Inserting additional confronts between the pieces of the same (original) vertex")
 		# load list of artificial confronts
@@ -1154,6 +1161,31 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			data[idx,COL_CONF_EST2_ID] <- NA
 			data[idx,COL_CONF_FIX_ID] <- data.split[r,COL_CONF_FIX2_ID]
 			data[idx,COL_CONF_AREA_ID] <- NA
+		}
+	}
+	
+	
+	# possibly add street-street confronts
+	if(compl.streets)
+	{	tlog(4,"Adding confronts between streets")
+		# the data is different if we are in split mode
+		if(split.surf)
+			files <- c(FILE_IN_ANAL_CONFR_STRT_EDIFICES_SPLIT, FILE_IN_ANAL_CONFR_STRT_STREETS_SPLIT)
+		else
+			files <- c(FILE_IN_ANAL_CONFR_STRT_EDIFICES, FILE_IN_ANAL_CONFR_STRT_STREETS)
+		# load list of street confronts
+		for(rel.file in files)
+		{	tlog(6,"Loading additional relational information in file '",rel.file,"'")
+			data.split <- read.table(
+				file=rel.file,
+				sep=",",
+				header=TRUE,
+				stringsAsFactors=FALSE,
+				na.strings="NULL",
+				quote='"',
+				check.names=FALSE
+			)
+			# TODO
 		}
 	}
 	
@@ -1212,7 +1244,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	
 	# init layout
 	tlog(2,"Set up layout")
-	lay.file <- file.path(FOLDER_OUT_ANAL_EST,"layout.txt")
+	lay.file <- file.path(FOLDER_OUT_ANAL_EST, base.folder, "layout.txt")
 	# compute layout directly from igraph
 ##	layout <- layout_with_fr(g)
 ##	layout <- layout_with_fr(g, kkconst=0)
@@ -1228,7 +1260,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 ##		layout <- tk_coords(3)
 	######
 #	# export to graphml and use gephi, then import back
-#	file <- file.path(FOLDER_OUT_ANAL_EST,"graph_kk.graphml")
+#	file <- file.path(FOLDER_OUT_ANAL_EST, base.folder, "graph_kk.graphml")
 #	write.graphml.file(g=as.undirected(g), file=file)
 #	# <do your magic with gephi, then record graph with new layout>
 #	# <procedure: 1) detect components and use as vertex color (largest only); 2) vertex size 50; 3) random layout; 4) standard Yifan-Hu; 5) FR layout speed=10 grav~=1; 6) manually adjust while layouting on.
@@ -1253,7 +1285,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	######
 	V(g)$x2 <- layout[lay.idx,"x"]; V(g)$y2 <- layout[lay.idx,"y"]
 	# plot graph
-	plot.file <- file.path(FOLDER_OUT_ANAL_EST,"graph_kk")
+	plot.file <- file.path(FOLDER_OUT_ANAL_EST, base.folder, "graph_kk")
 	tlog(4,"Plotting in file ",plot.file)
 	g0 <- g
 	V(g0)$x <- layout[lay.idx,"x"]; V(g0)$y <- layout[lay.idx,"y"]
@@ -1341,7 +1373,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	g1 <- g
 #	V(g1)$label <- NA
 	V(g1)$label <- paste(vertex_attr(g1,name=COL_LOC_ID), get.location.names(g1),sep="_")
-	plot.file <- file.path(FOLDER_OUT_ANAL_EST,"graph_lambert")
+	plot.file <- file.path(FOLDER_OUT_ANAL_EST, base.folder, "graph_lambert")
 	custom.gplot(g=g1, file=plot.file, size.att=2, vertex.label.cex=0.1)
 	#custom.gplot(g=g1)
 	write.graphml.file(g=g1, file=paste0(plot.file,".graphml"))
@@ -1507,7 +1539,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			g1 <- delete_edges(graph=g, edges=which(E(g)$type!=graph.types[i]))
 			#g1 <- delete_vertices(graph=g1, v=which(degree(g, mode="all")==0))
 		}
-		g1$name <- graph.types[i]
+		g1$name <- file.path(base.folder, graph.types[i])
 		
 		# remove isolated nodes
 		idx <- igraph::degree(g1) < 1
@@ -1519,10 +1551,10 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		# specific case of street removal test
 		if(startsWith(graph.types[i], paste0(GR_EST_FLAT_MINUS,"_")))
 		{	# setup file names
-			graph.folder <- file.path(FOLDER_OUT_ANAL_EST, GR_EST_FLAT_MINUS, "_removed_streets", "graphs")
+			graph.folder <- file.path(FOLDER_OUT_ANAL_EST, base.folder, GR_EST_FLAT_MINUS, "_removed_streets", "graphs")
 			dir.create(path=graph.folder, showWarnings=FALSE, recursive=TRUE)
 			graph.file <- file.path(graph.folder, paste0("graph_rem=",nbr,".graphml"))
-			lay.file <- file.path(FOLDER_OUT_ANAL_EST, GR_EST_FLAT_MINUS, "layout.txt")
+			lay.file <- file.path(FOLDER_OUT_ANAL_EST, base.folder, GR_EST_FLAT_MINUS, "layout.txt")
 			
 			# retrieve layout and add to graph
 			layout <- read.table(file=lay.file, sep="\t", header=TRUE, check.names=FALSE)
@@ -1546,7 +1578,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 				g1 <- delete_vertices(graph=g1, v=idx)
 			g1$name <- paste0(g1$name,"_filtered")
 			# record as graphml
-			graph.folder <- file.path(FOLDER_OUT_ANAL_EST, paste0(GR_EST_FLAT_MINUS,"_filtered"), "_removed_streets", "graphs")
+			graph.folder <- file.path(FOLDER_OUT_ANAL_EST, base.folder, paste0(GR_EST_FLAT_MINUS,"_filtered"), "_removed_streets", "graphs")
 			dir.create(path=graph.folder, showWarnings=FALSE, recursive=TRUE)
 			graph.file <- file.path(graph.folder, paste0("graph_rem=",nbr,".graphml"))
 			tlog(8,"Recording graph in \"",graph.file,"\"")
@@ -1554,7 +1586,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			
 			# reverse to previous graph before plotting
 			if(all(is.na(prev.g1.filt)))
-				prev.g1.filt <- load.graphml.file(file=file.path(FOLDER_OUT_ANAL_EST, paste0(GR_EST_FLAT_MINUS,"_filtered"), FILE_GRAPH))
+				prev.g1.filt <- load.graphml.file(file=file.path(FOLDER_OUT_ANAL_EST, base.folder, paste0(GR_EST_FLAT_MINUS,"_filtered"), FILE_GRAPH))
 			tmp <- prev.g1.filt
 			prev.g1.filt <- g1
 			g1 <- tmp
@@ -1568,7 +1600,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			# plot using geographic coordinates
 			#FORMAT <<- c("png")
 			V(g1)$label <- paste(vertex_attr(g1,name=COL_LOC_ID), get.location.names(g1),sep="_")
-			graph.folder <- file.path(FOLDER_OUT_ANAL_EST, paste0(GR_EST_FLAT_MINUS,"_filtered"), "_removed_streets", "lambert")
+			graph.folder <- file.path(FOLDER_OUT_ANAL_EST, base.folder, paste0(GR_EST_FLAT_MINUS,"_filtered"), "_removed_streets", "lambert")
 			dir.create(path=graph.folder, showWarnings=FALSE, recursive=TRUE)
 			plot.file <- file.path(graph.folder, paste0("graph_rem=",nbr))
 			tlog(8,"Plotting graph using geographic coordinates in \"",plot.file,"\"")
@@ -1576,7 +1608,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			
 			# plot using a layouting algorithm 
 			g2 <- g1#; V(g2)$x <- V(g2)$x2; V(g2)$y <- V(g2)$y2
-			graph.folder <- file.path(FOLDER_OUT_ANAL_EST, paste0(GR_EST_FLAT_MINUS,"_filtered"), "_removed_streets", "kk")
+			graph.folder <- file.path(FOLDER_OUT_ANAL_EST, base.folder, paste0(GR_EST_FLAT_MINUS,"_filtered"), "_removed_streets", "kk")
 			dir.create(path=graph.folder, showWarnings=FALSE, recursive=TRUE)
 			plot.file <- file.path(graph.folder, paste0("graph_rem=",nbr))
 			tlog(8,"Plotting graph using layouting algorithm in \"",plot.file,"\"")
@@ -1589,7 +1621,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		# regular case
 		else
 		{	# init folder
-			graph.folder <- file.path(FOLDER_OUT_ANAL_EST, g1$name)
+			graph.folder <- file.path(FOLDER_OUT_ANAL_EST, base.folder, g1$name)
 			dir.create(path=graph.folder, showWarnings=FALSE, recursive=TRUE)
 		
 			# check graph validity
@@ -1719,7 +1751,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 				g2 <- delete_vertices(graph=g2, v=idx)
 				g2$name <- paste0(g2$name,"_filtered")
 				# record as graphml
-				graph.folder <- file.path(FOLDER_OUT_ANAL_EST, g1$name)
+				graph.folder <- file.path(FOLDER_OUT_ANAL_EST, base.folder, g1$name)
 				dir.create(path=graph.folder, showWarnings=FALSE, recursive=TRUE)
 				graph.file <- file.path(graph.folder, FILE_GRAPH)
 				tlog(4,"Recording filtered graph in \"",graph.file,"\"")
