@@ -1145,14 +1145,18 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		{	tlog(8,"Adding artificial confront ",data.split[r,COL_CONF_FIX1_ID],"--",data.split[r,COL_CONF_FIX2_ID]," (row #",r,"/",nrow(data.split),")")
 			# get vertex ids
 			id1 <- which(info.all[,"id"]==data.split[r,COL_CONF_FIX1_ID])
+			if(length(id1)!=1)
+				stop(paste0("ERROR: id not unique or not found for v1 (",data.split[r,COL_CONF_FIX1_ID],")"))
 			id2 <- which(info.all[,"id"]==data.split[r,COL_CONF_FIX2_ID])
+			if(length(id2)!=1)
+				stop(paste0("ERROR: id not unique or not found for v2 (",data.split[r,COL_CONF_FIX2_ID],")"))
 			v1 <- info.all[id1,COL_LOC_ID]
 			v2 <- info.all[id2,COL_LOC_ID]
 			
 			# add to edge list
-			edge.list <- rbind(edge.list,c(v1,v2))
+			edge.list <- rbind(edge.list, c(v1,v2))
 			
-			# add to main table
+			# add to main edge table
 			idx <- nrow(data) + 1
 			data[idx,COL_CONF_ID] <- "split"
 			data[idx,COL_CONF_LOC_LAT] <- "split"
@@ -1164,19 +1168,20 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		}
 	}
 	
-	
 	# possibly add street-street confronts
 	if(compl.streets)
 	{	tlog(4,"Adding confronts between streets")
 		# the data is different if we are in split mode
 		if(split.surf)
-			files <- c(FILE_IN_ANAL_CONFR_STRT_EDIFICES_SPLIT, FILE_IN_ANAL_CONFR_STRT_STREETS_SPLIT)
+			rel.files <- c(FILE_IN_ANAL_CONFR_STRT_EDIFICES_SPLIT, FILE_IN_ANAL_CONFR_STRT_STREETS_SPLIT)
 		else
-			files <- c(FILE_IN_ANAL_CONFR_STRT_EDIFICES, FILE_IN_ANAL_CONFR_STRT_STREETS)
-		# load list of street confronts
-		for(rel.file in files)
-		{	tlog(6,"Loading additional relational information in file '",rel.file,"'")
-			data.split <- read.table(
+			rel.files <- c(FILE_IN_ANAL_CONFR_STRT_EDIFICES, FILE_IN_ANAL_CONFR_STRT_STREETS)
+		# read and add to edge table
+		for(f in 1:length(rel.files))
+		{	# load list of street confronts
+			rel.file <- rel.files[f]
+			tlog(6,"Loading additional relational information in file '",rel.file,"' (",f,"/",length(rel.files),")")
+			data.comp <- read.table(
 				file=rel.file,
 				sep=",",
 				header=TRUE,
@@ -1185,7 +1190,49 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 				quote='"',
 				check.names=FALSE
 			)
-			# TODO
+			# add to edge list
+			if(f==1)
+			{	col1 <- COL_CONF_EDIF_ID
+				col2 <- COL_CONF_STREET_ID
+			}
+			else
+			{	col1 <- COL_CONF_STREET_ID
+				col2 <- COL_CONF_STREET2_ID
+			}
+			tlog(6,"Iterating over all additions")
+			for(r in 1:nrow(data.comp))
+			{	tlog(8,"Adding artificial confront ",data.comp[r,col1],"--",data.comp[r,col2]," (row #",r,"/",nrow(data.comp),")")
+				# get vertex ids
+				id1 <- which(info.all[,"id"]==data.comp[r,col1])
+				if(length(id1)!=1)
+					stop(paste0("ERROR: id not unique or not found for v1 (",data.comp[r,col1],")"))
+#				if(length(id1)!=1)
+#				{	tlog(10,paste0("ERROR: id not unique or not found for v1 (",data.comp[r,col1],")"))
+#					id1=1
+#				}
+				id2 <- which(info.all[,"id"]==data.comp[r,col2])
+				if(length(id2)!=1)
+					stop(paste0("ERROR: id not unique or not found for v2 (",data.comp[r,col2],")"))
+#				if(length(id2)!=1)
+#				{	tlog(10,paste0("ERROR: id not unique or not found for v2 (",data.comp[r,col2],")"))
+#					id2=1
+#				}
+				v1 <- info.all[id1,COL_LOC_ID]
+				v2 <- info.all[id2,COL_LOC_ID]
+				
+				# add to edge list
+				edge.list <- rbind(edge.list, c(v1,v2))
+				
+				# add to main edge table
+				idx <- nrow(data) + 1
+				data[idx,COL_CONF_ID] <- "complement"
+				data[idx,COL_CONF_LOC_LAT] <- "complement"
+				data[idx,COL_CONF_LOC_NORM] <- data.comp[r,COL_CONF_LOC_NORM_ARTIF]
+				data[idx,COL_CONF_EST1_ID] <- data.comp[r,col1]
+				data[idx,COL_CONF_EST2_ID] <- NA
+				data[idx,COL_CONF_FIX_ID] <- data.comp[r,col2]
+				data[idx,COL_CONF_AREA_ID] <- NA
+			}
 		}
 	}
 	
@@ -1263,7 +1310,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #	file <- file.path(FOLDER_OUT_ANAL_EST, base.folder, "graph_kk.graphml")
 #	write.graphml.file(g=as.undirected(g), file=file)
 #	# <do your magic with gephi, then record graph with new layout>
-#	# <procedure: 1) detect components and use as vertex color (largest only); 2) vertex size 50; 3) random layout; 4) standard Yifan-Hu; 5) FR layout speed=10 grav~=1; 6) manually adjust while layouting on.
+#	# <procedure: 1) detect components and use as vertex color (largest only); 2) vertex size 50; 3) random layout; 4) standard Yifan-Hu; 5) FR layout speed=10 grav~=1; 6) manually adjust components while layouting on.
 #	g0 <- read.graph(file, format="graphml")
 #	layout <- data.frame(V(g0)$idExterne, V(g0)$x, V(g0)$y)
 #	colnames(layout) <- c("idExterne", "x","y")
@@ -1424,7 +1471,9 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	# extract one graph for each predefined modality
 	#################
 	tlog(2,"Extracting several variants of the graph")
-	{	if(split.surf) 
+	{	if(split.surf)
+			graph.types <- GR_EST_FLAT_REL
+		else if(compl.streets)
 			graph.types <- GR_EST_FLAT_REL
 		else
 			graph.types <- c(GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS)		# c(GR_EST_FULL, GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS, LK_TYPE_FLATREL_VALS)
@@ -1440,6 +1489,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		if(graph.types[i]==GR_EST_FULL)
 			g1 <- g
 		# keep only the estate level (which includes short streets)
+		# remove all the other types of vertices as well as "between" confronts
 		else if(graph.types[i]==GR_EST_ESTATE_LEVEL)
 		{	g1 <- g
 			tlog(6,"Cleaning the graph (n=",gorder(g1),", m=",gsize(g1),")")
@@ -1470,7 +1520,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			tlog(8,"Removing ",length(idx)," \"between\" confronts")
 			g1 <- delete_edges(graph=g1, edges=idx)
 		}
-		# keep everything but the membership relations
+		# keep everything but the membership and long distance relations
 		else if(graph.types[i]==GR_EST_FLAT_REL)
 		{	g1 <- g
 			tlog(6,"Cleaning the graph (n=",gorder(g1),", m=",gsize(g1),")")
@@ -1488,7 +1538,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			tlog(8,"Removing ",length(idx)," \"between\" confronts")
 			g1 <- delete_edges(graph=g1, edges=idx)
 		}
-		# keep everything but the membership relations and long entities (walls, rivers)
+		# keep everything but the membership and long distance relations and long entities (walls, rivers)
 		else if(startsWith(graph.types[i], GR_EST_FLAT_MINUS))
 		{	g1 <- g
 			tlog(6,"Cleaning the graph (n=",gorder(g1),", m=",gsize(g1),")")
@@ -1621,7 +1671,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		# regular case
 		else
 		{	# init folder
-			graph.folder <- file.path(FOLDER_OUT_ANAL_EST, base.folder, g1$name)
+			graph.folder <- file.path(FOLDER_OUT_ANAL_EST, g1$name)
 			dir.create(path=graph.folder, showWarnings=FALSE, recursive=TRUE)
 		
 			# check graph validity
@@ -1751,7 +1801,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 				g2 <- delete_vertices(graph=g2, v=idx)
 				g2$name <- paste0(g2$name,"_filtered")
 				# record as graphml
-				graph.folder <- file.path(FOLDER_OUT_ANAL_EST, base.folder, g1$name)
+				graph.folder <- file.path(FOLDER_OUT_ANAL_EST, g1$name)
 				dir.create(path=graph.folder, showWarnings=FALSE, recursive=TRUE)
 				graph.file <- file.path(graph.folder, FILE_GRAPH)
 				tlog(4,"Recording filtered graph in \"",graph.file,"\"")
@@ -1838,13 +1888,9 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #     >> mauvaise approximation des longues distances
 #     dans les graphiques montrant toutes les paires de distances, on voit la courbe moyenne décroitre à droite car les distances infinies ne sont pas représentées.
 
-# TODO
-# + copier fct dist-dist dans script principal, y compris corrélations
-# + cb de noeuds significatifs différents entre split et pas split
-# - màj données
-
-# TODO évaluer la robustesse du graphe par rapport à corr dist (par ex)
-# quels noeuds ont un effet important (vitalité)
+# TODO 
+# - évaluer la robustesse du graphe par rapport à corr dist (par ex)
+# - quels noeuds ont un effet important (vitalité)
 
 # TODO comparer intra vs. tout pour montrer l'effet de la complétude des données
 

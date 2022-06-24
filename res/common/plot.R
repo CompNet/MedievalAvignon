@@ -82,13 +82,23 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 #			ecols[nature==LK_TYPE_UNK] <- "#222222"			# dark grey
 		}
 		else if(gtype==GR_TYPE_EST)
-		{	if("name" %in% graph_attr_names(g) && (startsWith(g$name,GR_EST_ESTATE_LEVEL) || startsWith(g$name,GR_EST_FLAT_REL) || startsWith(g$name,GR_EST_FLAT_MINUS)))
-				nats <- LK_TYPE_FLATREL_VALS
-			else
-				nats <- sort(unique(nature))
-			epal <- get.palette(length(nats))
-			for(i in 1:length(nats))
-				ecols[nature==nats[i]] <- epal[i]
+		{	# order edge natures to stabilize the order of common values
+			used.nats <- unique(nature)
+			base.nats <- LK_TYPE_PLOT_VALS
+			unused.nats <- setdiff(base.nats, used.nats)
+			extra.nats <- setdiff(used.nats, base.nats)
+			col.nats <- c(base.nats, extra.nats)
+			# set edge colors
+			epal <- get.palette(length(col.nats))
+			for(i in 1:length(col.nats))
+				ecols[nature==col.nats[i]] <- epal[i]
+			nats <- col.nats
+			# remove unused colors
+			idx <- which(base.nats %in% unused.nats)
+			if(length(idx)>0)
+			{	nats <- col.nats[-idx]
+				epal <- epal[-idx]
+			}
 		}
 	}
 	# set edge width

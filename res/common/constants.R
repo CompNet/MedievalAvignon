@@ -291,6 +291,7 @@ FILE_GRAPH <- "graph.graphml"
 	COL_CONF_LOC_LAT <- "localisation"
 	COL_CONF_LOC_NORM <- "localisationTN"
 	COL_CONF_LOC_NORM_ARTIF <- "lienArtificiel"
+	COL_CONF_EDIF_ID <- "idEdifice"
 	COL_CONF_EST1_ID <- "idBien1"
 	COL_CONF_EST2_ID <- "idBien2"
 	COL_CONF_FIX_ID <- "idInvariant"
@@ -298,6 +299,8 @@ FILE_GRAPH <- "graph.graphml"
 	COL_CONF_FIX2_ID <- "idInvariant2"
 	COL_CONF_FIX_ID_SPLIT <- "idInvariant_ajout"
 	COL_CONF_AREA_ID <- "idQuartierParoisse"
+	COL_CONF_STREET_ID <- "idRue"
+	COL_CONF_STREET2_ID <- "idRue2"
 	
 # estate fee table
 	COL_FEE_ID <- "idRedevance"
@@ -341,9 +344,9 @@ FILE_GRAPH <- "graph.graphml"
 	VAL_CONF_TYPE_DELA <- "au dela de"
 	VAL_CONF_TYPE_DESSOUS <- "en dessous de"
 	VAL_CONF_TYPE_DESSUS <- "au dessus de"
-#	VAL_CONF_TYPE_MILIEU <- "au milieu"
+	VAL_CONF_TYPE_MILIEU <- "au milieu"
 	VAL_CONF_TYPE_EST <- "confronte a l est avec"
-#	VAL_CONF_TYPE_OCC <- "confronte a l occident avec"
+	VAL_CONF_TYPE_OCC <- "confronte a l occident avec"
 	VAL_CONF_TYPE_OUEST <- "confronte a l ouest avec"
 	VAL_CONF_TYPE_NORD <- "confronte au nord avec"
 	VAL_CONF_TYPE_SUD <- "confronte au sud avec"
@@ -409,7 +412,19 @@ LK_TYPE <- "type"
 		VAL_CONF_TYPE_SUD, 
 		VAL_CONF_TYPE_MISC, 
 		VAL_CONF_TYPE_EGALE
-	)	
+	)
+	LK_TYPE_PLOT_VALS <- c(
+		VAL_CONF_TYPE_EST, 
+		VAL_CONF_TYPE_OUEST, 
+		VAL_CONF_TYPE_NORD, 
+		VAL_CONF_TYPE_SUD, 
+		VAL_CONF_TYPE_MISC, 
+		VAL_CONF_TYPE_EGALE,
+		VAL_CONF_TYPE_INTERIEUR,
+		VAL_CONF_TYPE_EXTERIEUR,
+		VAL_CONF_TYPE_DELA,
+		VAL_CONF_TYPE_ENTRE
+	)
 
 # link description
 LK_DESCR <- "description"
@@ -628,9 +643,9 @@ LONG_NAME[VAL_CONF_TYPE_DEBUT] <- "Start of"
 LONG_NAME[VAL_CONF_TYPE_DELA] <- "Beyond"
 LONG_NAME[VAL_CONF_TYPE_DESSOUS] <- "Below"
 LONG_NAME[VAL_CONF_TYPE_DESSUS] <- "Above"
-#LONG_NAME[VAL_CONF_TYPE_MILIEU] <- "In the middle of"
+LONG_NAME[VAL_CONF_TYPE_MILIEU] <- "In the middle of"
 LONG_NAME[VAL_CONF_TYPE_EST] <- "East confront"
-#LONG_NAME[VAL_CONF_TYPE_OCC] <- "Occident of"
+LONG_NAME[VAL_CONF_TYPE_OCC] <- "Occident of"
 LONG_NAME[VAL_CONF_TYPE_OUEST] <- "West confront"
 LONG_NAME[VAL_CONF_TYPE_NORD] <- "North confront"
 LONG_NAME[VAL_CONF_TYPE_SUD] <- "South confront"
@@ -648,7 +663,7 @@ LONG_NAME[VAL_CONF_TYPE_DANS] <- "Inside"
 LONG_NAME[VAL_CONF_TYPE_DERRIERE] <- "Behind"
 LONG_NAME[VAL_CONF_TYPE_DEVANT] <- "Front"
 LONG_NAME[VAL_CONF_TYPE_EGALE] <- "Equal"
-#LONG_NAME[VAL_CONF_TYPE_ENTRE] <- "Between"
+LONG_NAME[VAL_CONF_TYPE_ENTRE] <- "Between"
 LONG_NAME[VAL_CONF_TYPE_EXTERIEUR] <- "Out of"
 LONG_NAME[VAL_CONF_TYPE_SOUS] <- "Under"
 LONG_NAME[VAL_CONF_TYPE_SUR] <- "Over"
