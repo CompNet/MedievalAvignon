@@ -135,7 +135,8 @@ analyze.net.comstruct <- function(g, out.folder)
 				dir.create(path=coms.folder, showWarnings=FALSE, recursive=TRUE)
 				
 				# detect/load communities
-				if(COMPUTE)
+				com.file <- file.path(coms.folder,paste0(fname,"_membership.csv"))
+				if(COMPUTE || !file.exists(com.file))
 				{	# compute communities
 					tlog(6,"Computing the communities (that may take a while)")
 					##coms <- cluster_optimal(graph=simplify(g))		# much slower, obviously
@@ -148,7 +149,6 @@ analyze.net.comstruct <- function(g, out.folder)
 				}
 				else
 				{	# load previously detected communities
-					com.file <- file.path(coms.folder,paste0(fname,"_membership.csv"))
 					tlog(6,"Loading the previously detected communitites in '",com.file,"'")
 					df <- read.csv(file=com.file)
 					mbrs <- df[,"Community"]

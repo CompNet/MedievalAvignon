@@ -2,6 +2,8 @@
 # Functions used during network analysis.
 # 
 # 09/2019 Vincent Labatut
+#
+# source("res/measures/attributes.R")
 #############################################################################################
 
 
@@ -231,14 +233,16 @@ analyze.net.attributes <- function(g, out.folder)
 				vals2 <- cat.data[,j]
 				tt <- table(vals1, vals2, useNA="ifany")
 				names(dimnames(tt)) <- c(LONG_NAME[attr],LONG_NAME[attr2])
-				shrt.attr1 <- substr(attr,1,30)		# to avoid long file names
-				shrt.attr2 <- substr(attr2,1,30)	# same
+				win.limit <- 260
+				threshold <- min(30, (win.limit-(nchar(normalizePath(comp.folder))+nchar("//")+nchar("_vs_")+nchar("_bars")+nchar(".xxx")))%/%2)
+				shrt.attr1 <- substr(attr,1,threshold)		# to avoid long file names
+				shrt.attr2 <- substr(attr2,1,threshold)		# same
 				# plot file
 				plot.file <- file.path(comp.folder, paste0(shrt.attr1,"_vs_",shrt.attr2,"_bars"))
 				custom.barplot(vals=tt, 
-						text=colnames(tt), 
-						xlab=LONG_NAME[attr2], ylab="Frequence",
-						file=plot.file)
+					text=colnames(tt), 
+					xlab=LONG_NAME[attr2], ylab="Frequence",
+					file=plot.file)
 				# record tag distribution as table
 				tt <- as.data.frame(tt)
 				table.file <- file.path(comp.folder, paste0(shrt.attr1,"_vs_",shrt.attr2,"_vals.csv"))
