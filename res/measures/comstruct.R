@@ -202,67 +202,73 @@ analyze.net.comstruct <- function(g, out.folder)
 				{	coms <- sort(unique(mbrs))
 					for(com in coms)
 					{	tlog(8,"Processing community #",com,"/",length(coms))
+						size <- length(which(mbrs==com))
 						
-						# create subfolder
-						com.folder <- file.path(coms.folder, "_communities", com)
-						dir.create(path=com.folder, showWarnings=FALSE, recursive=TRUE)
-						plot.file <- file.path(com.folder, "graph")
-						
-						# plot as watermark
-						V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
-						g1 <- g; V(g1)$watermark <- mbrs!=com; #g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-						custom.gplot(g=g1, file=paste0(plot.file,"_lambert_watermark"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
-						#
-						g1 <- g; V(g1)$watermark <- mbrs!=com;  V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; #g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-						custom.gplot(g=g1, file=paste0(plot.file,"_kk_watermark"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
-		
-						# create subgraph
-						g.com <- induced_subgraph(graph=g, vids=which(mbrs==com))
-						g.com$name <- file.path(g$name, MEAS_COMMUNITIES, mode, algo.name, "_communities", com)
-						# plot only the community
-						custom.gplot(g=g.com, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
-						g1 <- g.com; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5
-						custom.gplot(g=g1, file=paste0(plot.file,"_kk0"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
-						# update layout
-						layout <- layout_with_kk(g1, kkconst=5); #scale <- max(abs(layout))/7; layout <- layout/scale
-						V(g.com)$x2 <- layout[,1]; V(g.com)$y2 <- layout[,2]; 
-						g1 <- g.com; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5
-						custom.gplot(g=g1, file=paste0(plot.file,"_kk"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
-						# record as graphml
-						write.graphml.file(g=g.com, file=paste0(plot.file,".graphml"))
-						
-						# compute attribute stats 
-						g.com <- analyze.net.attributes(g.com, out.folder)
-						# compute diameters, eccentricity, radius
-						g.com <- analyze.net.eccentricity(g.com, out.folder)
-						# compute degree
-						g.com <- analyze.net.degree(g.com, out.folder)
-						# compute eigencentrality
-						g.com <- analyze.net.eigencentrality(g.com, out.folder)
-						# compute betweenness
-						g.com <- analyze.net.betweenness(g.com, out.folder)
-						# compute closeness
-						g.com <- analyze.net.closeness(g.com, out.folder)
-						# compute harmonic closeness
-						g.com <- analyze.net.harmonic.closeness(g.com, out.folder)
-						# compute distances
-						g.com <- analyze.net.distance(g.com, out.folder)
-						# compute articulation points
-						g.com <- analyze.net.articulation(g.com, out.folder)
-#						# detect communities
-#						g.com <- analyze.net.comstruct(g.com, out.folder)
-						# compute transitivity
-						g.com <- analyze.net.transitivity(g.com, out.folder)
-#						# compute vertex connectivity
-#						g.com <- analyze.net.connectivity(g.com, out.folder)
-#						# compute components
-#						g.com <- analyze.net.components(g.com, out.folder)
-#						# correlation between component size and attributes
-#						g.com <- analyze.net.components.corr(g.com, out.folder)
-#						# compute assortativity
-#						g.com <- analyze.net.assortativity(g.com, out.folder)
-						# compute structural similarity
-						g.com <- analyze.net.structsim(g.com, out.folder)			
+						# only process large enough communities
+						if(size<5)
+							tlog(10,"Community too small (",size," vertices) >> we skip it")
+						else
+						{	# create subfolder
+							com.folder <- file.path(coms.folder, "_communities", com)
+							dir.create(path=com.folder, showWarnings=FALSE, recursive=TRUE)
+							plot.file <- file.path(com.folder, "graph")
+							
+							# plot as watermark
+							V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
+							g1 <- g; V(g1)$watermark <- mbrs!=com; #g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+							custom.gplot(g=g1, file=paste0(plot.file,"_lambert_watermark"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+							#
+							g1 <- g; V(g1)$watermark <- mbrs!=com;  V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; #g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+							custom.gplot(g=g1, file=paste0(plot.file,"_kk_watermark"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+			
+							# create subgraph
+							g.com <- induced_subgraph(graph=g, vids=which(mbrs==com))
+							g.com$name <- file.path(g$name, MEAS_COMMUNITIES, mode, algo.name, "_communities", com)
+							# plot only the community
+							custom.gplot(g=g.com, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+							g1 <- g.com; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5
+							custom.gplot(g=g1, file=paste0(plot.file,"_kk0"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+							# update layout
+							layout <- layout_with_kk(g1, kkconst=5); #scale <- max(abs(layout))/7; layout <- layout/scale
+							V(g.com)$x2 <- layout[,1]; V(g.com)$y2 <- layout[,2]; 
+							g1 <- g.com; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5
+							custom.gplot(g=g1, file=paste0(plot.file,"_kk"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+							# record as graphml
+							write.graphml.file(g=g.com, file=paste0(plot.file,".graphml"))
+							
+							# compute attribute stats 
+							g.com <- analyze.net.attributes(g.com, out.folder)
+							# compute diameters, eccentricity, radius
+							g.com <- analyze.net.eccentricity(g.com, out.folder)
+							# compute degree
+							g.com <- analyze.net.degree(g.com, out.folder)
+							# compute eigencentrality
+							g.com <- analyze.net.eigencentrality(g.com, out.folder)
+							# compute betweenness
+							g.com <- analyze.net.betweenness(g.com, out.folder)
+							# compute closeness
+							g.com <- analyze.net.closeness(g.com, out.folder)
+							# compute harmonic closeness
+							g.com <- analyze.net.harmonic.closeness(g.com, out.folder)
+							# compute distances
+							g.com <- analyze.net.distance(g.com, out.folder)
+							# compute articulation points
+							g.com <- analyze.net.articulation(g.com, out.folder)
+#							# detect communities
+#							g.com <- analyze.net.comstruct(g.com, out.folder)
+							# compute transitivity
+							g.com <- analyze.net.transitivity(g.com, out.folder)
+#							# compute vertex connectivity
+#							g.com <- analyze.net.connectivity(g.com, out.folder)
+#							# compute components
+#							g.com <- analyze.net.components(g.com, out.folder)
+#							# correlation between component size and attributes
+#							g.com <- analyze.net.components.corr(g.com, out.folder)
+#							# compute assortativity
+#							g.com <- analyze.net.assortativity(g.com, out.folder)
+							# compute structural similarity
+							g.com <- analyze.net.structsim(g.com, out.folder)	
+						}
 					}
 				}
 			}
