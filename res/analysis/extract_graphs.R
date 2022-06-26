@@ -1979,3 +1979,6 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #   >> pareil, plutot pour la famille proche
 #
 # TODO simplifier les relations genrées
+
+# en cours : tous les filtered pour whole raw et ext (ce dernier en parallele x2)
+# street ablation: plotter nbr de noeuds retirsé et/ou isolates

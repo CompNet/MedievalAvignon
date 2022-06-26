@@ -60,7 +60,7 @@ graph.types <- extract.estate.networks(split.surf=TRUE, compl.streets=FALSE)
 graph.types <- extract.estate.networks(split.surf=FALSE, compl.streets=TRUE)
 graph.types <- extract.estate.networks(split.surf=TRUE, compl.streets=TRUE)
 #graph.types <- paste0("whole_raw/", c(GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS))
-#graph.types <- paste0("whole_ext/", c(GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS))
+#graph.types <- paste0("whole_ext/", c(GR_EST_FLAT_REL, GR_EST_FLAT_MINUS))
 
 # plot comparison graphs
 #graph.types <- paste0("whole_raw/", c(GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS, paste0(GR_EST_ESTATE_LEVEL,"_filtered"), paste0(GR_EST_FLAT_REL,"_filtered"), paste0(GR_EST_FLAT_MINUS,"_filtered"), "flat_minus_6_filtered"))
