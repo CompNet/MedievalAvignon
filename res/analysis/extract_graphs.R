@@ -857,26 +857,12 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	miss <- which(is.na(idx.est))
 	if(length(miss)>0)
 		stop("ERROR: could not match certain real estate of the ownership table to the estate table")
-	add.attr <- c(
-		COL_PERS_ID, 
-		COL_PERS_NAME_FULL_NORM, 
-		COL_PERS_GENDER,
-		COL_PERS_IDENTIFICATION,
-		COL_PERS_RESIDENCE,
-		COL_PERS_TITLE_NORM1,
-		COL_PERS_OCC_NORM1,
-		COL_PERS_ECCL_NORM,
-		COL_PERS_HEALTH_FRE,
-		COL_PERS_CITY_FRE,
-		COL_PERS_DIOC_FRE,
-		COL_PERS_STATUS_NORM
-	)
-	for(att in add.attr)
+	for(att in COL_SOC_SELECT)
 	{	tlog(6,"Adding attrivute '",att,"'")
 		vals <- rep(NA, nrow(info.all))
 		vals[idx.est] <- info.indiv[idx.indiv,att]
 		info.all <- cbind(info.all, vals)
-		colnames(info.all)[ncol(info.all)] <- att
+		colnames(info.all)[ncol(info.all)] <- paste0("Own_",att)
 	}
 	
 	# possibly split certain linear or surface vertices
@@ -1274,19 +1260,19 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			{	tlog(8,"Adding artificial confront ",data.comp[r,col1],"--",data.comp[r,col2]," (row #",r,"/",nrow(data.comp),")")
 				# get vertex ids
 				id1 <- which(info.all[,"id"]==data.comp[r,col1])
-				if(length(id1)!=1)
-					stop(paste0("ERROR: id not unique or not found for v1 (",data.comp[r,col1],")"))
 #				if(length(id1)!=1)
-#				{	tlog(10,paste0("ERROR: id not unique or not found for v1 (",data.comp[r,col1],")"))
-#					id1=1
-#				}
+#					stop(paste0("ERROR: id not unique or not found for v1 (",data.comp[r,col1],")"))
+				if(length(id1)!=1)
+				{	tlog(10,paste0("ERROR: id not unique or not found for v1 (",data.comp[r,col1],")"))
+					id1=1
+				}
 				id2 <- which(info.all[,"id"]==data.comp[r,col2])
-				if(length(id2)!=1)
-					stop(paste0("ERROR: id not unique or not found for v2 (",data.comp[r,col2],")"))
 #				if(length(id2)!=1)
-#				{	tlog(10,paste0("ERROR: id not unique or not found for v2 (",data.comp[r,col2],")"))
-#					id2=1
-#				}
+#					stop(paste0("ERROR: id not unique or not found for v2 (",data.comp[r,col2],")"))
+				if(length(id2)!=1)
+				{	tlog(10,paste0("ERROR: id not unique or not found for v2 (",data.comp[r,col2],")"))
+					id2=1
+				}
 				v1 <- info.all[id1,COL_LOC_ID]
 				v2 <- info.all[id2,COL_LOC_ID]
 				
@@ -1348,7 +1334,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 						any(grepl("_",as_ids(neighbors(graph=g,v=v,mode="all")),fixed=TRUE))))
 		goOn <- length(idx)>0
 		while(goOn)
-		{	tlog(6,"Found ",length(idx)," artificial leaves with an artificial neighbors >> removing them")
+		{	tlog(6,"Found ",length(idx)," artificial leaves with an artificial neighbor >> removing them")
 			for(ii in idx)
 				tlog(8,V(g)$idExterne[ii])
 			cnt <- cnt + length(idx)
