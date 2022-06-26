@@ -809,6 +809,76 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	info.all[(last+1):(last+nrow(info.street)),com.cols] <- info.street[,com.cols]
 	last <- last + nrow(info.street)
 	
+	# load table of individuals
+	tlog(4,"Loading individual information")
+	info.indiv <- read.table(
+		file=FILE_IN_ANAL_PERSON_NODES,
+		sep=",",
+		header=TRUE,
+		stringsAsFactors=FALSE,
+		na.strings="NULL",
+		quote='"',
+		check.names=FALSE
+	)
+	tlog(6,"Found ",nrow(info.indiv)," persons")
+	# remove empty values
+	for(i in 1:ncol(info.indiv))
+	{	info.indiv[which(info.indiv[,i]==" "),i] <- ""
+		info.indiv[which(info.indiv[,i]==""), i] <- NA
+	}
+	# merge full name columns
+	info.indiv[,COL_PERS_NAME_FULL_LAT] <- sapply(1:nrow(info.indiv), function(i) if(is.na(info.indiv[i,COL_PERS_NAME_FULL_NORM])) info.indiv[i,COL_PERS_NAME_FULL_LAT] else info.indiv[i,COL_PERS_NAME_FULL_NORM])
+	
+	# load ownership table
+	tlog(4,"Loading ownership information")
+	info.own <- read.table(
+		file=FILE_IN_ANAL_OWNERSHIP_LINKS,
+		sep=",",
+		header=TRUE,
+		stringsAsFactors=FALSE,
+		na.strings="NULL",
+		quote='"',
+		check.names=FALSE
+	)
+	tlog(6,"Found ",nrow(info.own)," rows")
+	# remove empty values
+	for(i in 1:ncol(info.own))
+	{	info.own[which(info.own[,i]==" "),i] <- ""
+		info.own[which(info.own[,i]==""), i] <- NA
+	}
+
+	# add individual attributes to estate table
+	tlog(4,"Adding owners' attributes to estate table")
+	idx.indiv <- match(info.own[,COL_OWN_PERS_ID], info.indiv[,COL_PERS_ID])
+	miss <- which(is.na(idx.indiv))
+	if(length(miss)>0)
+		stop("ERROR: could not match certain owners to the table of individuals")
+	idx.est <- match(info.own[,COL_OWN_EST_ID], info.all[,COL_EST_ID])
+	miss <- which(is.na(idx.est))
+	if(length(miss)>0)
+		stop("ERROR: could not match certain real estate of the ownership table to the estate table")
+	add.attr <- c(
+		COL_PERS_ID, 
+		COL_PERS_NAME_FULL_NORM, 
+		COL_PERS_GENDER,
+		COL_PERS_IDENTIFICATION,
+		COL_PERS_RESIDENCE,
+		COL_PERS_TITLE_NORM1,
+		COL_PERS_OCC_NORM1,
+		COL_PERS_ECCL_NORM,
+		COL_PERS_HEALTH_FRE,
+		COL_PERS_CITY_FRE,
+		COL_PERS_DIOC_FRE,
+		COL_PERS_STATUS_NORM
+	)
+	for(att in add.attr)
+	{	tlog(6,"Adding attrivute '",att,"'")
+		vals <- rep(NA, nrow(info.all))
+		vals[idx.est] <- info.indiv[idx.indiv,att]
+		info.all <- cbind(info.all, vals)
+		colnames(info.all)[ncol(info.all)] <- att
+	}
+	
 	# possibly split certain linear or surface vertices
 	if(split.surf)
 	{	tlog(4,"Splitting linear and surface vertices")
@@ -1468,13 +1538,14 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #	keep.idx <- which(is.na(V(g)$idBien) | V(g)$idBien %in% sources[[1]]$re.ids)
 	
 	#################
+	#TODO
 	# extract one graph for each predefined modality
 	#################
 	tlog(2,"Extracting several variants of the graph")
 	{	if(split.surf)
 			graph.types <- GR_EST_FLAT_REL
 		else if(compl.streets)
-			graph.types <- GR_EST_FLAT_REL
+			graph.types <- c(GR_EST_FLAT_REL, GR_EST_FLAT_MINUS)
 		else
 			graph.types <- c(GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS)		# c(GR_EST_FULL, GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS, LK_TYPE_FLATREL_VALS)
 	}
@@ -1482,6 +1553,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #	graph.types <- paste0(GR_EST_FLAT_MINUS,"_",1:length(measured.streets))
 	prev.g1 <- NA
 	prev.g1.filt <- NA
+	full.graph.types <- c()
 	for(i in 1:length(graph.types))
 	{	tlog(4,"Extracting graph \"",graph.types[i],"\" (",i,"/",length(graph.types),")")
 		
@@ -1590,6 +1662,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			#g1 <- delete_vertices(graph=g1, v=which(degree(g, mode="all")==0))
 		}
 		g1$name <- file.path(base.folder, graph.types[i])
+		full.graph.types <- c(full.graph.types, g1$name)
 		
 		# remove isolated nodes
 		idx <- igraph::degree(g1) < 1
@@ -1817,7 +1890,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		}
 	}
 	
-	return(graph.types)
+	return(full.graph.types)
 }
 
 ###### GÉNÉRAL ######
@@ -1857,10 +1930,12 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #           si bcp de composants, ça un effet contraire (raccourcis pour aller partout, cas extrement de tous les noeuds isolés)
 # - étudier l'évolution de la distance graphe entre deux noeuds quand on supprime les rues? 
 #   >> indicateur de la stabilité de l'estimation de la distance spatiale par la distance géodesique
-# - implémenter le système de décomposition des noeuds surfaciques
 #
 # - modèle :
-#   - rajouter le concept de noeud de type "rue"
+#   - version plus réaliste:
+#     + rajouter la génération de graphes viaires
+#     - générer les biens dans le graphe viaire
+#     - conversion du graphe viaire vers le graphe de confronts
 #   - questions :
 #     - effet de la suppression des liens
 #     - effet de la suppression des coordonnées
@@ -1877,6 +1952,8 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #    (eg prédiction de lien sur la base des distances spatiales?)
 # 2) comment utiliser les graphes pour détecter les erreurs de saisie
 #              + effet des erreurs sur les graphes extraits
+# 3) GNN pour prédire les positions manquantes
+#    besoin d'une version multiplexe pour représenter les différents types de confronts
 
 # arguments suppression de rues :
 # - pour :
@@ -1889,12 +1966,17 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #     dans les graphiques montrant toutes les paires de distances, on voit la courbe moyenne décroitre à droite car les distances infinies ne sont pas représentées.
 
 # TODO 
-# - évaluer la robustesse du graphe par rapport à corr dist (par ex)
-# - quels noeuds ont un effet important (vitalité)
+# - associer les proprios à leurs biens
+#   + intégrer les données au graphe
+#   - finaliser avec margot la liste d'attributs à cibler
+#   - vérifier s'il faut mettre à jour une liste d'attr à considerer dans compute_measures
+# - robustesse :
+#   - évaluer la robustesse du graphe par rapport à corr dist (par ex)
+#     >> supprimer itérativement des noeuds (attaque ciblée/attaque aléatoire)
+#        et étudier l'évolution du niveau de corrélation?
+#   - quels noeuds ont un effet important : vitalité sur corrélation (?)
+# - complétude des données : comparer intra-muros  vs. graphe entier?
 
-# TODO comparer intra vs. tout pour montrer l'effet de la complétude des données
-
-# TODO mettre les proprios sur les biens
 
 ###### SOCIAL ######
 #
