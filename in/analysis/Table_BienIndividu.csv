@@ -1,4 +1,4 @@
-"idBienIndividu","idIndividu","idBien","date1reconnaissance","date2reconnaissance","ordreSuccession","moyenAcqui","sureteDate","mention1","idDeclaration"
+idBienIndividu,idIndividu,idBien,date1reconnaissance,date2reconnaissance,ordreSuccession,moyenAcqui,sureteDate,mention1,idDeclaration
 1,1,1,1366,1368,1,NULL,NULL,1366,1
 2,2,2,1366,1368,1,NULL,NULL,1366,2
 3,3,3,1366,1368,1,NULL,NULL,1366,3

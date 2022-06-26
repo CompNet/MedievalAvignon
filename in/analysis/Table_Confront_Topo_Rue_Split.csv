@@ -29,7 +29,7 @@ idRue,idRue2,lienArtificiel
 17_1,20,confronte avec
 17_2,69,confronte avec
 17_2,904,confronte avec
-17_2,17,confronte avec
+17_2,17_1,confronte avec
 18,19,confronte avec
 18,20,confronte avec
 19,10_1,confronte avec
@@ -56,10 +56,10 @@ idRue,idRue2,lienArtificiel
 27,806,confronte avec
 28_2,42,confronte avec
 28_2,48,confronte avec
-28_2,67,confronte avec
-28_2,72,confronte avec
+28_2,67_1,confronte avec
+28_2,72_1,confronte avec
 28_1,543,confronte avec
-29_1,49,confronte avec
+29_1,49_2,confronte avec
 29_1,89,confronte avec
 29_1,544,confronte avec
 30,73,confronte avec
@@ -72,13 +72,12 @@ idRue,idRue2,lienArtificiel
 39,24,confronte avec
 39,32_2,confronte avec
 39,619,confronte avec
-40_2,43,confronte avec
+40_2,43_2,confronte avec
 40_2,44,confronte avec
 41,640,confronte avec
 42,28_2,confronte avec
 42,485,confronte avec
 42,811,confronte avec
-43_2,40,confronte avec
 43_2,46,confronte avec
 43_1,100,confronte avec
 43_2,101,confronte avec
@@ -92,7 +91,6 @@ idRue,idRue2,lienArtificiel
 48,67_1,confronte avec
 48,72_1,confronte avec
 48,88,confronte avec
-49_2,29,confronte avec
 49_2,89,confronte avec
 52,53,confronte avec
 53,52,confronte avec
@@ -122,10 +120,9 @@ idRue,idRue2,lienArtificiel
 65,25,confronte avec
 65,621,confronte avec
 66,75,confronte avec
-67_1,28,confronte avec
 67_1,48,confronte avec
 67_2,71,confronte avec
-67_1,72,confronte avec
+67_1,72_1,confronte avec
 69,16,confronte avec
 69,85,confronte avec
 69,904,confronte avec
@@ -202,7 +199,7 @@ idRue,idRue2,lienArtificiel
 904,69,confronte avec
 905,59,confronte avec
 1805,113,confronte avec
-1805,659,confronte avec
+1805,659_1,confronte avec
 96,8_1,confronte avec
 9,8_2,confronte avec
 12,8_2,confronte avec
@@ -216,7 +213,7 @@ idRue,idRue2,lienArtificiel
 11,17_1,confronte avec
 68,26_1,confronte avec
 802,28_2,confronte avec
-29_2,56,confronte avec
+29_2,56_2,confronte avec
 95,32_2,confronte avec
 93,32_2,confronte avec
 94,32_2,confronte avec
@@ -245,7 +242,7 @@ idRue,idRue2,lienArtificiel
 88,56_2,confronte avec
 63,660,confronte avec
 72_2,468,confronte avec
-72_2,70,confronte avec
+72_2,70_1,confronte avec
 764,70_1,confronte avec
 467_1,468,confronte avec
 36,33,confronte avec
