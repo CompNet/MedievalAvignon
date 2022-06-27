@@ -237,29 +237,34 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 				{	are.nas <- apply(mat,1,function(r) all(is.na(r)))					# detect individuals with only NAs
 					are.pie <- apply(mat,1,function(r) length(r[!is.na(r)])>1)			# detect individuals with several non-NA values
 					uvals <- sort(unique(c(mat)))										# get unique attribute values
-					pie.matrix <- NA
-					for(uval in uvals)													# build a column for each of them
-					{	vals <- as.integer(apply(mat, 1, function(v) uval %in% v[!is.na(v)]))
-						if(all(is.na(pie.matrix)))
-							pie.matrix <- as.matrix(vals, ncol=1)
-						else
-							pie.matrix <- cbind(pie.matrix, vals)
-						colnames(pie.matrix)[ncol(pie.matrix)] <- uval
-					}
-					lgd.txt <- colnames(pie.matrix)
-					colcols <- COLS_ATT[[col.att[1]]]
-					if(is.null(colcols))
-					{	colcols <- get.palette(length(lgd.txt))
-						lgd.col <- colcols[(1:length(lgd.txt)-1) %% length(colcols) + 1]
+					if(length(uvals)==0)
+					{	pie.values <- rep(NA,nrow(mat))
 					}
 					else
-						lgd.col <- colcols[lgd.txt]
-					pie.values <- unlist(apply(pie.matrix, 1, function(v) list(v)), recursive=FALSE)
-					pie.values[!are.pie | !connected] <- NA
-					vshapes[are.pie & connected] <- rep("pie",length(which(are.pie & connected)))
-					vcols[are.pie & connected] <- NA
-					vcols[!are.nas & !are.pie & connected] <- apply(pie.matrix[!are.nas & !are.pie & connected,,drop=FALSE], 1, 
-							function(v) lgd.col[which(v>0)])
+					{	pie.matrix <- NA
+						for(uval in uvals)													# build a column for each of them
+						{	vals <- as.integer(apply(mat, 1, function(v) uval %in% v[!is.na(v)]))
+							if(all(is.na(pie.matrix)))
+								pie.matrix <- as.matrix(vals, ncol=1)
+							else
+								pie.matrix <- cbind(pie.matrix, vals)
+							colnames(pie.matrix)[ncol(pie.matrix)] <- uval
+						}
+						lgd.txt <- colnames(pie.matrix)
+						colcols <- COLS_ATT[[col.att[1]]]
+						if(is.null(colcols))
+						{	colcols <- get.palette(length(lgd.txt))
+							lgd.col <- colcols[(1:length(lgd.txt)-1) %% length(colcols) + 1]
+						}
+						else
+							lgd.col <- colcols[lgd.txt]
+						pie.values <- unlist(apply(pie.matrix, 1, function(v) list(v)), recursive=FALSE)
+						pie.values[!are.pie | !connected] <- NA
+						vshapes[are.pie & connected] <- rep("pie",length(which(are.pie & connected)))
+						vcols[are.pie & connected] <- NA
+						vcols[!are.nas & !are.pie & connected] <- apply(pie.matrix[!are.nas & !are.pie & connected,,drop=FALSE], 1, 
+								function(v) lgd.col[which(v>0)])
+					}
 				}
 				# counts of categorical attributes inside a community
 				else

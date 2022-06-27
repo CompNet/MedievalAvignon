@@ -1524,7 +1524,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #	keep.idx <- which(is.na(V(g)$idBien) | V(g)$idBien %in% sources[[1]]$re.ids)
 	
 	#################
-	#TODO
+	#TODO xxx
 	# extract one graph for each predefined modality
 	#################
 	tlog(2,"Extracting several variants of the graph")
@@ -1980,5 +1980,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #
 # TODO simplifier les relations genrées
 
-# en cours : tous les filtered pour whole raw et ext (ce dernier en parallele x2)
+# en cours : 
+# - tous les filtered pour whole raw (+ v6) et whole ext (ce dernier en parallele x2)
+# - flat_rel filtered pour split raw et split ext ext
 # street ablation: plotter nbr de noeuds retirsé et/ou isolates
