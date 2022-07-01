@@ -1952,10 +1952,6 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #     dans les graphiques montrant toutes les paires de distances, on voit la courbe moyenne décroitre à droite car les distances infinies ne sont pas représentées.
 
 # TODO 
-# - associer les proprios à leurs biens
-#   + intégrer les données au graphe
-#   - finaliser avec margot la liste d'attributs à cibler
-#   - vérifier s'il faut mettre à jour une liste d'attr à considerer dans compute_measures
 # - robustesse :
 #   - évaluer la robustesse du graphe par rapport à corr dist (par ex)
 #     >> supprimer itérativement des noeuds (attaque ciblée/attaque aléatoire)
@@ -1980,7 +1976,31 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #
 # TODO simplifier les relations genrées
 
-# en cours : 
-# - tous les filtered pour whole raw (+ v6) et whole ext (ce dernier en parallele x2)
-# - flat_rel filtered pour split raw et split ext ext
-# street ablation: plotter nbr de noeuds retirsé et/ou isolates
+# traitement : 
+# - split_ext
+#   > flat_relations
+#   > flat_relations_filtered
+# - split_raw
+#   > flat_relations
+#   > flat_relations_filtered
+# - whole_ext
+#   - estate_level
+#   - estate_level_filtered
+#   > flat_minus
+#   + flat_minus_filtered
+#   > flat_relations
+#   + flat_relations_filtered
+# - whole_raw
+#   > estate_level
+#   + estate_level_filtered
+#   > flat_minus
+#   + flat_minus_filtered
+#   - flat_minusX
+#   + flat_minusX_filtered
+#   > flat_relations
+#   + flat_relations_filtered
+#
+
+# TODO
+# street ablation: plotter nbr de noeuds retiré et/ou isolates
+# créer tableau comparatif des différents graphes
