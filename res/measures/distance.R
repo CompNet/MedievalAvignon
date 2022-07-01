@@ -145,7 +145,7 @@ analyze.net.distance <- function(g, out.folder)
 				g <- delete_vertex_attr(graph=g, name=fname)
 			}
 		}
-	
+		
 		# export CSV with average distance
 		tlog(2,"Recording stats in '",stat.file,"'")
 		write.csv(stats, file=stat.file, row.names=TRUE)

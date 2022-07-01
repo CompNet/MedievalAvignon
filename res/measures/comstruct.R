@@ -134,9 +134,21 @@ analyze.net.comstruct <- function(g, out.folder)
 				coms.folder <- file.path(out.folder, g$name, MEAS_COMMUNITIES, mode, algo.name)
 				dir.create(path=coms.folder, showWarnings=FALSE, recursive=TRUE)
 				
-				# detect/load communities
+				# possibly load communities
 				com.file <- file.path(coms.folder,paste0(fname,"_membership.csv"))
-				if(COMPUTE || !file.exists(com.file))
+				mbrs <- NA
+				if(!COMPUTE && file.exists(com.file))
+				{	# load previously detected communities
+					tlog(6,"Loading the previously detected communitites in '",com.file,"'")
+					df <- read.csv(file=com.file)
+					mbrs <- df[,"Community"]
+					mod <- stats[paste0(fname,"_mod"), "Value"]
+					# if the vector length does not match the number of vertices, perform comdet
+					if(length(mbrs)!=gorder(g))
+						mbrs <- NA
+				}
+				# or compute them
+				if(all(is.na(mbrs)))
 				{	# compute communities
 					tlog(6,"Computing the communities (that may take a while)")
 					##coms <- cluster_optimal(graph=simplify(g))		# much slower, obviously
@@ -146,13 +158,6 @@ analyze.net.comstruct <- function(g, out.folder)
 					coms <- algos[[a]]$fun(simplify(g), mode)
 					mod <- modularity(coms)
 					mbrs <- as.integer(membership(coms))
-				}
-				else
-				{	# load previously detected communities
-					tlog(6,"Loading the previously detected communitites in '",com.file,"'")
-					df <- read.csv(file=com.file)
-					mbrs <- df[,"Community"]
-					mod <- stats[paste0(fname,"_mod"), "Value"]
 				}
 				com.nbr <- length(unique(mbrs))
 				tlog(6,"Number of communities: ",com.nbr)
@@ -494,7 +499,8 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 					vals <- c(vals, grp.pur.total, att.pur.total)
 					meas <- c(meas, "GrpPurity", "ValPurity")
 					# chi-squared test of independence (dpt if p<0.05)
-					if(all(is.na(tmp)) || length(unique(tmp))==2 || any(is.na(tmp)) && length(unique(tmp))==3)
+					tt <- table(tmp, membership[est.idx])
+					if(length(tt)==0 || length(which(apply(tt,1,function(row) any(row>0))))<3 || length(which(apply(tt,2,function(col) any(col>0))))<3)
 						chisq <- NA
 					else
 						chisq <- suppressWarnings(chisq.test(tmp, membership[est.idx], correct=FALSE))$p.value # warning=groups too small
