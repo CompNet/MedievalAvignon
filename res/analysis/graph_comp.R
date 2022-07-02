@@ -67,7 +67,9 @@ plot.graph.comparisons <- function(graph.names, folder)
 # folder: root folder to record the plot files.
 #############################################################################################
 plot.graph.comparisons.same.types <- function(g1, g2, folder)
-{	# init folders
+{	tlog(6,"Comparing same type graphs")
+	
+	# init folders
 	folder1 <- file.path(folder, g1$name, "comparison")
 	folder2 <- file.path(folder, g2$name, "comparison")
 	dir.create(path=folder1, showWarnings=FALSE, recursive=TRUE)
@@ -141,14 +143,16 @@ plot.graph.comparisons.same.types <- function(g1, g2, folder)
 # folder: root folder to record the plot files.
 #############################################################################################
 plot.graph.comparisons.diff.types <- function(g.non, g.split, folder)
-{	# init folders
-	folder.non <- file.path(folder, g1$name, "comparison")
-	folder.split <- file.path(folder, g2$name, "comparison")
+{	tlog(6,"Comparing different type graphs")
+	
+	# init folders
+	folder.non <- file.path(folder, g.non$name, "comparison")
+	folder.split <- file.path(folder, g.split$name, "comparison")
 	dir.create(path=folder.non, showWarnings=FALSE, recursive=TRUE)
 	dir.create(path=folder.split, showWarnings=FALSE, recursive=TRUE)
 	# init file names
-	plot.file.non <- file.path(folder.non, paste0("comp_", gsub("/","__",g2$name)))
-	plot.file.split <- file.path(folder.split, paste0("comp_", gsub("/","__",g1$name)))
+	plot.file.non <- file.path(folder.non, paste0("comp_", gsub("/","__",g.split$name)))
+	plot.file.split <- file.path(folder.split, paste0("comp_", gsub("/","__",g.non$name)))
 	
 	# retrieve vertex names
 	vnames.non <- V(g.non)$idExterne
