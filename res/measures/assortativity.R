@@ -39,6 +39,7 @@ analyze.net.assortativity <- function(g, out.folder)
 	val.tab <- matrix(nrow=0,ncol=length(modes))
 	colnames(val.tab) <- modes
 	
+	
 	#############################
 	# deal with categorical attributes
 	tlog(4,"Dealing with categorical attributes")
@@ -145,6 +146,7 @@ analyze.net.assortativity <- function(g, out.folder)
 		}
 	}
 	
+	
 	#############################
 	# deal with numerical attributes
 	tlog(4,"Dealing with numerical attributes")
@@ -240,10 +242,13 @@ analyze.net.assortativity <- function(g, out.folder)
 	else
 		tlog(6,"No numerical attribute detected")
 	
+	
 	#############################
 	# record the results
 	res.file <- file.path(out.folder, g$name, paste0(MEAS_ASSORTATIVITY,".csv"))
+	tlog(4,"Record results in '",res.file,"'")
 	write.csv(val.tab, file=res.file, row.names=TRUE)
+	
 	
 	#############################
 	# assortativity over

@@ -70,6 +70,7 @@ analyze.net.attributes <- function(g, out.folder)
 		plot.folder <- file.path(attr.folder, attr)
 		dir.create(path=plot.folder, showWarnings=FALSE, recursive=TRUE)
 		plot.file <- file.path(plot.folder, paste0(attr,"_bars"))
+		tlog(6,"Plot in file '",plot.file,"'")
 		custom.barplot(
 			tt, 
 			text=names(tt), 
@@ -81,11 +82,12 @@ analyze.net.attributes <- function(g, out.folder)
 		tt <- as.data.frame(tt)
 		colnames(tt) <- c("Value","Frequency")
 		table.file <- file.path(plot.folder, paste0(attr,"_vals.csv"))
+		tlog(6,"Record data in file '",table.file,"'")
 		write.csv(tt, file=table.file, row.names=FALSE)
 		
 		# plot the graph using colors for attribute values
-		tlog(4,"Graph-plotting attribute \"",attr,"\"")
 		plot.file <- file.path(plot.folder, paste0(attr,"_graph"))
+		tlog(4,"Graph-plotting attribute \"",attr,"\" in '",plot.file,"'")
 		V(g00)$label <- paste(vertex_attr(g00,name=COL_LOC_ID), get.location.names(g00),sep="_")
 		g1 <- g00; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
 		custom.gplot(g=g1, col.att=attr, cat.att=TRUE, color.isolates=TRUE, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
@@ -143,6 +145,7 @@ analyze.net.attributes <- function(g, out.folder)
 		plot.folder <- file.path(attr.folder, attr)
 		dir.create(path=plot.folder, showWarnings=FALSE, recursive=TRUE)
 		plot.file <- file.path(plot.folder, paste0(attr,"_bars"))
+		tlog(6,"Plot distribution in '",plot.file,"'")
 		custom.barplot(
 			tt, 
 			text=names(tt), 
@@ -154,6 +157,7 @@ analyze.net.attributes <- function(g, out.folder)
 		tt <- as.data.frame(tt)
 		colnames(tt) <- c("Value","Frequency")
 		table.file <- file.path(plot.folder, paste0(attr,"_vals.csv"))
+		tlog(6,"Record data in '",table.file,"'")
 		write.csv(tt, file=table.file, row.names=FALSE)
 		# plot tags on a graph
 		g00 <- g
@@ -164,6 +168,7 @@ analyze.net.attributes <- function(g, out.folder)
 			g00 <- set_vertex_attr(graph=g00, name=a, index=est.idx, value=vals)
 		}
 		plot.file <- file.path(plot.folder, paste0(attr,"_graph"))
+		tlog(6,"Plot graph in '",plot.file,"'")
 		V(g00)$label <- paste(vertex_attr(g00,name=COL_LOC_ID), get.location.names(g00),sep="_")
 		g1 <- g00; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
 		custom.gplot(g=g1, col.att=attrc, cat.att=TRUE, color.isolates=TRUE, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
@@ -194,6 +199,7 @@ analyze.net.attributes <- function(g, out.folder)
 			tlog(6,"Producing barplots for attribute \"",att_name,"\"")
 			tt <- table(vals, useNA="ifany")
 			plot.file <- file.path(plot.folder2, "bars")
+			tlog(8,"Plot distribution in '",plot.file,"'")
 			custom.barplot(tt, 
 				text=names(tt), 
 				xlab=paste0(LONG_NAME[attr]," : ",uval), ylab="Frequence", 
@@ -203,11 +209,13 @@ analyze.net.attributes <- function(g, out.folder)
 			tt <- as.data.frame(tt)
 			colnames(tt) <- c("Value","Frequency")
 			table.file <- file.path(plot.folder2, "vals.csv")
+			tlog(8,"Record data in '",table.file,"'")
 			write.csv(tt, file=table.file, row.names=FALSE)
 			
 			# plot the graph using colors for attribute values
 			tlog(6,"Graph-plotting attribute \"",att_name,"\"")
 			plot.file <- file.path(plot.folder2, "graphs")
+			tlog(8,"Plot graph in '",plot.file,"'")
 			g00 <- set_vertex_attr(graph=g, name=att_name, index=non.est.idx, value=rep(NA,length(non.est.idx)))
 			g00 <- set_vertex_attr(graph=g00, name=att_name, index=est.idx, value=vals)
 			V(g00)$label <- paste(vertex_attr(g00,name=COL_LOC_ID), get.location.names(g00),sep="_")
@@ -239,6 +247,7 @@ analyze.net.attributes <- function(g, out.folder)
 				shrt.attr2 <- substr(attr2,1,threshold)		# same
 				# plot file
 				plot.file <- file.path(comp.folder, paste0(shrt.attr1,"_vs_",shrt.attr2,"_bars"))
+				tlog(4,"Plot in file '",plot.file,"'")
 				custom.barplot(vals=tt, 
 					text=colnames(tt), 
 					xlab=LONG_NAME[attr2], ylab="Frequence",
@@ -273,6 +282,7 @@ analyze.net.attributes <- function(g, out.folder)
 		plot.folder <- file.path(attr.folder, attr)
 		dir.create(path=plot.folder, showWarnings=FALSE, recursive=TRUE)
 		plot.file <- file.path(plot.folder, paste0(attr,"_bars"))
+		tlog(7,"Plot distribution in '",plot.file,"'")
 		custom.barplot(tt, 
 			text=names(tt), 
 			xlab=LONG_NAME[attr], ylab="Frequence", 
@@ -281,6 +291,7 @@ analyze.net.attributes <- function(g, out.folder)
 		tt <- as.data.frame(tt)
 		colnames(tt) <- c("Value","Frequency")
 		table.file <- file.path(plot.folder, paste0(attr,"_vals.csv"))
+		tlog(7,"Record data in '",table.file,"'")
 		write.csv(tt, file=table.file, row.names=FALSE)
 		
 		# add to matrix

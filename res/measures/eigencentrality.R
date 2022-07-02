@@ -48,12 +48,16 @@ analyze.net.eigencentrality <- function(g, out.folder)
 		{	vals <- eigen_centrality(graph=g, scale=FALSE, directed=mode==MEAS_MODE_DIR)$vector
 			centr <- centr_eigen(graph=g, directed=mode==MEAS_MODE_DIR, scale=FALSE, normalized=TRUE)$centralization
 		}
-		custom.hist(vals, name=paste(MEAS_LONG_NAMES[mode],MEAS_LONG_NAMES[MEAS_EIGENCENTR]), file=file.path(eigen.folder,paste0(fname,"_histo")))
+		plot.file <- file.path(eigen.folder,paste0(fname,"_histo"))
+		tlog(4,"Plotting distribution in '",plot.file,"'")
+		custom.hist(vals, name=paste(MEAS_LONG_NAMES[mode],MEAS_LONG_NAMES[MEAS_EIGENCENTR]), file=plot.file)
 		
 		# export CSV with Eigencentrality
+		tab.file <- file.path(eigen.folder,paste0(fname,"_values.csv"))
+		tlog(4,"Exporting as CSV in '",tab.file,"'")
 		df <- data.frame(vertex_attr(g, ND_NAME), get.names(g), vals)
 		colnames(df) <- c("Id","Name",fname) 
-		write.csv(df, file=file.path(eigen.folder,paste0(fname,"_values.csv")), row.names=FALSE)
+		write.csv(df, file=tab.file, row.names=FALSE)
 		
 		# add results to the graph (as attributes) and record
 		g <- set_vertex_attr(graph=g, name=fname, value=vals)
@@ -64,19 +68,23 @@ analyze.net.eigencentrality <- function(g, out.folder)
 		stats[fname, ] <- list(Value=centr, Mean=mval, Stdv=sdval)
 		
 		# plot graph using color for Eigencentrality
+		plot.file <- file.path(eigen.folder,paste0(fname,"_graph"))
+		tlog(4,"Plotting graph in '",plot.file,"'")
 		#g <- update.node.labels(g, vals)
 		V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
 		g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-		custom.gplot(g=g1, col.att=fname, file=file.path(eigen.folder,paste0(fname,"_graph_lambert")), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+		custom.gplot(g=g1, col.att=fname, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
 		g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-		custom.gplot(g=g1, col.att=fname, file=file.path(eigen.folder,paste0(fname,"_graph_kk")), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+		custom.gplot(g=g1, col.att=fname, file=paste0(plot.file,"_kk"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
 	}
 	
 	# export CSV with results
+	tlog(2,"Updating stat file '",stat.file,"'")
 	write.csv(stats, file=stat.file, row.names=TRUE)
 	
 	# record graph and return it
 	graph.file <- file.path(out.folder, g$name, FILE_GRAPH)
+	tlog(2,"Updating graph file '",graph.file,"'")
 	write.graphml.file(g=g, file=graph.file)
 	return(g)
 }

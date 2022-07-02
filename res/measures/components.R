@@ -60,13 +60,17 @@ analyze.net.components <- function(g, out.folder)
 		tlog(4,"Number of components: ",comp.nbr)
 		
 		# component size distribution
+		plot.file <- file.path(comp.folder,paste0(fname,"_size_bars"))
+		tlog(4,"Plotting distribution in '",plot.file,"'")
 		sizes <- table(mbrs,useNA="ifany")
-		custom.barplot(sizes, text=names(sizes), xlab="Component", ylab="Size", file=file.path(comp.folder,paste0(fname,"_size_bars")))
+		custom.barplot(sizes, text=names(sizes), xlab="Component", ylab="Size", file=plot.file)
 		
 		# export CSV with component membership
+		tab.file <- file.path(comp.folder,paste0(fname,"_membership.csv"))
+		tlog(4,"Exporting as CSV in '",tab.file,"'")
 		df <- data.frame(vertex_attr(g, ND_NAME), get.names(g), mbrs)
 		colnames(df) <- c("Id","Name","Component") 
-		write.csv(df, file=file.path(comp.folder,paste0(fname,"_membership.csv")), row.names=FALSE)
+		write.csv(df, file=tab.file, row.names=FALSE)
 		
 		# add results to the graph (as attributes) and stats table
 		g <- set_vertex_attr(graph=g, name=fname, value=mbrs)
@@ -82,12 +86,14 @@ analyze.net.components <- function(g, out.folder)
 		g <- set_vertex_attr(graph=g, name=fname, value=mbrs.big)
 		
 		# plot graph using color for components
+		plot.file <- file.path(comp.folder,paste0(fname,"_graph"))
+		tlog(4,"Plotting graph in '",plot.file,"'")
 		#V(g)$label <- rep(NA, gorder(g))
 		V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
 		g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-		custom.gplot(g=g1, col.att=fname, cat.att=TRUE, file=file.path(comp.folder,paste0(fname,"_graph_lambert")), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+		custom.gplot(g=g1, col.att=fname, cat.att=TRUE, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
 		g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-		custom.gplot(g=g1, col.att=fname, cat.att=TRUE, file=file.path(comp.folder,paste0(fname,"_graph_kk")), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+		custom.gplot(g=g1, col.att=fname, cat.att=TRUE, file=paste0(plot.file,"_kk"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
 		g <- set_vertex_attr(graph=g, name=fname, value=cmp$membership)
 	
 		# plot components separately
@@ -95,6 +101,8 @@ analyze.net.components <- function(g, out.folder)
 		dir.create(path=sep.folder, showWarnings=FALSE, recursive=TRUE)
 		for(i in idx)
 		{	# plot subgraph
+			plot.file <- file.path(sep.folder,paste0("component_",i,"_lambert"))
+			tlog(6,"Plotting component #",i,"/",length(idx)," in '",plot.file,"'")
 			g2 <- induced_subgraph(graph=g, vids=which(mbrs.big==i))
 #			if(gorder(g2)>20)
 #				V(g2)$label <- rep(NA, gorder(g2))
@@ -102,12 +110,13 @@ analyze.net.components <- function(g, out.folder)
 #				V(g2)$label <- get.names(g2)
 			V(g2)$label <- paste(vertex_attr(g2,name=COL_LOC_ID), get.location.names(g2),sep="_")
 			g1 <- g2; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-			custom.gplot(g=g1, file=file.path(sep.folder,paste0("component_",i,"_lambert")), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+			custom.gplot(g=g1, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
 			g1 <- g2; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-			custom.gplot(g=g1, file=file.path(sep.folder,paste0("component_",i,"_kk")), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+			custom.gplot(g=g1, file=paste0(plot.file,"_kk"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
 	
 			# export subgraph
 			graph.file <- file.path(sep.folder,paste0("component_",i,".graphml"))
+			tlog(6,"Recording component #",i,"/",length(idx)," as graph in '",graph.file,"'")
 			write.graphml.file(g=g, file=graph.file)
 		}
 		
@@ -116,10 +125,12 @@ analyze.net.components <- function(g, out.folder)
 	}
 	
 	# export CSV with results
+	tlog(2,"Updating stat file '",stat.file,"'")
 	write.csv(stats, file=stat.file, row.names=TRUE)
 	
 	# record graph and return it
 	graph.file <- file.path(out.folder, g$name, FILE_GRAPH)
+	tlog(2,"Updating graph file '",graph.file,"'")
 	write.graphml.file(g=g, file=graph.file)
 	return(g)
 }
@@ -384,6 +395,7 @@ analyze.net.components.corr <- function(g, out.folder)
 	
 	# record the results
 	res.file <- file.path(out.folder, g$name, "component-size_attribute_corr.csv")
+	tlog(4,"Recording results in file '",res.file,"'")
 	write.csv(val.tab, file=res.file, row.names=TRUE)
 	
 	return(g)

@@ -66,12 +66,16 @@ analyze.net.articulation <- function(g, out.folder)
 		dir.create(path=articulation.folder, showWarnings=FALSE, recursive=TRUE)
 		
 		# plot distribution
-		custom.hist(vals, name=MEAS_LONG_NAMES[MEAS_ARTICULATION], file=file.path(articulation.folder,paste0(MEAS_ARTICULATION,"_histo")))
+		plot.file <- file.path(articulation.folder,paste0(MEAS_ARTICULATION,"_histo"))
+		tlog(4,"Plotting distribution in '",plot.file,"'")
+		custom.hist(vals, name=MEAS_LONG_NAMES[MEAS_ARTICULATION], file=plot.file)
 		
-		# export CSV with articulation
+		# export CSV with articulation points
+		tab.file <- file.path(articulation.folder,paste0(MEAS_ARTICULATION,"_values.csv"))
+		tlog(4,"Exporting as CSV in '",tab.file,"'")
 		df <- data.frame(vertex_attr(g, ND_NAME), get.names(g), vals)
 		colnames(df) <- c("Id","Name",MEAS_ARTICULATION) 
-		write.csv(df, file=file.path(articulation.folder,paste0(MEAS_ARTICULATION,"_values.csv")), row.names=FALSE)
+		write.csv(df, file=tab.file, row.names=FALSE)
 		
 		# add results to the graph (as attributes) and record
 		g <- set_vertex_attr(graph=g, name=MEAS_ARTICULATION, value=vals)
@@ -80,6 +84,7 @@ analyze.net.articulation <- function(g, out.folder)
 		
 		# plot graph using color for articulation level
 		plot.file <- file.path(articulation.folder,paste0(MEAS_ARTICULATION,"_graph"))
+		tlog(4,"Plotting graph in '",plot.file,"'")
 		#g <- update.node.labels(g, vals, best.low=TRUE)
 		V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
 		g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
@@ -88,10 +93,12 @@ analyze.net.articulation <- function(g, out.folder)
 		custom.gplot(g=g1, col.att=MEAS_ARTICULATION, file=paste0(plot.file,"_kk"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
 		
 		# export CSV with number of articulation points
+		tlog(4,"Updating stat file '",stat.file,"'")
 		write.csv(stats, file=stat.file, row.names=TRUE)
 	
 		# record graph
 		graph.file <- file.path(out.folder, g$name, FILE_GRAPH)
+		tlog(4,"Updating graph file '",graph.file,"'")
 		write.graphml.file(g=g, file=graph.file)
 	}
 	

@@ -40,13 +40,17 @@ analyze.net.degree <- function(g, out.folder)
 		dir.create(path=degree.folder, showWarnings=FALSE, recursive=TRUE)
 		
 		# degree distribution
+		plot.file <- file.path(degree.folder,paste0(fname,"_histo"))
+		tlog(4,"Plotting distribution in '",plot.file,"'")
 		vals <- igraph::degree(g, mode=if(mode==MEAS_MODE_UNDIR) "all" else mode, loops=TRUE, normalized=FALSE)
-		custom.hist(vals, name=paste(MEAS_LONG_NAMES[mode],MEAS_LONG_NAMES[MEAS_DEGREE]), file=file.path(degree.folder,paste0(fname,"_histo")))
+		custom.hist(vals, name=paste(MEAS_LONG_NAMES[mode],MEAS_LONG_NAMES[MEAS_DEGREE]), file=plot.file)
 			
 		# export CSV with degree
+		tab.file <- file.path(degree.folder,paste0(fname,"_values.csv"))
+		tlog(4,"Exporting as CSV in '",tab.file,"'")
 		df <- data.frame(vertex_attr(g, ND_NAME), get.names(g), vals)
 		colnames(df) <- c("Id","Name",fname) 
-		write.csv(df, file=file.path(degree.folder,paste0(fname,"_values.csv")), row.names=FALSE)
+		write.csv(df, file=tab.file, row.names=FALSE)
 		
 		# add degree (as node attributes) to the graph and stats table
 		g <- set_vertex_attr(graph=g, name=fname, value=vals)
@@ -58,19 +62,23 @@ analyze.net.degree <- function(g, out.folder)
 		stats[fname, ] <- list(Value=centr, Mean=mval, Stdv=sdval)
 		
 		# plot graph using color for degree
+		plot.file <- file.path(degree.folder,paste0(fname,"_graph"))
+		tlog(4,"Plotting graph in '",plot.file,"'")
 		#g <- update.node.labels(g, vals)
 		V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
 		g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-		custom.gplot(g=g1, col.att=fname, file=file.path(degree.folder,paste0(fname,"_graph_lambert")), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+		custom.gplot(g=g1, col.att=fname, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
 		g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-		custom.gplot(g=g1, col.att=fname, file=file.path(degree.folder,paste0(fname,"_graph_kk")), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+		custom.gplot(g=g1, col.att=fname, file=paste0(plot.file,"_kk"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
 	}
 	
 	# export CSV with average degree
+	tlog(2,"Updating stat file '",stat.file,"'")
 	write.csv(stats, file=stat.file, row.names=TRUE)
 	
 	# record graph and return it
 	graph.file <- file.path(out.folder, g$name, FILE_GRAPH)
+	tlog(2,"Updating graph file '",graph.file,"'")
 	write.graphml.file(g=g, file=graph.file)
 	return(g)
 }

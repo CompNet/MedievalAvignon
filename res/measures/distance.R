@@ -62,7 +62,10 @@ analyze.net.distance <- function(g, out.folder)
 		diag(vals) <- NA
 		flat.vals <- vals[upper.tri(vals,diag=FALSE)]
 		if(length(flat.vals)>2)
-			custom.hist(vals=flat.vals, name=paste(MEAS_LONG_NAMES[mode],MEAS_LONG_NAMES[MEAS_DISTANCE]), file=file.path(distance.folder,paste0(fname,"_histo")))
+		{	plot.file <- file.path(distance.folder,paste0(fname,"_histo"))
+			tlog(4,"Plotting distribution in '",plot.file,"'")
+			custom.hist(vals=flat.vals, name=paste(MEAS_LONG_NAMES[mode],MEAS_LONG_NAMES[MEAS_DISTANCE]), file=plot.file)
+		}
 		
 		# average distance distributions
 		tlog(4,"Dealing with average distance distribution")
@@ -131,12 +134,12 @@ analyze.net.distance <- function(g, out.folder)
 				if(all(is.infinite(vals[n,-n])))
 					tlog(6,"NOT plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),"), as all values are infinite")
 				else
-				{	tlog(6,"Plotting graph for node #",id," (",nname, ", ",n,"/",gorder(g),")")
-					g <- update.node.labels(g, vals[n,])
+				{	g <- update.node.labels(g, vals[n,])
 					shrt.nm <- substr(nname,1,30)		# to avoid long file names
 					id.cln <- gsub(":", "-", id, fixed=TRUE)
 					id.cln <- gsub("/", "_", id.cln, fixed=TRUE)
 					V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
+					tlog(6,"Plotting graph for node #",id," (",nname, ", ",n,"/",gorder(g),") in '",file.path(mode.folder,"xxxx",paste0(id.cln,"_",shrt.nm )),"'")
 					g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
 					custom.gplot(g=g1, col.att=fname, v.hl=n, file=file.path(mode.folder,"lambert",paste0(id.cln,"_",shrt.nm )), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
 					g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
@@ -181,10 +184,11 @@ analyze.net.distance <- function(g, out.folder)
 			svals <- svals[upper.tri(svals, diag=FALSE)]
 			
 			# compute distribution
-			plot.file <- file.path(distance.folder,paste0(fname,"_histo_spatial-",sdist))
-			tlog(8,"Plotting histogram in \"",plot.file,"\"")
 			if(length(svals)>2)
+			{	plot.file <- file.path(distance.folder,paste0(fname,"_histo_spatial-",sdist))
+				tlog(8,"Plotting histogram in \"",plot.file,"\"")
 				custom.hist(vals=svals, name=ylabs[sdist], file=plot.file)
+			}
 			
 			# plot graph using color for average distance
 			for(avg.type in c("arith","harmo"))
@@ -246,6 +250,7 @@ analyze.net.distance <- function(g, out.folder)
 		
 				# plot the spatial distance as a function of the graph-based one
 				plot.file <- file.path(distance.folder, paste0(fname,"_vs_spatial-",sdist))
+				tlog(10,"Plotting data in 'plot.file'")
 				for(fformat in FORMAT)
 				{	if(fformat=="pdf")
 						pdf(paste0(plot.file,".pdf"))
@@ -276,6 +281,7 @@ analyze.net.distance <- function(g, out.folder)
 #				cols <- sapply(viridis(fine,direction=-1)[as.numeric(cut(vals,breaks=fine))], function(col) make.color.transparent(col,75))
 				cols <- viridis(fine,direction=-1)[as.numeric(cut(vals,breaks=fine))]
 				plot.file <- file.path(distance.folder, paste0(fname,"_vs_spatial-",sdist,"_col=",meas))
+				tlog(10,"Plotting data in 'plot.file'")
 				for(fformat in FORMAT)
 				{	if(fformat=="pdf")
 						pdf(paste0(plot.file,".pdf"))
@@ -300,7 +306,7 @@ analyze.net.distance <- function(g, out.folder)
 				
 				# same but as a binned scatterplot
 				plot.file <- file.path(distance.folder, paste0(fname,"_vs_spatial-",sdist,"_binned"))
-				tlog(8,"Plot binned version in  '",plot.file,"'")
+				tlog(10,"Plot binned version in  '",plot.file,"'")
 				for(fformat in FORMAT)
 				{	if(fformat=="pdf")
 						pdf(paste0(plot.file,".pdf"))
@@ -334,6 +340,7 @@ analyze.net.distance <- function(g, out.folder)
 		
 		# record correlations
 		tab.file <- file.path(distance.folder, paste0(fname,"_correlations.csv"))
+		tlog(4,"Recording correlation values in file '",tab.file,"'")
 		write.csv(cor.tab, file=tab.file, row.names=FALSE)	
 	
 	
@@ -398,10 +405,11 @@ analyze.net.distance <- function(g, out.folder)
 					}
 					
 					# compute distribution
-					plot.file <- file.path(distance.folder,paste0(fname,"_histo_spatial-",sdist))
-					tlog(8,"Plotting in \"",plot.file,"\"")
 					if(length(svals)>2)
+					{	plot.file <- file.path(distance.folder,paste0(fname,"_histo_spatial-",sdist))
+						tlog(8,"Plotting distribution in \"",plot.file,"\"")
 						custom.hist(vals=svals, name=ylabs[sdist], file=plot.file)
+					}
 					
 					# clean NA values
 					flag.keep <- !is.na(gvals) & !is.infinite(gvals) & !is.na(svals)
@@ -427,6 +435,7 @@ analyze.net.distance <- function(g, out.folder)
 						# plot the spatial distance as a function of the graph-based one
 						avg.dist <- sapply(sort(unique(gvals)), function(v) mean(svals[gvals==v],na.rm=TRUE))
 						plot.file <- file.path(distance.folder, paste0(fname,"_vs_spatial-",sdist))
+						tlog(10,"Plotting in file \"",plot.file,"\"")
 						for(fformat in FORMAT)
 						{	if(fformat=="pdf")
 								pdf(paste0(plot.file,".pdf"))
@@ -457,6 +466,7 @@ analyze.net.distance <- function(g, out.folder)
 						# produce files
 						avg.dist <- sapply(sort(unique(gvals)), function(v) mean(svals[gvals==v],na.rm=TRUE))
 						plot.file <- file.path(distance.folder, paste0(fname,"_vs_spatial-",sdist,"_col=",meas))
+						tlog(10,"Plotting in file \"",plot.file,"\"")
 						for(fformat in FORMAT)
 						{	if(fformat=="pdf")
 								pdf(paste0(plot.file,".pdf"))
@@ -485,6 +495,7 @@ analyze.net.distance <- function(g, out.folder)
 						types <- vertex_attr(graph=g, name=COL_LOC_TYPE, index=idx0)[flag.keep]
 						if(any(edf))
 						{	plot.file <- file.path(distance.folder, paste0(fname,"_vs_spatial-",sdist,"_col=fixed"))
+							tlog(10,"Plotting in file \"",plot.file,"\"")
 							cols <- rep(make.color.transparent("BLACK",75), length(vals))
 							pal <- get.palette(3)[1:3]
 							cols[edf & types=="Edifice"] <- pal[1]
@@ -524,6 +535,7 @@ analyze.net.distance <- function(g, out.folder)
 			
 			# record correlations
 			tab.file <- file.path(distance.folder, paste0(fname,"_correlations.csv"))
+			tlog(4,"Recording correlation values in file \"",tab.file,"\"")
 			write.csv(cor.tab, file=tab.file, row.names=FALSE)
 		}
 
@@ -534,6 +546,7 @@ analyze.net.distance <- function(g, out.folder)
 	
 	# record graph and return it
 	graph.file <- file.path(out.folder, g$name, FILE_GRAPH)
+	tlog(4,"Updating graph file '",graph.file,"'")
 	write.graphml.file(g=g, file=graph.file)
 	return(g)
 }

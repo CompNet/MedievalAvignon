@@ -45,9 +45,14 @@ analyze.net.structsim <- function(g, out.folder)
 		vals <- similarity(graph=g, mode=if(mode==MEAS_MODE_UNDIR) "all" else mode, method="jaccard")
 		flat.vals <- vals[upper.tri(vals)]
 		if(length(flat.vals)>2)
-			custom.hist(vals=flat.vals, name=paste(MEAS_LONG_NAMES[mode],MEAS_LONG_NAMES[MEAS_STRUCT_SIM]), file=file.path(sim.folder,paste0(fname,"_histo")))
+		{	plot.file <- file.path(sim.folder,paste0(fname,"_histo"))
+			tlog(4,"Plotting distribution in '",plot.file,"'")
+			custom.hist(vals=flat.vals, name=paste(MEAS_LONG_NAMES[mode],MEAS_LONG_NAMES[MEAS_STRUCT_SIM]), file=plot.file)
+		}
 		
 		# record table of node pairs ranked by decreasing similarity
+		tab.file <- file.path(sim.folder,paste0(fname,"_sim_ordered_values.csv"))
+		tlog(4,"Exporting as CSV in '",tab.file,"'")
 		unique.vals <- vals[upper.tri(vals)]
 		idx <- which(upper.tri(vals),arr.ind=T)
 		nids <- cbind(V(g)$idExterne[idx[,1]], V(g)$idExterne[idx[,2]])
@@ -55,7 +60,7 @@ analyze.net.structsim <- function(g, out.folder)
 		df <- data.frame(nids, nnames, unique.vals, check.rows=FALSE, check.names=FALSE, stringsAsFactors=FALSE)
 		colnames(df) <- c("Id1", "Id2", "Name1", "Name2", "Similarity")
 		df <- df[order(unique.vals,decreasing=TRUE),]
-		write.csv(df, file=file.path(sim.folder,paste0(fname,"_sim_ordered_values.csv")), row.names=FALSE)
+		write.csv(df, file=tab.file, row.names=FALSE)
 		
 		# for each node, plot graph using color for similarity
 		tlog(4,"Plot individual nodes")
@@ -79,10 +84,10 @@ analyze.net.structsim <- function(g, out.folder)
 				if(all(is.infinite(vals[n,-n]) | is.nan(vals[n,-n])))
 					tlog(6,"NOT plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),"), as all values are infinite or NaN")
 				else
-				{	tlog(6,"Plotting graph for node #",id," (",nname, ", ",n,"/",gorder(g),")")
-					shrt.nm <- substr(nname,1,30)		# to avoid long file names
+				{	shrt.nm <- substr(nname,1,30)		# to avoid long file names
 					id.cln <- gsub(":", "-", id, fixed=TRUE)
 					id.cln <- gsub("/", "_", id.cln, fixed=TRUE)
+					tlog(6,"Plotting graph for node #",id," (",nname, ", ",n,"/",gorder(g),") in '",file.path(mode.folder,"xxxx",paste0(id.cln,"_",shrt.nm)),"'")
 					V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
 					g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
 					custom.gplot(g=g1, col.att=fname, v.hl=n, file=file.path(mode.folder,"lambert",paste0(id.cln,"_",shrt.nm)), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
@@ -149,6 +154,7 @@ analyze.net.structsim <- function(g, out.folder)
 				
 				# plot the spatial distance as a function of the structural similarity
 				plot.file <- file.path(sim.folder, paste0(fname,"_vs_spatial_",sdist))
+				tlog(10,"Plotting in file '",plot.file,"'")
 				pdf(paste0(plot.file,".pdf"))
 					plot(
 						x=gvals, y=svals, 
@@ -169,6 +175,7 @@ analyze.net.structsim <- function(g, out.folder)
 			
 		# record correlations
 		tab.file <- file.path(sim.folder, paste0(fname,"_vs_spatial_correlations.csv"))
+		tlog(10,"Recording correlations in file '",tab.file,"'")
 		write.csv(cor.tab, file=tab.file, row.names=FALSE)
 	}
 	
