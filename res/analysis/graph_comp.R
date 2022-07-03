@@ -1,6 +1,8 @@
 # TODO: Add comment
 # 
 # Author: Vincent Labatut
+#
+# source("res/analysis/graph_comp.R")
 ###############################################################################
 
 
@@ -238,9 +240,8 @@ plot.graph.comparisons.diff.types <- function(g.non, g.split, folder)
 # Loads graphs corresponding to the removal of streets of decreasing length, and compute and
 # plots some graph-related stats.
 #############################################################################################
-plot.street.removal <- function()
-{	mode <- "whole_raw"
-	tlog(2,"Plotting stats related to street removal: mode=",mode)
+plot.street.removal <- function(mode)
+{	tlog(2,"Plotting stats related to street removal: mode=",mode)
 			
 	folders <- c(GR_EST_FLAT_MINUS, paste0(GR_EST_FLAT_MINUS,"_filtered"))
 #	folders <- c(GR_EST_FLAT_MINUS)
@@ -277,7 +278,8 @@ plot.street.removal <- function()
 			tlog(6,"Reading file '",graph.file,"'")
 			g <- load.graphml.file(file=graph.file)
 			#r <- as.integer(substr(basename(graph.file), start=nchar("graph_rem=")+1, stop=unlist(gregexpr(pattern=".graphml",basename(graph.file)))-1))
-			r <- as.integer(strsplit(g$name,"_")[[1]][3])
+			tmp <- strsplit(g$name,"_")[[1]]
+			r <- as.integer(tmp[4])
 			gs[[r]] <- g 
 			street.names[r] <- g$LastDeletedStreetId
 			street.lengths[r] <- g$LastDeletedStreetLength
@@ -466,7 +468,7 @@ plot.street.removal <- function()
 			pal <- c(get.palette(3)[1:3],plain.col)
 			# produce plot
 			plot.file <- file.path(muros.folder, paste0("dist_geodesic_vs_spatial_rem=",i))
-			tlog(8,"Plot muros version in  '",plot.file,"'")
+			tlog(8,"Plot muros version in '",plot.file,"'")
 			for(fformat in c("png"))	# FORMAT
 			{	if(fformat=="pdf")
 					pdf(paste0(plot.file,".pdf"))

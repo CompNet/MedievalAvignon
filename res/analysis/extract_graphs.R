@@ -685,10 +685,12 @@ normalize.components <- function(comps)
 #
 # split.surf: whether to split linear or surface vertices using additional data.
 # compl.streets: whether to complete the data with confronts between streets.
+# street.ablation: whether to generate the graphs to monitor street ablation 
+#                  (only available if the graph is not split).
 # 
 # returns: vector of all the link types.
 ########################################################################
-extract.estate.networks <- function(split.surf=FALSE, compl.streets=FALSE)
+extract.estate.networks <- function(split.surf=FALSE, compl.streets=FALSE, street.ablation=FALSE)
 {	# load the data and create various versions of the graph
 	tlog(0,"Extracting various versions of the estate graph")
 	{	if(split.surf)
@@ -1524,10 +1526,11 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #	keep.idx <- which(is.na(V(g)$idBien) | V(g)$idBien %in% sources[[1]]$re.ids)
 	
 	#################
-	#TODO xxx
+	# TODO xxx
 	# extract one graph for each predefined modality
 	#################
 	tlog(2,"Extracting several variants of the graph")
+	if(!street.ablation)
 	{	if(split.surf)
 			graph.types <- GR_EST_FLAT_REL
 		else if(compl.streets)
@@ -1535,8 +1538,10 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		else
 			graph.types <- c(GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS)		# c(GR_EST_FULL, GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS, LK_TYPE_FLATREL_VALS)
 	}
-#	measured.streets <- which(vertex_attr(g,COL_LOC_TYPE)=="Rue" & !is.na(vertex_attr(g,COL_STREET_LENGTH)))
-#	graph.types <- paste0(GR_EST_FLAT_MINUS,"_",1:length(measured.streets))
+	else
+	{	measured.streets <- which(vertex_attr(g,COL_LOC_TYPE)=="Rue" & !is.na(vertex_attr(g,COL_STREET_LENGTH)))
+		graph.types <- paste0(GR_EST_FLAT_MINUS,"_",1:length(measured.streets))
+	}
 	prev.g1 <- NA
 	prev.g1.filt <- NA
 	full.graph.types <- c()
@@ -1979,10 +1984,10 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 # traitement : 
 # - split_ext
 #   > flat_relations
-#   > flat_relations_filtered
+#   + flat_relations_filtered
 # - split_raw
 #   > flat_relations
-#   > flat_relations_filtered
+#   + flat_relations_filtered
 # - whole_ext
 #   - estate_level
 #   - estate_level_filtered
@@ -1991,9 +1996,9 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #   > flat_relations
 #   + flat_relations_filtered
 # - whole_raw
-#   > estate_level
+#   + estate_level
 #   + estate_level_filtered
-#   > flat_minus
+#   + flat_minus
 #   + flat_minus_filtered
 #   - flat_minusX
 #   + flat_minusX_filtered
@@ -2002,5 +2007,5 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #
 
 # TODO
-# street ablation: plotter nbr de noeuds retiré et/ou isolates
-# créer tableau comparatif des différents graphes
+# - street ablation: plotter nbr de noeuds retiré et/ou isolates
+# - extraire et analyser full graph 
