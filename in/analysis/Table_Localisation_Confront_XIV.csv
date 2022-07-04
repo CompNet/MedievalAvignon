@@ -3457,7 +3457,7 @@ idConfront,localisation,idBien1,idBien2,idInvariant,idQuartierParoisse,localisat
 3803,ab-una-part,2100,2099,NULL,NULL,confronte avec
 3166,in,2101,NULL,NULL,6,a l interieur de
 3392,in,2101,NULL,216,NULL,a l interieur de
-3393,ab-una-part,2101,NULL,217,NULL,confronte avec
+3393,ab-una-part,2101,NULL,216,NULL,confronte avec
 3394,ab-una-part,2101,NULL,749,NULL,confronte avec
 3804,ab-una-part,2101,2522,NULL,NULL,confronte avec
 3167,in,2102,NULL,NULL,6,a l interieur de
