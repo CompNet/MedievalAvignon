@@ -213,7 +213,7 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 				custom.gplot(g=g1, col.att=fname,cat.att=TRUE, file=paste0(plot.file,"_kk_hulls"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6, show.coms=TRUE)
 				
 				# assess community purity for all attributes
-				g <- analyze.net.comstruct.attributes(g=g, coms.folder=coms.folder, membership=mbrs)
+				g <- analyze.net.comstruct.attributes(g=g, coms.folder=coms.folder, membership=mbrs, fast)
 				
 				# possibly process each community separately
 				if(algo.name %in% select.algos)
@@ -256,37 +256,37 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 							write.graphml.file(g=g.com, file=paste0(plot.file,".graphml"))
 							
 							# compute attribute stats 
-							g.com <- analyze.net.attributes(g.com, out.folder)
+							g.com <- analyze.net.attributes(g.com, out.folder, fast)
 							# compute diameters, eccentricity, radius
-							g.com <- analyze.net.eccentricity(g.com, out.folder)
+							g.com <- analyze.net.eccentricity(g.com, out.folder, fast)
 							# compute degree
-							g.com <- analyze.net.degree(g.com, out.folder)
+							g.com <- analyze.net.degree(g.com, out.folder, fast)
 							# compute eigencentrality
-							g.com <- analyze.net.eigencentrality(g.com, out.folder)
+							g.com <- analyze.net.eigencentrality(g.com, out.folder, fast)
 							# compute betweenness
-							g.com <- analyze.net.betweenness(g.com, out.folder)
+							g.com <- analyze.net.betweenness(g.com, out.folder, fast)
 							# compute closeness
-							g.com <- analyze.net.closeness(g.com, out.folder)
+							g.com <- analyze.net.closeness(g.com, out.folder, fast)
 							# compute harmonic closeness
-							g.com <- analyze.net.harmonic.closeness(g.com, out.folder)
+							g.com <- analyze.net.harmonic.closeness(g.com, out.folder, fast)
 							# compute distances
-							g.com <- analyze.net.distance(g.com, out.folder)
+							g.com <- analyze.net.distance(g.com, out.folder, fast)
 							# compute articulation points
-							g.com <- analyze.net.articulation(g.com, out.folder)
+							g.com <- analyze.net.articulation(g.com, out.folder, fast)
 #							# detect communities
-#							g.com <- analyze.net.comstruct(g.com, out.folder)
+#							g.com <- analyze.net.comstruct(g.com, out.folder, fast)
 							# compute transitivity
-							g.com <- analyze.net.transitivity(g.com, out.folder)
+							g.com <- analyze.net.transitivity(g.com, out.folder, fast)
 #							# compute vertex connectivity
-#							g.com <- analyze.net.connectivity(g.com, out.folder)
+#							g.com <- analyze.net.connectivity(g.com, out.folder, fast)
 #							# compute components
-#							g.com <- analyze.net.components(g.com, out.folder)
+#							g.com <- analyze.net.components(g.com, out.folder, fast)
 #							# correlation between component size and attributes
-#							g.com <- analyze.net.components.corr(g.com, out.folder)
+#							g.com <- analyze.net.components.corr(g.com, out.folder, fast)
 #							# compute assortativity
-#							g.com <- analyze.net.assortativity(g.com, out.folder)
+#							g.com <- analyze.net.assortativity(g.com, out.folder, fast)
 							# compute structural similarity
-							g.com <- analyze.net.structsim(g.com, out.folder)	
+							g.com <- analyze.net.structsim(g.com, out.folder, fast)
 						}
 					}
 				}
@@ -361,10 +361,11 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 # g: original graph to process.
 # coms.folder: folder to write the group-related files.
 # membership: group membership vector.
+# fast: whether to perform a fast computation of these measures.
 # 
 # returns: same graph, updated with the results.
 #############################################################
-analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
+analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 {	tlog(2,"Comparing nodal attributes and groups")
 	
 	# indices of real estate vertices
@@ -902,7 +903,7 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership)
 			gcom <- induced_subgraph(graph=g, vids=which(membership==com))
 			
 			# TODO assortativity by group
-			#gcom <- analyze.net.assortativity(gcom)
+			#gcom <- analyze.net.assortativity(gcom, , fast)
 			
 			# number of nodes
 			meas <- MEAS_NBR_NODES

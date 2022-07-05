@@ -122,7 +122,7 @@ analyze.net.components <- function(g, out.folder, fast)
 		}
 		
 		# assess component purity for all attributes
-		g <- analyze.net.comstruct.attributes(g, comp.folder, mbrs)
+		g <- analyze.net.comstruct.attributes(g, comp.folder, mbrs, fast)
 	}
 	
 	# export CSV with results
