@@ -1532,8 +1532,6 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	tlog(2,"Extracting several variants of the graph")
 	if(!street.ablation)
 	{	if(split.surf)
-			graph.types <- GR_EST_FLAT_REL
-		else if(compl.streets)
 			graph.types <- c(GR_EST_FLAT_REL, GR_EST_FLAT_MINUS)
 		else
 			graph.types <- c(GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS)		# c(GR_EST_FULL, GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS, LK_TYPE_FLATREL_VALS)
@@ -1983,29 +1981,38 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 
 # traitement : 
 # - split_ext
+#   - flat_minus
+#   - flat_minus_filtered
 #   > flat_relations
 #   + flat_relations_filtered
 # - split_raw
+#   - flat_minus
+#   - flat_minus_filtered
 #   > flat_relations
 #   + flat_relations_filtered
 # - whole_ext
 #   - estate_level
-#   - estate_level_filtered
-#   > flat_minus
-#   + flat_minus_filtered
-#   > flat_relations
-#   + flat_relations_filtered
+#   > estate_level_filtered
+#   - flat_minus
+#   > flat_minus_filtered
+#   - flat_minus_9
+#   > flat_minus_9_filtered
+#   - flat_relations
+#   > flat_relations_filtered
 # - whole_raw
-#   + estate_level
-#   + estate_level_filtered
-#   + flat_minus
-#   + flat_minus_filtered
-#   - flat_minusX
-#   + flat_minusX_filtered
-#   > flat_relations
-#   + flat_relations_filtered
+#   - estate_level
+#   > estate_level_filtered
+#   - flat_minus
+#   > flat_minus_filtered
+#   - flat_minus_6
+#   > flat_minus_6_filtered
+#   - flat_relations
+#   > flat_relations_filtered
 #
 
 # TODO
 # - street ablation: plotter nbr de noeuds retiré et/ou isolates
 # - extraire et analyser full graph 
+
+# - splitter au lieu de supprimer les rues longues
+

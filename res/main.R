@@ -20,6 +20,7 @@ source("res/measures/_compute_measures.R")
 ########################################################################
 # start logging
 start.rec.log(text="Nets")
+fast <- TRUE
 
 
 
@@ -55,21 +56,66 @@ start.rec.log(text="Nets")
 
 ########################################################################
 # load the data and create various versions of the spatial graph
-graph.types <- extract.estate.networks(split.surf=FALSE, compl.streets=FALSE)
-graph.types <- extract.estate.networks(split.surf=TRUE, compl.streets=FALSE)
-graph.types <- extract.estate.networks(split.surf=FALSE, compl.streets=TRUE)
-graph.types <- extract.estate.networks(split.surf=TRUE, compl.streets=TRUE)
+
+# extrat the graphs
+	# whole raw
+	graph.types <- extract.estate.networks(split.surf=FALSE, compl.streets=FALSE, street.ablation=FALSE)
+	graph.types <- extract.estate.networks(split.surf=FALSE, compl.streets=FALSE, street.ablation=TRUE)
+	# split raw
+	graph.types <- extract.estate.networks(split.surf=TRUE, compl.streets=FALSE, street.ablation=FALSE)
+	# whole extended
+	graph.types <- extract.estate.networks(split.surf=FALSE, compl.streets=TRUE, street.ablation=FALSE)
+	graph.types <- extract.estate.networks(split.surf=FALSE, compl.streets=TRUE, street.ablation=TRUE)
+	# split extended
+	graph.types <- extract.estate.networks(split.surf=TRUE, compl.streets=TRUE, street.ablation=FALSE)
+
+#graph.types <- paste0("split_raw/", c(GR_EST_FLAT_REL))
+#graph.types <- paste0("split_ext/", c(GR_EST_FLAT_REL))
 #graph.types <- paste0("whole_raw/", c(GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS))
 #graph.types <- paste0("whole_ext/", c(GR_EST_FLAT_REL, GR_EST_FLAT_MINUS))
 
 # plot comparison graphs
-#graph.types <- paste0("whole_raw/", c(GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS, paste0(GR_EST_ESTATE_LEVEL,"_filtered"), paste0(GR_EST_FLAT_REL,"_filtered"), paste0(GR_EST_FLAT_MINUS,"_filtered"), "flat_minus_6_filtered"))
+##graph.types <- paste0("whole_raw/", c(GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS, paste0(GR_EST_ESTATE_LEVEL,"_filtered"), paste0(GR_EST_FLAT_REL,"_filtered"), paste0(GR_EST_FLAT_MINUS,"_filtered"), "flat_minus_6_filtered"))
+#plot.graph.comparisons(graph.names=graph.types, folder=FOLDER_OUT_ANAL_EST)
+##graph.types <- paste0("whole_raw/", c(GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS, "flat_minus_6"))
+#plot.graph.comparisons(graph.names=paste0(graph.types,"_filtered"), folder=FOLDER_OUT_ANAL_EST)
+graph.types <- c(
+	"split_ext/flat_minus",
+	"split_ext/flat_minus_filtered",
+	"split_ext/flat_relations",
+	"split_ext/flat_relations_filtered",
+	#
+	"split_raw/flat_minus",
+	"split_raw/flat_minus_filtered",
+	"split_raw/flat_relations",
+	"split_raw/flat_relations_filtered",
+	#
+	"whole_ext/estate_level",
+	"whole_ext/estate_level_filtered",
+	"whole_ext/flat_minus",
+	"whole_ext/flat_minus_filtered",
+	"whole_ext/flat_minus_9",
+	"whole_ext/flat_minus_9_filtered",
+	"whole_ext/flat_relations",
+	"whole_ext/flat_relations_filtered",
+	#
+	"whole_raw/estate_level",
+	"whole_raw/estate_level_filtered",
+	"whole_raw/flat_minus",
+	"whole_raw/flat_minus_filtered",
+	"whole_raw/flat_minus_6",
+	"whole_raw/flat_minus_6_filtered",
+	"whole_raw/flat_relations",
+	"whole_raw/flat_relations_filtered"
+)
 plot.graph.comparisons(graph.names=graph.types, folder=FOLDER_OUT_ANAL_EST)
-#graph.types <- paste0("whole_raw/", c(GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS, "flat_minus_6"))
-plot.graph.comparisons(graph.names=paste0(graph.types,"_filtered"), folder=FOLDER_OUT_ANAL_EST)
+
+# merge previously computed whole-graph stats
+merge.stats(graph.names=graph.types, folder=FOLDER_OUT_ANAL_EST)
 
 # check street removal step
-plot.street.removal()
+plot.street.removal(mode="whole_raw")
+plot.street.removal(mode="whole_ext")
 
 
 
@@ -84,16 +130,16 @@ for(i in 1:length(graph.types))
 	# gname=paste0("whole_raw/", "flat_minus_39_filtered"); out.folder=FOLDER_OUT_ANAL_EST
 	
 	# compute all topological measures
-	g <- analyze.network(gname=graph.types[i], out.folder=FOLDER_OUT_ANAL_EST)
+	g <- analyze.network(gname=graph.types[i], out.folder=FOLDER_OUT_ANAL_EST, fast=fast)
 	
 	# filtered version
-	g <- analyze.network(gname=paste0(graph.types[i],"_filtered"), out.folder=FOLDER_OUT_ANAL_EST)
+	g <- analyze.network(gname=paste0(graph.types[i],"_filtered"), out.folder=FOLDER_OUT_ANAL_EST, fast=fast)
 }
 tlog.end.loop("Measure computation over")
 plot.comstruct.comparison()
 
 # selected version
-g <- analyze.network(gname=paste0("whole_raw/", "flat_minus_6_filtered"), out.folder=FOLDER_OUT_ANAL_EST)
+g <- analyze.network(gname=paste0("whole_raw/", "flat_minus_6_filtered"), out.folder=FOLDER_OUT_ANAL_EST, fast=fast)
 
 
 
@@ -103,12 +149,9 @@ g <- analyze.network(gname=paste0("whole_raw/", "flat_minus_6_filtered"), out.fo
 graph.types <- extract.estate.networks(split.surf=TRUE)
 #graph.types <- paste0("split_raw/", c(GR_EST_FLAT_REL))
 
-# compare with non-split network
-compare.split.net()
-
 # compute topological measures for the extracted networks
-g <- analyze.network(gname=graph.types[1], out.folder=FOLDER_OUT_ANAL_EST)
-g <- analyze.network(gname=paste0(graph.types[1],"_filtered"), out.folder=FOLDER_OUT_ANAL_EST)
+g <- analyze.network(gname=graph.types[1], out.folder=FOLDER_OUT_ANAL_EST, fast=fast)
+g <- analyze.network(gname=paste0(graph.types[1],"_filtered"), out.folder=FOLDER_OUT_ANAL_EST, fast=fast)
 
 
 
@@ -116,3 +159,4 @@ g <- analyze.network(gname=paste0(graph.types[1],"_filtered"), out.folder=FOLDER
 ########################################################################
 # end logging
 end.rec.log()
+
