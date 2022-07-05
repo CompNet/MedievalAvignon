@@ -20,10 +20,11 @@ MEAS_LONG_NAMES[MEAS_ASSORTATIVITY] <- "Assortativity"
 #
 # g: original graph to process.
 # out.folder: main output folder.
+# fast: whether to perform a fast computation of these measures.
 # 
 # returns: same graph, updated with the results.
 #############################################################
-analyze.net.assortativity <- function(g, out.folder)
+analyze.net.assortativity <- function(g, out.folder, fast)
 {	tlog(2,"Computing the assortativity")
 #	modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
 	modes <- c(MEAS_MODE_UNDIR)

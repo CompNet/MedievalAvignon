@@ -23,10 +23,11 @@ MEAS_LONG_NAMES[MEAS_CONNECTIVITY] <- "Connectivity"
 #
 # g: original graph to process.
 # out.folder: main output folder.
+# fast: whether to perform a fast computation of these measures.
 # 
 # returns: same graph, updated with the results.
 #############################################################
-analyze.net.connectivity <- function(g, out.folder)
+analyze.net.connectivity <- function(g, out.folder, fast)
 {	# get the stat table
 	stat.file <- file.path(out.folder, g$name, "stats.csv")
 	stats <- retrieve.stats(stat.file)
@@ -93,37 +94,39 @@ analyze.net.connectivity <- function(g, out.folder)
 		}
 		
 		# for each node, plot graph using color for connectivity
-		mode.folder <- file.path(connectivity.folder,mode)
-		dir.create(path=mode.folder, showWarnings=FALSE, recursive=TRUE)
-		plot.folder <- file.path(mode.folder,"lambert")
-		dir.create(path=plot.folder, showWarnings=FALSE, recursive=TRUE)
-		plot.folder <- file.path(mode.folder,"kk")
-		dir.create(path=plot.folder, showWarnings=FALSE, recursive=TRUE)
-		for(n in 1:gorder(g))
-		{	id <- vertex_attr(g, COL_LOC_ID, n)
-			nname <- get.names(g, n)
-			nname <- trimws(gsub("?", "", nname, fixed=TRUE))
-			
-			# only for significant nodes
-			if(degree(g, v=n, mode="all")<3)
-				tlog(4,"NOT plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),"), as its degree is <3")
-			else
-			{	g <- set_vertex_attr(graph=g, name=fname, value=vals[n,])
-				if(all(vals[n,]==0))
-					tlog(4,"NOT plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),"), as all values are zero")
+		if(!fast)
+		{	mode.folder <- file.path(connectivity.folder,mode)
+			dir.create(path=mode.folder, showWarnings=FALSE, recursive=TRUE)
+			plot.folder <- file.path(mode.folder,"lambert")
+			dir.create(path=plot.folder, showWarnings=FALSE, recursive=TRUE)
+			plot.folder <- file.path(mode.folder,"kk")
+			dir.create(path=plot.folder, showWarnings=FALSE, recursive=TRUE)
+			for(n in 1:gorder(g))
+			{	id <- vertex_attr(g, COL_LOC_ID, n)
+				nname <- get.names(g, n)
+				nname <- trimws(gsub("?", "", nname, fixed=TRUE))
+				
+				# only for significant nodes
+				if(degree(g, v=n, mode="all")<3)
+					tlog(4,"NOT plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),"), as its degree is <3")
 				else
-				{	g <- update.node.labels(g, vals[n,])
-					shrt.nm <- substr(nname,1,30)		# to avoid long file names
-					id.cln <- gsub(":", "-", id, fixed=TRUE)
-					id.cln <- gsub("/", "_", id.cln, fixed=TRUE)
-					V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
-					tlog(4,"Plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),") in '",file.path(mode.folder,"xxxx",paste0(id.cln,"_",shrt.nm)),"'")
-					g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-					custom.gplot(g=g1, col.att=fname, v.hl=n, file=file.path(mode.folder,"lambert",paste0(id.cln,"_",shrt.nm)), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
-					g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-					custom.gplot(g=g1, col.att=fname, v.hl=n, file=file.path(mode.folder,"kk",paste0(id.cln,"_",shrt.nm)), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+				{	g <- set_vertex_attr(graph=g, name=fname, value=vals[n,])
+					if(all(vals[n,]==0))
+						tlog(4,"NOT plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),"), as all values are zero")
+					else
+					{	g <- update.node.labels(g, vals[n,])
+						shrt.nm <- substr(nname,1,30)		# to avoid long file names
+						id.cln <- gsub(":", "-", id, fixed=TRUE)
+						id.cln <- gsub("/", "_", id.cln, fixed=TRUE)
+						V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
+						tlog(4,"Plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),") in '",file.path(mode.folder,"xxxx",paste0(id.cln,"_",shrt.nm)),"'")
+						g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+						custom.gplot(g=g1, col.att=fname, v.hl=n, file=file.path(mode.folder,"lambert",paste0(id.cln,"_",shrt.nm)), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+						g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+						custom.gplot(g=g1, col.att=fname, v.hl=n, file=file.path(mode.folder,"kk",paste0(id.cln,"_",shrt.nm)), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+					}
+					g <- delete_vertex_attr(graph=g, name=fname)
 				}
-				g <- delete_vertex_attr(graph=g, name=fname)
 			}
 		}
 	}

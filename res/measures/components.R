@@ -26,10 +26,11 @@ MEAS_LONG_NAMES[MEAS_NBR_LINKS] <- "Link number"
 #
 # g: original graph to process.
 # out.folder: main output folder.
+# fast: whether to perform a fast computation of these measures.
 # 
 # returns: same graph, updated with the results.
 #############################################################
-analyze.net.components <- function(g, out.folder)
+analyze.net.components <- function(g, out.folder, fast)
 {	# get the stat table
 	stat.file <- file.path(out.folder, g$name, "stats.csv")
 	stats <- retrieve.stats(stat.file)
@@ -143,10 +144,11 @@ analyze.net.components <- function(g, out.folder)
 #
 # g: original graph to process.
 # out.folder: main output folder.
+# fast: whether to perform a fast computation of these measures.
 # 
 # returns: same graph, updated with the results.
 #############################################################
-analyze.net.components.corr <- function(g, out.folder)
+analyze.net.components.corr <- function(g, out.folder, fast)
 {	# indices of real estate vertices
 	est.idx <- which(vertex_attr(g, name=COL_LOC_TYPE)=="Bien")
 	non.est.idx <- which(vertex_attr(g, name=COL_LOC_TYPE)!="Bien")

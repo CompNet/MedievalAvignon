@@ -25,10 +25,11 @@ MEAS_LONG_NAMES[MEAS_CLOSENESS_HARMO] <- "Harmonic Closeness"
 #
 # g: original graph to process.
 # out.folder: main output folder.
+# fast: whether to perform a fast computation of these measures.
 # 
 # returns: same graph, updated with the results.
 #############################################################
-analyze.net.closeness <- function(g, out.folder)
+analyze.net.closeness <- function(g, out.folder, fast)
 {	# get the stat table
 	stat.file <- file.path(out.folder, g$name, "stats.csv")
 	stats <- retrieve.stats(stat.file)
@@ -107,10 +108,11 @@ analyze.net.closeness <- function(g, out.folder)
 #
 # g: original graph to process.
 # out.folder: main output folder.
+# fast: whether to perform a fast computation of these measures.
 # 
 # returns: same graph, updated with the results.
 #############################################################
-analyze.net.harmonic.closeness <- function(g, out.folder)
+analyze.net.harmonic.closeness <- function(g, out.folder, fast)
 {	# get the stat table
 	stat.file <- file.path(out.folder, g$name, "stats.csv")
 	stats <- retrieve.stats(stat.file)

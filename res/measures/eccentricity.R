@@ -24,10 +24,11 @@ MEAS_LONG_NAMES[MEAS_DIAMETER] <- "RADIUS"
 #
 # g: original graph to process.
 # out.folder: main output folder.
+# fast: whether to perform a fast computation of these measures.
 # 
 # returns: same graph, updated with the results.
 #############################################################
-analyze.net.eccentricity <- function(g, out.folder)
+analyze.net.eccentricity <- function(g, out.folder, fast)
 {	# get the stat table
 	stat.file <- file.path(out.folder, g$name, "stats.csv")
 	stats <- retrieve.stats(stat.file)

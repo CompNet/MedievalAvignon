@@ -32,10 +32,11 @@ MEAS_LONG_NAMES[MEAS_ARI] <- "Adjusted Rand Index"
 #
 # g: original graph to process.
 # out.folder: main output folder.
+# fast: whether to perform a fast computation of these measures.
 # 
 # returns: same graph, updated with the results.
 #############################################################
-analyze.net.comstruct <- function(g, out.folder)
+analyze.net.comstruct <- function(g, out.folder, fast)
 {	# whether to compute the communities or use previously detected (and cached) ones
 	COMPUTE <- FALSE
 	
@@ -114,7 +115,13 @@ analyze.net.comstruct <- function(g, out.folder)
 			modes=c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
 	)
 	
-	select.algos <- "louvain"
+	if(fast)
+	{	idx <- which(names(algos)=="louvain")
+		algos <- algos[idx]
+		select.algos <- c()
+	}
+	else
+		select.algos <- "louvain"
 	tab.memb <- NA
 	
 #	modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)

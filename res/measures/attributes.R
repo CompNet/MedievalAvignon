@@ -22,10 +22,11 @@ MEAS_LONG_NAMES[MEAS_ATTRIBUTES] <- "Attributes"
 #
 # g: original graph to process.
 # out.folder: main output folder.
+# fast: whether to perform a fast computation of these measures.
 # 
 # returns: same graph, updated with the results.
 #############################################################
-analyze.net.attributes <- function(g, out.folder)
+analyze.net.attributes <- function(g, out.folder, fast)
 {	tlog(2,"Computing nodal attribute stats")
 	# possibly create folders
 	graph.folder <- file.path(out.folder, g$name)
