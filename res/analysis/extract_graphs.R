@@ -693,7 +693,7 @@ normalize.components <- function(comps)
 extract.estate.networks <- function(split.surf=FALSE, compl.streets=FALSE, street.ablation=FALSE)
 {	# load the data and create various versions of the graph
 	tlog(0,"Extracting various versions of the estate graph")
-	{	if(split.surf)
+	{	if(is.logical(split.surf) && split.surf || is.numeric(split.surf))
 			split.folder <- "split"
 		else
 			split.folder <- "whole"
@@ -868,7 +868,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	}
 	
 	# possibly split certain linear or surface vertices
-	if(split.surf)
+	if(is.logical(split.surf) && split.surf || is.numeric(split.surf))
 	{	tlog(4,"Splitting linear and surface vertices")
 		# load list of split vertices
 		info.split <- load.location.table(FILE_IN_ANAL_SPLIT_FIX,"vertex")
@@ -887,26 +887,29 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 				| info.all[,COL_STREET_ID]==info.split[r,COL_STREET_ID]
 			)
 			if(length(idx)!=1)
-				stop("Could not find fix vertex #",idx," when splitting vertices")
-			info.all[idx,COL_LOC_ID] <- paste0(info.all[idx,COL_LOC_TYPE],":",info.split[r,COL_STREET_ID_SPLIT])
-			info.all[idx,COL_STREET_ID] <- info.split[r,COL_STREET_ID_SPLIT]
-			info.all[idx,COL_STREET_LENGTH] <- info.split[r,COL_STREET_LENGTH]
-			info.all[idx,COL_LOC_X] <- info.split[r,COL_LOC_X]
-			info.all[idx,COL_LOC_Y] <- info.split[r,COL_LOC_Y]
-			tlog(10,"New id: ",info.all[idx,COL_LOC_ID])
-			
+				stop("Could not find fixed vertex #",idx," when splitting vertices")
+			if(is.logical(split.surf) || !is.na(info.all[idx,COL_STREET_LENGTH]) && info.all[idx,COL_STREET_LENGTH]>=split.surf)
+			{	info.all[idx,COL_LOC_ID] <- paste0(info.all[idx,COL_LOC_TYPE],":",info.split[r,COL_STREET_ID_SPLIT])
+				info.all[idx,COL_STREET_ID] <- info.split[r,COL_STREET_ID_SPLIT]
+				info.all[idx,COL_STREET_LENGTH] <- info.split[r,COL_STREET_LENGTH]
+				info.all[idx,COL_LOC_X] <- info.split[r,COL_LOC_X]
+				info.all[idx,COL_LOC_Y] <- info.split[r,COL_LOC_Y]
+				tlog(10,"New id: ",info.all[idx,COL_LOC_ID])
+			}
 			# process rest of splits for same street
 			r2 <- r + 1
 			while(r2<=nrow(info.split) && info.split[r2,COL_STREET_ID]==info.split[r,COL_STREET_ID])
 			{	tlog(8,"Continuing by processing vertex '",info.split[r2,COL_STREET_ID],"' (row ",r2,"/",nrow(info.split),")")
-				info.all <- rbind(info.all, info.all[idx,])
-				idx <- nrow(info.all)
-				info.all[idx,COL_LOC_ID] <- paste0(info.all[idx,COL_LOC_TYPE],":",info.split[r2,COL_STREET_ID_SPLIT])
-				info.all[idx,COL_STREET_ID] <- info.split[r2,COL_STREET_ID_SPLIT]
-				info.all[idx,COL_STREET_LENGTH] <- info.split[r2,COL_STREET_LENGTH]
-				info.all[idx,COL_LOC_X] <- info.split[r2,COL_LOC_X]
-				info.all[idx,COL_LOC_Y] <- info.split[r2,COL_LOC_Y]
-				tlog(10,"New id: ",info.all[idx,COL_LOC_ID])
+				if(is.logical(split.surf) || !is.na(info.all[idx,COL_STREET_LENGTH]) && info.all[idx,COL_STREET_LENGTH]>=split.surf)
+				{	info.all <- rbind(info.all, info.all[idx,])
+					idx <- nrow(info.all)
+					info.all[idx,COL_LOC_ID] <- paste0(info.all[idx,COL_LOC_TYPE],":",info.split[r2,COL_STREET_ID_SPLIT])
+					info.all[idx,COL_STREET_ID] <- info.split[r2,COL_STREET_ID_SPLIT]
+					info.all[idx,COL_STREET_LENGTH] <- info.split[r2,COL_STREET_LENGTH]
+					info.all[idx,COL_LOC_X] <- info.split[r2,COL_LOC_X]
+					info.all[idx,COL_LOC_Y] <- info.split[r2,COL_LOC_Y]
+					tlog(10,"New id: ",info.all[idx,COL_LOC_ID])
+				}
 				r2 <- r2 + 1
 			}
 			r <- r2
@@ -933,7 +936,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	tlog(4,"Found ",nrow(data)," relations")
 	
 	# possibly rewire certain relations corresponding to linear or surface vertices
-	if(split.surf)
+	if(is.logical(split.surf) && split.surf || is.numeric(split.surf))
 	{	tlog(4,"Rewiring confronts due to the split of linear and surface vertex")
 		# load list of split confronts
 		rel.file <- FILE_IN_ANAL_SPLIT_CONFR
@@ -953,21 +956,27 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		{	tlog(8,"Rewiring confront '",data.split[r,COL_CONF_ID],"' (row #",r,"/",nrow(data.split),")")
 			# process new confront
 			idx <- which(data[,COL_CONF_ID]==data.split[r,COL_CONF_ID])
-			if(length(idx)!=1)
-				stop("Could not find confront #",idx," when splitting confronts")
-			if(is.na(data.split[r,COL_CONF_FIX_ID_SPLIT]))
-			{	# if reviewing not indicated: just remove confront
-				tlog(10,"No new vertex specified: removing the confront")
-				data <- data[-idx,]
+			if(length(idx)!=1) 
+			{	if(is.logical(split.surf))
+					stop("Could not find confront #",idx," when splitting confronts")
+				else
+					tlog(10,"Ignoring this one (limited split)")
 			}
 			else
-			{	# otherwise, perform the rewiring
-				data[idx,COL_CONF_LOC_LAT] <- data.split[r,COL_CONF_LOC_LAT]
-				data[idx,COL_CONF_LOC_NORM] <- data.split[r,COL_CONF_LOC_NORM]
-				data[idx,COL_CONF_EST1_ID] <- data.split[r,COL_CONF_EST1_ID]
-				data[idx,COL_CONF_EST2_ID] <- data.split[r,COL_CONF_EST2_ID]
-				data[idx,COL_CONF_FIX_ID] <- data.split[r,COL_CONF_FIX_ID_SPLIT]
-				data[idx,COL_CONF_AREA_ID] <- data.split[r,COL_CONF_AREA_ID]
+			{	if(is.na(data.split[r,COL_CONF_FIX_ID_SPLIT]))
+				{	# if rewiring not indicated: just remove confront
+					tlog(10,"No new vertex specified: removing the confront")
+					data <- data[-idx,]
+				}
+				else
+				{	# otherwise, perform the rewiring
+					data[idx,COL_CONF_LOC_LAT] <- data.split[r,COL_CONF_LOC_LAT]
+					data[idx,COL_CONF_LOC_NORM] <- data.split[r,COL_CONF_LOC_NORM]
+					data[idx,COL_CONF_EST1_ID] <- data.split[r,COL_CONF_EST1_ID]
+					data[idx,COL_CONF_EST2_ID] <- data.split[r,COL_CONF_EST2_ID]
+					data[idx,COL_CONF_FIX_ID] <- data.split[r,COL_CONF_FIX_ID_SPLIT]
+					data[idx,COL_CONF_AREA_ID] <- data.split[r,COL_CONF_AREA_ID]
+				}
 			}
 		}
 	}
@@ -1183,7 +1192,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	# ii <- match(sort(unique(data[,COL_CONF_LOC_NORM])), data[,COL_CONF_LOC_NORM]); data[ii,c(COL_CONF_LOC_LAT,COL_CONF_LOC_NORM)]
 	
 	# possibly insert additional confronts between the pieces of the same (original) vertex
-	if(split.surf)
+	if(is.logical(split.surf) && split.surf || is.numeric(split.surf))
 	{	tlog(4,"Inserting additional confronts between the pieces of the same (original) vertex")
 		# load list of artificial confronts
 		rel.file <- FILE_IN_ANAL_SPLIT_CONFR_ARTIF
@@ -1204,25 +1213,33 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			# get vertex ids
 			id1 <- which(info.all[,"id"]==data.split[r,COL_CONF_FIX1_ID])
 			if(length(id1)!=1)
-				stop(paste0("ERROR: id not unique or not found for v1 (",data.split[r,COL_CONF_FIX1_ID],")"))
-			id2 <- which(info.all[,"id"]==data.split[r,COL_CONF_FIX2_ID])
-			if(length(id2)!=1)
-				stop(paste0("ERROR: id not unique or not found for v2 (",data.split[r,COL_CONF_FIX2_ID],")"))
-			v1 <- info.all[id1,COL_LOC_ID]
-			v2 <- info.all[id2,COL_LOC_ID]
-			
-			# add to edge list
-			edge.list <- rbind(edge.list, c(v1,v2))
-			
-			# add to main edge table
-			idx <- nrow(data) + 1
-			data[idx,COL_CONF_ID] <- "split"
-			data[idx,COL_CONF_LOC_LAT] <- "split"
-			data[idx,COL_CONF_LOC_NORM] <- data.split[r,COL_CONF_LOC_NORM_ARTIF]
-			data[idx,COL_CONF_EST1_ID] <- data.split[r,COL_CONF_FIX1_ID]
-			data[idx,COL_CONF_EST2_ID] <- NA
-			data[idx,COL_CONF_FIX_ID] <- data.split[r,COL_CONF_FIX2_ID]
-			data[idx,COL_CONF_AREA_ID] <- NA
+			{	if(is.logical(split.surf))
+					stop(paste0("ERROR: id not unique or not found for v1 (",data.split[r,COL_CONF_FIX1_ID],")"))
+			}
+			else
+			{	id2 <- which(info.all[,"id"]==data.split[r,COL_CONF_FIX2_ID])
+				if(length(id2)!=1)
+				{	if(is.logical(split.surf))
+						stop(paste0("ERROR: id not unique or not found for v2 (",data.split[r,COL_CONF_FIX2_ID],")"))
+				}
+				else
+				{	v1 <- info.all[id1,COL_LOC_ID]
+					v2 <- info.all[id2,COL_LOC_ID]
+					
+					# add to edge list
+					edge.list <- rbind(edge.list, c(v1,v2))
+					
+					# add to main edge table
+					idx <- nrow(data) + 1
+					data[idx,COL_CONF_ID] <- "split"
+					data[idx,COL_CONF_LOC_LAT] <- "split"
+					data[idx,COL_CONF_LOC_NORM] <- data.split[r,COL_CONF_LOC_NORM_ARTIF]
+					data[idx,COL_CONF_EST1_ID] <- data.split[r,COL_CONF_FIX1_ID]
+					data[idx,COL_CONF_EST2_ID] <- NA
+					data[idx,COL_CONF_FIX_ID] <- data.split[r,COL_CONF_FIX2_ID]
+					data[idx,COL_CONF_AREA_ID] <- NA
+				}
+			}
 		}
 	}
 	
@@ -1230,8 +1247,10 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	if(compl.streets)
 	{	tlog(4,"Adding confronts between streets")
 		# the data is different if we are in split mode
-		if(split.surf)
+		if(is.logical(split.surf) && split.surf)
 			rel.files <- c(FILE_IN_ANAL_CONFR_STRT_EDIFICES_SPLIT, FILE_IN_ANAL_CONFR_STRT_STREETS_SPLIT)
+		else if(is.numeric(split.surf))
+			rel.files <- c(FILE_IN_ANAL_CONFR_STRT_EDIFICES, FILE_IN_ANAL_CONFR_STRT_STREETS, FILE_IN_ANAL_CONFR_STRT_EDIFICES_SPLIT, FILE_IN_ANAL_CONFR_STRT_STREETS_SPLIT)
 		else
 			rel.files <- c(FILE_IN_ANAL_CONFR_STRT_EDIFICES, FILE_IN_ANAL_CONFR_STRT_STREETS)
 		# read and add to edge table
@@ -1262,34 +1281,38 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			{	tlog(8,"Adding artificial confront ",data.comp[r,col1],"--",data.comp[r,col2]," (row #",r,"/",nrow(data.comp),")")
 				# get vertex ids
 				id1 <- which(info.all[,"id"]==data.comp[r,col1])
-#				if(length(id1)!=1)
-#					stop(paste0("ERROR: id not unique or not found for v1 (",data.comp[r,col1],")"))
 				if(length(id1)!=1)
-				{	tlog(10,paste0("ERROR: id not unique or not found for v1 (",data.comp[r,col1],")"))
-					id1=1
+				{	if(is.logical(split.surf))
+					{	stop(paste0("ERROR: id not unique or not found for v1 (",data.comp[r,col1],")"))
+						#tlog(10,paste0("ERROR: id not unique or not found for v1 (",data.comp[r,col1],")"))
+					}
 				}
-				id2 <- which(info.all[,"id"]==data.comp[r,col2])
-#				if(length(id2)!=1)
-#					stop(paste0("ERROR: id not unique or not found for v2 (",data.comp[r,col2],")"))
-				if(length(id2)!=1)
-				{	tlog(10,paste0("ERROR: id not unique or not found for v2 (",data.comp[r,col2],")"))
-					id2=1
+				else
+				{	id2 <- which(info.all[,"id"]==data.comp[r,col2])
+					if(length(id2)!=1)
+					{	if(is.logical(split.surf))
+						{	stop(paste0("ERROR: id not unique or not found for v2 (",data.comp[r,col2],")"))
+							#tlog(10,paste0("ERROR: id not unique or not found for v2 (",data.comp[r,col2],")"))
+						}
+					}
+					else
+					{	v1 <- info.all[id1,COL_LOC_ID]
+						v2 <- info.all[id2,COL_LOC_ID]
+						
+						# add to edge list
+						edge.list <- rbind(edge.list, c(v1,v2))
+						
+						# add to main edge table
+						idx <- nrow(data) + 1
+						data[idx,COL_CONF_ID] <- "complement"
+						data[idx,COL_CONF_LOC_LAT] <- "complement"
+						data[idx,COL_CONF_LOC_NORM] <- data.comp[r,COL_CONF_LOC_NORM_ARTIF]
+						data[idx,COL_CONF_EST1_ID] <- data.comp[r,col1]
+						data[idx,COL_CONF_EST2_ID] <- NA
+						data[idx,COL_CONF_FIX_ID] <- data.comp[r,col2]
+						data[idx,COL_CONF_AREA_ID] <- NA
+					}
 				}
-				v1 <- info.all[id1,COL_LOC_ID]
-				v2 <- info.all[id2,COL_LOC_ID]
-				
-				# add to edge list
-				edge.list <- rbind(edge.list, c(v1,v2))
-				
-				# add to main edge table
-				idx <- nrow(data) + 1
-				data[idx,COL_CONF_ID] <- "complement"
-				data[idx,COL_CONF_LOC_LAT] <- "complement"
-				data[idx,COL_CONF_LOC_NORM] <- data.comp[r,COL_CONF_LOC_NORM_ARTIF]
-				data[idx,COL_CONF_EST1_ID] <- data.comp[r,col1]
-				data[idx,COL_CONF_EST2_ID] <- NA
-				data[idx,COL_CONF_FIX_ID] <- data.comp[r,col2]
-				data[idx,COL_CONF_AREA_ID] <- NA
 			}
 		}
 	}
@@ -1326,7 +1349,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	V(g)$label <- comp.names
 	
 	# possibly remove certain leaves attached to artificial confronts
-	if(split.surf)
+	if(is.logical(split.surf) && split.surf || is.numeric(split.surf))
 	{	tlog(4,"Removing artificially introduced vertices that are not needed")
 		cnt <- 0
 		idx <- which(
@@ -1349,57 +1372,59 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	
 	# init layout
 	tlog(2,"Set up layout")
-	lay.file <- file.path(FOLDER_OUT_ANAL_EST, base.folder, "layout.txt")
-	# compute layout directly from igraph
-##	layout <- layout_with_fr(g)
-##	layout <- layout_with_fr(g, kkconst=0)
-##	layout <- layout_nicely(g)
-##	layout <- layout_with_dh(g)		# very slow
-##	layout <- layout_with_gem(g)		# extremely slow
-#	layout <- layout_with_kk(g, kkconst=gorder(g)/16)
-##	layout <- layout_with_mds(g)
-##	layout <- layout_with_lgl(g)
-#	layout <- layout_with_graphopt(g, charge=0.01, spring.length=3)
-#	# old code used to manually refine the layout
-##		tkplot(g, layout=layout)
-##		layout <- tk_coords(3)
-	######
-#	# export to graphml and use gephi, then import back
-#	file <- file.path(FOLDER_OUT_ANAL_EST, base.folder, "graph_kk.graphml")
-#	write.graphml.file(g=as.undirected(g), file=file)
-#	# <do your magic with gephi, then record graph with new layout>
-#	# <procedure: 1) detect components and use as vertex color (largest only); 2) vertex size 50; 3) random layout; 4) standard Yifan-Hu; 5) FR layout speed=10 grav~=1; 6) manually adjust components while layouting on.
-#	g0 <- read.graph(file, format="graphml")
-#	layout <- data.frame(V(g0)$idExterne, V(g0)$x, V(g0)$y)
-#	colnames(layout) <- c("idExterne", "x","y")
-#	scale <- max(abs(layout[,c("x","y")]))/7
-#	layout[,c("x","y")] <- layout[,c("x","y")]/scale
-#	write.table(x=layout, file=lay.file, sep="\t", row.names=FALSE, col.names=TRUE)
-	######
-	# update graph
-	tlog(4,"Reading layout from file ",lay.file)
-	layout <- read.table(file=lay.file, sep="\t", header=TRUE, check.names=FALSE)
-	lay.idx <- match(V(g)$idExterne, layout[,"idExterne"])
-	if(any(is.na(lay.idx))) {print(V(g)[which(is.na(lay.idx))]); stop("Could not match node ids with ids from the layout file")}
-	######
-	# debug
-	# idx <- which(V(g)$idExterne=="Rue:103");print(idx)
-	# neis <- unique(neighbors(graph=g, v=idx, mode="all"))$name;print(neis)
-	# sprintf("%.14f",mean(layout[match(neis,layout[,"idExterne"]),"x"]))
-	# sprintf("%.14f",mean(layout[match(neis,layout[,"idExterne"]),"y"]))
-	######
-	V(g)$x2 <- layout[lay.idx,"x"]; V(g)$y2 <- layout[lay.idx,"y"]
-	# plot graph
-	plot.file <- file.path(FOLDER_OUT_ANAL_EST, base.folder, "graph_kk")
-	tlog(4,"Plotting in file ",plot.file)
-	g0 <- g
-	V(g0)$x <- layout[lay.idx,"x"]; V(g0)$y <- layout[lay.idx,"y"]
-	#V(g0)$label <- NA
-	#idx <- which(degree(g)>5)
-	#V(g0)[idx]$label <- comp.names[idx]
-	V(g0)$label <- paste(vertex_attr(g0,name=COL_LOC_ID), get.location.names(g0),sep="_")
-	custom.gplot(g=g0, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g0)$x), ylim=range(V(g0)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
-	write.graphml.file(g=g0, file=paste0(plot.file,".graphml"))
+	if(is.logical(split.surf))
+	{	lay.file <- file.path(FOLDER_OUT_ANAL_EST, base.folder, "layout.txt")
+		# compute layout directly from igraph
+##		layout <- layout_with_fr(g)
+##		layout <- layout_with_fr(g, kkconst=0)
+##		layout <- layout_nicely(g)
+##		layout <- layout_with_dh(g)		# very slow
+##		layout <- layout_with_gem(g)		# extremely slow
+#		layout <- layout_with_kk(g, kkconst=gorder(g)/16)
+##		layout <- layout_with_mds(g)
+##		layout <- layout_with_lgl(g)
+#		layout <- layout_with_graphopt(g, charge=0.01, spring.length=3)
+#		# old code used to manually refine the layout
+##			tkplot(g, layout=layout)
+##			layout <- tk_coords(3)
+		######
+#		# export to graphml and use gephi, then import back
+#		file <- file.path(FOLDER_OUT_ANAL_EST, base.folder, "graph_kk.graphml")
+#		write.graphml.file(g=as.undirected(g), file=file)
+#		# <do your magic with gephi, then record graph with new layout>
+#		# <procedure: 1) detect components and use as vertex color (largest only); 2) vertex size 50; 3) random layout; 4) standard Yifan-Hu; 5) FR layout speed=10 grav~=1; 6) manually adjust components while layouting on.
+#		g0 <- read.graph(file, format="graphml")
+#		layout <- data.frame(V(g0)$idExterne, V(g0)$x, V(g0)$y)
+#		colnames(layout) <- c("idExterne", "x","y")
+#		scale <- max(abs(layout[,c("x","y")]))/7
+#		layout[,c("x","y")] <- layout[,c("x","y")]/scale
+#		write.table(x=layout, file=lay.file, sep="\t", row.names=FALSE, col.names=TRUE)
+		######
+		# update graph
+		tlog(4,"Reading layout from file ",lay.file)
+		layout <- read.table(file=lay.file, sep="\t", header=TRUE, check.names=FALSE)
+		lay.idx <- match(V(g)$idExterne, layout[,"idExterne"])
+		if(any(is.na(lay.idx))) {print(V(g)[which(is.na(lay.idx))]); stop("Could not match node ids with ids from the layout file")}
+		######
+		# debug
+		# idx <- which(V(g)$idExterne=="Rue:103");print(idx)
+		# neis <- unique(neighbors(graph=g, v=idx, mode="all"))$name;print(neis)
+		# sprintf("%.14f",mean(layout[match(neis,layout[,"idExterne"]),"x"]))
+		# sprintf("%.14f",mean(layout[match(neis,layout[,"idExterne"]),"y"]))
+		######
+		V(g)$x2 <- layout[lay.idx,"x"]; V(g)$y2 <- layout[lay.idx,"y"]
+		# plot graph
+		plot.file <- file.path(FOLDER_OUT_ANAL_EST, base.folder, "graph_kk")
+		tlog(4,"Plotting in file ",plot.file)
+		g0 <- g
+		V(g0)$x <- layout[lay.idx,"x"]; V(g0)$y <- layout[lay.idx,"y"]
+		#V(g0)$label <- NA
+		#idx <- which(degree(g)>5)
+		#V(g0)[idx]$label <- comp.names[idx]
+		V(g0)$label <- paste(vertex_attr(g0,name=COL_LOC_ID), get.location.names(g0),sep="_")
+		custom.gplot(g=g0, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g0)$x), ylim=range(V(g0)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+		write.graphml.file(g=g0, file=paste0(plot.file,".graphml"))
+	}
 	
 	# use spatial coordinates for layout
 	tlog(2,"Using spatial coordinates to define layout")
@@ -1478,11 +1503,13 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	g1 <- g
 #	V(g1)$label <- NA
 	V(g1)$label <- paste(vertex_attr(g1,name=COL_LOC_ID), get.location.names(g1),sep="_")
-	plot.file <- file.path(FOLDER_OUT_ANAL_EST, base.folder, "graph_lambert")
-	custom.gplot(g=g1, file=plot.file, size.att=2, vertex.label.cex=0.1)
-	#custom.gplot(g=g1)
-	write.graphml.file(g=g1, file=paste0(plot.file,".graphml"))
-
+	if(is.logical(split.surf))
+	{	plot.file <- file.path(FOLDER_OUT_ANAL_EST, base.folder, "graph_lambert")
+		custom.gplot(g=g1, file=plot.file, size.att=2, vertex.label.cex=0.1)
+		#custom.gplot(g=g1)
+		write.graphml.file(g=g1, file=paste0(plot.file,".graphml"))
+	}
+	
 	# get additional info on the streets and other stuff
 	short.tab <- read.table(
 		file=FILE_IN_ANAL_STRT_SHORT,
@@ -1526,13 +1553,15 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #	keep.idx <- which(is.na(V(g)$idBien) | V(g)$idBien %in% sources[[1]]$re.ids)
 	
 	#################
-	# TODO xxx
+	# TODO
 	# extract one graph for each predefined modality
 	#################
 	tlog(2,"Extracting several variants of the graph")
 	if(!street.ablation)
-	{	if(split.surf)
+	{	if(is.logical(split.surf) && split.surf)
 			graph.types <- c(GR_EST_FLAT_REL, GR_EST_FLAT_MINUS)
+		else if(is.numeric(split.surf))
+			graph.types <- c(GR_EST_FLAT_MINUS)
 		else
 			graph.types <- c(GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS)		# c(GR_EST_FULL, GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS, LK_TYPE_FLATREL_VALS)
 	}
@@ -2011,8 +2040,8 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #
 
 # TODO
-# - street ablation: plotter nbr de noeuds retiré et/ou isolates
+# - street ablation: plotter nbr de noeuds retirés et/ou isolates
 # - extraire et analyser full graph 
 
 # - splitter au lieu de supprimer les rues longues
-
+# - distinguer les confronts artificiels dans les graphiques
