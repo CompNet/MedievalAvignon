@@ -1988,7 +1988,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 # - split_raw
 #   - flat_minus
 #   - flat_minus_filtered
-#   > flat_relations
+#   + flat_relations
 #   + flat_relations_filtered
 # - whole_ext
 #   - estate_level
@@ -2001,7 +2001,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #   > flat_relations_filtered
 # - whole_raw
 #   - estate_level
-#   > estate_level_filtered
+#   + estate_level_filtered
 #   - flat_minus
 #   > flat_minus_filtered
 #   - flat_minus_6
