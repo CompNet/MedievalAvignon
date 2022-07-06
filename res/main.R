@@ -63,11 +63,13 @@ fast <- TRUE
 	graph.types <- extract.estate.networks(split.surf=FALSE, compl.streets=FALSE, street.ablation=TRUE)
 	# split raw
 	graph.types <- extract.estate.networks(split.surf=TRUE, compl.streets=FALSE, street.ablation=FALSE)
+	graph.types <- extract.estate.networks(split.surf=311, compl.streets=FALSE, street.ablation=FALSE)	# 6
 	# whole extended
 	graph.types <- extract.estate.networks(split.surf=FALSE, compl.streets=TRUE, street.ablation=FALSE)
 	graph.types <- extract.estate.networks(split.surf=FALSE, compl.streets=TRUE, street.ablation=TRUE)
 	# split extended
 	graph.types <- extract.estate.networks(split.surf=TRUE, compl.streets=TRUE, street.ablation=FALSE)
+	graph.types <- extract.estate.networks(split.surf=303, compl.streets=TRUE, street.ablation=FALSE)	# 9
 
 #graph.types <- paste0("split_raw/", c(GR_EST_FLAT_REL))
 #graph.types <- paste0("split_ext/", c(GR_EST_FLAT_REL))
