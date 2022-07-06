@@ -84,6 +84,8 @@ fast <- TRUE
 graph.types <- c(
 	"split_ext/flat_minus",
 	"split_ext/flat_minus_filtered",
+	"split_ext/flat_minus_303",
+	"split_ext/flat_minus_303_filtered",
 	"split_ext/flat_relations",
 	"split_ext/flat_relations_filtered",
 	#
@@ -135,7 +137,7 @@ for(i in 1:length(graph.types))
 	
 	# compute all topological measures
 	g <- analyze.network(gname=graph.types[i], out.folder=FOLDER_OUT_ANAL_EST, fast=fast)
-#	g <- analyze.network(gname="", out.folder=FOLDER_OUT_ANAL_EST, fast=fast)
+#	g <- analyze.network(gname="", out.folder=FOLDER_OUT_ANAL_EST, fast=FALSE)
 	
 	# filtered version
 	g <- analyze.network(gname=paste0(graph.types[i],"_filtered"), out.folder=FOLDER_OUT_ANAL_EST, fast=fast)

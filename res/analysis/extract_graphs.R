@@ -2031,6 +2031,8 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 # - split_ext
 #   - flat_minus
 #   - flat_minus_filtered
+#   - flat_minus_303
+#   > flat_minus_303_filtered
 #   ~ flat_relations
 #   ~ flat_relations_filtered
 # - split_raw
