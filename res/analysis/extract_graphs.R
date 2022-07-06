@@ -1366,7 +1366,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	#print(which(is.na(comp.names)))
 	V(g)$label <- comp.names
 	
-	# possibly remove certain leaves attached to artificial confronts
+	# possibly remove certain leaves attached to a single artificial confront
 	if(is.logical(split.surf) && split.surf || is.numeric(split.surf))
 	{	tlog(4,"Removing artificially introduced vertices that are not needed")
 		cnt <- 0
