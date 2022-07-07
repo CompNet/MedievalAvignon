@@ -847,15 +847,20 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 				meas <- c()
 					# anova
 					if(length(unique(membership[!is.na(membership[est.idx])]))<3 || length(unique(membership[!is.na(att.vals)]))<3)
+					{	fit <- NA
 						pval <- NA
+					}
 					else
 					{	fit <- suppressWarnings(aov(att.vals[!is.na(att.vals)]~as.factor(membership[est.idx][!is.na(att.vals)])))	# warning=perfect fit
 						pval <- summary(fit)[[1]][["Pr(>F)"]][1]	# dirty workaround to get the p-value, see https://stackoverflow.com/questions/3366506/extract-p-value-from-aov
 					}
 					vals <- c(vals, pval)
 					meas <- c(meas, "ANOVA_pval")
-					# eta 
-					etas <- suppressWarnings(eta_sq(fit)$etasq)	# warning=perfect fit
+					# eta
+					if(!is.na(fit))
+						etas <- suppressWarnings(eta_sq(fit)$etasq)	# warning=perfect fit
+					else
+						etas <- NA
 					vals <- c(vals, etas)
 					meas <- c(meas, "Eta")
 				# record as a table

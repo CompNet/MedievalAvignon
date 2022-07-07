@@ -2059,7 +2059,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #   - flat_minus_6
 #   + flat_minus_6_filtered
 #   - flat_relations
-#   > flat_relations_filtered
+#   + flat_relations_filtered
 #
 
 # TODO
