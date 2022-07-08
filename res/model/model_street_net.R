@@ -1,23 +1,29 @@
-# Random model to create a city network based on relatively realistic streets.
+# Random model to create a relatively realistic street network.
+# It is designed to mimic Avignon:
+# - central point at (0,0);
+# - avenues converging towards this center;
+# - convex envelope representing the external walls;
+# - internal wall placed mid-avenue;
+# - rest of the points used to define minor streets.
 # 
 # Vincent Labatut
 # 06/2022
 #
 # setwd("D:/users/Vincent/Eclipse/workspaces/Extraction/MedievalAvignon")
 # setwd("~/eclipse/workspaces/Extraction/MedievalAvignon")
-# source("res/analysis/model_streets.R")
+# source("res/analysis/model_street_net.R")
 ###############################################################################
 # load other scripts
 source("res/common/_include.R")
-source("res/model/intersect.R")
+source("res/model/model_utilities.R")
 
 
 
 
 ###############################################################################
 # parameters
-n.sec <- 200
-n.av <- 5
+n.sec <- 200	# number of free points
+n.av <- 5		# number of avenues
 out.folder <- file.path("out/analysis/estate/model/streets",n.sec)
 dir.create(path=out.folder, showWarnings=FALSE, recursive=TRUE)
 
@@ -133,7 +139,7 @@ V(g)$deg <- sample(x=2:4, size=gorder(g), replace=TRUE)  - degree(graph=g,mode="
 V(g)$deg <- sapply(V(g)$deg, function(d) max(0, d))
 changed <- TRUE
 while(changed)
-{	#idx <- sample(idx) # TODO disabled for debugging
+{	idx <- sample(idx)
 	changed <- FALSE
 	tlog(4,"----- Iteration -----")
 	
@@ -351,13 +357,18 @@ plot(g,
 	vertex.size=3
 )
 
+
+
+
+###############################################################################
 # possible improvements for street names: 
-# - explore graph in both direction, from starting edge
+# - explore graph in both directions (from the starting edge)
 # - break street when crossing avenue
 
-# TODO
-# - faut-il récupérer le graphe dual ?
-# - simplifier les noeuds de degré 2 => même rue
+# possible improvement for realism:
+# - create plazas at the intersection of important streets?
+
+
 
 
 ###############################################################################

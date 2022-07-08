@@ -4,7 +4,7 @@
 #
 # setwd("D:/users/Vincent/Eclipse/workspaces/Extraction/MedievalAvignon")
 # setwd("~/eclipse/workspaces/Extraction/MedievalAvignon")
-# source("res/model/intersect.R")
+# source("res/model/model_utilities.R")
 ############################################################################
 
 
@@ -136,6 +136,54 @@ get.inter.point <- function(x1, y1, x2, y2, x3, y3)
 	y <- y1 + u * py
 	
 	res <- c(x,y)
+	return(res)
+}
+
+
+
+
+###############################################################################
+# Computes the distance between a point and the closest point on a segment.
+# Taken from: https://stackoverflow.com/a/6853926/1254730
+#
+# x1,y1: position of the first point of the segment.
+# x2,y2: position of the second point of the segment.
+# x3,y3: position of the point of interest.
+# return.pos: whether to return the position of the closest point, or not.
+# 
+# returns: the computed distance.
+###############################################################################
+get.dist.point.segment <- function(x1, y1, x2, y2, x3, y3, return.pos=FALSE)
+{	a <- x3 - x1
+	b <- y3 - y1
+	c <- x2 - x1
+	d <- y2 - y1
+	
+	dot <- a * c + b * d
+	len.sq <- c * c + d * d
+	param <- -1
+	if(len.sq != 0) # in case of 0 length line
+		param <- dot / len.sq
+	
+	if(param<0)
+	{	xx <- x1
+		yy <- y1
+	}
+	else if(param>1)
+	{	xx <- x2
+		yy <- y2
+	}
+	else
+	{	xx <- x1 + param * c
+		yy <- y1 + param * d
+	}
+	
+	dx <- x3 - xx
+	dy <- y3 - yy
+	res <- sqrt(dx * dx + dy * dy)
+	
+	if(return.pos)
+		res <- c(dist=res, x=xx, y=yy)
 	return(res)
 }
 
