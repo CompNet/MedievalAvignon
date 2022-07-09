@@ -53,10 +53,9 @@ g2 <- add_vertices(graph=g, nv=n.est, attr=list(name=paste0("building_",1:n.est)
 plot(g2, 
 #	vertex.label=1:gorder(g2), vertex.label.cex=0.5,
 	vertex.label=NA,
-	vertex.color=match(V(g2)$type,unique(V(g)$type)), 
+	vertex.color=match(V(g2)$type,unique(V(g2)$type)), 
 	vertex.size=sapply(V(g2)$type, function(t) if(t=="building") 1 else 0.1),
 	xlim = c(-1, 1), ylim = c(-1, 1), rescale=FALSE
-	
 )
 
 
@@ -151,6 +150,15 @@ for(v in 1:n.est)
 	}
 }
 
+plot(gconf, 
+#	vertex.label=1:gorder(gconf), vertex.label.cex=0.5,
+	vertex.label=NA,
+	vertex.color=match(V(gconf)$type,unique(V(gconf)$type)), 
+	vertex.size=1,
+	xlim = c(-1, 1), ylim = c(-1, 1), rescale=FALSE
+)
+
+
 # TODO 
 # - in order to compare with real network extraction methods, must implement options:
 #   - ext >> confronts between streets
@@ -159,3 +167,7 @@ for(v in 1:n.est)
 #   - proportion of unknown locations
 #   - proportion of missing confronts
 #   - add randomly generic confronts instead of N/S/E/W confronts
+
+# - reproduire la distribution de degré des données ? (mais elle est probablement déjà amputée)
+# - reproduire le même nbre de biens vs. rues ? 
+# - pb: confronts très éloignés, allant vers le centre >> pq ?
