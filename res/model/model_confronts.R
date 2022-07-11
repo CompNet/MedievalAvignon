@@ -64,7 +64,7 @@ plot(g2,
 ###############################################################################
 # create confront graph
 tlog(0,"Creating empty confront graph")
-gconf <- make_empty_graph(n=0, directed=FALSE)
+gconf <- make_empty_graph(n=0, directed=TRUE)
 
 # add buildings
 tlog(0,"Adding ",n.est," building vertices to confront graph")
@@ -182,3 +182,11 @@ plot(gconf,
 # - reproduire la distribution de degré des données ? (mais elle est probablement déjà amputée)
 # - reproduire le même nbre de biens vs. rues ? 
 # - pb: confronts très éloignés, allant vers le centre >> pq ?
+
+gconf0 <- gconf
+#unique(V(gconf)$name)
+gconf <- delete_vertices(gconf,v=which(V(gconf)$name %in% c("ext_wall","int_wall")))
+print(table(count_multiple(gconf)))
+tmp <- components(graph=gconf, mode="weak")
+print(tmp$no);print(tmp$csize)
+
