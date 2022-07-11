@@ -143,11 +143,22 @@ for(v in 1:n.est)
 			
 			# add to graph
 			u <- which(V(gconf)$name==df[i,"name"])
+			tlog(4,"Creating confront ",v,"--",u," (",V(gconf)[v]$name,"--",V(gconf)[u]$name,")")
 			gconf <- add_edges(graph=gconf, edges=c(v,u), attr=list(type=etype))
 			cnt <- cnt + 1
 		}
 		i <- i + 1
 	}
+	
+#	plot(gconf, 
+##		vertex.label=1:gorder(gconf), vertex.label.cex=0.5,
+#		vertex.label=NA,
+#		vertex.color=match(V(gconf)$type,unique(V(gconf)$type)), 
+#		vertex.size=1,
+#		xlim = c(-1, 1), ylim = c(-1, 1), rescale=FALSE
+#	)
+#	points(V(gconf)[v]$x, V(gconf)[v]$y, col="red")
+#	readline(prompt="Press [enter] to continue")
 }
 
 plot(gconf, 
