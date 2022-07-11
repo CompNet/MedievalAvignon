@@ -38,7 +38,7 @@ MEAS_LONG_NAMES[MEAS_ARI] <- "Adjusted Rand Index"
 #############################################################
 analyze.net.comstruct <- function(g, out.folder, fast)
 {	# whether to compute the communities or use previously detected (and cached) ones
-	COMPUTE <- FALSE
+	COMPUTE <- TRUE
 	
 	# get the stat table
 	stat.file <- file.path(out.folder, g$name, "stats.csv")

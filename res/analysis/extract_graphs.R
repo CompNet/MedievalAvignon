@@ -1969,10 +1969,6 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #   >> indicateur de la stabilité de l'estimation de la distance spatiale par la distance géodesique
 #
 # - modèle :
-#   - version plus réaliste:
-#     + rajouter la génération de graphes viaires
-#     - générer les biens dans le graphe viaire
-#     - conversion du graphe viaire vers le graphe de confronts
 #   - questions :
 #     - effet de la suppression des liens
 #     - effet de la suppression des coordonnées
@@ -2029,42 +2025,42 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 
 # traitement : 
 # - split_ext
-#   - flat_minus
-#   - flat_minus_filtered
-#   - flat_minus_303
-#   > flat_minus_303_filtered
+#   > flat_minus
+#   ++ flat_minus_filtered
+#   > flat_minus_303
+#   ++ flat_minus_303_filtered
 #   ~ flat_relations
-#   ~ flat_relations_filtered
+#   +> flat_relations_filtered
 # - split_raw
-#   - flat_minus
-#   > flat_minus_filtered
-#   - flat_minus_311
-#   > flat_minus_311_filtered
+#   > flat_minus
+#   + flat_minus_filtered
+#   > flat_minus_311
+#   + flat_minus_311_filtered
 #   ~ flat_relations
-#   > flat_relations_filtered
+#   + flat_relations_filtered
 # - whole_ext
-#   - estate_level
-#   + estate_level_filtered
-#   - flat_minus
-#   > flat_minus_filtered
-#   - flat_minus_9
-#   > flat_minus_9_filtered
-#   - flat_relations
-#   > flat_relations_filtered
-# - whole_raw
-#   - estate_level
+#   > estate_level
 #   + estate_level_filtered
 #   - flat_minus
 #   + flat_minus_filtered
-#   - flat_minus_6
-#   + flat_minus_6_filtered
+#   > flat_minus_9
+#   + flat_minus_9_filtered
 #   - flat_relations
+#   + flat_relations_filtered
+# - whole_raw
+#   > estate_level
+#   + estate_level_filtered
+#   > flat_minus
+#   + flat_minus_filtered
+#   > flat_minus_6
+#   + flat_minus_6_filtered
+#   > flat_relations
 #   + flat_relations_filtered
 #
 
 # TODO
-# - street ablation: plotter nbr de noeuds retirés et/ou isolates
 # - extraire et analyser full graph 
-
-# - splitter au lieu de supprimer les rues longues
-# - distinguer les confronts artificiels dans les graphiques
+# - externaliser le traitement des distances (pr uniformiser entre RW vs modèle)
+#   > fait sauf la modif sur la valeur moyenne dans le plot des moyennes
+#   > et il faut tout tester
+#   > puis adapter le modèle pour produire les attributs de même noms rendant ce code interopérable
