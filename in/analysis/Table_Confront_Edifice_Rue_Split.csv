@@ -7,7 +7,7 @@ idEdifice,idRue,lienArtificiel
 122,60,confronte avec
 123,77,confronte avec
 124,72_1,confronte avec
-125,71_1,confronte avec
+158,110_4,confronte avec
 126,111_2,confronte avec
 127,87,confronte avec
 128,774,confronte avec
@@ -30,9 +30,9 @@ idEdifice,idRue,lienArtificiel
 142,42,confronte avec
 143,28_2,confronte avec
 143,48,confronte avec
-143,67_1,confronte avec
+548,110_4,confronte avec
 143,72_1,confronte avec
-144,56_2,confronte avec
+784,110_4,confronte avec
 144,87,confronte avec
 144,88,confronte avec
 146,36,confronte avec
@@ -51,7 +51,7 @@ idEdifice,idRue,lienArtificiel
 155,471,confronte avec
 156,62,confronte avec
 157,701,confronte avec
-158,110_2,confronte avec
+1807,110_4,confronte avec
 159,54,confronte avec
 160,114,confronte avec
 161,95,confronte avec
@@ -79,7 +79,7 @@ idEdifice,idRue,lienArtificiel
 490,24,confronte avec
 491,24,confronte avec
 492,24,confronte avec
-534,71_1,confronte avec
+144,56_5,confronte avec
 539,479,confronte avec
 540,711,confronte avec
 541,711,confronte avec
@@ -88,7 +88,7 @@ idEdifice,idRue,lienArtificiel
 545,640,confronte avec
 546,701,confronte avec
 547,111_2,confronte avec
-548,110_2,confronte avec
+143,67_1,confronte avec
 549,14,confronte avec
 550,812,confronte avec
 551,778,confronte avec
@@ -98,8 +98,7 @@ idEdifice,idRue,lienArtificiel
 555,72_1,confronte avec
 556,76,confronte avec
 557,54,confronte avec
-558,70_2,confronte avec
-559,70_2,confronte avec
+673,67_7,confronte avec
 560,774,confronte avec
 607,50,confronte avec
 608,49_1,confronte avec
@@ -119,7 +118,7 @@ idEdifice,idRue,lienArtificiel
 625,544,confronte avec
 639,764,confronte avec
 646,66,confronte avec
-673,67_2,confronte avec
+558,70_5,confronte avec
 693,659_2,confronte avec
 694,690_1,confronte avec
 695,690_1,confronte avec
@@ -133,7 +132,7 @@ idEdifice,idRue,lienArtificiel
 722,106,confronte avec
 726,77,confronte avec
 729,43_1,confronte avec
-739,8_1,confronte avec
+559,70_4,confronte avec
 768,901,confronte avec
 770,72_1,confronte avec
 771,72_1,confronte avec
@@ -141,13 +140,13 @@ idEdifice,idRue,lienArtificiel
 781,1_1,confronte avec
 782,811,confronte avec
 783,43_1,confronte avec
-784,110_2,confronte avec
+125,71_1,confronte avec
 800,481,confronte avec
 801,481,confronte avec
 804,802,confronte avec
-805,71_1,confronte avec
+534,71_1,confronte avec
 810,46,confronte avec
-1771,67_2,confronte avec
+805,71_1,confronte avec
 1772,32_1,confronte avec
 1775,100,confronte avec
 1776,82_2,confronte avec
@@ -159,6 +158,7 @@ idEdifice,idRue,lienArtificiel
 1802,737,confronte avec
 1803,479,confronte avec
 1806,90,confronte avec
-1807,110_2,confronte avec
+739,8_1,confronte avec
 1808,807,confronte avec
 17722,481,confronte avec
+160,110_1,confronte avec

@@ -558,3 +558,137 @@ idConfront,localisation,idBien1,idBien2,idInvariant,idInvariant_ajout,idQuartier
 7127,in,60358,NULL,666,666_16,NULL,dans
 7156,subtus,60382,NULL,185,185_9,NULL,sous
 7115,ultra,60404,NULL,195,NULL,NULL,au dela de
+1109,a-occident,102,NULL,8,8_4,NULL,confronte a l ouest avec
+1108,in,102,NULL,8,8_4,NULL,dans
+1476,a-meridie,106,NULL,82,82_3,NULL,confronte au sud avec
+1110,a-orient,107,NULL,8,8_1,NULL,confronte a l est avec
+1111,a-orient,109,NULL,8,8_1,NULL,confronte a l est avec
+1112,a-orient,118,NULL,8,8_1,NULL,confronte a l est avec
+1113,a-orient,119,NULL,8,8_2,NULL,confronte a l est avec
+1114,a-orient,120,NULL,8,8_2,NULL,confronte a l est avec
+1115,in,132,NULL,8,8_3,NULL,dans
+1116,a-orient,132,NULL,8,8_3,NULL,confronte a l est avec
+1117,in,133,NULL,8,8_3,NULL,dans
+1118,a-occident,133,NULL,8,8_3,NULL,confronte a l ouest avec
+1119,in,134,NULL,8,8_3,NULL,dans
+1120,a-occident,134,NULL,8,8_3,NULL,confronte a l ouest avec
+1121,a-orient,140,NULL,8,8_2,NULL,confronte a l est avec
+1122,a-orient,141,NULL,8,8_2,NULL,confronte a l est avec
+1123,a-orient,142,NULL,8,8_2,NULL,confronte a l est avec
+1124,a-orient,143,NULL,8,8_2,NULL,confronte a l est avec
+1126,a-occident,145,NULL,8,8_2,NULL,confronte a l ouest avec
+1125,in,145,NULL,8,8_2,NULL,dans
+1127,a-occident,146,NULL,8,8_2,NULL,confronte a l ouest avec
+1128,in compito-sive-cantono,161,NULL,8,8_3,NULL,a l angle de
+1129,a-occident,161,NULL,8,8_3,NULL,confronte a l ouest avec
+1130,a-occident,162,NULL,8,8_3,NULL,confronte a l ouest avec
+1132,a-orient,167,NULL,8,8_3,NULL,confronte a l est avec
+1131,in compito-sive-cantono,167,NULL,8,8_3,NULL,a l angle de
+1134,a-occident,170,NULL,8,8_3,NULL,confronte a l ouest avec
+1135,in compito-sive-cantono,171,NULL,8,8_4,NULL,a l angle de
+1136,a-meridie,171,NULL,8,8_4,NULL,confronte au sud avec
+1138,a-occident,176,NULL,8,8_4,NULL,confronte a l ouest avec
+1137,in,176,NULL,8,8_4,NULL,dans
+1140,a-circio,190,NULL,8,8_4,NULL,confronte au nord avec
+1139,in,190,NULL,8,8_4,NULL,dans
+1141,in,193,NULL,8,8_4,NULL,dans
+1142,a-occident,194,NULL,8,8_4,NULL,confronte a l ouest avec
+1143,a-occident,195,NULL,8,8_4,NULL,confronte a l ouest avec
+1144,a-occident,196,NULL,8,8_4,NULL,confronte a l ouest avec
+1145,in,201,NULL,8,8_4,NULL,dans
+1146,in,202,NULL,8,8_4,NULL,dans
+1148,a-orient,203,NULL,8,8_4,NULL,confronte a l est avec
+1147,a-occident,203,NULL,8,8_4,NULL,confronte a l ouest avec
+1468,a-occident,219,NULL,99,99_1,NULL,confronte a l ouest avec
+1469,a-occident,220,NULL,99,99_2,NULL,confronte a l ouest avec
+1470,a-occident,221,NULL,99,99_2,NULL,confronte a l ouest avec
+1471,a-occident,222,NULL,99,99_3,NULL,confronte a l ouest avec
+1477,a-orient,228,NULL,110,110_1,NULL,confronte a l est avec
+1478,a-orient,229,NULL,110,110_1,NULL,confronte a l est avec
+1479,a-orient,230,NULL,110,110_1,NULL,confronte a l est avec
+1480,a-orient,231,NULL,110,110_2,NULL,confronte a l est avec
+1481,a-orient,232,NULL,110,110_2,NULL,confronte a l est avec
+1482,a-orient,233,NULL,110,110_2,NULL,confronte a l est avec
+1483,a-orient,234,NULL,110,110_2,NULL,confronte a l est avec
+1484,a-orient,235,NULL,110,110_3,NULL,confronte a l est avec
+1545,a-circio,236,NULL,110,110_3,NULL,confronte au nord avec
+1546,a-circio,237,NULL,110,110_3,NULL,confronte au nord avec
+1485,a-orient,238,NULL,110,110_3,NULL,confronte a l est avec
+1486,a-orient,239,NULL,110,110_3,NULL,confronte a l est avec
+1487,a-occident,252,NULL,110,110_1,NULL,confronte a l ouest avec
+1488,a-occident,253,NULL,110,110_2,NULL,confronte a l ouest avec
+1489,a-occident,254,NULL,110,110_2,NULL,confronte a l ouest avec
+1490,a-occident,255,NULL,110,110_2,NULL,confronte a l ouest avec
+1491,a-occident,256,NULL,110,110_2,NULL,confronte a l ouest avec
+1492,a-occident,257,NULL,110,110_2,NULL,confronte a l ouest avec
+1551,a-occident,443,NULL,8,8_1,NULL,confronte a l ouest avec
+1149,a-orient,447,NULL,8,8_2,NULL,confronte a l est avec
+1150,juxta,449,NULL,8,8_3,NULL,a cote de
+1151,a-occident,450,NULL,8,8_2,NULL,confronte a l ouest avec
+1152,a-circio,451,NULL,8,8_3,NULL,confronte au nord avec
+1154,a-occident,454,NULL,8,8_3,NULL,confronte a l ouest avec
+1153,in,454,NULL,8,8_3,NULL,dans
+1472,a-occident,456,NULL,99,99_2,NULL,confronte a l ouest avec
+2092,a-meridie,1071,NULL,70,70_1,NULL,confronte au sud avec
+2091,a-circio,1071,NULL,70,70_1,NULL,confronte au nord avec
+2131,ab-una-part,1078,NULL,70,70_3,NULL,confronte avec
+2132,ab-una-part,1078,NULL,468,468_3,NULL,confronte avec
+2138,juxta,1080,NULL,468,468_4,NULL,a cote de
+2231,a-orient,1113,NULL,56,56_2,NULL,confronte a l est avec
+2233,a-circio,1114,NULL,56,56_2,NULL,confronte au nord avec
+2236,a-circio,1115,NULL,56,56_2,NULL,confronte au nord avec
+2240,in,1115,NULL,56,56_2,NULL,dans
+2299,in,1136,NULL,8,8_3,NULL,dans
+2300,a-orient,1136,NULL,8,8_3,NULL,confronte a l est avec
+2301,a-part-ante,1136,NULL,8,8_3,NULL,confronte du cote avant avec
+2304,in,1137,NULL,8,8_4,NULL,dans
+2305,a-orient,1137,NULL,8,8_4,NULL,confronte a l est avec
+2306,in,1138,NULL,8,8_4,NULL,dans
+2307,a-orient,1138,NULL,8,8_4,NULL,confronte a l est avec
+2308,in,1139,NULL,8,8_3,NULL,dans
+2309,a-orient,1139,NULL,8,8_3,NULL,confronte a l est avec
+2310,in,1140,NULL,8,8_4,NULL,dans
+2311,a-orient,1140,NULL,8,8_4,NULL,confronte a l est avec
+2312,in,1141,NULL,8,8_4,NULL,dans
+2314,in,1142,NULL,8,8_4,NULL,dans
+2316,a-circio,1142,NULL,8,8_4,NULL,confronte au nord avec
+2315,a-occident,1142,NULL,8,8_4,NULL,confronte a l ouest avec
+2320,a-occident,1143,NULL,8,8_3,NULL,confronte a l ouest avec
+2319,in,1143,NULL,8,8_3,NULL,dans
+2321,in,1144,NULL,8,8_3,NULL,dans
+2331,ab-una-part,1149,NULL,82,82_1,NULL,confronte avec
+2335,ab-una-part,1150,NULL,82,82_1,NULL,confronte avec
+2333,in,1150,NULL,82,82_1,NULL,dans
+2338,a-circio,1151,NULL,82,82_1,NULL,confronte au nord avec
+3265,ab-una-part,2033,NULL,70,70_3,NULL,confronte avec
+3268,in,2035,NULL,70,70_1,NULL,dans
+3354,ab-una-part,2078,NULL,8,8_1,NULL,confronte avec
+3373,ab-una-part,2089,NULL,56,56_1,NULL,confronte avec
+3385,ab-una-part,2096,NULL,56,56_1,NULL,confronte avec
+3384,in,2096,NULL,56,56_1,NULL,dans
+3386,in,2097,NULL,56,56_1,NULL,dans
+3523,ab-una-part,2155,NULL,99,99_2,NULL,confronte avec
+3564,ab-una-part,2173,NULL,70,70_3,NULL,confronte avec
+3587,ab-una-part,2184,NULL,70,70_3,NULL,confronte avec
+4271,in,7066,NULL,67,67_1,NULL,dans
+4273,ab-una-part,7066,NULL,67,67_1,NULL,confronte avec
+4325,ab-una-part,7103,NULL,67,67_5,NULL,confronte avec
+4332,ab-una-part,7108,NULL,67,67_6,NULL,confronte avec
+4470,ab-una-part,7190,NULL,67,67_6,NULL,confronte avec
+4475,ab-una-part,7192,NULL,67,67_6,NULL,confronte avec
+4477,ab-una-part,7193,NULL,67,67_5,NULL,confronte avec
+4480,ante,7194,NULL,67,67_5,NULL,devant
+4483,ante,7195,NULL,67,67_5,NULL,devant
+4487,in,7197,NULL,67,67_5,NULL,dans
+4490,in,7198,NULL,67,67_5,NULL,dans
+4493,ab-una-part,7199,NULL,67,67_5,NULL,confronte avec
+4498,ante,7202,NULL,67,67_5,NULL,devant
+4549,a-part-ante,7226,NULL,56,56_1,NULL,confronte du cote avant avec
+4547,in,7226,NULL,56,56_1,NULL,dans
+4550,in,7227,NULL,56,56_1,NULL,dans
+4551,ab-una-part,7227,NULL,56,56_1,NULL,confronte avec
+4552,in,7228,NULL,56,56_2,NULL,dans
+4553,in,7229,NULL,56,56_2,NULL,dans
+4554,ab-una-part,7229,NULL,56,56_2,NULL,confronte avec
+8097,,9098,NULL,56,56_3,NULL,confronte a l ouest avec
+8098,,9098,NULL,56,56_3,NULL,confronte au sud avec
