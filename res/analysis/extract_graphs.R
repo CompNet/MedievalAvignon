@@ -2064,3 +2064,16 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #   > fait sauf la modif sur la valeur moyenne dans le plot des moyennes
 #   > et il faut tout tester
 #   > puis adapter le modèle pour produire les attributs de même noms rendant ce code interopérable
+
+# TODO
+# - suppr edifices absents de la table confronts
+# - stats: nbre noeuds, composants, distance, communautés, attributs
+# - rajouter dans attributs à traiter: typeExterne, coord vraies/interpolées, idDéclaration (rien vs. renseigné)
+# - rajouter dans table comparative: nbre de biens, corrélations des distances (juste les scores, pas les pvals)
+# - pr didier: 
+#   - produire le fichier edgelist avec les id (BD) des noeuds (et les attributs des liens)
+#   - exporter la liste des noeuds avec tous les attributs dispos et aussi les coms
+#   - exporter les coms avec pureté et cie.
+
+# - est-ce que la position relative des noeuds est respectée par le graphe ?
+#   si A et B sont à l'ouest de C, est-ce le cas aussi dans le graphe ?
