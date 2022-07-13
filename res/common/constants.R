@@ -116,12 +116,17 @@ FILE_GRAPH <- "graph.graphml"
 # locations in general
 	COL_LOC_ID <- "idExterne"
 	COL_LOC_TYPE <- "typeExterne"
-	# coordinates
-	COL_LOC_X <- "xcoord"				# lambert93 coordinates
-	COL_LOC_Y <- "ycoord"				# lambert93 coordinates
-	# estimated coordinates
+	# estimated geographic coordinates
 	COL_LOC_HYP_LAT <- "latitudeHypo"	# other projection
 	COL_LOC_HYP_LON <- "longitudeHypo"	# other projection
+	COL_LOC_X <- "xcoord"				# lambert93 coordinates
+	COL_LOC_Y <- "ycoord"				# lambert93 coordinates
+	COL_LOC_INTER_X <- "lonEst"			# interpolated coordinates
+	COL_LOC_INTER_Y <- "latEst"			# interpolated coordinates
+	COL_LOC_INTER <- "interpolated"		# whether the coordinates were interpolated
+	# layout coordinates
+	COL_LOC_ALGO_X <- "x2"
+	COL_LOC_ALGO_Y <- "y2"
 	
 # estate table
 	# ids
@@ -171,6 +176,7 @@ FILE_GRAPH <- "graph.graphml"
 	COL_EST_COMP_TYPE6 <- "typeComposant6"
 	COL_EST_COMP_TYPE_S6 <- "typeSimpleComposant6"
 	# NOTE: declared estate = COL_EST_DECLARATION_ID | COL_EST_FEE_ID
+	COL_EST_DECLARED <- "declared"
 
 # fixes table
 	COL_FIX_ID <- "idInvariant"
@@ -493,6 +499,18 @@ LONG_NAME[COL_SOC_SRC] <- "Source person ID"
 LONG_NAME[COL_SOC_TGT] <- "Target person ID"
 LONG_NAME[COL_SOC_DESCR] <- "Link description"
 LONG_NAME[COL_SOC_TYPE] <- "Link type"
+#
+LONG_NAME[COL_LOC_ID] <- "Normalized ID"
+LONG_NAME[COL_LOC_TYPE] <- "Normalized type"
+LONG_NAME[COL_LOC_HYP_LAT] <- "Latitude"
+LONG_NAME[COL_LOC_HYP_LON] <- "Longitude"
+LONG_NAME[COL_LOC_X] <- "Lambert93 latitude"
+LONG_NAME[COL_LOC_Y] <- "Lambert93 longitude"
+LONG_NAME[COL_LOC_INTER_X] <- "Interpolated latitude (possibly)"
+LONG_NAME[COL_LOC_INTER_Y] <- "Interpolated longitude (possibly)"
+LONG_NAME[COL_LOC_INTER] <- "Interpolated coordinates"
+LONG_NAME[COL_LOC_ALGO_X] <- "Layout x coordinate"
+LONG_NAME[COL_LOC_ALGO_Y] <- "Layout y coordinate"
 LONG_NAME[COL_EST_ID] <- "Estate ID"
 LONG_NAME[COL_EST_AREA_ID] <- "Area ID"
 LONG_NAME[COL_EST_STREET_ID] <- "Street ID"
@@ -500,6 +518,7 @@ LONG_NAME[COL_EST_VILLAGE_ID] <- "Village ID"
 LONG_NAME[COL_EST_FEE_ID] <- "Fee ID"
 LONG_NAME[COL_EST_LORDSHIP_ID] <- "Lordship ID"
 LONG_NAME[COL_EST_DECLARATION_ID] <- "Declaration ID"
+LONG_NAME[COL_EST_DECLARED] <- "Declared"
 LONG_NAME[COL_EST_TYPE_LAT] <- "Estate type (original)"
 LONG_NAME[COL_EST_TYPE_FRE] <- "Estate type (translated)"
 LONG_NAME[COL_EST_QUALIF_LAT] <- "Estate qualification (original)"
@@ -711,7 +730,8 @@ COL_CAT <- c(
 	COL_LOC_TYPE, COL_EST_TYPE_FRE, #COL_EST_TYPE_LAT
 	COL_EST_QUALIF_NORM, #COL_EST_QUALIF_LAT
 	#COL_EST_DETAIL, COL_EST_MEASURE, COL_EST_MATERIALS,
-	COL_EST_POSITION,
+	COL_EST_DECLARED,
+	COL_EST_POSITION, COL_LOC_INTER,
 	# edifices
 	COL_EDIF_TYPE, COL_EDIF_STATUS, COL_EDIF_LOC, #COL_EDIF_SRC,
 	# villages
@@ -745,6 +765,8 @@ COL_CAT_SELECT <- c(
 				
 	# estates
 	COL_EST_AREA_ID, COL_EST_VILLAGE_ID, COL_EST_STREET_ID, COL_EST_LORDSHIP_ID,
+	COL_LOC_TYPE, 
+	COL_EST_DECLARED,
 	COL_FEE_AMOUNT_CAT1,
 	COL_EST_POSITION,
 	# social
@@ -793,7 +815,10 @@ COL_NUM <- c(
 	# social
 	COL_PERS_MENTION,
 	
+	# locations
 	COL_LOC_X, COL_LOC_Y,
+	COL_LOC_INTER_X, COL_LOC_INTER_Y, 
+	COL_LOC_ALGO_X, COL_LOC_ALGO_Y,
 	# estates
 	COL_EST_COMP_NBR1, COL_EST_COMP_NBR2, COL_FEE_AMOUNT_NORM1, COL_EST_MENTION,
 	# edifices

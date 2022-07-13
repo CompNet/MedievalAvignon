@@ -702,6 +702,7 @@ extract.estate.networks <- function(split.surf=FALSE, compl.streets=FALSE, stree
 		else
 			streets.folder <- "raw"
 		base.folder <- paste0(split.folder,"_",streets.folder)
+		dir.create(path=file.path(FOLDER_OUT_ANAL_EST, base.folder, "full"), showWarnings=FALSE, recursive=TRUE)
 	}
 	
 	# load estate information
@@ -710,6 +711,7 @@ extract.estate.networks <- function(split.surf=FALSE, compl.streets=FALSE, stree
 info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_ID))] # COL_EST_AREA_ID, COL_EST_VILLAGE_ID were in this list, but we can use them as attributes too (in addition to membership relation)
 	info.estate <- cbind(paste("Bien:",info.estate[,COL_EST_ID],sep=""),info.estate); colnames(info.estate)[1] <- COL_LOC_ID
 	info.estate <- cbind(rep("Bien",nrow(info.estate)),info.estate); colnames(info.estate)[1] <- COL_LOC_TYPE
+	info.estate <- cbind(info.estate, !is.na(info.estate[,COL_EST_DECLARATION_ID]) | !is.na(info.estate[,COL_EST_FEE_ID])); colnames(info.estate)[ncol(info.estate)] <- COL_EST_DECLARED
 		# complete estate information
 		info.fees <- load.location.table(FILE_IN_ANAL_ESTATE_FEE,"fee")
 		mids <- match(info.estate[,COL_EST_FEE_ID], info.fees[,COL_FEE_ID])
@@ -939,6 +941,9 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	)
 	tlog(4,"Found ",nrow(data)," relations")
 	
+	# identify edifices not appearing in the confront table
+	edif.abs <- setdiff(info.edifice[,COL_EDIF_ID], data[,COL_CONF_FIX_ID])
+	
 	# possibly rewire certain relations corresponding to linear or surface vertices
 	if(is.logical(split.surf) && split.surf || is.numeric(split.surf))
 	{	tlog(4,"Rewiring confronts due to the split of linear and surface vertex")
@@ -1067,7 +1072,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			}
 		}
 		
-		# only pairwise equal relationships: merge estate into other vertex
+		# only pairwise "equal" relationships: merge estate into other vertex
 		tlog(4,"Detected ",length(idx)," single relationships >> merging vertices")
 		for(r in idx)
 		{	# first node
@@ -1391,7 +1396,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	# init layout
 	tlog(2,"Set up layout")
 	if(is.logical(split.surf))
-	{	lay.file <- file.path(FOLDER_OUT_ANAL_EST, base.folder, "layout.txt")
+	{	lay.file <- file.path(FOLDER_OUT_ANAL_EST, base.folder, "full", "layout.txt")
 		# compute layout directly from igraph
 ##		layout <- layout_with_fr(g)
 ##		layout <- layout_with_fr(g, kkconst=0)
@@ -1407,7 +1412,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 ##			layout <- tk_coords(3)
 		######
 #		# export to graphml and use gephi, then import back
-#		file <- file.path(FOLDER_OUT_ANAL_EST, base.folder, "graph_kk.graphml")
+#		file <- file.path(FOLDER_OUT_ANAL_EST, base.folder, "full", "graph_algo.graphml")
 #		write.graphml.file(g=as.undirected(g), file=file)
 #		# <do your magic with gephi, then record graph with new layout>
 #		# <procedure: 1) detect components and use as vertex color (largest only); 2) vertex size 50; 3) random layout; 4) standard Yifan-Hu; 5) FR layout speed=10 grav~=1; 6) manually adjust components while layouting on.
@@ -1431,17 +1436,6 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		# sprintf("%.14f",mean(layout[match(neis,layout[,"idExterne"]),"y"]))
 		######
 		V(g)$x2 <- layout[lay.idx,"x"]; V(g)$y2 <- layout[lay.idx,"y"]
-		# plot graph
-		plot.file <- file.path(FOLDER_OUT_ANAL_EST, base.folder, "graph_kk")
-		tlog(4,"Plotting in file ",plot.file)
-		g0 <- g
-		V(g0)$x <- layout[lay.idx,"x"]; V(g0)$y <- layout[lay.idx,"y"]
-		#V(g0)$label <- NA
-		#idx <- which(degree(g)>5)
-		#V(g0)[idx]$label <- comp.names[idx]
-		V(g0)$label <- paste(vertex_attr(g0,name=COL_LOC_ID), get.location.names(g0),sep="_")
-		custom.gplot(g=g0, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g0)$x), ylim=range(V(g0)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
-		write.graphml.file(g=g0, file=paste0(plot.file,".graphml"))
 	}
 	
 	# use spatial coordinates for layout
@@ -1511,22 +1505,14 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			V(g)$y[idx] <- tmp[2,]
 		}
 	}
+	# mark interpolated nodes
+	g <- set_vertex_attr(graph=g, name=COL_LOC_INTER, value=is.na(V(g)$x) & !is.na(V(g)$lonEst))
 	# put completely disconnected nodes in bottom left corner
 	V(g)$x[which(is.na(V(g)$x))] <- min(V(g)$x, na.rm=TRUE)
 	V(g)$y[which(is.na(V(g)$y))] <- min(V(g)$y, na.rm=TRUE)
 	# copy interpolated coordinates in new attribute
 	V(g)$lonEst <- V(g)$x
 	V(g)$latEst <- V(g)$y
-	# plot full graph with these positions
-	g1 <- g
-#	V(g1)$label <- NA
-	V(g1)$label <- paste(vertex_attr(g1,name=COL_LOC_ID), get.location.names(g1),sep="_")
-	if(is.logical(split.surf))
-	{	plot.file <- file.path(FOLDER_OUT_ANAL_EST, base.folder, "graph_lambert")
-		custom.gplot(g=g1, file=plot.file, size.att=2, vertex.label.cex=0.1)
-		#custom.gplot(g=g1)
-		write.graphml.file(g=g1, file=paste0(plot.file,".graphml"))
-	}
 	
 	# get additional info on the streets and other stuff
 	short.tab <- read.table(
@@ -1546,9 +1532,9 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	tlog(4,"Found ",length(street.idx)," streets remaining in the whole graph")
 	if(length(idx)>0)
 	{	for(street.i in street.idx)
-		{	tlog(6,"Processing street ",V(g)[street.i]$idExterne," (#",street.i,")")
+		{	#tlog(6,"Processing street ",V(g)[street.i]$idExterne," (#",street.i,")")
 			neis <- neighbors(graph=g,v=street.i,mode="all")
-			tlog(8,"Found ",length(neis)," neighbors: ",paste(V(g)[neis]$idExterne,collapse=", ")," (#",paste(neis,collapse=", "),")")
+			#tlog(8,"Found ",length(neis)," neighbors: ",paste(V(g)[neis]$idExterne,collapse=", ")," (#",paste(neis,collapse=", "),")")
 			span <- NA
 			if(length(neis)>2)
 			{	coords <- cbind(vertex_attr(g, name=COL_LOC_X, index=neis), vertex_attr(g, name=COL_LOC_Y, index=neis))
@@ -1559,9 +1545,44 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 				}
 			}
 			V(g)[street.i]$span <- span
-			tlog(8,"Span: ",span)
-			
+			#tlog(8,"Span: ",span)
 		}
+	}
+	
+	# remove edifices not appearing in the documents
+	ids <- which(vertex_attr(graph=g, name=COL_LOC_TYPE)=="Edifice" & 
+					vertex_attr(graph=g, name=COL_EDIF_ID) %in% edif.abs)
+	if(length(ids)>0)
+	{	tlog(2,"Removing ",length(ids)," edifices that are not cited in the confronts:")
+		for(i in ids)
+		{	id <- which(info.edifice[,COL_EDIF_ID]==vertex_attr(graph=g, name=COL_EDIF_ID, index=i))
+			tlog(4, paste0(info.edifice[id,c(COL_EDIF_ID, COL_EDIF_TYPE, COL_EDIF_NAME)], collapse=", "))
+		}
+		g <- delete_vertices(graph=g, v=ids)
+	}
+	
+	# possibly record and plot full graph
+	if(is.logical(split.surf))
+	{	# record as graphml file
+		plot.file <- file.path(FOLDER_OUT_ANAL_EST, base.folder, "full", "graph")
+		tlog(4,"Record graph in file '",plot.file,"'")
+		write.graphml.file(g=g1, file=paste0(plot.file,".graphml"))
+		
+		# set labels
+		g1 <- g
+		#V(g1)$label <- NA
+		V(g1)$label <- paste(vertex_attr(g1,name=COL_LOC_ID), get.location.names(g1),sep="_")
+		
+		# plot using geographic coordinates
+		V(g1)$x <- V(g1)$lonEst; V(g1)$y <- V(g1)$latEst
+		custom.gplot(g=g1, file=paste0(plot.file,"_lambert"), size.att=2, vertex.label.cex=0.1)
+		#custom.gplot(g=g1)
+		write.graphml.file(g=g1, file=paste0(plot.file,"_lambert.graphml"))
+		
+		# plot using precomputed layout
+		V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2
+		custom.gplot(g=g1, file=paste0(plot.file,"_algo"), axes=FALSE, rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+		write.graphml.file(g=g1, file=paste0(plot.file,"_algo.graphml"))
 	}
 	
 #	# possibly filter to focus on a single historical source
@@ -1837,7 +1858,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 								}))
 			}
 			
-			# plot the graph using the geographic coordinates
+			# compute the geographic coordinates
 			#g1 <- update.node.labels(g1, vals=degree(g1))
 			V(g1)$label <- paste(vertex_attr(g1,name=COL_LOC_ID), get.location.names(g1),sep="_")
 			plot.file <- file.path(graph.folder, "graph_lambert")
@@ -1850,15 +1871,15 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			g2 <- g1#; V(g2)$x <- V(g2)$x2; V(g2)$y <- V(g2)$y2
 			#V(g2)$label <- NA; idx <- which(degree(g2)>3); V(g2)[idx]$label <- comp.names[idx]
 			V(g2)$label <- paste(vertex_attr(g2,name=COL_LOC_ID), get.location.names(g2),sep="_")
-			plot.file <- file.path(graph.folder, "graph_kk")
+			plot.file <- file.path(graph.folder, "graph_algo")
 			tlog(4,"Plotting graph using layouting algorithm in \"",plot.file,"\"")
 			lay.file <- file.path(graph.folder, "layout.txt")
 			###### init layout quasi-manually
 #			# export to graphml and use gephi, then import back
 #			g0 <- g1
-#			layout <- layout_with_kk(g0, kkconst=1)
-#			V(g0)$x <- layout[,1]; V(g0)$y <- layout[,2]; 
-#			custom.gplot(g=g0, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g0)$x), ylim=range(V(g0)$y), vertex.label.cex=0.1, size.att=6)
+#			#layout <- layout_with_algo(g0, kkconst=1)
+#			#V(g0)$x <- layout[,1]; V(g0)$y <- layout[,2]; 
+#			#custom.gplot(g=g0, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g0)$x), ylim=range(V(g0)$y), vertex.label.cex=0.1, size.att=6)
 #			write.graphml.file(g=as.undirected(g0), file=paste0(plot.file,".graphml"))
 #			# <do your magic with gephi, then record graph with new layout>
 #			# <procedure: 1) detect components and use as vertex color (largest only); 2) vertex size 50; 3) random layout; 4) standard Yifan-Hu; 5) FR layout speed=10 grav~=1; 6) manually adjust while layouting on.
@@ -1920,7 +1941,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 				plot.file <- file.path(graph.folder, "graph_lambert")
 				custom.gplot(g=g1, file=plot.file, asp=1, size.att=2, vertex.label.cex=0.1)
 				write.graphml.file(g=g1, file=paste0(plot.file,".graphml"))
-				plot.file <- file.path(graph.folder, "graph_kk")
+				plot.file <- file.path(graph.folder, "graph_algo")
 				custom.gplot(g=g2, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), vertex.label.cex=0.1, size.att=6)
 				write.graphml.file(g=g2, file=paste0(plot.file,".graphml"))
 			}
@@ -2025,55 +2046,52 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 
 # traitement : 
 # - split_ext
-#   > flat_minus
-#   + flat_minus_filtered
-#   > flat_minus_303
-#   + flat_minus_303_filtered
-#   ~ flat_relations
-#   + flat_relations_filtered
-# - split_raw
-#   > flat_minus
-#   + flat_minus_filtered
-#   > flat_minus_311
-#   + flat_minus_311_filtered
-#   ~ flat_relations
-#   + flat_relations_filtered
-# - whole_ext
-#   > estate_level
-#   + estate_level_filtered
 #   - flat_minus
-#   + flat_minus_filtered
-#   > flat_minus_9
-#   + flat_minus_9_filtered
+#   - flat_minus_filtered
+#   - flat_minus_303
+#   - flat_minus_303_filtered
 #   - flat_relations
-#   + flat_relations_filtered
+#   - flat_relations_filtered
+# - split_raw
+#   - flat_minus
+#   - flat_minus_filtered
+#   - flat_minus_311
+#   - flat_minus_311_filtered
+#   - flat_relations
+#   - flat_relations_filtered
+# - whole_ext
+#   - estate_level
+#   - estate_level_filtered
+#   - flat_minus
+#   - flat_minus_filtered
+#   - flat_minus_9
+#   - flat_minus_9_filtered
+#   - flat_relations
+#   - flat_relations_filtered
 # - whole_raw
-#   + estate_level
-#   + estate_level_filtered
-#   + flat_minus
-#   + flat_minus_filtered
-#   + flat_minus_6
-#   + flat_minus_6_filtered
-#   > flat_relations
-#   + flat_relations_filtered
-#
+#   - estate_level
+#   - estate_level_filtered
+#   - flat_minus
+#   - flat_minus_filtered
+#   - flat_minus_6
+#   - flat_minus_6_filtered
+#   - flat_relations
+#   - flat_relations_filtered
 
 # TODO
-# - extraire et analyser full graph 
+# - analyser full graph (au moins basique) 
 # - externaliser le traitement des distances (pr uniformiser entre RW vs modèle)
-#   > fait sauf la modif sur la valeur moyenne dans le plot des moyennes
+#   > fait sauf la modif sur la valeur moyenne dans le plot des moyennes (binning x-axis)
 #   > et il faut tout tester
-#   > puis adapter le modèle pour produire les attributs de même noms rendant ce code interopérable
+#   > puis adapter le modèle générateur pour produire les attributs de même noms, rendant ce code interopérable
 
 # TODO
-# - suppr edifices absents de la table confronts
-# - stats: nbre noeuds, composants, distance, communautés, attributs
-# - rajouter dans attributs à traiter: typeExterne, coord vraies/interpolées, idDéclaration (rien vs. renseigné)
+# + suppr edifices absents de la table confronts
+# + rajouter dans attributs à traiter: (x) typeExterne; (x) coord vraies/interpolées; (x) idDéclaration (rien vs. renseigné)
 # - rajouter dans table comparative: nbre de biens, corrélations des distances (juste les scores, pas les pvals)
+# - stats rapides: nbre noeuds, nbre composants, distance, communautés, attributs
+
 # - pr didier: 
 #   - produire le fichier edgelist avec les id (BD) des noeuds (et les attributs des liens)
 #   - exporter la liste des noeuds avec tous les attributs dispos et aussi les coms
 #   - exporter les coms avec pureté et cie.
-
-# - est-ce que la position relative des noeuds est respectée par le graphe ?
-#   si A et B sont à l'ouest de C, est-ce le cas aussi dans le graphe ?
