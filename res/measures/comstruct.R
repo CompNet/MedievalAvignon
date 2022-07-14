@@ -116,8 +116,8 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 	)
 	
 	if(fast)
-	{	idx <- which(names(algos)=="louvain")
-		algos <- algos[idx]
+	{	#idx <- which(names(algos)=="louvain")
+		#algos <- algos[idx]
 		select.algos <- c()
 	}
 	else
@@ -212,8 +212,9 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 				custom.gplot(g=g1, col.att=fname,cat.att=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
 				custom.gplot(g=g1, col.att=fname,cat.att=TRUE, file=paste0(plot.file,"_algo_hulls"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6, show.coms=TRUE)
 				
-				# assess community purity for all attributes
-				g <- analyze.net.comstruct.attributes(g=g, coms.folder=coms.folder, membership=mbrs, fast)
+				# possibly assess community purity for all attributes
+				if(!fast)
+					g <- analyze.net.comstruct.attributes(g=g, coms.folder=coms.folder, membership=mbrs, fast)
 				
 				# possibly process each community separately
 				if(algo.name %in% select.algos)

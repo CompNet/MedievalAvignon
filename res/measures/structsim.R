@@ -145,15 +145,37 @@ analyze.net.structsim <- function(g, out.folder, fast)
 			if(length(gvals)<5)
 				tlog(10,"WARNING: not enough values to compute correlation or produce plots")
 			else
-			{	tmp <- cor.test(x=gvals, y=svals, method="pearson")
-				cor.tab[sdist,"PearsonCoef"] <- tmp$estimate
-				cor.tab[sdist,"PearsonPval"] <- tmp$p.value
-				tmp <- rcorr(x=gvals, y=svals, type="spearman")
-				cor.tab[sdist,"SpearmanCoef"] <- tmp$r[1,2]
-				cor.tab[sdist,"SpearmanPval"] <- tmp$P[1,2]
-				tmp <- cor.test(x=gvals, y=svals, method="kendall")
-				cor.tab[sdist,"KendallCoef"] <- tmp$estimate
-				cor.tab[sdist,"KendallPval"] <- tmp$p.value
+			{	if(fast)
+				{	# pearson's
+					tlog(10,"Computing Pearson's coefficient")
+					cor.tab[sdist,"PearsonCoef"] <- cor(x=gvals, y=svals, method="pearson")
+					cor.tab[sdist,"PearsonPval"] <- NA
+					# spearman's
+					tlog(10,"Computing Spearman's coefficient")
+					cor.tab[sdist,"SpearmanCoef"] <- rcorr(x=gvals, y=svals, type="spearman")$r[1,2]
+					cor.tab[sdist,"SpearmanPval"] <- NA
+					# kendall's
+					tlog(10,"Computing Kendall's coefficient")
+					cor.tab[sdist,"KendallCoef"] <- cor.fk(x=gvals, y=svals)
+					cor.tab[sdist,"KendallPval"] <- NA
+				}
+				else
+				{	# pearson's
+					tlog(10,"Computing Pearson's coefficient")
+					tmp <- cor.test(x=gvals, y=svals, method="pearson")
+					cor.tab[sdist,"PearsonCoef"] <- tmp$estimate
+					cor.tab[sdist,"PearsonPval"] <- tmp$p.value
+					# spearman's
+					tlog(10,"Computing Spearman's coefficient")
+					tmp <- rcorr(x=gvals, y=svals, type="spearman")
+					cor.tab[sdist,"SpearmanCoef"] <- tmp$r[1,2]
+					cor.tab[sdist,"SpearmanPval"] <- tmp$P[1,2]
+					# kendall's
+					tlog(10,"Computing Kendall's coefficient (all values)")
+					tmp <- cor.test(x=gvals, y=svals, method="kendall")
+					cor.tab[sdist,"KendallCoef"] <- tmp$estimate
+					cor.tab[sdist,"KendallPval"] <- tmp$p.value
+				}
 				
 				# plot the spatial distance as a function of the structural similarity
 				plot.file <- file.path(sim.folder, paste0(fname,"_vs_spatial_",sdist))

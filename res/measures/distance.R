@@ -195,41 +195,41 @@ analyze.net.distance.geodesic <- function(g, mode, distance.folder, fast)
 		}
 	}
 	
-	# # for each node, plot graph using color for distance
-	# if(!fast)
-	# {	tlog(4,"Dealing with individual node plots")
-		# plot.folder <- file.path(mode.folder,"lambert")
-		# dir.create(path=plot.folder, showWarnings=FALSE, recursive=TRUE)
-		# plot.folder <- file.path(mode.folder,"kk")
-		# dir.create(path=plot.folder, showWarnings=FALSE, recursive=TRUE)
-		# for(n in 1:5)	# TODO 1:gorder(g)
-		# {	id <- vertex_attr(g, COL_LOC_ID, n)
-			# nname <- get.names(g, n)
-			# nname <- trimws(gsub("?", "", nname, fixed=TRUE))
+	# for each node, plot graph using color for distance
+	if(!fast)
+	{	tlog(4,"Dealing with individual node plots")
+		plot.folder <- file.path(mode.folder,"lambert")
+		dir.create(path=plot.folder, showWarnings=FALSE, recursive=TRUE)
+		plot.folder <- file.path(mode.folder,"kk")
+		dir.create(path=plot.folder, showWarnings=FALSE, recursive=TRUE)
+		for(n in 1:gorder(g))	# TODO 1:gorder(g)
+		{	id <- vertex_attr(g, COL_LOC_ID, n)
+			nname <- get.names(g, n)
+			nname <- trimws(gsub("?", "", nname, fixed=TRUE))
 			
-			# # only for significant nodes
-			# if(igraph::degree(g, v=n, mode="all")<3)
-				# tlog(6,"NOT plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),"), as its degree is <3")
-			# else
-			# {	g <- set_vertex_attr(graph=g, name=fname, value=vals[n,])
-				# if(all(is.infinite(vals[n,-n])))
-					# tlog(6,"NOT plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),"), as all values are infinite")
-				# else
-				# {	g <- update.node.labels(g, vals[n,])
-					# shrt.nm <- substr(nname,1,30)		# to avoid long file names
-					# id.cln <- gsub(":", "-", id, fixed=TRUE)
-					# id.cln <- gsub("/", "_", id.cln, fixed=TRUE)
-					# V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
-					# tlog(6,"Plotting graph for node #",id," (",nname, ", ",n,"/",gorder(g),") in '",file.path(mode.folder,"xxxx",paste0(id.cln,"_",shrt.nm )),"'")
-					# g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-					# custom.gplot(g=g1, col.att=fname, v.hl=n, file=file.path(mode.folder,"lambert",paste0(id.cln,"_",shrt.nm )), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
-					# g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-					# custom.gplot(g=g1, col.att=fname, v.hl=n, file=file.path(mode.folder,"kk",paste0(id.cln,"_",shrt.nm )), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
-				# }
-				# g <- delete_vertex_attr(graph=g, name=fname)
-			# }
-		# }
-	# }
+			# only for significant nodes
+			if(igraph::degree(g, v=n, mode="all")<3)
+				tlog(6,"NOT plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),"), as its degree is <3")
+			else
+			{	g <- set_vertex_attr(graph=g, name=fname, value=vals[n,])
+				if(all(is.infinite(vals[n,-n])))
+					tlog(6,"NOT plotting graph for node #",id," (",nname,", ",n,"/",gorder(g),"), as all values are infinite")
+				else
+				{	g <- update.node.labels(g, vals[n,])
+					shrt.nm <- substr(nname,1,30)		# to avoid long file names
+					id.cln <- gsub(":", "-", id, fixed=TRUE)
+					id.cln <- gsub("/", "_", id.cln, fixed=TRUE)
+					V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
+					tlog(6,"Plotting graph for node #",id," (",nname, ", ",n,"/",gorder(g),") in '",file.path(mode.folder,"xxxx",paste0(id.cln,"_",shrt.nm )),"'")
+					g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+					custom.gplot(g=g1, col.att=fname, v.hl=n, file=file.path(mode.folder,"lambert",paste0(id.cln,"_",shrt.nm )), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+					g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+					custom.gplot(g=g1, col.att=fname, v.hl=n, file=file.path(mode.folder,"kk",paste0(id.cln,"_",shrt.nm )), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+				}
+				g <- delete_vertex_attr(graph=g, name=fname)
+			}
+		}
+	}
 	
 	# export CSV with average distance
 	tlog(2,"Recording stats in '",stat.file,"'")
@@ -297,24 +297,55 @@ analyze.net.distance.compare.raw <- function(g, mode, distance.folder, fast)
 		if(length(gvals)<5)
 			tlog(10,"WARNING: not enough values to compute correlation or produce plots")
 		else
-		{	tmp <- cor.test(x=gvals, y=svals, method="pearson")
-			cor.tab[sdist,"PearsonFiniteCoef"] <- tmp$estimate
-			cor.tab[sdist,"PearsonFinitePval"] <- tmp$p.value
-			tmp <- rcorr(x=gvals, y=svals, type="spearman")
-			cor.tab[sdist,"SpearmanFiniteCoef"] <- tmp$r[1,2]
-			cor.tab[sdist,"SpearmanFinitePval"] <- tmp$P[1,2]
-			tmp <- rcorr(x=gvals2, y=svals2, type="spearman")
-			cor.tab[sdist,"SpearmanInfiniteCoef"] <- tmp$r[1,2]
-			cor.tab[sdist,"SpearmanInfinitePval"] <- tmp$P[1,2]
-			tmp <- cor.test(x=gvals, y=svals, method="kendall")	# alternative: cor.fk(x=gvals, y=svals) # problem: it does not compute the p-value
-			cor.tab[sdist,"KendallFiniteCoef"] <- tmp$estimate
-			cor.tab[sdist,"KendallFinitePval"] <- tmp$p.value
-			tmp <- cor.test(x=gvals2, y=svals2, method="kendall")	# alternative: cor.fk(x=gvals, y=svals) # problem: it does not compute the p-value
-			cor.tab[sdist,"KendallInfiniteCoef"] <- tmp$estimate
-			cor.tab[sdist,"KendallInfinitePval"] <- tmp$p.value
-			# NOTE: null hypothesis=zero correlation >> small p means this hypothesis is rejected
+		{	if(fast)
+			{	# pearson's: finite values only
+				tlog(10,"Computing Pearson's coefficient (finite values)")
+				cor.tab[sdist,"PearsonFiniteCoef"] <- cor(x=gvals, y=svals, method="pearson")
+				cor.tab[sdist,"PearsonFinitePval"] <- NA
+				# spearman's: finite and infinite values
+				tlog(10,"Computing Spearman's coefficient (finite values)")
+				cor.tab[sdist,"SpearmanFiniteCoef"] <- rcorr(x=gvals, y=svals, type="spearman")$r[1,2]
+				cor.tab[sdist,"SpearmanFinitePval"] <- NA
+				tlog(10,"Computing Spearman's coefficient (infinite values)")
+				cor.tab[sdist,"SpearmanInfiniteCoef"] <- rcorr(x=gvals2, y=svals, type="spearman")$r[1,2]
+				cor.tab[sdist,"SpearmanInfinitePval"] <- NA
+				# kendall's: finite and infinite values
+				tlog(10,"Computing Kendall's coefficient (finite values)")
+				cor.tab[sdist,"KendallFiniteCoef"] <- cor.fk(x=gvals, y=svals)
+				cor.tab[sdist,"KendallFinitePval"] <- NA
+				tlog(10,"Computing Kendall's coefficient (infinite values)")
+				cor.tab[sdist,"KendallInfiniteCoef"] <- cor.fk(x=gvals2, y=svals2)
+				cor.tab[sdist,"KendallInfinitePval"] <- NA
+			}
+			else
+			{	# pearson's: finite values only
+				tlog(10,"Computing Pearson's coefficient (finite values)")
+				tmp <- cor.test(x=gvals, y=svals, method="pearson")
+				cor.tab[sdist,"PearsonFiniteCoef"] <- tmp$estimate
+				cor.tab[sdist,"PearsonFinitePval"] <- tmp$p.value
+				# spearman's: finite and infinite values
+				tlog(10,"Computing Spearman's coefficient (finite values)")
+				tmp <- rcorr(x=gvals, y=svals, type="spearman")
+				cor.tab[sdist,"SpearmanFiniteCoef"] <- tmp$r[1,2]
+				cor.tab[sdist,"SpearmanFinitePval"] <- tmp$P[1,2]
+				tlog(10,"Computing Spearman's coefficient (infinite values)")
+				tmp <- rcorr(x=gvals2, y=svals2, type="spearman")
+				cor.tab[sdist,"SpearmanInfiniteCoef"] <- tmp$r[1,2]
+				cor.tab[sdist,"SpearmanInfinitePval"] <- tmp$P[1,2]
+				# kendall's: finite and infinite values
+				tlog(10,"Computing Kendall's coefficient (finite values)")
+				tmp <- cor.test(x=gvals, y=svals, method="kendall")	# alternative: cor.fk(x=gvals, y=svals) # problem: it does not compute the p-value
+				cor.tab[sdist,"KendallFiniteCoef"] <- tmp$estimate
+				cor.tab[sdist,"KendallFinitePval"] <- tmp$p.value
+				tlog(10,"Computing Kendall's coefficient (infinite values)")
+				tmp <- cor.test(x=gvals2, y=svals2, method="kendall")	# alternative: cor.fk(x=gvals, y=svals) # problem: it does not compute the p-value
+				cor.tab[sdist,"KendallInfiniteCoef"] <- tmp$estimate
+				cor.tab[sdist,"KendallInfinitePval"] <- tmp$p.value
+				# NOTE: null hypothesis=zero correlation >> small p means this hypothesis is rejected
+			}
 			
 			# compute average & stdev
+			tlog(10,"Computing averages and standard deviations")
 			xs <- sort(unique(gvals))
 			avg.dist <- sapply(xs, function(x) mean(svals[gvals==x],na.rm=TRUE))
 			stdev.dist <- sapply(xs, function(x) sd(svals[gvals==x]))
@@ -504,16 +535,38 @@ analyze.net.distance.compare.avg <- function(g=g, mode=mode, distance.filder=dis
 				if(length(gvals)<5)
 					tlog(10,"WARNING: not enough values to compute correlation or produce plots")
 				else
-				{	tmp <- cor.test(x=gvals, y=svals, method="pearson")
-					cor.tab[sdist,"PearsonCoef"] <- tmp$estimate
-					cor.tab[sdist,"PearsonPval"] <- tmp$p.value
-					tmp <- rcorr(x=gvals, y=svals, type="spearman")
-					cor.tab[sdist,"SpearmanCoef"] <- tmp$r[1,2]
-					cor.tab[sdist,"SpearmanPval"] <- tmp$P[1,2]
-					tmp <- cor.test(x=gvals, y=svals, method="kendall")	# alternative: cor.fk(x=gvals, y=svals) # problem: it does not compute the p-value
-					cor.tab[sdist,"KendallCoef"] <- tmp$estimate
-					cor.tab[sdist,"KendallPval"] <- tmp$p.value
-					# NOTE: null hypothesis=zero correlation >> small p means this hypothesis is rejected
+				{	if(fast)
+					{	# pearson's
+						tlog(10,"Computing Pearson's coefficient (all values)")
+						cor.tab[sdist,"PearsonFiniteCoef"] <- cor(x=gvals, y=svals, method="pearson")
+						cor.tab[sdist,"PearsonFinitePval"] <- NA
+						# spearman's
+						tlog(10,"Computing Spearman's coefficient (all values)")
+						cor.tab[sdist,"SpearmanFiniteCoef"] <- rcorr(x=gvals, y=svals, type="spearman")$r[1,2]
+						cor.tab[sdist,"SpearmanFinitePval"] <- NA
+						# kendall's
+						tlog(10,"Computing Kendall's coefficient (all values)")
+						cor.tab[sdist,"KendallFiniteCoef"] <- cor.fk(x=gvals, y=svals)
+						cor.tab[sdist,"KendallFinitePval"] <- NA
+					}
+					else
+					{	# pearson's
+						tlog(10,"Computing Pearson's coefficient (all values)")
+						tmp <- cor.test(x=gvals, y=svals, method="pearson")
+						cor.tab[sdist,"PearsonCoef"] <- tmp$estimate
+						cor.tab[sdist,"PearsonPval"] <- tmp$p.value
+						# spearman's
+						tlog(10,"Computing Spearman's coefficient (all values)")
+						tmp <- rcorr(x=gvals, y=svals, type="spearman")
+						cor.tab[sdist,"SpearmanCoef"] <- tmp$r[1,2]
+						cor.tab[sdist,"SpearmanPval"] <- tmp$P[1,2]
+						# kendall's
+						tlog(10,"Computing Kendall's coefficient (all values)")
+						tmp <- cor.test(x=gvals, y=svals, method="kendall")	# alternative: cor.fk(x=gvals, y=svals) # problem: it does not compute the p-value
+						cor.tab[sdist,"KendallCoef"] <- tmp$estimate
+						cor.tab[sdist,"KendallPval"] <- tmp$p.value
+						# NOTE: null hypothesis=zero correlation >> small p means this hypothesis is rejected
+					}
 					
 					# plot the spatial distance as a function of the graph-based one
 					avg.dist <- sapply(sort(unique(gvals)), function(v) mean(svals[gvals==v],na.rm=TRUE))
