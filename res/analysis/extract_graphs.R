@@ -1506,7 +1506,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		}
 	}
 	# mark interpolated nodes
-	g <- set_vertex_attr(graph=g, name=COL_LOC_INTER, value=is.na(V(g)$x) & !is.na(V(g)$lonEst))
+	g <- set_vertex_attr(graph=g, name=COL_LOC_INTER, value=is.na(V(g)$xcoord) & !is.na(V(g)$x))
 	# put completely disconnected nodes in bottom left corner
 	V(g)$x[which(is.na(V(g)$x))] <- min(V(g)$x, na.rm=TRUE)
 	V(g)$y[which(is.na(V(g)$y))] <- min(V(g)$y, na.rm=TRUE)
@@ -1566,7 +1566,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	{	# record as graphml file
 		plot.file <- file.path(FOLDER_OUT_ANAL_EST, base.folder, "full", "graph")
 		tlog(4,"Record graph in file '",plot.file,"'")
-		write.graphml.file(g=g1, file=paste0(plot.file,".graphml"))
+		write.graphml.file(g=g, file=paste0(plot.file,".graphml"))
 		
 		# set labels
 		g1 <- g
@@ -2082,14 +2082,13 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 # - analyser full graph (au moins basique) 
 # > séparer le traitement des distances (pr uniformiser entre RW vs modèle)
 #   > fait sauf la modif sur la valeur moyenne dans le plot des moyennes (binning x-axis)
-#   > et il faut tout tester
 #   > puis adapter le modèle générateur pour produire les attributs de même noms, rendant ce code interopérable
 
 # TODO
 # + suppr edifices absents de la table confronts
 # + rajouter dans attributs à traiter: (x) typeExterne; (x) coord vraies/interpolées; (x) idDéclaration (rien vs. renseigné)
 # + rajouter dans table comparative: (x) nbre de biens, (x) corrélations des distances (juste les scores, pas les pvals)
-# - stats rapides: nbre noeuds, nbre composants, distance, communautés, attributs
+# ? stats rapides: nbre noeuds, nbre composants, distance, communautés, attributs
 
 # - pr didier: 
 #   - produire le fichier edgelist avec les id (BD) des noeuds (et les attributs des liens)

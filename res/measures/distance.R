@@ -311,7 +311,7 @@ analyze.net.distance.compare.raw <- function(g, mode, distance.folder, fast)
 				cor.tab[sdist,"SpearmanFiniteCoef"] <- rcorr(x=gvals, y=svals, type="spearman")$r[1,2]
 				cor.tab[sdist,"SpearmanFinitePval"] <- NA
 				tlog(10,"Computing Spearman's coefficient (infinite values)")
-				cor.tab[sdist,"SpearmanInfiniteCoef"] <- rcorr(x=gvals2, y=svals, type="spearman")$r[1,2]
+				cor.tab[sdist,"SpearmanInfiniteCoef"] <- rcorr(x=gvals2, y=svals2, type="spearman")$r[1,2]
 				cor.tab[sdist,"SpearmanInfinitePval"] <- NA
 				# kendall's: finite and infinite values
 				tlog(10,"Computing Kendall's coefficient (finite values)")
@@ -352,7 +352,7 @@ analyze.net.distance.compare.raw <- function(g, mode, distance.folder, fast)
 			tlog(10,"Computing averages and standard deviations")
 			xs <- sort(unique(gvals))
 			avg.dist <- sapply(xs, function(x) mean(svals[gvals==x],na.rm=TRUE))
-			stdev.dist <- sapply(xs, function(x) sd(svals[gvals==x]))
+			stdev.dist <- sapply(xs, function(x) sd(svals[gvals==x],na.rm=TRUE))
 			stdev.dist[is.na(stdev.dist)] <- 0
 			
 			# plot the spatial distance as a function of the graph-based one
@@ -430,12 +430,12 @@ analyze.net.distance.compare.raw <- function(g, mode, distance.folder, fast)
 					x=c(xs,rev(xs)), y=c(avg.dist-stdev.dist,rev(avg.dist+stdev.dist)), 
 					col=make.color.transparent("RED",85), border=NA
 				)
-#				arrows(
-#					x0=xs, y0=avg.dist-stdev.dist, 
-#					x1=xs, y1=avg.dist+stdev.dist, 
-#					code=3, angle=90, length=0.05, 
-#					col="PINK", lwd=2
-#				)
+				#arrows(
+				#	x0=xs, y0=avg.dist-stdev.dist, 
+				#	x1=xs, y1=avg.dist+stdev.dist, 
+				#	code=3, angle=90, length=0.05, 
+				#	col="PINK", lwd=2
+				#)
 				lines(
 					x=xs, y=avg.dist, 
 					col="RED", pch=19
@@ -572,10 +572,19 @@ analyze.net.distance.compare.avg <- function(g, mode, distance.folder, fast)
 						# NOTE: null hypothesis=zero correlation >> small p means this hypothesis is rejected
 					}
 					
+					# compute average & stdev
+					tlog(10,"Computing averages and standard deviations")
+					bs <- hist(gvals, breaks=50, plot=FALSE)$breaks
+					xs <- (bs[-length(bs)] + bs[-1])/2
+					avg.dist <- sapply(1:(length(bs)-1), function(b) mean(svals[gvals>bs[b] & gvals<=bs[b+1]],na.rm=TRUE))
+					stdev.dist <- sapply(1:(length(bs)-1), function(b) sd(svals[gvals>bs[b] & gvals<=bs[b+1]],na.rm=TRUE))
+					stdev.dist[is.na(stdev.dist)] <- 0
+					empties <- which(is.na(avg.dist))
+					xs <- xs[-empties]; avg.dist <- avg.dist[-empties]; stdev.dist <- stdev.dist[-empties] 
+					
 					# plot the spatial distance as a function of the graph-based one
-					avg.dist <- sapply(sort(unique(gvals)), function(v) mean(svals[gvals==v],na.rm=TRUE))
 					plot.file <- file.path(comp.folder, paste0(fname,"_vs_spatial-",sdist))
-					tlog(10,"Plotting in file \"",plot.file,"\"")
+					tlog(10,"Plotting basic version in file \"",plot.file,"\"")
 					for(fformat in FORMAT)
 					{	if(fformat=="pdf")
 							pdf(paste0(plot.file,".pdf"))
@@ -584,16 +593,47 @@ analyze.net.distance.compare.avg <- function(g, mode, distance.folder, fast)
 						plot(
 							x=gvals, y=svals, 
 							xlab=xlab, ylab=ylabs[sdist],
-							#log="xy", 
+							log=if(avg.type=="arith") "" else "x", 
 							las=1, col=make.color.transparent("RED",75)
 							#xlim=c(1,max(deg.vals)*1.1)
 						)
 						# mean
-# the average follows the individual points, plot not readable >> TODO discretize (only for the mean), same afterwards
-#						lines(	
-#							x=sort(unique(gvals)), y=avg.dist,
-#							col="BLACK"
-#						)
+						lines(	
+							x=xs, y=avg.dist,
+							col="BLACK"
+						)
+						dev.off()
+					}
+					
+					# same but as a binned scatterplot
+					plot.file <- file.path(comp.folder, paste0(fname,"_vs_spatial-",sdist,"_binned"))
+					tlog(10,"Plotting binned version in file \"",plot.file,"\"")
+					for(fformat in FORMAT)
+					{	if(fformat=="pdf")
+							pdf(paste0(plot.file,".pdf"))
+						else if(fformat=="png")
+							png(paste0(plot.file,".png"))
+						plot(
+							NULL,
+							xlab=xlab, ylab=ylabs[sdist],
+							las=1, log=if(avg.type=="arith") "" else "x", 
+							ylim=range(svals,na.rm=TRUE),
+							xlim=range(gvals,na.rm=TRUE)
+						)
+						polygon(
+							x=c(xs,rev(xs)), y=c(avg.dist-stdev.dist,rev(avg.dist+stdev.dist)), 
+							col=make.color.transparent("RED",85), border=NA
+						)
+						#arrows(
+						#	x0=xs, y0=avg.dist-stdev.dist, 
+						#	x1=xs, y1=avg.dist+stdev.dist, 
+						#	code=3, angle=90, length=0.05, 
+						#	col="PINK", lwd=2
+						#)
+						lines(
+							x=xs, y=avg.dist, 
+							col="RED", pch=19
+						)
 						dev.off()
 					}
 					
@@ -604,7 +644,6 @@ analyze.net.distance.compare.avg <- function(g, mode, distance.folder, fast)
 					fine <- 500 									# granularity of the color gradient
 					cols <- viridis(fine,direction=-1)[as.numeric(cut(vals,breaks=fine))]
 					# produce files
-					avg.dist <- sapply(sort(unique(gvals)), function(v) mean(svals[gvals==v],na.rm=TRUE))
 					plot.file <- file.path(comp.folder, paste0(fname,"_vs_spatial-",sdist,"_col=",meas))
 					tlog(10,"Plotting in file \"",plot.file,"\"")
 					for(fformat in FORMAT)
@@ -615,16 +654,15 @@ analyze.net.distance.compare.avg <- function(g, mode, distance.folder, fast)
 						plot(
 							x=gvals[order(vals)], y=svals[order(vals)], 
 							xlab=xlab, ylab=ylabs[sdist],
-							#log="xy", 
+							log=if(avg.type=="arith") "" else "x", 
 							las=1, col=cols[order(vals)],
 							#xlim=c(1,max(deg.vals)*1.1)
 						)
 						# mean
-# the average follows the individual points, plot not readable
-#						lines(	
-#							x=sort(unique(gvals)), y=avg.dist,
-#							col="BLACK"
-#						)
+						lines(	
+							x=xs, y=avg.dist,
+							col="BLACK"
+						)
 						# legend
 						gradientLegend(range(vals), color=viridis(fine,direction=-1), inside=TRUE)
 						dev.off()
@@ -650,16 +688,15 @@ analyze.net.distance.compare.avg <- function(g, mode, distance.folder, fast)
 							plot(
 								x=gvals[order(edf)], y=svals[order(edf)], 
 								xlab=xlab, ylab=ylabs[sdist],
-								#log="xy", 
+								log=if(avg.type=="arith") "" else "x", 
 								las=1, col=cols[order(edf)],
 								#xlim=c(1,max(deg.vals)*1.1)
 							)
 							# mean
-# the average follows the individual points, plot not readable
-#							lines(	
-#								x=sort(unique(gvals)), avg.dist,
-#								col="BLACK"
-#							)
+							lines(	
+								x=xs, avg.dist,
+								col="BLACK"
+							)
 							# legend
 							legend(
 								x="bottomright",
