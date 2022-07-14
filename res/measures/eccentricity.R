@@ -2,6 +2,8 @@
 # Functions used during network analysis.
 # 
 # 09/2019 Vincent Labatut
+#
+# source("res/measures/eccentricity.R")
 #############################################################################################
 
 
@@ -45,60 +47,62 @@ analyze.net.eccentricity <- function(g, out.folder, fast)
 		if(mode==MEAS_MODE_UNDIR)
 			idx <- idx[idx[,1]<idx[,2],,drop=FALSE]								# filter (each pair appears twice due to symmetric matrix)
 		tlog(4,"Number of diameter paths: ",nrow(idx))
-		
-		# possibly create folder
 		fname <- paste0(MEAS_DIAMETER,"_",mode)
-		diameter.folder <- file.path(out.folder, g$name, MEAS_DIAMETER, mode)
-		dir.create(path=diameter.folder, showWarnings=FALSE, recursive=TRUE)
-		dir.create(path=file.path(diameter.folder,"lambert"), showWarnings=FALSE, recursive=TRUE)
-		dir.create(path=file.path(diameter.folder,"kk"), showWarnings=FALSE, recursive=TRUE)
 		
-		# plot diameter
-		diam.paths <- future_lapply(1:nrow(idx), function(r) 
+		if(!fast)
+		{	# possibly create folder
+			diameter.folder <- file.path(out.folder, g$name, MEAS_DIAMETER, mode)
+			dir.create(path=diameter.folder, showWarnings=FALSE, recursive=TRUE)
+			dir.create(path=file.path(diameter.folder,"lambert"), showWarnings=FALSE, recursive=TRUE)
+			dir.create(path=file.path(diameter.folder,"kk"), showWarnings=FALSE, recursive=TRUE)
+			
+			# plot diameter
+			diam.paths <- future_lapply(1:nrow(idx), function(r) 
 #			if(startsWith(g$name,GR_EST_ESTATE_LEVEL))
 #				# too long to find all the paths...
 				shortest_paths(graph=g, from=idx[r,1], to=idx[r,2], mode=if(mode==MEAS_MODE_DIR) "in" else "all")$vpath
 #			else
 #				# looking for all the paths
 #				all_shortest_paths(graph=g, from=idx[r,1], to=idx[r,2], mode=if(mode==MEAS_MODE_DIR) "in" else "all")$res
-		)
-		tlog(4,"Found ",length(diam.paths)," distinct diameters, plotting them")
-		for(pp in 1:length(diam.paths))
-		{	tlog(6,"Plotting diameter path ",pp,"/",length(diam.paths)," in '",file.path(diameter.folder,"xxxx",paste0(MEAS_DIAMETER,"_",mode,"_graph_",pp)),"'")
-			#V(g)$label <- rep(NA, gorder(g))
-			V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
-			g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-			custom.gplot(g=g1, paths=diam.paths[[pp]], file=file.path(diameter.folder,"lambert",paste0(MEAS_DIAMETER,"_",mode,"_graph_",pp)), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
-			g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-			custom.gplot(g=g1, paths=diam.paths[[pp]], file=file.path(diameter.folder,"kk",paste0(MEAS_DIAMETER,"_",mode,"_graph_",pp)), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
-			
-			if(length(diam.paths[[pp]])<=20)
-			{	tlog(8,"Plotting the ",length(diam.paths[[pp]])," variants of this diameter")			
-				q <- 1
-				for(p in 1:length(diam.paths[[pp]]))
-				{	tlog(10,"Plotting variant ",p,"/",length(diam.paths[[pp]]))
-					if(p==1 || !all(diam.paths[[pp]][[p]]==diam.paths[[pp]][[p-1]]))
-					{	#V(g)$label <- rep(NA,gorder(g))
-						#vstart <- diam.paths[[pp]][[p]][1]
-						#V(g)[vstart]$label <- get.names(g, vstart) 
-						#vend <- diam.paths[[pp]][[p]][length(diam.paths[[pp]][[p]])]
-						#V(g)[vend]$label <- get.names(g, vend) 
-						tlog(10,"Plotting i, file '",file.path(diameter.folder,"xxxx",paste0(MEAS_DIAMETER,"_",mode,"_graph_",pp,"_",q)),"'")			
-						V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
-						g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-						custom.gplot(g=g1, paths=diam.paths[[pp]][[p]], file=file.path(diameter.folder,"lambert",paste0(MEAS_DIAMETER,"_",mode,"_graph_",pp,"_",q)), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
-						g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-						custom.gplot(g=g1, paths=diam.paths[[pp]][[p]], file=file.path(diameter.folder,"kk",paste0(MEAS_DIAMETER,"_",mode,"_graph_",pp,"_",q)), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
-						
-						q <- q + 1
+			)
+			tlog(4,"Found ",length(diam.paths)," distinct diameters, plotting them")
+			for(pp in 1:length(diam.paths))
+			{	tlog(6,"Plotting diameter path ",pp,"/",length(diam.paths)," in '",file.path(diameter.folder,"xxxx",paste0(MEAS_DIAMETER,"_",mode,"_graph_",pp)),"'")
+				#V(g)$label <- rep(NA, gorder(g))
+				V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
+				g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+				custom.gplot(g=g1, paths=diam.paths[[pp]], file=file.path(diameter.folder,"lambert",paste0(MEAS_DIAMETER,"_",mode,"_graph_",pp)), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+				g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+				custom.gplot(g=g1, paths=diam.paths[[pp]], file=file.path(diameter.folder,"kk",paste0(MEAS_DIAMETER,"_",mode,"_graph_",pp)), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+				
+				if(length(diam.paths[[pp]])<=20)
+				{	tlog(8,"Plotting the ",length(diam.paths[[pp]])," variants of this diameter")			
+					q <- 1
+					for(p in 1:length(diam.paths[[pp]]))
+					{	tlog(10,"Plotting variant ",p,"/",length(diam.paths[[pp]]))
+						if(p==1 || !all(diam.paths[[pp]][[p]]==diam.paths[[pp]][[p-1]]))
+						{	#V(g)$label <- rep(NA,gorder(g))
+							#vstart <- diam.paths[[pp]][[p]][1]
+							#V(g)[vstart]$label <- get.names(g, vstart) 
+							#vend <- diam.paths[[pp]][[p]][length(diam.paths[[pp]][[p]])]
+							#V(g)[vend]$label <- get.names(g, vend) 
+							tlog(10,"Plotting i, file '",file.path(diameter.folder,"xxxx",paste0(MEAS_DIAMETER,"_",mode,"_graph_",pp,"_",q)),"'")			
+							V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
+							g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+							custom.gplot(g=g1, paths=diam.paths[[pp]][[p]], file=file.path(diameter.folder,"lambert",paste0(MEAS_DIAMETER,"_",mode,"_graph_",pp,"_",q)), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+							g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+							custom.gplot(g=g1, paths=diam.paths[[pp]][[p]], file=file.path(diameter.folder,"kk",paste0(MEAS_DIAMETER,"_",mode,"_graph_",pp,"_",q)), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+							
+							q <- q + 1
+						}
 					}
 				}
+				else
+					tlog(8,"Too many variants of the diameter, not plotting them")
 			}
-			else
-				tlog(8,"Too many variants of the diameter, not plotting them")			
 		}
 		
-		# add value to graph and table
+		# add diamter value to graph and table
 		g <- set_graph_attr(graph=g, name=fname, value=diam)
 		stats[fname, ] <- list(Value=diam, Mean=NA, Stdv=NA)
 	}

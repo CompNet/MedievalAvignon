@@ -583,7 +583,7 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 			tlog(8,"Recording CSV in '",tab.file,"'")
 			write.csv(tab, file=paste0(tab.file,".csv"), row.names=FALSE)
 			
-			# produce bar plot for the whome community structure
+			# produce bar plot for the whole community structure
 			cols <- COLS_ATT[[attr]]
 			if(is.null(cols))
 				cols <- get.palette(ncol(tt))
@@ -664,94 +664,96 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 			}
 			
 			# processing each value separately
-			for(uval in uvals)
-			{	# binarize tags
-				tmp <- apply(m, 1, function(v) uval %in% v[!is.na(v)])
-				idxt <- which(tmp)
-				idxf <- which(!tmp)
-				tmp[idxt] <- VAL_TRUE
-				tmp[idxf] <- VAL_FALSE
-				tmp[idx.nas] <- NA
-				
-				# setup folder
-				short_val <- trimws(substr(uval,1,30))
-				attr_val <- paste0(attr,"_",short_val)
-				attrval.folder <- file.path(attr.folder, short_val)
-				dir.create(path=attrval.folder, showWarnings=FALSE, recursive=TRUE)
-				
-				# export group-wise distributions as csv
-				tlog(6,"Exporting group-wise distribution for attribute-value \"",attr_val,"\"")
-				tmp <- factor(tmp)
-				tt <- t(sapply(coms, function(i) table(tmp[membership[est.idx]==i], useNA="always")))
-				colnames(tt)[which(is.na(colnames(tt)))] <- "NA"
-				if(nrow(tt)==1 && ncol(tt)>1)
-				{	tt <- t(tt)
-					colnames(tt)[1] <- "NA"
-					rownames(tt) <- NULL
-				}
-				tab <- as.data.frame(tt)
-				tab <- cbind(coms, tab)
-				colnames(tab)[1] <- "Group"
-				tab.file <- file.path(attrval.folder, paste0("distribution.csv"))
-				tlog(8,"Recording CSV in '",tab.file,"'")
-				write.csv(tab, file=tab.file, row.names=FALSE)
-				
-				# plot as graph with pie-charts as nodes
-				tlog(6,"Plotting group graph with the distribution of \"",attr_val,"\"")
-				for(c in 1:ncol(tt))
-					cg2 <- set_vertex_attr(graph=cg2, name=colnames(tt)[c], value=tt[,c])
-				plot.file <- file.path(attrval.folder, paste0("comgraph"))
-				tlog(8,"Plotting graph in '",plot.file,"'")
-				#V(cg2)$label <- rep(NA, gorder(cg2))
-				custom.gplot(g=cg2, col.att=colnames(tt), col.att.cap=paste0(attr," : ",uval), size.att="size", cat.att=TRUE, file=paste0(plot.file,"_lambert"), color.isolates=TRUE)
-				cg3 <- cg2; V(cg3)$x <- V(cg2)$x2; V(cg3)$y <- V(cg2)$y2; E(cg3)$weight <- E(cg2)$weight*2; 
-				custom.gplot(g=cg3, col.att=colnames(tt), col.att.cap=paste0(attr," : ",uval), size.att="size", cat.att=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(cg3)$x), ylim=range(V(cg3)$y), color.isolates=TRUE, min.size=15, max.size=100)
-	
-				# compute group purity for each group
-				grp.pur.tab <- apply(tt, 1, function(row) max(row)/sum(row))
-				tab <- as.data.frame(grp.pur.tab)
-				tab <- cbind(coms, tab)
-				colnames(tab) <- c("Group", "GrpPurity")
-				tab.file <- file.path(attrval.folder, paste0(attr,"_grp-purity.csv"))
-				write.csv(tab, file=tab.file, row.names=FALSE)
-				# compute attribute purity for each attribute value (ignoring NAs)
-				if(ncol(tt)>1)
-				{	att.pur.tab <- apply(tt[,colnames(tt)!="NA",drop=FALSE], 2, function(col) max(col)/sum(col))
-					tab <- as.data.frame(att.pur.tab)
-					tab <- cbind(colnames(tt[,colnames(tt)!="NA",drop=FALSE]), tab)
-					colnames(tab) <- c("Value", "ValPurity")
-					rownames(tab) <- NULL
-					tab.file <- file.path(attrval.folder, paste0(attr,"_val-purity.csv"))
+			if(!fast)
+			{	for(uval in uvals)
+				{	# binarize tags
+					tmp <- apply(m, 1, function(v) uval %in% v[!is.na(v)])
+					idxt <- which(tmp)
+					idxf <- which(!tmp)
+					tmp[idxt] <- VAL_TRUE
+					tmp[idxf] <- VAL_FALSE
+					tmp[idx.nas] <- NA
+					
+					# setup folder
+					short_val <- trimws(substr(uval,1,30))
+					attr_val <- paste0(attr,"_",short_val)
+					attrval.folder <- file.path(attr.folder, short_val)
+					dir.create(path=attrval.folder, showWarnings=FALSE, recursive=TRUE)
+					
+					# export group-wise distributions as csv
+					tlog(6,"Exporting group-wise distribution for attribute-value \"",attr_val,"\"")
+					tmp <- factor(tmp)
+					tt <- t(sapply(coms, function(i) table(tmp[membership[est.idx]==i], useNA="always")))
+					colnames(tt)[which(is.na(colnames(tt)))] <- "NA"
+					if(nrow(tt)==1 && ncol(tt)>1)
+					{	tt <- t(tt)
+						colnames(tt)[1] <- "NA"
+						rownames(tt) <- NULL
+					}
+					tab <- as.data.frame(tt)
+					tab <- cbind(coms, tab)
+					colnames(tab)[1] <- "Group"
+					tab.file <- file.path(attrval.folder, paste0("distribution.csv"))
+					tlog(8,"Recording CSV in '",tab.file,"'")
+					write.csv(tab, file=tab.file, row.names=FALSE)
+					
+					# plot as graph with pie-charts as nodes
+					tlog(6,"Plotting group graph with the distribution of \"",attr_val,"\"")
+					for(c in 1:ncol(tt))
+						cg2 <- set_vertex_attr(graph=cg2, name=colnames(tt)[c], value=tt[,c])
+					plot.file <- file.path(attrval.folder, paste0("comgraph"))
+					tlog(8,"Plotting graph in '",plot.file,"'")
+					#V(cg2)$label <- rep(NA, gorder(cg2))
+					custom.gplot(g=cg2, col.att=colnames(tt), col.att.cap=paste0(attr," : ",uval), size.att="size", cat.att=TRUE, file=paste0(plot.file,"_lambert"), color.isolates=TRUE)
+					cg3 <- cg2; V(cg3)$x <- V(cg2)$x2; V(cg3)$y <- V(cg2)$y2; E(cg3)$weight <- E(cg2)$weight*2; 
+					custom.gplot(g=cg3, col.att=colnames(tt), col.att.cap=paste0(attr," : ",uval), size.att="size", cat.att=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(cg3)$x), ylim=range(V(cg3)$y), color.isolates=TRUE, min.size=15, max.size=100)
+		
+					# compute group purity for each group
+					grp.pur.tab <- apply(tt, 1, function(row) max(row)/sum(row))
+					tab <- as.data.frame(grp.pur.tab)
+					tab <- cbind(coms, tab)
+					colnames(tab) <- c("Group", "GrpPurity")
+					tab.file <- file.path(attrval.folder, paste0(attr,"_grp-purity.csv"))
+					write.csv(tab, file=tab.file, row.names=FALSE)
+					# compute attribute purity for each attribute value (ignoring NAs)
+					if(ncol(tt)>1)
+					{	att.pur.tab <- apply(tt[,colnames(tt)!="NA",drop=FALSE], 2, function(col) max(col)/sum(col))
+						tab <- as.data.frame(att.pur.tab)
+						tab <- cbind(colnames(tt[,colnames(tt)!="NA",drop=FALSE]), tab)
+						colnames(tab) <- c("Value", "ValPurity")
+						rownames(tab) <- NULL
+						tab.file <- file.path(attrval.folder, paste0(attr,"_val-purity.csv"))
+						tlog(8,"Recording CSV in '",tab.file,"'")
+						write.csv(tab, file=tab.file, row.names=FALSE)
+					}
+					
+					# compute global measures
+					vals <- c()
+					meas <- c()
+					# purity measures
+					grp.pur.total <- sum(rowSums(tt)/gorder(g0)*grp.pur.tab)
+					att.pur.total <- sum(colSums(tt[,colnames(tt)!="NA",drop=FALSE])/gorder(g0)*att.pur.tab)
+					vals <- c(vals, grp.pur.total, att.pur.total)
+					meas <- c(meas, "GrpPurity", "ValPurity")
+					# chi-squared test of independence (dpt if p<0.05)
+					chisq <- suppressWarnings(chisq.test(tmp, membership[est.idx], correct=FALSE))$p.value # warning=groups too small
+					vals <- c(vals, chisq)
+					meas <- c(meas, "Chi2_pval")
+					# Cramér's V
+					cram <- CramerV(x=tmp, y=membership[est.idx])
+					vals <- c(vals, cram)
+					meas <- c(meas, "C_V")
+					# Goodman’s Kruskal Tau
+					tau <- GKtau(membership[est.idx], tmp)
+					vals <- c(vals, tau$tauxy, tau$tauyx)
+					meas <- c(meas, "GK_tau_Com->Att", "GK_tau_Att->Com")
+					# record as a table
+					tab <- data.frame(meas, vals)
+					colnames(tab) <- c("Measure","Value")
+					tab.file <- file.path(attrval.folder, paste0("association.csv"))
 					tlog(8,"Recording CSV in '",tab.file,"'")
 					write.csv(tab, file=tab.file, row.names=FALSE)
 				}
-				
-				# compute global measures
-				vals <- c()
-				meas <- c()
-				# purity measures
-				grp.pur.total <- sum(rowSums(tt)/gorder(g0)*grp.pur.tab)
-				att.pur.total <- sum(colSums(tt[,colnames(tt)!="NA",drop=FALSE])/gorder(g0)*att.pur.tab)
-				vals <- c(vals, grp.pur.total, att.pur.total)
-				meas <- c(meas, "GrpPurity", "ValPurity")
-				# chi-squared test of independence (dpt if p<0.05)
-				chisq <- suppressWarnings(chisq.test(tmp, membership[est.idx], correct=FALSE))$p.value # warning=groups too small
-				vals <- c(vals, chisq)
-				meas <- c(meas, "Chi2_pval")
-				# Cramér's V
-				cram <- CramerV(x=tmp, y=membership[est.idx])
-				vals <- c(vals, cram)
-				meas <- c(meas, "C_V")
-				# Goodman’s Kruskal Tau
-				tau <- GKtau(membership[est.idx], tmp)
-				vals <- c(vals, tau$tauxy, tau$tauyx)
-				meas <- c(meas, "GK_tau_Com->Att", "GK_tau_Att->Com")
-				# record as a table
-				tab <- data.frame(meas, vals)
-				colnames(tab) <- c("Measure","Value")
-				tab.file <- file.path(attrval.folder, paste0("association.csv"))
-				tlog(8,"Recording CSV in '",tab.file,"'")
-				write.csv(tab, file=tab.file, row.names=FALSE)
 			}
 		}
 		

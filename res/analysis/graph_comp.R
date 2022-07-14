@@ -653,15 +653,15 @@ merge.stats <- function(graph.names, folder)
 		# number of estates
 		att.file <- file.path(attr.folder, COL_LOC_TYPE, paste0(COL_LOC_TYPE,"_vals.csv"))
 		tt <- read.csv(file=att.file, header=TRUE)
-		tab[graph.names[i],"Estate_nbr"] <- tt[which(tt[,"Value"]=="Bien"),"Frequency"]
+		tab[graph.names[i],"estate_nbr"] <- tt[which(tt[,"Value"]=="Bien"),"Frequency"]
 		# distance correlation values
 		dist.file <- file.path(graph.folder, "distance", "undirected", "comparison", "distance_correlations.csv")
 		tt <- read.csv(file=dist.file, header=TRUE)
-		tab[graph.names[i],"PearsonFin_DB"] <- tt["Database", "PearsonFiniteCoef"]
-		tab[graph.names[i],"SpearmanFin_DB"] <- tt["Database", "SpearmanFiniteCoef"]
-		tab[graph.names[i],"SpearmanInf_DB"] <- tt["Database", "SpearmanInfiniteCoef"]
-		tab[graph.names[i],"KendallFin_DB"] <- tt["Database", "KendallFiniteCoef"]
-		tab[graph.names[i],"KendallInf_DB"] <- tt["Database", "KendallInfiniteCoef"]
+		tab[graph.names[i],"PearsonFin_DB"] <- tt[which(tt[,"Coordinates"]=="Database"), "PearsonFiniteCoef"]
+		tab[graph.names[i],"SpearmanFin_DB"] <- tt[which(tt[,"Coordinates"]=="Database"), "SpearmanFiniteCoef"]
+		tab[graph.names[i],"SpearmanInf_DB"] <- tt[which(tt[,"Coordinates"]=="Database"), "SpearmanInfiniteCoef"]
+		tab[graph.names[i],"KendallFin_DB"] <- tt[which(tt[,"Coordinates"]=="Database"), "KendallFiniteCoef"]
+		tab[graph.names[i],"KendallInf_DB"] <- tt[which(tt[,"Coordinates"]=="Database"), "KendallInfiniteCoef"]
 		
 		# record updated table
 		tlog(4,"Update stat file '",tab.file,"'")

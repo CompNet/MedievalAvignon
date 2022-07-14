@@ -133,7 +133,11 @@ analyze.net.distance.spatial <- function(g, distance.folder, fast)
 # returns: updated graph.
 #############################################################
 analyze.net.distance.geodesic <- function(g, mode, distance.folder, fast)
-{	# possibly create mode folder
+{	# get the stat table
+	stat.file <- file.path(out.folder, g$name, "stats.csv")
+	stats <- retrieve.stats(stat.file)
+	
+	# possibly create mode folder
 	mode.folder <- file.path(distance.folder,mode)
 	dir.create(path=mode.folder, showWarnings=FALSE, recursive=TRUE)
 	fname <- paste0(MEAS_DISTANCE,"_",mode)
@@ -462,7 +466,7 @@ analyze.net.distance.compare.raw <- function(g, mode, distance.folder, fast)
 # 
 # returns: updated graph.
 #############################################################
-analyze.net.distance.compare.avg <- function(g=g, mode=mode, distance.filder=distance.folder, fast=fast)
+analyze.net.distance.compare.avg <- function(g, mode, distance.folder, fast)
 {	tlog(4,"Comparing graph and spatial average distances")
 	
 	# possibly create mode folder
@@ -691,11 +695,7 @@ analyze.net.distance.compare.avg <- function(g=g, mode=mode, distance.filder=dis
 # returns: same graph, updated with the results.
 #############################################################
 analyze.net.distance <- function(g, out.folder, fast)
-{	# get the stat table
-	stat.file <- file.path(out.folder, g$name, "stats.csv")
-	stats <- retrieve.stats(stat.file)
-	
-	# possibly create distance folder
+{	# possibly create distance folder
 	distance.folder <- file.path(out.folder,g$name,MEAS_DISTANCE)
 	dir.create(path=distance.folder, showWarnings=FALSE, recursive=TRUE)
 	
@@ -715,7 +715,7 @@ analyze.net.distance <- function(g, out.folder, fast)
 		g <- analyze.net.distance.compare.raw(g=g, mode=mode, distance.folder=distance.folder, fast=fast)
 			
 		# compare graph and spatial average distances
-		g <- analyze.net.distance.compare.avg(g=g, mode=mode, distance.filder=distance.folder, fast=fast)
+		g <- analyze.net.distance.compare.avg(g=g, mode=mode, distance.folder=distance.folder, fast=fast)
 	}
 	
 	# record graph and return it
