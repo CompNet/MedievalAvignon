@@ -2080,7 +2080,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 
 # TODO
 # - analyser full graph (au moins basique) 
-# - externaliser le traitement des distances (pr uniformiser entre RW vs modèle)
+# > séparer le traitement des distances (pr uniformiser entre RW vs modèle)
 #   > fait sauf la modif sur la valeur moyenne dans le plot des moyennes (binning x-axis)
 #   > et il faut tout tester
 #   > puis adapter le modèle générateur pour produire les attributs de même noms, rendant ce code interopérable
@@ -2088,7 +2088,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 # TODO
 # + suppr edifices absents de la table confronts
 # + rajouter dans attributs à traiter: (x) typeExterne; (x) coord vraies/interpolées; (x) idDéclaration (rien vs. renseigné)
-# - rajouter dans table comparative: nbre de biens, corrélations des distances (juste les scores, pas les pvals)
+# + rajouter dans table comparative: (x) nbre de biens, (x) corrélations des distances (juste les scores, pas les pvals)
 # - stats rapides: nbre noeuds, nbre composants, distance, communautés, attributs
 
 # - pr didier: 

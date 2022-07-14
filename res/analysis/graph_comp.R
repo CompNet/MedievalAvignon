@@ -631,8 +631,10 @@ merge.stats <- function(graph.names, folder)
 	
 	# loop over graphs
 	for(i in 1:length(graph.names))
-	{	# get the stat table
-		stat.file <- file.path(folder, graph.names[i], "stats.csv")
+	{	graph.folder <- file.path(folder, graph.names[i])
+		
+		# get the stat table
+		stat.file <- file.path(graph.folder, "stats.csv")
 		tlog(4,"Loading stats '",stat.file,"'")
 		stats <- retrieve.stats(stat.file)
 		
@@ -645,6 +647,21 @@ merge.stats <- function(graph.names, folder)
 			
 			tab[graph.names[i],rownames(stats)[r]] <- stats[r,col]
 		}
+		
+		# get specific stats and add to main table
+		attr.folder <- file.path(graph.folder, MEAS_ATTRIBUTES)
+		# number of estates
+		att.file <- file.path(attr.folder, COL_LOC_TYPE, paste0(COL_LOC_TYPE,"_vals.csv"))
+		tt <- read.csv(file=att.file, header=TRUE)
+		tab[graph.names[i],"Estate_nbr"] <- tt[which(tt[,"Value"]=="Bien"),"Frequency"]
+		# distance correlation values
+		dist.file <- file.path(graph.folder, "distance", "undirected", "comparison", "distance_correlations.csv")
+		tt <- read.csv(file=dist.file, header=TRUE)
+		tab[graph.names[i],"PearsonFin_DB"] <- tt["Database", "PearsonFiniteCoef"]
+		tab[graph.names[i],"SpearmanFin_DB"] <- tt["Database", "SpearmanFiniteCoef"]
+		tab[graph.names[i],"SpearmanInf_DB"] <- tt["Database", "SpearmanInfiniteCoef"]
+		tab[graph.names[i],"KendallFin_DB"] <- tt["Database", "KendallFiniteCoef"]
+		tab[graph.names[i],"KendallInf_DB"] <- tt["Database", "KendallInfiniteCoef"]
 		
 		# record updated table
 		tlog(4,"Update stat file '",tab.file,"'")
