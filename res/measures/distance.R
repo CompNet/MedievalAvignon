@@ -129,12 +129,12 @@ analyze.net.distance.spatial <- function(g, distance.folder, fast)
 # mode: MEAS_MODE_UNDIR, MEAS_MODE_IN, or MEAS_MODE_OUT.
 # distance.folder: output folder.
 # fast: whether to perform a fast computation.
+# stat.file: path of the file used to store the network stats.
 # 
 # returns: updated graph.
 #############################################################
-analyze.net.distance.geodesic <- function(g, mode, distance.folder, fast)
+analyze.net.distance.geodesic <- function(g, mode, distance.folder, fast, stat.file)
 {	# get the stat table
-	stat.file <- file.path(out.folder, g$name, "stats.csv")
 	stats <- retrieve.stats(stat.file)
 	
 	# possibly create mode folder
@@ -732,7 +732,9 @@ analyze.net.distance.compare.avg <- function(g, mode, distance.folder, fast)
 # returns: same graph, updated with the results.
 #############################################################
 analyze.net.distance <- function(g, out.folder, fast)
-{	# possibly create distance folder
+{	stat.file <- file.path(out.folder, g$name, "stats.csv")
+	
+	# possibly create distance folder
 	distance.folder <- file.path(out.folder,g$name,MEAS_DISTANCE)
 	dir.create(path=distance.folder, showWarnings=FALSE, recursive=TRUE)
 	
@@ -746,7 +748,7 @@ analyze.net.distance <- function(g, out.folder, fast)
 		tlog(2,"Computing distances: mode=",mode)
 		
 		# deal with geodesic distance
-		g <- analyze.net.distance.geodesic(g=g, mode=mode, distance.folder=distance.folder, fast=fast)
+		g <- analyze.net.distance.geodesic(g=g, mode=mode, distance.folder=distance.folder, fast=fast, stat.file)
 		
 		# compare graph and spatial distances
 		g <- analyze.net.distance.compare.raw(g=g, mode=mode, distance.folder=distance.folder, fast=fast)

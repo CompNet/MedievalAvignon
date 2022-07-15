@@ -1125,8 +1125,8 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		edge.list <- edge.list[-idx,]
 	}
 	# keep relations targetting parts of streets
-	street.angles <- which(data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_ANGLE & startsWith(edge.list[,2], "Rue:"))
-	street.starts <- which(data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_DEBUT & startsWith(edge.list[,2], "Rue:"))
+	street.angles <- edge.list[which(data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_ANGLE & startsWith(edge.list[,2], "Rue:")),]
+	street.starts <- edge.list[which(data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_DEBUT & startsWith(edge.list[,2], "Rue:")),]
 	# VAL_CONF_TYPE_COTE
 	data[data[,COL_CONF_LOC_NORM]==VAL_CONF_TYPE_COTE, COL_CONF_LOC_NORM] <- VAL_CONF_TYPE_MISC
 	# VAL_CONF_TYPE_ANGLE
@@ -1386,6 +1386,10 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			for(ii in idx)
 				tlog(8,V(g)$idExterne[ii])
 			cnt <- cnt + length(idx)
+			vids <- vertex_attr(graph=g, name=COL_LOC_ID, index=idx)
+			eids <- which(edge.list[,1] %in% vids | edge.list[,2] %in% vids); edge.list <- edge.list[-eids,]
+			eids <- which(street.angles[,1] %in% vids | street.angles[,2] %in% vids); if(length(eids>0)) street.angles <- street.angles[-eids,,drop=FALSE]
+			eids <- which(street.starts[,1] %in% vids | street.starts[,2] %in% vids); if(length(eids>0)) street.starts <- street.starts[-eids,,drop=FALSE]
 			g <- delete_vertices(graph=g, v=idx)
 			idx <- which(degree(g,mode="all")==1 & grepl("_",vertex_attr(g,COL_LOC_ID),fixed=TRUE) & sapply(1:gorder(g), function(v) any(grepl("_",as_ids(neighbors(graph=g,v=v,mode="all")),fixed=TRUE))))
 			goOn <- length(idx)>0
@@ -1514,18 +1518,6 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	V(g)$lonEst <- V(g)$x
 	V(g)$latEst <- V(g)$y
 	
-	# get additional info on the streets and other stuff
-	short.tab <- read.table(
-		file=FILE_IN_ANAL_STRT_SHORT,
-		sep=",",
-		header=TRUE,
-		stringsAsFactors=FALSE,
-		na.strings="NULL",
-		quote='"',
-		check.names=FALSE
-	)
-	short.street.flag <- vertex_attr(graph=g, name=COL_LOC_ID) %in% paste("Rue:",short.tab[,COL_STREET_ID],sep="")
-	
 	# compute street span, i.e. spatial distance between its farthest confronted vertices
 	tlog(2,"Compute street spans")
 	street.idx <- which(vertex_attr(g, name=COL_LOC_TYPE)=="Rue")
@@ -1558,8 +1550,24 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		{	id <- which(info.edifice[,COL_EDIF_ID]==vertex_attr(graph=g, name=COL_EDIF_ID, index=i))
 			tlog(4, paste0(info.edifice[id,c(COL_EDIF_ID, COL_EDIF_TYPE, COL_EDIF_NAME)], collapse=", "))
 		}
+		vids <- vertex_attr(graph=g, name=COL_LOC_ID, index=ids)
+		eids <- which(edge.list[,1] %in% vids | edge.list[,2] %in% vids); edge.list <- edge.list[-eids,]
+		eids <- which(street.angles[,1] %in% vids | street.angles[,2] %in% vids); if(length(eids>0)) street.angles <- street.angles[-eids,,drop=FALSE]
+		eids <- which(street.starts[,1] %in% vids | street.starts[,2] %in% vids); if(length(eids>0)) street.starts <- street.starts[-eids,,drop=FALSE]
 		g <- delete_vertices(graph=g, v=ids)
 	}
+	
+	# get additional info on the streets and other stuff
+	short.tab <- read.table(
+			file=FILE_IN_ANAL_STRT_SHORT,
+			sep=",",
+			header=TRUE,
+			stringsAsFactors=FALSE,
+			na.strings="NULL",
+			quote='"',
+			check.names=FALSE
+	)
+	short.street.flag <- vertex_attr(graph=g, name=COL_LOC_ID) %in% paste("Rue:",short.tab[,COL_STREET_ID],sep="")
 	
 	# possibly record and plot full graph
 	if(is.logical(split.surf))
@@ -1591,10 +1599,10 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #	)
 #	keep.idx <- which(is.na(V(g)$idBien) | V(g)$idBien %in% sources[[1]]$re.ids)
 	
-	#################
+	##################################
 	# TODO
 	# extract one graph for each predefined modality
-	#################
+	##################################
 	tlog(2,"Extracting several variants of the graph")
 	{	if(!street.ablation)
 		{	if(is.logical(split.surf) && split.surf)
@@ -1624,11 +1632,12 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		{	g1 <- g
 			tlog(6,"Cleaning the graph (n=",gorder(g1),", m=",gsize(g1),")")
 			# change the name of certain streets whose only a part is targeted in the confronts
-			streets.all <- union(street.angles, street.starts)
-			strts <- sort(unique(edge.list[streets.all,2]))						# concerned parts of streets
-			tlog(8,"Detected ",length(streets.all)," confronts with ",length(strts), " parts of streets")
+			street.all <- rbind(street.angles, street.starts)
+			street.all.ids <- apply(street.all, 1, function(row) which(edge.list[,1]==row[1] & edge.list[,2]==row[2])[1])
+			strts <- sort(unique(street.all[,2]))								# concerned parts of streets
+			tlog(8,"Detected ",nrow(street.all)," confronts concerning ",length(strts), " parts of streets")
 			streets.all.flag <- V(g1)$name %in% strts							# mark them for later (to not remove them)
-			rem.idx <- setdiff(which(edge.list[,2] %in% strts), streets.all)	# relations with these streets (but as complete streets)
+			rem.idx <- setdiff(which(edge.list[,2] %in% strts), street.all.ids)	# relations with these streets (but as complete streets)
 			g1 <- delete_edges(g1, edges=rem.idx)								# remove these links
 			V(g1)$name[match(strts,V(g1)$name)] <- 								# change the name of the remaining streets
 				paste(V(g1)$name[match(strts,V(g1)$name)], "_part", sep="")
