@@ -2,6 +2,8 @@
 # Functions used during network analysis.
 # 
 # 09/2019 Vincent Labatut
+#
+# source("res/measures/components.R")
 #############################################################################################
 
 
@@ -248,7 +250,7 @@ analyze.net.components.corr <- function(g, out.folder, fast)
 				else
 				{	cd[is.na(cd)] <- max(cd,na.rm=TRUE) + 1
 					fit <- aov(comp.sizes~as.factor(cd))
-					cor <- eta_sq(fit)$etasq
+					cor <- tryCatch(eta_sq(fit)$etasq, error=function(e) NA)
 					if(is.null(cor)) cor <- NA
 				}
 				tlog(8,"Association for attribute \"",attr,"\" (mode=",mode,") when representing NAs explicitly: ",cor)
@@ -269,7 +271,7 @@ analyze.net.components.corr <- function(g, out.folder, fast)
 						cor <- NA
 					else
 					{	fit <- aov(cs~as.factor(cd))
-						cor <- eta_sq(fit)$etasq
+						cor <- tryCatch(eta_sq(fit)$etasq, error=function(e) NA)
 						if(is.null(cor)) cor <- NA
 					}
 				}
@@ -288,7 +290,7 @@ analyze.net.components.corr <- function(g, out.folder, fast)
 				{	cd[!is.na(cd)] <- 1
 					cd[is.na(cd)] <- 2
 					fit <- aov(comp.sizes~as.factor(cd))
-					cor <- eta_sq(fit)$etasq
+					cor <- tryCatch(eta_sq(fit)$etasq, error=function(e) NA)
 					if(is.null(cor)) cor <- NA
 				}
 				tlog(8,"Association for attribute \"",attr,"\" (mode=",mode,") when considering NAs vs the rest: ",cor)
@@ -307,7 +309,7 @@ analyze.net.components.corr <- function(g, out.folder, fast)
 					cor <- NA
 				else
 				{	fit <- aov(comp.sizes~as.factor(cd))
-					cor <- eta_sq(fit)$etasq
+					cor <- tryCatch(eta_sq(fit)$etasq, error=function(e) NA)
 					if(is.null(cor)) cor <- NA
 				}
 				tlog(8,"Association for attribute \"",attr,"\" (mode=",mode,"): ",cor)
@@ -369,7 +371,7 @@ analyze.net.components.corr <- function(g, out.folder, fast)
 					{	cd[!is.na(cd)] <- 1
 						cd[is.na(cd)] <- 2
 						fit <- aov(comp.sizes~as.factor(cd))
-						cor <- eta_sq(fit)$etasq
+						cor <- tryCatch(eta_sq(fit)$etasq, error=function(e) NA)
 						if(is.null(cor)) cor <- NA
 					}
 					tlog(12,"Correlation for attribute \"",attr,"\" (mode=",mode,") when considering NAs vs the rest: ",cor)
