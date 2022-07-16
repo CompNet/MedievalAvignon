@@ -1345,6 +1345,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	link.type.attr <- COL_CONF_LOC_NORM	# COL_CONF_LOC_LAT
 	alt.link.type.attr <- COL_CONF_LOC_LAT	# COL_CONF_LOC_NORM 
 	g <- graph_from_edgelist(el=edge.list, directed=TRUE)
+	g$name <- file.path(base.folder,"full")
 	g <- set_graph_attr(graph=g, name=GR_TYPE, value=GR_TYPE_EST)
 	g <- set_edge_attr(graph=g, name=LK_TYPE, value=data[,link.type.attr])
 	g <- set_edge_attr(graph=g, name=COL_CONF_AREA_ID, value=data[,COL_CONF_AREA_ID])

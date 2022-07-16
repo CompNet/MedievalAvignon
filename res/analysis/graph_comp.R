@@ -17,6 +17,8 @@
 plot.graph.comparisons <- function(graph.names, folder)
 {	tlog(2,"Comparing graphs")
 	
+	nbr <- length(graph.names)*(length(graph.names)-1)
+	k <- 1
 	for(i in 1:(length(graph.names)-1))
 	{	# read the first graph
 		file.path <- file.path(folder, graph.names[i], FILE_GRAPH)
@@ -31,7 +33,7 @@ plot.graph.comparisons <- function(graph.names, folder)
 		for(j in (i+1):length(graph.names))
 		{	# read the second graph
 			file.path <- file.path(folder, graph.names[j], FILE_GRAPH)
-			tlog(6,"Reading graph file '",file.path,"' (",j,"/",length(graph.names),")")
+			tlog(6,"Reading graph file '",file.path,"' (",j,"/",length(graph.names)," -- ",k,"/",nbr,")")
 			g2 <- load.graphml.file(file=file.path)
 			# clean it
 			V(g2)$label <- paste(vertex_attr(g2,name=COL_LOC_ID), get.location.names(g2),sep="_")
@@ -53,6 +55,8 @@ plot.graph.comparisons <- function(graph.names, folder)
 				}
 				plot.graph.comparisons.diff.types(g.non, g.split, folder)
 			}		
+			
+			k <- k + 1
 		}
 	}	
 }
