@@ -82,6 +82,7 @@ fast <- TRUE
 ##graph.types <- paste0("whole_raw/", c(GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS, "flat_minus_6"))
 #plot.graph.comparisons(graph.names=paste0(graph.types,"_filtered"), folder=FOLDER_OUT_ANAL_EST)
 graph.types <- c(
+	"split_ext/full",
 	"split_ext/flat_minus",
 	"split_ext/flat_minus_filtered",
 	"split_ext/flat_minus_303",
@@ -89,6 +90,7 @@ graph.types <- c(
 	"split_ext/flat_relations",
 	"split_ext/flat_relations_filtered",
 	#
+	"split_raw/full",
 	"split_raw/flat_minus",
 	"split_raw/flat_minus_filtered",
 	"split_raw/flat_minus_311",
@@ -96,6 +98,7 @@ graph.types <- c(
 	"split_raw/flat_relations",
 	"split_raw/flat_relations_filtered",
 	#
+	"whole_ext/full",
 	"whole_ext/estate_level",
 	"whole_ext/estate_level_filtered",
 	"whole_ext/flat_minus",
@@ -105,6 +108,7 @@ graph.types <- c(
 	"whole_ext/flat_relations",
 	"whole_ext/flat_relations_filtered",
 	#
+	"whole_raw/full",
 	"whole_raw/estate_level",
 	"whole_raw/estate_level_filtered",
 	"whole_raw/flat_minus",
@@ -166,4 +170,3 @@ g <- analyze.network(gname=paste0(graph.types[1],"_filtered"), out.folder=FOLDER
 ########################################################################
 # end logging
 end.rec.log()
-
