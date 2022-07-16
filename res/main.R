@@ -12,6 +12,7 @@
 source("res/common/_include.R")
 source("res/analysis/extract_graphs.R")
 source("res/analysis/graph_comp.R")
+source("res/analysis/ad_hoc.R")
 source("res/measures/_compute_measures.R")
 
 

@@ -1,4 +1,4 @@
-# TODO: Add comment
+# Scripts used to compare graphs extracted through different methods.
 # 
 # Author: Vincent Labatut
 #
@@ -613,64 +613,4 @@ plot.street.removal <- function(mode)
 			}
 		}
 	}
-}
-
-
-
-
-#############################################################################################
-# Loads the previously computed stats (for whole graphs) and put them all in a global file,
-# located in the root folder (=parameter folder).
-#
-# graph.names: names of the graphs to compare.
-# folder: root folder to find the graph and record the plots.
-#
-# returns: the table of combined stats.
-#############################################################################################
-merge.stats <- function(graph.names, folder)
-{	# init stats table
-	tab <- data.frame(matrix(nrow=length(graph.names),ncol=0))
-	rownames(tab) <- graph.names
-	tab.file <- file.path(folder, "stats_comparison.csv")
-	
-	# loop over graphs
-	for(i in 1:length(graph.names))
-	{	graph.folder <- file.path(folder, graph.names[i])
-		
-		# get the stat table
-		stat.file <- file.path(graph.folder, "stats.csv")
-		tlog(4,"Loading stats '",stat.file,"'")
-		stats <- retrieve.stats(stat.file)
-		
-		# add to main table
-		for(r in 1:nrow(stats))
-		{	if(is.na(stats[r,"Value"]))
-				col <- "Mean"
-			else
-				col <- "Value"
-			
-			tab[graph.names[i],rownames(stats)[r]] <- stats[r,col]
-		}
-		
-		# get specific stats and add to main table
-		attr.folder <- file.path(graph.folder, MEAS_ATTRIBUTES)
-		# number of estates
-		att.file <- file.path(attr.folder, COL_LOC_TYPE, paste0(COL_LOC_TYPE,"_vals.csv"))
-		tt <- read.csv(file=att.file, header=TRUE)
-		tab[graph.names[i],"estate_nbr"] <- tt[which(tt[,"Value"]=="Bien"),"Frequency"]
-		# distance correlation values
-		dist.file <- file.path(graph.folder, "distance", "undirected", "comparison", "distance_correlations.csv")
-		tt <- read.csv(file=dist.file, header=TRUE)
-		tab[graph.names[i],"PearsonFin_DB"] <- tt[which(tt[,"Coordinates"]=="Database"), "PearsonFiniteCoef"]
-		tab[graph.names[i],"SpearmanFin_DB"] <- tt[which(tt[,"Coordinates"]=="Database"), "SpearmanFiniteCoef"]
-		tab[graph.names[i],"SpearmanInf_DB"] <- tt[which(tt[,"Coordinates"]=="Database"), "SpearmanInfiniteCoef"]
-		tab[graph.names[i],"KendallFin_DB"] <- tt[which(tt[,"Coordinates"]=="Database"), "KendallFiniteCoef"]
-		tab[graph.names[i],"KendallInf_DB"] <- tt[which(tt[,"Coordinates"]=="Database"), "KendallInfiniteCoef"]
-		
-		# record updated table
-		tlog(4,"Update stat file '",tab.file,"'")
-		write.csv(tab, file=tab.file, row.names=TRUE)
-	}
-	
-	return(tab)
 }
