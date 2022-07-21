@@ -38,7 +38,7 @@ MEAS_LONG_NAMES[MEAS_ARI] <- "Adjusted Rand Index"
 #############################################################
 analyze.net.comstruct <- function(g, out.folder, fast)
 {	# whether to compute the communities or use previously detected (and cached) ones
-	COMPUTE <- TRUE
+	COMPUTE <- FALSE
 	
 	# get the stat table
 	stat.file <- file.path(out.folder, g$name, "stats.csv")
@@ -56,7 +56,8 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 					bridges=FALSE,
 					modularity=TRUE,
 					membership=TRUE),
-		modes=c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
+		modes=c(MEAS_MODE_UNDIR, MEAS_MODE_DIR),
+		folder="edgebetw"
 	)
 	algos[["fastgreedy"]] <- list(
 		fun=function(g, mode) 
@@ -65,54 +66,61 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 					modularity=TRUE,
 					membership=TRUE,
 					weights=NULL),
-		modes=c(MEAS_MODE_UNDIR)
+		modes=c(MEAS_MODE_UNDIR),
+		folder="fastgreedy"
 	)
 	algos[["infomap"]] <- list(
-			fun=function(g, mode) 
-				cluster_infomap(graph=if(mode==MEAS_MODE_UNDIR) as.undirected(g) else g,
-					e.weights=NULL,
-					v.weights=NULL,
-					nb.trials=10,
-					modularity=TRUE),
-			modes=c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
+		fun=function(g, mode) 
+			cluster_infomap(graph=if(mode==MEAS_MODE_UNDIR) as.undirected(g) else g,
+				e.weights=NULL,
+				v.weights=NULL,
+				nb.trials=10,
+				modularity=TRUE),
+		modes=c(MEAS_MODE_UNDIR, MEAS_MODE_DIR),
+		folder="infomap"
 	)
 	algos[["labelprop"]] <- list(
-			fun=function(g, mode) 
-				cluster_label_prop(graph=as.undirected(g),
-					weights=NA, 
-					initial=NULL, 
-					fixed=NULL),
-			modes=c(MEAS_MODE_UNDIR)
+		fun=function(g, mode) 
+			cluster_label_prop(graph=as.undirected(g),
+				weights=NA, 
+				initial=NULL, 
+				fixed=NULL),
+		modes=c(MEAS_MODE_UNDIR),
+		folder="labelprop"
 	)
 	algos[["leadingeigen"]] <- list(
-			fun=function(g, mode) 
-				cluster_leading_eigen(graph=as.undirected(g),
-						weights=NULL,
-						start=NULL,
-						options=list(maxiter=1000000)),
-			modes=c(MEAS_MODE_UNDIR)
+		fun=function(g, mode) 
+			cluster_leading_eigen(graph=as.undirected(g),
+					weights=NULL,
+					start=NULL,
+					options=list(maxiter=1000000)),
+		modes=c(MEAS_MODE_UNDIR),
+		folder="eigenvect"
 	)
 	algos[["louvain"]] <- list(
-			fun=function(g, mode) 
-				cluster_louvain(graph=as.undirected(g),
-						weights=NULL),
-			modes=c(MEAS_MODE_UNDIR)
+		fun=function(g, mode) 
+			cluster_louvain(graph=as.undirected(g),
+					weights=NULL),
+		modes=c(MEAS_MODE_UNDIR),
+		folder="louvain"
 	)
 ##	algos[["spinglass"]] <- list(	# does not work with disconnected graphs
-##			fun=function(g, mode) 
-##				cluster_spinglass(graph=if(mode==MEAS_MODE_UNDIR) as.undirected(g) else g,
-##						weights=NA),
-##			modes=c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
+##		fun=function(g, mode) 
+##			cluster_spinglass(graph=if(mode==MEAS_MODE_UNDIR) as.undirected(g) else g,
+##					weights=NA),
+##		modes=c(MEAS_MODE_UNDIR, MEAS_MODE_DIR),
+##		folder="spinglass"
 ##	)
 	algos[["walktrap"]] <- list(
-			fun=function(g, mode) 
-				cluster_walktrap(graph=if(mode==MEAS_MODE_UNDIR) as.undirected(g) else g,
-						weights=NULL,
-						steps=4,
-						merges=TRUE,
-						modularity=TRUE,
-						membership=TRUE),
-			modes=c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
+		fun=function(g, mode) 
+			cluster_walktrap(graph=if(mode==MEAS_MODE_UNDIR) as.undirected(g) else g,
+					weights=NULL,
+					steps=4,
+					merges=TRUE,
+					modularity=TRUE,
+					membership=TRUE),
+		modes=c(MEAS_MODE_UNDIR, MEAS_MODE_DIR),
+		folder="walktrap"
 	)
 	
 	if(fast)
@@ -121,7 +129,9 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 		select.algos <- c()
 	}
 	else
-		select.algos <- "louvain"
+	{	select.algos <- "louvain"
+		#select.algos <- c("edgebetweenness", "fastgreedy")
+	}
 	tab.memb <- NA
 	
 #	modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
@@ -138,7 +148,7 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 			if(mode %in% algos[[a]]$modes)
 			{	# possibly create folder
 				fname <- paste0("coms_",mode,"_",algo.name)
-				coms.folder <- file.path(out.folder, g$name, MEAS_COMMUNITIES, mode, algo.name)
+				coms.folder <- file.path(out.folder, g$name, MEAS_COMMUNITIES, mode, algos[[a]]$folder)
 				dir.create(path=coms.folder, showWarnings=FALSE, recursive=TRUE)
 				
 				# possibly load communities
@@ -243,7 +253,7 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 			
 							# create subgraph
 							g.com <- induced_subgraph(graph=g, vids=which(mbrs==com))
-							g.com$name <- file.path(g$name, MEAS_COMMUNITIES, mode, algo.name, "_communities", com)
+							g.com$name <- file.path(g$name, MEAS_COMMUNITIES, mode, algos[[a]]$folder, "_communities", com)
 							# plot only the community
 							custom.gplot(g=g.com, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
 							g1 <- g.com; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5
