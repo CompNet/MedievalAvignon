@@ -137,6 +137,7 @@ export.graphs.as.edgelists <- function(graph.names, folder)
 		
 		# get edgelist
 		el <- as_edgelist(graph=g, names=TRUE)
+		el <- cbind(el, E(g)$type)
 		colnames(el) <- c("Vertex1","Vertex2","EdgeType")
 		
 		# record table as CSV
