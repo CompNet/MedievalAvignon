@@ -112,3 +112,35 @@ extract.vertex.attributes <- function(graph.names, folder, attributes)
 	}
 }
 #extract.vertex.attributes(graph.names=graph.types, folder=FOLDER_OUT_ANAL_EST, attributes=c(COL_LOC_X,COL_LOC_Y,COL_LOC_INTER_X,COL_LOC_INTER_Y,COL_LOC_INTER))
+
+
+
+
+#############################################################################################
+# Record all graphs as edgelists.
+#
+# graph.names: names of the graphs to process.
+# folder: root folder to find the graph and record the files.
+#############################################################################################
+export.graphs.as.edgelists <- function(graph.names, folder)
+{	tlog(0,"Exporting graphs as edgelists")
+	
+	# loop over graphs
+	for(i in 1:length(graph.names))
+	{	tlog(2,"Processing graph ",graph.names[i]," (",i,"/",length(graph.names),")")
+		
+		# read graph
+		graph.folder <- file.path(folder, graph.names[i])
+		graph.file <- file.path(graph.folder, FILE_GRAPH)
+		tlog(4,"Reading file '",graph.file,"'")
+		g <- load.graphml.file(file=graph.file)
+		
+		# get edgelist
+		el <- as_edgelist(graph=g, names=TRUE)
+		colnames(el) <- c("Vertex1","Vertex2","EdgeType")
+		
+		# record table as CSV
+		tab.file <- file.path(folder,paste0(gsub("/", "__", graph.names[i]),".csv"))
+		write.csv(el, file=tab.file, row.names=FALSE)
+	}
+}
