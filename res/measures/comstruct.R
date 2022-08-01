@@ -444,7 +444,7 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 					tmp <- factor(tmp)
 				else
 					tmp <- factor(tmp, levels=names(COLS_ATT[[attr]]))
-				tt <- t(sapply(coms, function(i) table(tmp[membership[est.idx]==i], useNA="no"), simplify="array"))
+				tt <- t(sapply(coms, function(i) table(tmp[membership[est.idx]==i], useNA="always"), simplify="array"))
 				colnames(tt)[which(is.na(colnames(tt)))] <- "NA"
 				if(nrow(tt)==1 && ncol(tt)>1)
 				{	tt <- t(tt)
@@ -458,7 +458,10 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 				tlog(6,"Recording CSV in '",tab.file,"'")
 				write.csv(tab, file=paste0(tab.file,".csv"), row.names=FALSE)
 				
-				# produce bar plot for the whome community structure
+				# remove NA values from the table
+				tab <- tab[,-which(colnames(tab)=="NA")]
+				
+				# produce bar plot for the whole community structure
 				cols <- COLS_ATT[[attr]]
 				if(is.null(cols))
 					cols <- get.palette(ncol(tt))
