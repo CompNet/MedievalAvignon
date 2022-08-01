@@ -142,6 +142,8 @@ export.graphs.as.edgelists <- function(graph.names, folder)
 		
 		# record table as CSV
 		tab.file <- file.path(folder,paste0(gsub("/", "__", graph.names[i]),".csv"))
+		tlog(4,"Recording in file '",tab.file,"'")
 		write.csv(el, file=tab.file, row.names=FALSE)
 	}
 }
+#export.graphs.as.edgelists(graph.names=graph.types, folder=FOLDER_OUT_ANAL_EST)

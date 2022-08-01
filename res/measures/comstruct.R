@@ -49,23 +49,23 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 	algos[["edgebetweenness"]] <- list(
 		fun=function(g, mode) 
 			cluster_edge_betweenness(graph=g,
-					weights=NULL,
-					directed=mode==MEAS_MODE_DIR,
-					edge.betweenness=FALSE,
-					merges=FALSE,
-					bridges=FALSE,
-					modularity=TRUE,
-					membership=TRUE),
+				weights=NULL,
+				directed=mode==MEAS_MODE_DIR,
+				edge.betweenness=FALSE,
+				merges=FALSE,
+				bridges=FALSE,
+				modularity=TRUE,
+				membership=TRUE),
 		modes=c(MEAS_MODE_UNDIR, MEAS_MODE_DIR),
 		folder="edgebetw"
 	)
 	algos[["fastgreedy"]] <- list(
 		fun=function(g, mode) 
 			cluster_fast_greedy(graph=as.undirected(g),
-					merges=FALSE,
-					modularity=TRUE,
-					membership=TRUE,
-					weights=NULL),
+				merges=FALSE,
+				modularity=TRUE,
+				membership=TRUE,
+				weights=NULL),
 		modes=c(MEAS_MODE_UNDIR),
 		folder="fastgreedy"
 	)
@@ -91,34 +91,34 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 	algos[["leadingeigen"]] <- list(
 		fun=function(g, mode) 
 			cluster_leading_eigen(graph=as.undirected(g),
-					weights=NULL,
-					start=NULL,
-					options=list(maxiter=1000000)),
+				weights=NULL,
+				start=NULL,
+				options=list(maxiter=1000000)),
 		modes=c(MEAS_MODE_UNDIR),
 		folder="eigenvect"
 	)
 	algos[["louvain"]] <- list(
 		fun=function(g, mode) 
 			cluster_louvain(graph=as.undirected(g),
-					weights=NULL),
+				weights=NULL),
 		modes=c(MEAS_MODE_UNDIR),
 		folder="louvain"
 	)
 ##	algos[["spinglass"]] <- list(	# does not work with disconnected graphs
 ##		fun=function(g, mode) 
 ##			cluster_spinglass(graph=if(mode==MEAS_MODE_UNDIR) as.undirected(g) else g,
-##					weights=NA),
+##				weights=NA),
 ##		modes=c(MEAS_MODE_UNDIR, MEAS_MODE_DIR),
 ##		folder="spinglass"
 ##	)
 	algos[["walktrap"]] <- list(
 		fun=function(g, mode) 
 			cluster_walktrap(graph=if(mode==MEAS_MODE_UNDIR) as.undirected(g) else g,
-					weights=NULL,
-					steps=4,
-					merges=TRUE,
-					modularity=TRUE,
-					membership=TRUE),
+				weights=NULL,
+				steps=4,
+				merges=TRUE,
+				modularity=TRUE,
+				membership=TRUE),
 		modes=c(MEAS_MODE_UNDIR, MEAS_MODE_DIR),
 		folder="walktrap"
 	)
@@ -129,8 +129,9 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 		select.algos <- c()
 	}
 	else
-	{	select.algos <- "louvain"
+	{	#select.algos <- "louvain"
 		#select.algos <- c("edgebetweenness", "fastgreedy")
+		select.algos <- c("edgebetweenness", "fastgreedy", "louvain")
 	}
 	tab.memb <- NA
 	
@@ -459,7 +460,7 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 				write.csv(tab, file=paste0(tab.file,".csv"), row.names=FALSE)
 				
 				# remove NA values from the table
-				tab <- tab[,-which(colnames(tab)=="NA")]
+				tt <- tt[,-which(colnames(tt)=="NA"),drop=FALSE]
 				
 				# produce bar plot for the whole community structure
 				cols <- COLS_ATT[[attr]]
