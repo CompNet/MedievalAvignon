@@ -96,6 +96,21 @@ plot.graph.comparisons.same.types <- function(g1, g2, folder)
 	V(g1)$comparison <- att1
 	V(g2)$comparison <- att2
 	
+	# export vertex list as CSV file
+	names <- sort(union(names1,names2))
+	flags.g1 <- rep(FALSE,length(names))
+	flags.g1[match(names1,names)] <- TRUE
+	flags.g2 <- rep(FALSE,length(names))
+	flags.g2[match(names2,names)] <- TRUE
+	tab <- data.frame(names, flags.g1, flags.g2)
+	colnames(tab) <- c("Id", g1$name, g2$name)
+	tab.file <- paste0(plot.file1,"_nodes.csv")
+	tlog(8,"Record vertex list in file '",tab.file,"'")
+	write.csv(tab, file=tab.file, row.names=FALSE)
+	tab.file <- paste0(plot.file2,"_nodes.csv")
+	tlog(8,"Record vertex list in file '",tab.file,"'")
+	write.csv(tab, file=tab.file, row.names=FALSE)
+	
 	# build result matrix
 	cn <- c(g1$name,g2$name)
 	rn <- c("Graph-specific vertices","Common vertices","Total")
@@ -195,6 +210,21 @@ plot.graph.comparisons.diff.types <- function(g.non, g.split, folder)
 	att.split[V(g.split)$idExterne %in% v.only.split] <- "Absent"
 	V(g.non)$comparison <- att.non
 	V(g.split)$comparison <- att.split
+	
+	# export vertex list as CSV file
+	vnames <- sort(union(vnames.non,vnames.split))
+	flags.g.non <- rep(FALSE,length(vnames ))
+	flags.g.non[match(vnames.non,vnames )] <- TRUE
+	flags.g.split <- rep(FALSE,length(vnames ))
+	flags.g.split[match(vnames.split,vnames )] <- TRUE
+	tab <- data.frame(vnames , flags.g.non, flags.g.split)
+	colnames(tab) <- c("Id", g.non$name, g.split$name)
+	tab.file <- paste0(plot.file.non,"_nodes.csv")
+	tlog(8,"Record vertex list in file '",tab.file,"'")
+	write.csv(tab, file=tab.file, row.names=FALSE)
+	tab.file <- paste0(plot.file.split,"_nodes.csv")
+	tlog(8,"Record vertex list in file '",tab.file,"'")
+	write.csv(tab, file=tab.file, row.names=FALSE)
 	
 	# build result matrix
 	rn <- c("Split vertices","Graph-specific vertices","Common vertices","Total")
