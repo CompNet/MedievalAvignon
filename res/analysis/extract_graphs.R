@@ -1466,6 +1466,10 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	#####
 	# missing coordinates: use the average of the neighbors
 	tlog(4,"Interpolate missing positions")
+	rx <- range(V(g)$x, na.rm=TRUE)
+	gapx <- 2*(rx[2]-rx[1])/100
+	ry <- range(V(g)$y, na.rm=TRUE)
+	gapy <- 2*(ry[2]-ry[1])/100
 	changed <- TRUE
 	while(changed)
 	{	changed <- FALSE
@@ -1473,13 +1477,13 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		tlog(6,"Nodes without position: ",length(idx),"/",gorder(g))
 		if(length(idx)>0)
 		{	neighs <- ego(graph=g, order=1, nodes=idx, mode="all", mindist=1)
-			rx <- range(V(g)$x, na.rm=TRUE)
-			gapx <- 2*(rx[2]-rx[1])/100
-			ry <- range(V(g)$y, na.rm=TRUE)
-			gapy <- 2*(ry[2]-ry[1])/100
+			
 			tmp <- sapply(1:length(idx), function(v)
 			{	#tlog(6,"node=",v)
 				ns <- as.integer(neighs[[v]])
+				ii <- which(V(g)$typeExterne[ns] %in% c("Bien","Bourg", "Edifice", "Porte", "Livree", "Rue")) # we ignore "Quartier", "Rempart", "Repere" vertices for interpolation, as they are not punctual but linear or areal
+				if(length(ii)>0)
+					ns <- ns[ii] # TODO
 				vals.x <- V(g)$x[ns]
 				vals.y <- V(g)$y[ns]
 				vals.x <- vals.x[!is.na(vals.x)]
@@ -2094,13 +2098,18 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #   > fait sauf la modif sur la valeur moyenne dans le plot des moyennes (binning x-axis)
 #   > puis adapter le modèle générateur pour produire les attributs de même noms, rendant ce code interopérable
 
-# TODO
-# + suppr edifices absents de la table confronts
-# + rajouter dans attributs à traiter: (x) typeExterne; (x) coord vraies/interpolées; (x) idDéclaration (rien vs. renseigné)
-# + rajouter dans table comparative: (x) nbre de biens, (x) corrélations des distances (juste les scores, pas les pvals)
-# ? stats rapides: nbre noeuds, nbre composants, distance, communautés, attributs
-
 # - pr didier: 
 #   - produire le fichier edgelist avec les id (BD) des noeuds (et les attributs des liens)
 #   - exporter la liste des noeuds avec tous les attributs dispos et aussi les coms
 #   - exporter les coms avec pureté et cie.
+
+# TODO
+# - Interpolation
+#   - une même interpolation split pr toutes les variantes de graphe
+#   - ignorer les nodes linéaires
+#   - si que des confronts non-linéaires : interpoler qd même mais marquer pour n'utiliser que dans la vis (pas les dist)
+# - Comparaison distances
+#   - ignorer les nodes linéaires (marqués ?)
+# - Attributs
+#   - rajouter id + identité du proprio
+#   - générer graphiques individuels pour les proprios les plus fréquents ? 
