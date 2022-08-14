@@ -124,6 +124,7 @@ FILE_GRAPH <- "graph.graphml"
 	COL_LOC_INTER_X <- "lonEst"			# interpolated coordinates
 	COL_LOC_INTER_Y <- "latEst"			# interpolated coordinates
 	COL_LOC_INTER <- "interpolated"		# whether the coordinates were interpolated
+	COL_LOC_EXCLUDE <- "distExcl"		# whether to ignore the node during distance computation
 	# layout coordinates
 	COL_LOC_ALGO_X <- "x2"
 	COL_LOC_ALGO_Y <- "y2"

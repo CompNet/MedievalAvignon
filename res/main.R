@@ -59,19 +59,19 @@ fast <- TRUE
 # load the data and create various versions of the spatial graph
 
 # extrat the graphs
-	# whole raw
-	graph.types <- extract.estate.networks(split.surf=FALSE, compl.streets=FALSE, street.ablation=FALSE)
-	graph.types <- extract.estate.networks(split.surf=FALSE, compl.streets=FALSE, street.ablation=TRUE)
-	# split raw
-	graph.types <- extract.estate.networks(split.surf=TRUE, compl.streets=FALSE, street.ablation=FALSE)
-	graph.types <- extract.estate.networks(split.surf=311,  compl.streets=FALSE, street.ablation=FALSE)	# 6
-	# whole extended
-	graph.types <- extract.estate.networks(split.surf=FALSE, compl.streets=TRUE, street.ablation=FALSE)
-	graph.types <- extract.estate.networks(split.surf=FALSE, compl.streets=TRUE, street.ablation=TRUE)
 	# split extended
 	graph.types <- extract.estate.networks(split.surf=TRUE, compl.streets=TRUE, street.ablation=FALSE)
 	graph.types <- extract.estate.networks(split.surf=303,  compl.streets=TRUE, street.ablation=FALSE)	# 9
-
+	# whole extended
+	graph.types <- extract.estate.networks(split.surf=FALSE, compl.streets=TRUE, street.ablation=FALSE)
+	graph.types <- extract.estate.networks(split.surf=FALSE, compl.streets=TRUE, street.ablation=TRUE)
+	# split raw
+	graph.types <- extract.estate.networks(split.surf=TRUE, compl.streets=FALSE, street.ablation=FALSE)
+	graph.types <- extract.estate.networks(split.surf=311,  compl.streets=FALSE, street.ablation=FALSE)	# 6
+	# whole raw
+	graph.types <- extract.estate.networks(split.surf=FALSE, compl.streets=FALSE, street.ablation=FALSE)
+	graph.types <- extract.estate.networks(split.surf=FALSE, compl.streets=FALSE, street.ablation=TRUE)
+	
 #graph.types <- paste0("split_raw/", c(GR_EST_FLAT_REL))
 #graph.types <- paste0("split_ext/", c(GR_EST_FLAT_REL))
 #graph.types <- paste0("whole_raw/", c(GR_EST_ESTATE_LEVEL, GR_EST_FLAT_REL, GR_EST_FLAT_MINUS))

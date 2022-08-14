@@ -1466,62 +1466,126 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	#####
 	# missing coordinates: use the average of the neighbors
 	tlog(4,"Interpolate missing positions")
-	rx <- range(V(g)$x, na.rm=TRUE)
-	gapx <- 2*(rx[2]-rx[1])/100
-	ry <- range(V(g)$y, na.rm=TRUE)
-	gapy <- 2*(ry[2]-ry[1])/100
-	changed <- TRUE
-	while(changed)
-	{	changed <- FALSE
-		idx <- which(is.na(V(g)$x))
-		tlog(6,"Nodes without position: ",length(idx),"/",gorder(g))
-		if(length(idx)>0)
-		{	neighs <- ego(graph=g, order=1, nodes=idx, mode="all", mindist=1)
-			
-			tmp <- sapply(1:length(idx), function(v)
-			{	#tlog(6,"node=",v)
-				ns <- as.integer(neighs[[v]])
-				ii <- which(V(g)$typeExterne[ns] %in% c("Bien","Bourg", "Edifice", "Porte", "Livree", "Rue")) # we ignore "Quartier", "Rempart", "Repere" vertices for interpolation, as they are not punctual but linear or areal
-				if(length(ii)>0)
-					ns <- ns[ii] # TODO
-				vals.x <- V(g)$x[ns]
-				vals.y <- V(g)$y[ns]
-				vals.x <- vals.x[!is.na(vals.x)]
-				vals.y <- vals.y[!is.na(vals.y)]
-				if(length(vals.x)>1)
-				{	res <- c(mean(vals.x), mean(vals.y))
-					changed <<- TRUE
+	inter.file <- file.path(FOLDER_OUT_ANAL_EST,"split_ext","full","interpolation.txt")
+	# we perform this interpolation for the split+compl graph, which is the most informative one regarding node positions
+	# for the other graphs, we just re-use the *same* interpolated coordinates
+	# consequently, the split+compl graph must be computed *before* the others
+	{	if(compl.streets && is.logical(split.surf) && split.surf)
+		{	tlog(5,"Compute interpolation")
+			# compute range (to place node whose position could not be interpolated) 
+			rx <- range(V(g)$x, na.rm=TRUE)
+			gapx <- 2*(rx[2]-rx[1])/100
+			ry <- range(V(g)$y, na.rm=TRUE)
+			gapy <- 2*(ry[2]-ry[1])/100
+			# init distance exclusion flag
+			idx <- which(!is.na(V(g)$x))
+			flags <- !(V(g)$typeExterne[idx] %in% c("Bien","Bourg", "Edifice", "Porte", "Livree", "Rue", "Rempart") | (V(g)$typeExterne[idx]=="Repere" & grepl("_", V(g)$idExterne[idx], fixed=TRUE)))
+			g <- set_vertex_attr(graph=g, name=COL_LOC_EXCLUDE, index=idx, value=flags)
+			# loop over node without coordinate
+			changed <- TRUE
+			moved <- 0
+			while(changed)
+			{	changed <- FALSE
+				idx <- which(is.na(V(g)$x))
+				tlog(6,"Nodes without position: ",length(idx),"/",gorder(g))
+				if(length(idx)>0)
+				{	neighs <- ego(graph=g, order=1, nodes=idx, mode="all", mindist=1)
+					for(v in 1:length(idx))
+					{	#tlog(6,"node=",v)
+						ns <- as.integer(neighs[[v]])	# get the neighbors' ids
+						ns <- ns[!is.na(V(g)$x[ns])]	# ignore neighbors with no coordinates
+						if(length(ns)>0)
+						{	# we ignore "Quartier", "Remparts, "Repere" vertices for interpolation, as they are not punctual but linear or areal
+							ii <- which(V(g)$typeExterne[ns] %in% c("Bien","Bourg", "Edifice", "Porte", "Livree", "Rue",	 
+									# actually, since we use the split graph, with keep the ones below (which are split)
+									"Rempart") | (V(g)$typeExterne[ns]=="Repere" & grepl("_", V(g)$idExterne[ns], fixed=TRUE)))	 
+							if(length(ii)>0)
+							{	ns <- ns[ii]
+								V(g)$distExcl[idx[v]] <- FALSE
+							}
+							else
+							{	V(g)$distExcl[idx[v]] <- TRUE
+								tlog(7,"Will not use node #",idx[v]," (",V(g)$idExterne[idx[v]],") for distance computations")
+							}
+							vals.x <- V(g)$x[ns]
+							vals.y <- V(g)$y[ns]
+							if(length(vals.x)>1)
+							{	res <- c(mean(vals.x), mean(vals.y))
+								if(!all(is.na(res)) && any(V(g)$x[!is.na(V(g)$x)]==res[1] & V(g)$y[!is.na(V(g)$y)]==res[2]))
+								{	#tlog(7,"Redundant position (same neighbors as another node): randomly moving this node to avoid this")
+									# computing a weighted sum instead of a simple mean
+									rw <- runif(length(ns)); rw <- rw/sum(rw)
+									res <- c(sum(rw*vals.x),sum(rw*vals.y))
+									moved <- moved + 1
+								}
+								changed <- TRUE
+							}
+							else if(length(vals.x)==1)
+							{	res <- c(vals.x+runif(1,0,gapx), vals.y+runif(1,0,gapy))
+								changed <- TRUE
+							}
+							else
+							{	#res <- c(runif(1,rx[1],rx[2]), runif(1,ry[1],ry[2]))
+								res <- c(NA, NA)
+							}
+							# make sure that the position is unique
+							if(!all(is.na(res)) && any(V(g)$x[!is.na(V(g)$x)]==res[1] & V(g)$y[!is.na(V(g)$y)]==res[2]))
+							{	ww <- which(V(g)$x[!is.na(V(g)$x)]==res[1] & V(g)$y[!is.na(V(g)$y)]==res[2])
+								tlog(7,"Must fix non-unique position: ",paste(res,collapse=", "))
+								for(w in ww) 
+									tlog(8,which(!is.na(V(g)$x))[w]," ",V(g)$idExterne[!is.na(V(g)$x)][w]," (",V(g)$x[!is.na(V(g)$x)][w],", ",V(g)$y[!is.na(V(g)$y)][w],")")
+								res <- res + c(runif(1,0,gapx), runif(1,0,gapy))
+							}
+							V(g)$x[idx[v]] <- res[1]
+							V(g)$y[idx[v]] <- res[2]
+						}
+					}
 				}
-				else if(length(vals.x)==1)
-				{	res <- c(vals.x+runif(1,0,gapx), vals.y+runif(1,0,gapy))
-					changed <<- TRUE
-				}
-				else
-				{	#res <- c(runif(1,rx[1],rx[2]), runif(1,ry[1],ry[2]))
-					res <- c(NA, NA)
-				}
-				# make sure that the position is unique
-				if(!all(is.na(res)) && any(V(g)$x[!is.na(V(g)$x)]==res[1] & V(g)$y[!is.na(V(g)$y)]==res[2]))
-				{	ww <- which(V(g)$x[!is.na(V(g)$x)]==res[1] & V(g)$y[!is.na(V(g)$y)]==res[2])
-					tlog(6,"Must fix non-unique position: ",paste(res,collapse=", "))
-					for(w in ww) 
-						tlog(8,"(",V(g)$x[!is.na(V(g)$x)][w],", ",V(g)$y[!is.na(V(g)$y)][w],")")
-					res <- res + c(runif(1,0,gapx), runif(1,0,gapy))
-				}
-				return(res)
-			})
-			V(g)$x[idx] <- tmp[1,]
-			V(g)$y[idx] <- tmp[2,]
+			}
+			tlog(6,"Had to slightly move ",moved," nodes occupying the same interpolated position as other nodes (exact same neighbors)")
+			# mark interpolated nodes
+			g <- set_vertex_attr(graph=g, name=COL_LOC_INTER, value=is.na(V(g)$xcoord) & !is.na(V(g)$x))
+			# put completely disconnected nodes in bottom left corner
+			idx <- which(is.na(V(g)$x))
+			V(g)$x[idx] <- min(V(g)$x, na.rm=TRUE)
+			V(g)$y[idx] <- min(V(g)$y, na.rm=TRUE)
+			V(g)$interpolated[idx] <- NA			# could not interpolate these coordinates
+			V(g)$distExcl[idx] <- TRUE				# should not be used for distance computation
+			# copy interpolated coordinates in new attribute
+			V(g)$lonEst <- V(g)$x
+			V(g)$latEst <- V(g)$y
+			# export interpolated coordinates
+			layout <- data.frame(V(g)$idExterne, V(g)$x, V(g)$y, V(g)$interpolated, V(g)$distExcl)
+			colnames(layout) <- c("idExterne", "x","y", "interpolated","distExcl")
+			tlog(5,"Recording interpolated coordinates to file '",inter.file,"'")
+			write.table(x=layout, file=inter.file, sep="\t", row.names=FALSE, col.names=TRUE)
+		}
+		# otherwise, we just load the previously computed interpolated coordinates
+		else
+		{	# read previously interpolated coordinates
+			tlog(5,"Reading interpolated coordinates from file ",inter.file)
+			layout <- read.table(file=inter.file, sep="\t", header=TRUE, check.names=FALSE)
+			# match coordinate-less nodes to their interpolated coordinates  
+			idx <- which(is.na(V(g)$x))
+			lay.idx <- match(V(g)$idExterne[idx], layout[,"idExterne"])
+			if(any(is.na(lay.idx))) {print(V(g)[idx][which(is.na(lay.idx))]); stop("Could not match node ids with ids from the interpolation file")}
+			# updated interpolation attributes
+			V(g)$interpolated <- rep(FALSE,gorder(g))
+			V(g)$interpolated[idx] <- layout[lay.idx,COL_LOC_INTER]
+			V(g)$distExcl <- rep(FALSE,gorder(g))
+			V(g)$distExcl[idx] <- layout[lay.idx,COL_LOC_EXCLUDE]
+			# update missing coordinates
+			V(g)$x[idx] <- layout[lay.idx,"x"]
+			V(g)$y[idx] <- layout[lay.idx,"y"]
+			# copy interpolated coordinates in new attribute
+			V(g)$lonEst <- V(g)$x
+			V(g)$latEst <- V(g)$y
 		}
 	}
-	# mark interpolated nodes
-	g <- set_vertex_attr(graph=g, name=COL_LOC_INTER, value=is.na(V(g)$xcoord) & !is.na(V(g)$x))
-	# put completely disconnected nodes in bottom left corner
-	V(g)$x[which(is.na(V(g)$x))] <- min(V(g)$x, na.rm=TRUE)
-	V(g)$y[which(is.na(V(g)$y))] <- min(V(g)$y, na.rm=TRUE)
-	# copy interpolated coordinates in new attribute
-	V(g)$lonEst <- V(g)$x
-	V(g)$latEst <- V(g)$y
+	# display some stats
+	tlog(6,"Number of nodes with no coordinate after interpolation: ",length(which(is.na(V(g)$x))),"/",gorder(g))
+	tlog(6,"Number of nodes with interpolated coordinates: ",length(which(V(g)$interpolated)),"/",gorder(g))
+	tlog(6,"Number of nodes not usable for distance computations: ",length(which(V(g)$distExcl)),"/",gorder(g))
 	
 	# compute street span, i.e. spatial distance between its farthest confronted vertices
 	tlog(2,"Compute street spans")
