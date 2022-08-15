@@ -946,7 +946,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	
 	# possibly rewire certain relations corresponding to linear or surface vertices
 	if(is.logical(split.surf) && split.surf || is.numeric(split.surf))
-	{	tlog(4,"Rewiring confronts due to the split of linear and surface vertex")
+	{	tlog(4,"Rewiring confronts due to the split of linear and surface vertices")
 		# load list of split confronts
 		rel.file <- FILE_IN_ANAL_SPLIT_CONFR
 		tlog(6,"Loading corrective relational information in file '",rel.file,"'")
@@ -2168,10 +2168,10 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #   - exporter les coms avec pureté et cie.
 
 # TODO
-# - Interpolation
-#   - une même interpolation split pr toutes les variantes de graphe
-#   - ignorer les nodes linéaires
-#   - si que des confronts non-linéaires : interpoler qd même mais marquer pour n'utiliser que dans la vis (pas les dist)
+# + Interpolation
+#   + une même interpolation split pr toutes les variantes de graphe
+#   + ignorer les nodes linéaires
+#   + si que des confronts non-linéaires : interpoler qd même mais marquer pour n'utiliser que dans la vis (pas les dist)
 # - Comparaison distances
 #   - ignorer les nodes linéaires (marqués ?)
 # - Attributs

@@ -121,6 +121,15 @@ graph.types <- c(
 )
 plot.graph.comparisons(graph.names=graph.types, folder=FOLDER_OUT_ANAL_EST)
 
+# debug: display nodes ignored during distance comparison
+#for(graph.type in graph.types)
+#{	folder <- file.path(FOLDER_OUT_ANAL_EST,graph.type,FILE_GRAPH)
+#	print(folder)
+#	g <- read.graph(folder,format="graphml")
+##	print(cbind(V(g)$idExterne,V(g)$distExcl))
+#	print(length(which(V(g)$distExcl)))
+#}
+
 # merge previously computed whole-graph stats
 merge.stats(graph.names=graph.types, folder=FOLDER_OUT_ANAL_EST)
 
