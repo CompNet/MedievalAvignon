@@ -57,7 +57,7 @@ analyze.net.distance.spatial <- function(g, distance.folder, fast)
 			coords <- cbind(vertex_attr(g, name=COL_LOC_X), vertex_attr(g, name=COL_LOC_Y))
 		else
 			coords <- cbind(V(g)$x, V(g)$y)
-		idx0 <- which(!is.na(coords[,1]) & !is.na(coords[,2]))
+		idx0 <- which(!is.na(coords[,1]) & !is.na(coords[,2]) & !vertex_attr(g, name=COL_LOC_EXCLUDE))
 		svals <- as.matrix(dist(x=coords[idx0,], method="euclidean", diag=TRUE, upper=TRUE))
 		diag(svals) <- NA
 		svals.avg.arith <- apply(X=svals, MARGIN=1, FUN=function(v) mean(v[!is.na(v)]))
@@ -280,7 +280,7 @@ analyze.net.distance.compare.raw <- function(g, mode, distance.folder, fast)
 			coords <- cbind(vertex_attr(g, name=COL_LOC_X), vertex_attr(g, name=COL_LOC_Y))
 		else
 			coords <- cbind(V(g)$x, V(g)$y)
-		idx0 <- which(!is.na(coords[,1]) & !is.na(coords[,2]))
+		idx0 <- which(!is.na(coords[,1]) & !is.na(coords[,2]) & !vertex_attr(g, name=COL_LOC_EXCLUDE))
 		svals <- as.matrix(dist(x=coords[idx0,], method="euclidean", diag=TRUE, upper=TRUE))
 		diag(svals) <- NA
 		svals <- svals[upper.tri(svals, diag=FALSE)]
@@ -500,7 +500,7 @@ analyze.net.distance.compare.avg <- function(g, mode, distance.folder, fast)
 				coords <- cbind(vertex_attr(g, name=COL_LOC_X), vertex_attr(g, name=COL_LOC_Y))
 			else
 				coords <- cbind(V(g)$x, V(g)$y)
-			idx0 <- which(!is.na(coords[,1]) & !is.na(coords[,2]))
+			idx0 <- which(!is.na(coords[,1]) & !is.na(coords[,2]) & !vertex_attr(g, name=COL_LOC_EXCLUDE))
 			svals <- as.matrix(dist(x=coords[idx0,], method="euclidean", diag=TRUE, upper=TRUE))
 			diag(svals) <- NA
 			
