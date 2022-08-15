@@ -6458,7 +6458,6 @@ idConfront,localisation,idBien1,idBien2,idInvariant,idQuartierParoisse,localisat
 7106,in,60290,NULL,805,NULL,dans
 7107,in,60291,NULL,805,NULL,dans
 7108,retro,60292,NULL,805,NULL,derriere
-7138,confront a l est,60293,NULL,402,NULL,confronte a l est avec
 7425,in,60294,NULL,NULL,23,a l interieur de
 8254,NULL,60295,NULL,251,,egal
 7123,in,60297,NULL,666,NULL,dans
@@ -6598,7 +6597,6 @@ idConfront,localisation,idBien1,idBien2,idInvariant,idQuartierParoisse,localisat
 7517,in,60393,NULL,NULL,26,a l interieur de
 7136,iuxta,60401,NULL,476,NULL,a cote de
 7114,retro,60403,NULL,491,NULL,derriere
-7115,ultra,60404,NULL,195,NULL,au dela de
 7112,versus,60406,NULL,545,NULL,vers
 7113,angulo,60407,NULL,491,NULL,a l angle de
 7151,ixuta,60408,NULL,491,NULL,a cote de
