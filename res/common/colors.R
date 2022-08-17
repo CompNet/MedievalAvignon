@@ -12,6 +12,11 @@
 ###############################################################################
 # Colors used in the plots.
 ###############################################################################
+COLOR_NA <- "#F0F0F0"								# almost white
+COLOR_INF <- "#575757"								# dark grey
+COLOR_OTHERS <- rgb(153,153,153,maxColorValue=255)	# light grey
+
+
 CAT_COLORS_8 <- c(							# basic color brewer palette, see http://colorbrewer2.org/#type=qualitative&scheme=Set1&n=9
 	rgb(228,26,28,maxColorValue=255),		# red
 	rgb(55,126,184,maxColorValue=255),		# blue
@@ -32,7 +37,7 @@ CAT_COLORS_12 <- c(							# manually extended color brewer palette
 	rgb(255,127,0,maxColorValue=255),		# orange
 	rgb(166,86,40,maxColorValue=255),		# brown
 	rgb(247,129,191,maxColorValue=255),		# pink
-	rgb(153,153,153,maxColorValue=255),		# light grey
+#	rgb(153,153,153,maxColorValue=255),		# light grey
 	rgb(23,89,143,maxColorValue=255),		# dark blue
 	rgb(16,125,12,maxColorValue=255),		# dark green
 	rgb(30,30,30,maxColorValue=255),		# dark grey
@@ -46,7 +51,7 @@ CAT_COLORS_18 <- c(							# manual extension of the color brewer palette
 	rgb(255,127,0,maxColorValue=255),		# orange
 	rgb(166,86,40,maxColorValue=255),		# brown
 	rgb(247,129,191,maxColorValue=255),		# pink
-	rgb(153,153,153,maxColorValue=255),		# light grey
+#	rgb(153,153,153,maxColorValue=255),		# light grey
 	rgb(23,89,143,maxColorValue=255),		# dark blue
 	rgb(16,125,12,maxColorValue=255),		# dark green
 	rgb(30,30,30,maxColorValue=255),		# dark grey
@@ -59,7 +64,7 @@ CAT_COLORS_18 <- c(							# manual extension of the color brewer palette
 	rgb(0,255,0,maxColorValue=255)			# straight green
 )
 CAT_COLORS_22 <- c(	# kelly.colors(22) from package Polychrome
-	"#B0B0B0", 		# lightgray 
+#	"#B0B0B0", 		# lightgray 
 	"#222222", 		# black 
 	"#f3c300", 		# yellow 
 	"#875692", 		# purple 
@@ -111,10 +116,38 @@ CAT_COLORS_26 <- c(	# green.armytage.colors(26) from package Polychrome
 	"#FF5000"		# zinnia
 )
 CAT_COLORS_32 <- c(	# glasbey.colors(32) from package Polychrome
-	"#FFFFFF", "#0000FF", "#FF0000", "#00FF00", "#000033", "#FF00B6", "#005300", "#FFD300", 
-	"#009FFF", "#9A4D42", "#00FFBE", "#783FC1", "#1F9698", "#FFACFD", "#B1CC71", "#F1085C", 
-	"#FE8F42", "#DD00FF", "#201A01", "#720055", "#766C95", "#02AD24", "#C8FF00", "#886C00", 
-	"#FFB79F", "#858567", "#A10300", "#14F9FF", "#00479E", "#DC5E93", "#93D4FF", "#004CFF"
+#	"#FFFFFF", 
+	"#0000FF", 
+	"#FF0000", 
+	"#00FF00", 
+	"#000033", 
+	"#FF00B6", 
+	"#005300", 
+	"#FFD300", 
+	"#009FFF", 
+	"#9A4D42", 
+	"#00FFBE", 
+	"#783FC1", 
+	"#1F9698", 
+	"#FFACFD", 
+	"#B1CC71", 
+	"#F1085C", 
+	"#FE8F42", 
+	"#DD00FF", 
+	"#201A01", 
+	"#720055", 
+	"#766C95", 
+	"#02AD24", 
+	"#C8FF00", 
+	"#886C00", 
+	"#FFB79F", 
+	"#858567", 
+	"#A10300", 
+	"#14F9FF", 
+	"#00479E", 
+	"#DC5E93", 
+	"#93D4FF", 
+	"#004CFF"
 )
 
 COLS_ATT <- list()
@@ -186,12 +219,18 @@ COLS_ATT[[COL_EST_COMP_TYPE1]] <- c(
 )
 # colors for simple component type attribute
 COLS_ATT[[COL_EST_COMP_TYPE_S1]] <- c(
-"hydrau"="#0868AC",
+	"hydrau"="#0868AC",
 	"moulin"="#9BC2E6",
 	"non bati"="#BD0026",
 	"bati"="#FED02B",
 	"immateriel"="#FFFFD4"
 )
+# color for sex
+COLS_ATT[[COL_PERS_GENDER]] <- c(
+	"homme"="#19A0AA",		# turquoise
+	"femme"="#F15F36"		# salmon
+)
+COLS_ATT[[paste0("Own_",COL_PERS_GENDER)]] <- COLS_ATT[[COL_PERS_GENDER]]
 # colors for fee categories
 cols <- viridis(n=length(FEE_CATS))
 names(cols) <- FEE_CATS
@@ -203,27 +242,213 @@ COLS_ATT[[COL_FEE_AMOUNT_CAT1]] <- cols
 #############################################################
 # Returns the appropriate number of colors
 # 
-# values: number of distinct values to plot.
+# val.nbr: number of distinct values to plot.
 #
 # returns: an appropriate palette, for categorical values.
 #############################################################
-get.palette <- function(values)
-{	if(values<=8)
+get.palette <- function(val.nbr)
+{	# pick a predefined palette
+	if(val.nbr<=length(CAT_COLORS_8))
 		result <- CAT_COLORS_8
-	else if(values<=12)
+	else if(val.nbr<=length(CAT_COLORS_12))
 		result <- CAT_COLORS_12
-	else if(values<=18)
+	else if(val.nbr<=length(CAT_COLORS_18))
 		result <- CAT_COLORS_18
-	else if(values<=22)
+	else if(val.nbr<=length(CAT_COLORS_22))
 		result <- CAT_COLORS_22
-	else #if(values<=26)
+	else #if(val.nbr<=length(CAT_COLORS_26))
 		result <- CAT_COLORS_26
 #	else
 #		result <- CAT_COLORS_32
 	
+	# adjust length
+	if(length(result)>val.nbr)
+		result <- result[1:val.nbr]
+	else if(length(result)<val.nbr)
+		result <- rep(result, length.out=val.nbr)
 	return(result)
 }
 
+
+
+
+#############################################################
+# Returns the appropriate colors for the specified categorical values.
+# In particular, one color is specifically reserved for NA, and
+# another one for "Other" (if needed).
+# 
+# values: the series of categorical values to consider.
+# attr: name of the concerned attribute.
+#
+# returns: a list containing the palette, the strings associated to
+#          each color in the palette, and the colors associated to
+#          each value in the specified input vector.
+#############################################################
+retrieve.palette.cat <- function(values, attr=NA)
+{	# get value names
+	vals <- values[!is.na(values) & values!=VAL_OTHER]
+	if(any(is.na(as.integer(vals))))
+		lv <- as.character(levels(factor(vals)))
+	else
+		lv <- as.character(levels(factor(as.integer(vals))))
+	factors <- as.character(factor(values))
+	
+	# try to use predefined palette
+	if(is.na(attr))
+		pal.cols <- NULL
+	else
+		pal.cols <- COLS_ATT[[attr]]
+	
+	# if no predefined palette, build one
+	if(is.null(pal.cols))
+	{	pal.cols <- get.palette(val.nbr=length(lv))
+		pal.txts <- lv
+	}
+	else
+		pal.txts <- names(pal.cols)
+	
+	# possibly handle NA values
+	if(any(is.na(values)))
+	{	pal.cols <- c(pal.cols, COLOR_NA)
+		pal.txts <- c(pal.txts, "NA")
+	}
+	
+	# possibly handle "Other" values
+	if(any(values[!is.na(values)]==VAL_OTHER))
+	{	pal.cols <- c(pal.cols, COLOR_OTHERS)
+		pal.txts <- c(pal.txts, VAL_OTHER)
+	}
+	
+	# add names to colors
+	names(pal.cols) <- pal.txts
+	
+	# set output colors
+	val.cols <- rep(NA, length(values))
+	idx <- which(!is.na(values))
+	if(length(idx)>0)
+		val.cols[idx] <- pal.cols[factors[idx]]
+	idx <- which(is.na(values))
+	if(length(idx)>0)
+		val.cols[idx] <- rep(pal.cols["NA"], length(idx))
+	
+	res <- list(pal.cols=pal.cols, pal.txts=pal.txts, val.cols=val.cols)
+	return(res)
+}
+
+
+
+
+#############################################################
+# Returns the appropriate colors for the specified tag values.
+# In particular, one color is specifically reserved for NA.
+# 
+# values: a matrix containing the tag values to consider.
+# attr: name of the concerned attribute.
+#
+# returns: a list containing the palette, the strings associated to
+#          each color in the palette, and the possibly reordered
+#          data matrix.
+#############################################################
+retrieve.palette.tag <- function(values, attr=NA)
+{	# possibly remove "Other" column (re-inserted later)
+	others <- NA
+	if(VAL_OTHER %in% colnames(values))
+	{	others <- values[,VAL_OTHER]
+		values <- values[,-which(colnames(values)==VAL_OTHER)]
+	}
+	# get value names
+	pal.txts <- colnames(values)
+	
+	# try to use predefined palette
+	if(is.na(attr))
+		pal.cols <- NULL
+	else
+		pal.cols <- COLS_ATT[[attr]]
+	
+	# if no predefined palette, build one
+	if(is.null(pal.cols))
+		pal.cols <- get.palette(val.nbr=length(pal.txts))
+	else
+	{	# if additional values in the data: problem
+		superfluous <- setdiff(pal.txts,names(pal.cols))
+		if(length(superfluous)>0)
+			stop("Superfluous values in the matrix: ",paste0(superfluous,collapse=", "))
+		# if values missing from the data: add empty columns
+		missing <- setdiff(names(pal.cols), pal.txts)
+		if(length(missing)>0 && all(is.na(others)))
+		{	tmp <- matrix(0, nrow=nrow(values), ncol=length(missing))
+			colnames(tmp) <- missing
+			values <- cbind(values, tmp)
+		}
+		# sort the data matrix columns to match the predefined palette
+		pal.txts <- intersect(names(pal.cols), pal.txts)
+		pal.cols <- pal.cols[pal.txts]
+		values <- values[,pal.txts]
+	}
+	
+	# possibly handle NA values
+	if(any(apply(values,1,function(r) all(r==0))))
+	{	pal.cols <- c(pal.cols, COLOR_NA)
+		pal.txts <- c(pal.txts, "NA")
+	}
+	
+	# possibly handle "Other" values
+	if(!all(is.na(others)))
+	{	pal.cols <- c(pal.cols, COLOR_OTHERS)
+		pal.txts <- c(pal.txts, VAL_OTHER)
+		values <- cbind(values, others)
+	}
+	
+	# add names to colors
+	names(pal.cols) <- pal.txts
+	
+	res <- list(pal.cols=pal.cols, pal.txts=pal.txts, values=values)
+	return(res)
+}
+
+
+
+
+#############################################################
+# Returns the appropriate colors for the specified numerical values.
+# In particular, one color is specifically reserved for NA, and another
+# for infinite values.
+# This function uses code from:
+# 	https://stackoverflow.com/questions/27004167/coloring-vertexes-according-to-their-centrality
+# 
+# values: the series of numerical values to consider.
+#
+# returns: a list containing the palette,  and the colors associated to
+#          each value in the specified input vector.
+#############################################################
+retrieve.palette.num <- function(values)
+{	# identify finite values
+	infinite <- is.infinite(values) & !is.na(values)
+	finite <- !is.infinite(values) & !is.na(values) 
+	nas <- is.na(values)
+	
+	# init color vector
+	val.cols <- rep(COLOR_NA, length(values))
+	val.cols[infinite] <- rep(COLOR_INF, length(which(infinite)))
+	
+	# only one value
+	#if(length(unique(values))==1)			# does not work when values are too close
+	if(isTRUE(all.equal(values[finite],		# more efficient way to compare close values
+					rep(values[finite][1],length(values[finite])))))
+		val.cols[finite] <- "YELLOW"
+	# several distinct values
+	else
+	{	fine <- 500 						# granularity of the color gradient
+		#pal <- colorRampPalette(c("YELLOW","RED"))
+		#val.cols[finite] <- pal(fine)[as.numeric(cut(values[finite],breaks=fine))]
+		#leg.pal <- pal(25)
+		val.cols[finite] <- viridis(fine,direction=-1)[as.numeric(cut(values[finite],breaks=fine))]
+		leg.pal <- viridis(25,direction=-1)
+	}
+	
+	res <- list(leg.pal=leg.pal, val.cols=val.cols)
+	return(res)
+}
 
 
 

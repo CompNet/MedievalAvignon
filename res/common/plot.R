@@ -89,7 +89,7 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 			extra.nats <- setdiff(used.nats, base.nats)
 			col.nats <- c(base.nats, extra.nats)
 			# set edge colors
-			epal <- get.palette(length(col.nats))
+			epal <- get.palette(val.nbr=length(col.nats))
 			for(i in 1:length(col.nats))
 				ecols[nature==col.nats[i]] <- epal[i]
 			nats <- col.nats
@@ -164,7 +164,7 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 
 	# vertex color
 	if(hasArg(col.att))
-	{	# isolates have no color (or rather, they're white)
+	{	# isolates have no color (or rather, they are white)
 		vcols <- rep("WHITE",n)
 		if(color.isolates)
 			connected <- rep(TRUE, n)
@@ -185,44 +185,25 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 				if(!all(is.na(vvals)))
 				{	# categorical attribute
 					if(cat.att)
-					{	tmp <- factor(vvals[connected])
-						lgd.txt <- levels(tmp)
-						colcols <- COLS_ATT[[col.att[1]]]
-						if(is.null(colcols))
-						{	colcols <- get.palette(length(lgd.txt))
-							vcols[connected] <- colcols[(as.integer(tmp)-1) %% length(colcols) + 1]
-							lgd.col <- colcols[(1:length(lgd.txt)-1) %% length(colcols) + 1]
-						}
-						else
-						{	vcols[connected] <- colcols[as.integer(tmp)]
-							lgd.txt <- intersect(names(colcols), lgd.txt)
-							lgd.col <- colcols[lgd.txt]
-						}
+					{	# get the appropriate color palette
+						tmp <- retrieve.palette.cat(values=vvals[connected], attr=col.att[1])
+						vcols[connected] <- tmp$val.cols
+						lgd.txt <- tmp$pal.txts
+						lgd.col <- tmp$pal.cols
 						
 						# possibly deal with community hulls
 						if(show.coms)
-						{	mark.groups <- lapply(lgd.txt, function(com) which(tmp==com))
+						{	tmp <- factor(vvals[connected])
+							mark.groups <- lapply(lgd.txt, function(com) which(tmp==com))
 							mark.col <- sapply(lgd.col, function(col) make.color.transparent(color=col, transparency=75))
 							mark.border <- lgd.col
 						}
 					}
 					# numerical attribute
 					else
-					{	finite <- !is.infinite(vvals)
-						pal <- colorRampPalette(c("yellow",'red'))	# extreme colors of the gradient
-						if(any(!is.na(vvals)))
-						{	# only one value
-							#if(length(unique(vvals))==1)								# does not work when values are too close
-							if(isTRUE(all.equal(vvals,rep(vvals[1],length(vvals)))))	# more efficient way to compare close values
-								vcols[connected & finite] <- "YELLOW"
-							# several distinct values
-							else
-							{	fine <- 500 								# granularity of the color gradient
-								vcols[connected & finite] <- pal(fine)[as.numeric(cut(vvals[connected & finite],breaks=fine))]
-								vcols[connected & !finite] <- "#575757"		# infinite values are grey
-								# see https://stackoverflow.com/questions/27004167/coloring-vertexes-according-to-their-centrality
-							}
-						}
+					{	tmp <- retrieve.palette.num(values=vvals[connected])
+						vcols[connected] <- tmp$val.cols
+						leg.pal <- tmp$leg.pal
 					}
 				}
 			}
@@ -242,7 +223,7 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 					}
 					else
 					{	pie.matrix <- NA
-						for(uval in uvals)													# build a column for each of them
+						for(uval in uvals)												# build a column for each of them
 						{	vals <- as.integer(apply(mat, 1, function(v) uval %in% v[!is.na(v)]))
 							if(all(is.na(pie.matrix)))
 								pie.matrix <- as.matrix(vals, ncol=1)
@@ -250,42 +231,31 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 								pie.matrix <- cbind(pie.matrix, vals)
 							colnames(pie.matrix)[ncol(pie.matrix)] <- uval
 						}
-						lgd.txt <- colnames(pie.matrix)
-						colcols <- COLS_ATT[[col.att[1]]]
-						if(is.null(colcols))
-						{	colcols <- get.palette(length(lgd.txt))
-							lgd.col <- colcols[(1:length(lgd.txt)-1) %% length(colcols) + 1]
-						}
-						else
-							lgd.col <- colcols[lgd.txt]
+						tmp <- retrieve.palette.tag(values=pie.matrix, attr=col.att[1])
+						lgd.col <- tmp$pal.cols
+						lgd.txt <- tmp$pal.txts
+						pie.matrix <- tmp$values
 						pie.values <- unlist(apply(pie.matrix, 1, function(v) list(v)), recursive=FALSE)
 						pie.values[!are.pie | !connected] <- NA
 						vshapes[are.pie & connected] <- rep("pie",length(which(are.pie & connected)))
 						vcols[are.pie & connected] <- NA
-						vcols[!are.nas & !are.pie & connected] <- apply(pie.matrix[!are.nas & !are.pie & connected,,drop=FALSE], 1, 
-								function(v) lgd.col[which(v>0)])
+						vcols[are.nas & connected] <- COLOR_NA
+						vcols[!are.nas & !are.pie & connected] <- apply(pie.matrix[!are.nas & !are.pie & connected,,drop=FALSE], 1, function(v) lgd.col[which(v>0)])
 					}
 				}
 				# counts of categorical attributes inside a community
 				else
-				{	are.pie <- apply(mat,1,function(r) length(which(r>0))>1)				# detect individuals with several non-zero values
-					lgd.txt <- col.att
-					colcols <- COLS_ATT[[col.att[1]]]
-					if(is.null(colcols) && hasArg(col.att.cap))
-						colcols <- COLS_ATT[[col.att.cap]]
-					if(is.null(colcols))
-					{	colcols <- get.palette(length(lgd.txt))
-						lgd.col <- colcols[(1:length(lgd.txt)-1) %% length(colcols) + 1]
-					}
-					else
-						lgd.col <- colcols[lgd.txt]
-					lgd.col[which(is.na(lgd.txt) | lgd.txt=="NA")] <- "#F0F0F0"				# force NA to white
+				{	#colnames(mat) <- col.att
+					are.pie <- apply(mat,1,function(r) length(which(r>0))>1)			# detect coms with several non-zero values
+					tmp <- retrieve.palette.tag(values=mat, attr=col.att[1])
+					lgd.col <- tmp$pal.cols
+					lgd.txt <- tmp$pal.txts
 					pie.values <- split(mat,1:nrow(mat))
 					pie.values[!are.pie | !connected] <- NA
 					vshapes[are.pie & connected] <- rep("pie",length(which(are.pie & connected)))
 					vcols[are.pie & connected] <- NA
 					if(any(!are.pie & connected))
-						vcols[!are.pie & connected] <- apply(mat[!are.pie & connected,,drop=FALSE], 1, function(v) if(any(v>0)) lgd.col[which(v>0)] else "#F0F0F0")
+						vcols[!are.pie & connected] <- apply(mat[!are.pie & connected,,drop=FALSE], 1, function(v) if(any(v>0)) lgd.col[which(v>0)] else COLOR_NA)
 				}
 			}
 		}
@@ -350,13 +320,16 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 		vsizes <- rep(3,n)
 	
 	# possibly reorder vertices
-	if(length(top.vertices)>0 || hasArg(paths) || hasArg(v.hl))
+	# TODO all this reordering would be much simpler if done first in the function 
+	if(length(top.vertices)>0 || hasArg(paths) || hasArg(v.hl) || (hasArg(col.att) && any(is.na(vvals))))
 	{	# possibly use other parameters if no top vertex specified
 		if(length(top.vertices)==0)
 		{	if(hasArg(v.hl))
 				top.vertices <- v.hl
 			else if(hasArg(paths))
 				top.vertices <- unique(unlist(paths))
+			else if(hasArg(col.att))
+				top.vertices <- which(!is.na(vvals))
 		}
 		
 		# if we have some top vertices, then move them up
@@ -488,6 +461,7 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 			mark.border=mark.border,				# border color of these hulls
 			...										# other parameters
 		)
+		# link type legend
 		if(length(nature)>0)
 		{	if(gtype==GR_TYPE_SOC)
 			{	legend(
@@ -514,6 +488,7 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 				)
 			}
 		}
+		# link weight legend
 		uweights <- sort(unique(weights))
 		if(length(uweights)>1)
 		{	if(length(uweights)==2)
@@ -536,6 +511,7 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 				cex=0.8
 			)
 		}
+		# vertex color legend
 		if(hasArg(col.att))
 		{	if(!all(!connected) && !all(is.na(vvals)))
 			{	# categorical attributes
@@ -572,17 +548,18 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 					leg.loc <- cbind(x=c(x1, x2, x2, x1), y=c(y1, y1, y2, y2))
 					legend.gradient(
 						pnts=leg.loc,
-						cols=pal(25),
+						cols=leg.pal,
 						#limits=format(range(vvals[connected],na.rm=TRUE), digits=2, nsmall=2),	# pb: uses scientific notation when numbers too small
-						limits=sprintf("%.2f", range(vvals[connected & finite],na.rm=TRUE)),
+						limits=sprintf("%.2f", range(vvals[connected & !is.infinite(vvals)],na.rm=TRUE)),
 						title=leg.cap, 
 						cex=0.8
 					)
 				}
 			}
 		}
-		# legend for vertex sizes, if required: 
-		# https://stackoverflow.com/questions/38451431/add-legend-in-igraph-to-annotate-difference-vertices-size
+		# vertex sizes legend
+		# uses source code from
+		# 	https://stackoverflow.com/questions/38451431/add-legend-in-igraph-to-annotate-difference-vertices-size
 		if(hasArg(size.att) && (length(size.att)>1 || !is.numeric(size.att)))
 		{	legend.bubble(
 				x="topleft",					# position of the legend

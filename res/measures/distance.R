@@ -675,7 +675,7 @@ analyze.net.distance.compare.avg <- function(g, mode, distance.folder, fast)
 					{	plot.file <- file.path(comp.folder, paste0(fname,"_vs_spatial-",sdist,"_col=fixed"))
 						tlog(10,"Plotting in file \"",plot.file,"\"")
 						cols <- rep(make.color.transparent("BLACK",75), length(vals))
-						pal <- get.palette(3)[1:3]
+						pal <- get.palette(val.nbr=3)[1:3]
 						cols[edf & types=="Edifice"] <- pal[1]
 						cols[edf & types=="Porte"] <- pal[2]
 						cols[edf & types=="Repere"] <- pal[3]

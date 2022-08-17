@@ -69,7 +69,7 @@ for(i in 1:n)
 
 # setup edge info
 types <- LK_TYPE_FLATREL_VALS
-epal <- get.palette(length(types))
+epal <- get.palette(val.nbr=length(types))
 #ecols <- rep("gray50", gsize(g1))
 #for(i in 1:length(types))
 #	ecols[E(g1)$type==types[i]] <- epal[i]

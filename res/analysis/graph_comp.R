@@ -376,7 +376,7 @@ plot.street.removal <- function(mode)
 			# spatial distance
 			tlog(8,"Compute spatial distance")
 			coords <- cbind(vertex_attr(gs[[i]], name=COL_LOC_X), vertex_attr(gs[[i]], name=COL_LOC_Y))
-			idx0 <- which(!is.na(coords[,1]) & !is.na(coords[,2]))
+			idx0 <- which(!is.na(coords[,1]) & !is.na(coords[,2]) & !vertex_attr(gs[[i]], name=COL_LOC_EXCLUDE))
 			svals <- as.matrix(dist(x=coords[idx0,], method="euclidean", diag=TRUE, upper=TRUE))
 			diag(svals) <- NA
 			svals <- svals[upper.tri(svals, diag=FALSE)]
@@ -451,7 +451,7 @@ plot.street.removal <- function(mode)
 #			# set colors
 #			plain.col <- make.color.transparent("BLACK",75)
 #			cols <- rep(plain.col, length(ie.vals))								# at least one NA
-#			pal <- get.palette(3)[1:3]
+#			pal <- get.palette(val.nbr=3)[1:3]
 #			cols[ie.vals=="intra--intra"] <- pal[1]								# two intra-muros
 #			cols[ie.vals=="intra--extra" | ie.vals=="extra--intra"] <- pal[2]	# one intra- and one extra-muros
 #			cols[ie.vals=="extra--extra"] <- pal[3]								# two extra-muros
@@ -499,7 +499,7 @@ plot.street.removal <- function(mode)
 			}
 			# colors
 			plain.col <- make.color.transparent("BLACK",75)
-			pal <- c(get.palette(3)[1:3],plain.col)
+			pal <- c(get.palette(val.nbr=3)[1:3],plain.col)
 			# produce plot
 			plot.file <- file.path(muros.folder, paste0("dist_geodesic_vs_spatial_rem=",i))
 			tlog(8,"Plot muros version in '",plot.file,"'")
@@ -604,7 +604,7 @@ plot.street.removal <- function(mode)
 		write.csv(tab.stats, file=tab.file, row.names=FALSE)
 		
 		# plot correlations
-		pal <- get.palette(length(cor.names))
+		pal <- get.palette(val.nbr=length(cor.names))
 		plot.file <- file.path(main.folder, "evolution_correlation")
 		for(fformat in FORMAT)
 		{	if(fformat=="pdf")

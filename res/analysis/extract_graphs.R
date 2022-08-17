@@ -2168,12 +2168,9 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #   - exporter les coms avec pureté et cie.
 
 # TODO
-# + Interpolation
-#   + une même interpolation split pr toutes les variantes de graphe
-#   + ignorer les nodes linéaires
-#   + si que des confronts non-linéaires : interpoler qd même mais marquer pour n'utiliser que dans la vis (pas les dist)
-# - Comparaison distances
-#   - ignorer les nodes linéaires (marqués ?)
-# - Attributs
-#   - rajouter id + identité du proprio
-#   - générer graphiques individuels pour les proprios les plus fréquents ? 
+# pbs:
+# - distribution taille des coms ne reprend pas les couleurs des coms
+# - les couleurs prédéfinies pr certains attributs ne sont pas respectées
+# - générer une version avec NA des graphiques ? (ds un sous-dossier)
+# - et une version avec other 
+# - le graphe du typeExterne montre une couleur différente pr chaque com

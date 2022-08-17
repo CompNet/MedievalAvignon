@@ -465,7 +465,7 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 				# produce bar plot for the whole community structure
 				cols <- COLS_ATT[[attr]]
 				if(is.null(cols))
-					cols <- get.palette(ncol(tt))
+					cols <- get.palette(val.nbr=ncol(tt))
 				for(fformat in FORMAT)
 				{	if(fformat=="pdf")
 						pdf(paste0(tab.file,".pdf"), width=25, height=25)
@@ -600,7 +600,7 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 			# produce bar plot for the whole community structure
 			cols <- COLS_ATT[[attr]]
 			if(is.null(cols))
-				cols <- get.palette(ncol(tt))
+				cols <- get.palette(val.nbr=ncol(tt))
 			else
 				cols <- cols[colnames(tt)]
 			for(fformat in FORMAT)
