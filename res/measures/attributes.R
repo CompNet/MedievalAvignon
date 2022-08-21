@@ -55,8 +55,17 @@ analyze.net.attributes <- function(g, out.folder, fast)
 		again <- TRUE		# should we go through the loop?
 		main.vals <- c()	# most frequent values
 		while(again)
-		{	# get values only for real-estate vertices
-			tmp <- vertex_attr(graph=g, name=attr, index=est.idx)
+		{	# considering all vertices for certain attributes
+			if(attr==COL_LOC_TYPE)
+			{	sel.idx <- 1:gorder(g)
+				non.sel.idx <- c()
+			}
+			else
+			{	sel.idx <- est.idx
+				non.sel.idx <- non.est.idx
+			}
+			# get values only for real-estate vertices
+			tmp <- vertex_attr(graph=g, name=attr, index=sel.idx)
 			if(is.numeric(tmp)) 
 				tmp <- as.character(tmp)
 			suffix <- ""
@@ -64,8 +73,8 @@ analyze.net.attributes <- function(g, out.folder, fast)
 			{	tmp[!(tmp %in% main.vals) & !is.na(tmp)] <- "Other"
 				suffix <- "_main"
 			}
-			g00 <- set_vertex_attr(graph=g, name=attr, index=est.idx, value=tmp)
-			g00 <- set_vertex_attr(graph=g00, name=attr, index=non.est.idx, value=rep(NA,length(non.est.idx)))
+			g00 <- set_vertex_attr(graph=g, name=attr, index=sel.idx, value=tmp)
+			g00 <- set_vertex_attr(graph=g00, name=attr, index=non.sel.idx, value=rep(NA,length(non.sel.idx)))
 			attr.name <- paste0(attr,suffix)
 			
 			# plot the attribute distribution as a barplot
@@ -93,9 +102,26 @@ analyze.net.attributes <- function(g, out.folder, fast)
 			
 			# get the most frequent values (for next iteration)
 			if(nrow(tab)>17)
-				main.vals <- names(sort(tt[!is.na(names(tt))],decreasing=TRUE)[1:16])
+				main.vals <- names(sort(tt[names(tt)!="NA"],decreasing=TRUE)[1:15])
 			else
 				again <- FALSE
+			
+			# barplot again, but without the NA values (if any)
+			if("NA" %in% names(cols) && length(tt)>1)
+			{	# remove NAs
+				tt <- tt[-which(names(tt)=="NA")]
+				cols <- cols[-which(names(cols)=="NA")]
+				# plot again
+				plot.file <- file.path(plot.folder, paste0(attr.name,"_bars_withoutNA"))
+				tlog(6,"Plot in file '",plot.file,"'")
+				custom.barplot(
+					tt, 
+					text=names(tt), 
+					xlab=LONG_NAME[attr], ylab="Frequence",
+					file=plot.file,
+					cols=cols
+				)
+			}
 			
 			# plot the graph using colors for attribute values
 			plot.file <- file.path(plot.folder, paste0(attr.name,"_graph"))
@@ -108,6 +134,8 @@ analyze.net.attributes <- function(g, out.folder, fast)
 			
 			# add to matrix
 			tlog(4,"Adding attribute \"",attr.name,"\" to data matrix")
+			if(attr==COL_LOC_TYPE)
+				tmp <- tmp[est.idx]
 			if(all(is.na(cat.data)))
 				cat.data <- matrix(tmp,ncol=1)
 			else
@@ -120,64 +148,112 @@ analyze.net.attributes <- function(g, out.folder, fast)
 	tlog(3,"Dealing with tag-type attributes")
 	attrs <- intersect(names(COL_TAG_SELECT), vertex_attr_names(g))
 	for(attr in attrs)
-	{	# get values only for real-estate vertices
-		g0 <- delete_vertices(graph=g, v=non.est.idx)
-		tmp <- vertex_attr(g0, attr)
-		g00 <- set_vertex_attr(graph=g, name=attr, index=non.est.idx, value=rep(NA,length(non.est.idx)))
-		
-		attrc <- intersect(COL_TAG_SELECT[[attr]], vertex_attr_names(g))
-		m <- sapply(attrc, function(att) vertex_attr(g0, att))
-		
-		# count tag distribution
-		idx.nas <- which(apply(m,1,function(r) all(is.na(r))))	# detect individuals with only NAs
-		nbr.nas <- length(idx.nas) 								# count them
-		dt <- c(m)[!is.na(c(m))]								# handles non-NA values
-		dt <- c(dt,rep(NA,nbr.nas))								# insert the appropriate number of NAs
-		
-		# colors
-		cols <- retrieve.palette.cat(values=dt, attr=attr)$pal.cols
-		dt[is.na(dt)] <- rep("NA",length(which(is.na(dt))))
-		tt <- table(factor(dt, levels=names(cols)))
-		
-		ymax <- max(tt)											# compute highest frequency for later use (to handle plot y-scale)
-		unfrequent <- names(tt)[which(tt<=2)]					# identify least frequent values
-		
-		# plot tag distribution as barplot
-		tlog(4,"Bar-plotting attributes containing \"",attr,"\"")
-		plot.folder <- file.path(attr.folder, attr)
-		dir.create(path=plot.folder, showWarnings=FALSE, recursive=TRUE)
-		plot.file <- file.path(plot.folder, paste0(attr,"_bars"))
-		tlog(6,"Plot distribution in '",plot.file,"'")
-		custom.barplot(
-			tt, 
-			text=names(tt), 
-			xlab=LONG_NAME[attr], ylab="Frequence", 
-			file=plot.file,
-			cols=cols
-		)
-		# record tag distribution as table
-		tt <- as.data.frame(tt)
-		colnames(tt) <- c("Value","Frequency")
-		table.file <- file.path(plot.folder, paste0(attr,"_vals.csv"))
-		tlog(6,"Record data in '",table.file,"'")
-		write.csv(tt, file=table.file, row.names=FALSE)
-		
-		# plot tags on a graph
-		g00 <- g
-		for(a in colnames(m))
-		{	vals <- vertex_attr(g0,a)
-			vals[which(!is.na(match(vals,unfrequent)))] <- VAL_OTHER	# represents all unfrequent values under an umbrella name
-			g00 <- set_vertex_attr(graph=g00, name=a, index=non.est.idx, value=rep(NA,length(non.est.idx)))
-			g00 <- set_vertex_attr(graph=g00, name=a, index=est.idx, value=vals)
+	{	# possibly focus only on the most frequent values (if too many)
+		again <- TRUE		# should we go through the loop?
+		main.vals <- c()	# most frequent values
+		while(again)
+		{	# get values only for real-estate vertices
+			g0 <- delete_vertices(graph=g, v=non.est.idx)
+			attrc <- intersect(COL_TAG_SELECT[[attr]], vertex_attr_names(g))
+			if(length(main.vals)>0)	# repetition for the top values
+			{	suffix <- "_main"
+				for(att in attrc)
+				{	tmp <- vertex_attr(graph=g0, name=att)
+					tmp[!(tmp %in% main.vals) & !is.na(tmp)] <- "Other"
+					g0 <- set_vertex_attr(graph=g0, name=att, value=tmp)
+				}
+			}
+			else
+				suffix <- ""
+			m <- sapply(attrc, function(att) vertex_attr(g0, att))
+			attr.name <- paste0(attr,suffix)
+			
+			# count tag distribution
+			idx.nas <- which(apply(m,1,function(r) all(is.na(r))))	# detect individuals with only NAs
+			nbr.nas <- length(idx.nas) 								# count them
+			dt <- c(m)[!is.na(c(m))]								# handles non-NA values
+			dt <- c(dt,rep(NA,nbr.nas))								# insert the appropriate number of NAs
+			
+			# colors
+			cols <- retrieve.palette.cat(values=dt, attr=attr)$pal.cols
+			dt[is.na(dt)] <- rep("NA",length(which(is.na(dt))))
+			tt <- table(factor(dt, levels=names(cols)))
+			
+			ymax <- max(tt)											# compute highest frequency for later use (to handle plot y-scale)
+			
+			# possibly remove empty values
+			if(length(main.vals)>0)
+			{	idx <- which(tt==0)
+				if(length(idx)>0)
+				{	tt <- tt[-idx]
+					cols <- cols[-idx]
+				}
+			}
+			
+			# plot tag distribution as barplot
+			tlog(4,"Bar-plotting attributes containing \"",attr.name,"\"")
+			plot.folder <- file.path(attr.folder, attr)
+			dir.create(path=plot.folder, showWarnings=FALSE, recursive=TRUE)
+			plot.file <- file.path(plot.folder, paste0(attr.name,"_bars"))
+			tlog(6,"Plot distribution in '",plot.file,"'")
+			custom.barplot(
+				tt, 
+				text=names(tt), 
+				xlab=LONG_NAME[attr], ylab="Frequence", 
+				file=plot.file,
+				cols=cols
+			)
+			# record tag distribution as table
+			if(length(tt)==1)
+				tab <- data.frame(names(tt),tt)
+			else
+				tab <- as.data.frame(tt)
+			colnames(tab) <- c("Value","Frequency")
+			rownames(tab) <- NULL
+			table.file <- file.path(plot.folder, paste0(attr.name,"_vals.csv"))
+			tlog(6,"Record data in '",table.file,"'")
+			write.csv(tab, file=table.file, row.names=FALSE)
+			
+			# get the most frequent values (used later)
+			if(nrow(tab)>17)
+				main.vals <- names(sort(tt[names(tt)!="NA"],decreasing=TRUE)[1:15])
+			else
+				again <- FALSE
+			
+			# barplot again, but without the NA values (if any)
+			if("NA" %in% names(cols) && length(tt)>1)
+			{	# remove NAs
+				tt <- tt[-which(names(tt)=="NA")]
+				cols <- cols[-which(names(cols)=="NA")]
+				# plot again
+				plot.file <- file.path(plot.folder, paste0(attr.name,"_bars_withoutNA"))
+				tlog(6,"Plot distribution in '",plot.file,"'")
+				custom.barplot(
+					tt, 
+					text=names(tt), 
+					xlab=LONG_NAME[attr], ylab="Frequence", 
+					file=plot.file,
+					cols=cols
+				)
+			}
+			
+			# plot tags on a graph
+			g00 <- g
+			for(a in colnames(m))
+			{	vals <- vertex_attr(g0,a)
+				#vals[which(!is.na(match(vals,unfrequent)))] <- VAL_OTHER	# represents all unfrequent values under an umbrella name
+				g00 <- set_vertex_attr(graph=g00, name=a, index=non.est.idx, value=rep(NA,length(non.est.idx)))
+				g00 <- set_vertex_attr(graph=g00, name=a, index=est.idx, value=vals)
+			}
+			plot.file <- file.path(plot.folder, paste0(attr.name,"_graph"))
+			tlog(6,"Plot graph in '",plot.file,"'")
+			V(g00)$label <- paste(vertex_attr(g00,name=COL_LOC_ID), get.location.names(g00),sep="_")
+			g1 <- g00; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+			custom.gplot(g=g1, col.att=attrc, cat.att=TRUE, color.isolates=TRUE, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+			g1 <- g00; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+			custom.gplot(g=g1, col.att=attrc, cat.att=TRUE, color.isolates=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
 		}
-		plot.file <- file.path(plot.folder, paste0(attr,"_graph"))
-		tlog(6,"Plot graph in '",plot.file,"'")
-		V(g00)$label <- paste(vertex_attr(g00,name=COL_LOC_ID), get.location.names(g00),sep="_")
-		g1 <- g00; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-		custom.gplot(g=g1, col.att=attrc, cat.att=TRUE, color.isolates=TRUE, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
-		g1 <- g00; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-		custom.gplot(g=g1, col.att=attrc, cat.att=TRUE, color.isolates=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
-	
+		
 		# add to matrix
 		if(!fast)
 		{	tlog(4,"Adding attribute \"",attr,"\" to data matrix")
@@ -282,6 +358,9 @@ analyze.net.attributes <- function(g, out.folder, fast)
 		g0 <- delete_vertices(graph=g, v=non.est.idx)
 		tmp <- vertex_attr(g0, attr)
 		
+		# set colors
+		cols <- retrieve.palette.num(values=tmp)$pal.cols
+		
 		# plot the attribute distribution as a histogram 
 		# (actually a barplot, for now, as the only numeric attribute is an integer)
 		tlog(6,"Bar-plotting attribute \"",attr,"\"")
@@ -293,13 +372,31 @@ analyze.net.attributes <- function(g, out.folder, fast)
 		custom.barplot(tt, 
 			text=names(tt), 
 			xlab=LONG_NAME[attr], ylab="Frequence", 
-			file=plot.file)
+			cols=cols,
+			file=plot.file
+		)
 		# record as a table
-		tt <- as.data.frame(tt)
-		colnames(tt) <- c("Value","Frequency")
+		tab <- as.data.frame(tt)
+		colnames(tab) <- c("Value","Frequency")
 		table.file <- file.path(plot.folder, paste0(attr,"_vals.csv"))
 		tlog(7,"Record data in '",table.file,"'")
-		write.csv(tt, file=table.file, row.names=FALSE)
+		write.csv(tab, file=table.file, row.names=FALSE)
+		
+		# barplot again, but without the NA values (if any)
+		if("NA" %in% names(cols) && length(tt)>1)
+		{	# remove NAs
+			tt <- tt[-which(is.na(names(tt)))]
+			cols <- cols[-which(names(cols)=="NA")]
+			# plot again
+			plot.file <- file.path(plot.folder, paste0(attr,"_bars_withoutNA"))
+			tlog(6,"Plot distribution in '",plot.file,"'")
+			custom.barplot(tt, 
+				text=names(tt), 
+				xlab=LONG_NAME[attr], ylab="Frequence", 
+				cols=cols,
+				file=plot.file
+			)
+		}
 		
 		# add to matrix
 		if(is.null(num.data))

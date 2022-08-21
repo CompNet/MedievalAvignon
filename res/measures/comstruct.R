@@ -57,7 +57,8 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 				modularity=TRUE,
 				membership=TRUE),
 		modes=c(MEAS_MODE_UNDIR, MEAS_MODE_DIR),
-		folder="edgebetw"
+		folder="edgebetw",
+		clean.name="EdgeBetweenness"
 	)
 	algos[["fastgreedy"]] <- list(
 		fun=function(g, mode) 
@@ -67,7 +68,8 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 				membership=TRUE,
 				weights=NULL),
 		modes=c(MEAS_MODE_UNDIR),
-		folder="fastgreedy"
+		folder="fastgreedy",
+		clean.name="FastGreedy"
 	)
 	algos[["infomap"]] <- list(
 		fun=function(g, mode) 
@@ -77,7 +79,8 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 				nb.trials=10,
 				modularity=TRUE),
 		modes=c(MEAS_MODE_UNDIR, MEAS_MODE_DIR),
-		folder="infomap"
+		folder="infomap",
+		clean.name="InfoMap"
 	)
 	algos[["labelprop"]] <- list(
 		fun=function(g, mode) 
@@ -86,7 +89,8 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 				initial=NULL, 
 				fixed=NULL),
 		modes=c(MEAS_MODE_UNDIR),
-		folder="labelprop"
+		folder="labelprop",
+		clean.name="LabelPropagation"
 	)
 	algos[["leadingeigen"]] <- list(
 		fun=function(g, mode) 
@@ -95,21 +99,24 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 				start=NULL,
 				options=list(maxiter=1000000)),
 		modes=c(MEAS_MODE_UNDIR),
-		folder="eigenvect"
+		folder="eigenvect",
+		clean.name="Leading Eigenvectors"
 	)
 	algos[["louvain"]] <- list(
 		fun=function(g, mode) 
 			cluster_louvain(graph=as.undirected(g),
 				weights=NULL),
 		modes=c(MEAS_MODE_UNDIR),
-		folder="louvain"
+		folder="louvain",
+		clean.name="Louvain"
 	)
 ##	algos[["spinglass"]] <- list(	# does not work with disconnected graphs
 ##		fun=function(g, mode) 
 ##			cluster_spinglass(graph=if(mode==MEAS_MODE_UNDIR) as.undirected(g) else g,
 ##				weights=NA),
 ##		modes=c(MEAS_MODE_UNDIR, MEAS_MODE_DIR),
-##		folder="spinglass"
+##		folder="spinglass",
+##		clean.name="SpinGlass"
 ##	)
 	algos[["walktrap"]] <- list(
 		fun=function(g, mode) 
@@ -120,7 +127,8 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 				modularity=TRUE,
 				membership=TRUE),
 		modes=c(MEAS_MODE_UNDIR, MEAS_MODE_DIR),
-		folder="walktrap"
+		folder="walktrap",
+		clean.name="WalkTrap"
 	)
 	
 	if(fast)
@@ -191,8 +199,10 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 				# community size distribution
 				plot.file <- file.path(coms.folder,paste0(fname,"_size_bars"))
 				tlog(6,"Plotting community size distribution in '",plot.file,"'")
-				sizes <- table(mbrs,useNA="ifany")
-				custom.barplot(sizes, text=names(sizes), xlab="Community", ylab="Size", file=plot.file)
+				mbrs2 <- paste0("C",mbrs)
+				sizes <- table(factor(mbrs2,levels=paste0("C",1:max(mbrs))), useNA="ifany")
+				cols <- retrieve.palette.cat(values=mbrs)$pal.cols
+				custom.barplot(sizes, text=names(sizes), xlab="Community", ylab="Size", file=plot.file, cols=cols)
 				
 				# export CSV with community membership
 				#if(COMPUTE)
@@ -216,16 +226,19 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 				#V(g)$label <- rep(NA, gorder(g))
 				V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
 				g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-				custom.gplot(g=g1, col.att=fname, cat.att=TRUE, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
-				custom.gplot(g=g1, col.att=fname, cat.att=TRUE, file=paste0(plot.file,"_lambert_hulls"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1, show.coms=TRUE)
+				custom.gplot(g=g1, col.att=fname, col.att.cap=algos[[a]]$clean.name, cat.att=TRUE, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+				custom.gplot(g=g1, col.att=fname, col.att.cap=algos[[a]]$clean.name, cat.att=TRUE, file=paste0(plot.file,"_lambert_hulls"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1, show.coms=TRUE)
 				#
 				g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-				custom.gplot(g=g1, col.att=fname,cat.att=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
-				custom.gplot(g=g1, col.att=fname,cat.att=TRUE, file=paste0(plot.file,"_algo_hulls"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6, show.coms=TRUE)
+				custom.gplot(g=g1, col.att=fname, col.att.cap=algos[[a]]$clean.name, cat.att=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+				custom.gplot(g=g1, col.att=fname, col.att.cap=algos[[a]]$clean.name, cat.att=TRUE, file=paste0(plot.file,"_algo_hulls"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6, show.coms=TRUE)
 				
 				# possibly assess community purity for all attributes
 				if(!fast)
-					g <- analyze.net.comstruct.attributes(g=g, coms.folder=coms.folder, membership=mbrs, fast)
+				{	att.folder <- file.path(coms.folder, "attributes")
+					dir.create(path=att.folder, showWarnings=FALSE, recursive=TRUE)
+					g <- analyze.net.comstruct.attributes(g=g, coms.folder=att.folder, membership=mbrs, fast=fast)
+				}
 				
 				# possibly process each community separately
 				if(algo.name %in% select.algos)
@@ -239,7 +252,7 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 							tlog(10,"Community too small (",size," vertices) >> we skip it")
 						else
 						{	# create subfolder
-							com.folder <- file.path(coms.folder, "_communities", com)
+							com.folder <- file.path(coms.folder, "communities", com)
 							dir.create(path=com.folder, showWarnings=FALSE, recursive=TRUE)
 							plot.file <- file.path(com.folder, "graph")
 							tlog(6,"Plotting community as graph in '",plot.file,"'")
@@ -254,7 +267,8 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 			
 							# create subgraph
 							g.com <- induced_subgraph(graph=g, vids=which(mbrs==com))
-							g.com$name <- file.path(g$name, MEAS_COMMUNITIES, mode, algos[[a]]$folder, "_communities", com)
+							g.com$type <- g$type
+							g.com$name <- file.path(g$name, MEAS_COMMUNITIES, mode, algos[[a]]$folder, "communities", com)
 							# plot only the community
 							custom.gplot(g=g.com, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
 							g1 <- g.com; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5
@@ -431,7 +445,14 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 			dir.create(path=attr.folder, showWarnings=FALSE, recursive=TRUE)
 			
 			# get values only for real-estate vertices
-			g0 <- delete_vertices(graph=g, v=non.est.idx)
+			if(attr==COL_LOC_TYPE)
+			{	mbr0 <- membership
+				g0 <- g
+			}
+			else
+			{	mbr0 <- membership[est.idx]
+				g0 <- delete_vertices(graph=g, v=non.est.idx)
+			}
 			tmp <- vertex_attr(g0, attr)
 			
 			# only NAs, nothing to do
@@ -441,15 +462,13 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 			else
 			{	# export group-wise distributions as csv
 				tlog(4,"Exporting group-wise distribution for categorical attribute \"",attr,"\"")
-				if(is.null(COLS_ATT[[attr]]))
-					tmp <- factor(tmp)
-				else
-					tmp <- factor(tmp, levels=names(COLS_ATT[[attr]]))
-				tt <- t(sapply(coms, function(i) table(tmp[membership[est.idx]==i], useNA="always"), simplify="array"))
-				colnames(tt)[which(is.na(colnames(tt)))] <- "NA"
+				cols <- retrieve.palette.cat(values=tmp, attr=attr)$pal.cols
+				tmp2 <- tmp; tmp2[is.na(tmp2)] <- "NA"
+				tt <- t(sapply(coms, function(i) table(factor(tmp2[mbr0==i], levels=names(cols)), useNA="ifany"), simplify="array"))
 				if(nrow(tt)==1 && ncol(tt)>1)
-				{	tt <- t(tt)
-					colnames(tt)[1] <- "NA"
+				{	nn <- colnames(tt)[1]
+					tt <- t(tt)
+					colnames(tt)[1] <- nn
 					rownames(tt) <- NULL
 				}
 				tab <- as.data.frame(tt)
@@ -459,50 +478,70 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 				tlog(6,"Recording CSV in '",tab.file,"'")
 				write.csv(tab, file=paste0(tab.file,".csv"), row.names=FALSE)
 				
-				# remove NA values from the table
-				tt <- tt[,-which(colnames(tt)=="NA"),drop=FALSE]
-				
-				# produce bar plot for the whole community structure
-				cols <- COLS_ATT[[attr]]
-				if(is.null(cols))
-					cols <- get.palette(val.nbr=ncol(tt))
-				for(fformat in FORMAT)
-				{	if(fformat=="pdf")
-						pdf(paste0(tab.file,".pdf"), width=25, height=25)
-					else if(fformat=="png")
-						png(paste0(tab.file,".png"), width=1024, height=1024)
-					barplot(
-						height=t(tt), 
-						beside=FALSE, 
-						names.arg=paste0("C",1:nrow(tt)), 
-						col=cols, 
-						main=NA, ylab="Frequency",
-						las=2
-					)
-					text2 <- colnames(tt)
-					idx <- which(is.na(text2))
-					if(length(idx)>0)
-						text2[idx] <- VAL_UNKNOWN
-					legend(
-						x="topleft",
-						fill=cols,
-						title=attr,
-						legend=text2
-					)
-					dev.off()
+				for(i in 1:2)
+				{	# remove NA values from the table
+					suffix <- ""
+					if(i==2 && "NA" %in% colnames(tt))
+					{	tt <- tt[,-which(colnames(tt)=="NA"),drop=FALSE]
+						cols <- cols[-which(names(cols)=="NA")]
+						suffix <- "_withoutNA"
+					}
+					#attr.name <- paste0(attr,suffix)
+					
+					# produce bar plot for the whole community structure
+					for(fformat in FORMAT)
+					{	if(fformat=="pdf")
+							pdf(paste0(tab.file,suffix,".pdf"), width=25, height=25)
+						else if(fformat=="png")
+							png(paste0(tab.file,suffix,".png"), width=1024, height=1024)
+						# main figure
+						barplot(
+							height=t(tt), 
+							beside=FALSE, 
+							names.arg=paste0("C",1:nrow(tt)), 
+							col=cols, 
+							main=NA, ylab="Frequency",
+							las=2
+						)
+						# legend in separate plot
+						if(length(cols)>17)
+						{	dev.off()
+							if(fformat=="pdf")
+								pdf(paste0(tab.file,suffix,"_legend.pdf"), width=7, height=28)
+							else if(fformat=="png")
+								png(paste0(tab.file,suffix,"_legend.png"), width=480, height=2000)
+							plot(NULL, xaxt="n", yaxt="n", bty="n", ylab="", xlab="", xlim=0:1, ylim=c(0,10))
+							legend(
+								x="topleft",
+								fill=cols,
+								title=LONG_NAME[attr],
+								legend=names(cols)
+							)
+						}
+						# legend inside the plot
+						else
+						{	legend(
+								x="topleft",
+								fill=cols,
+								title=LONG_NAME[attr],
+								legend=names(cols)
+							)
+						}
+						dev.off()
+					}
+					
+					# plot as graph with pie-charts as nodes
+					tlog(4,"Plotting group graph with the distribution of \"",attr,"\"")
+					for(c in 1:ncol(tt))
+						cg2 <- set_vertex_attr(graph=cg2, name=colnames(tt)[c], value=tt[,c])
+					plot.file <- file.path(attr.folder, paste0(attr,"_comgraph",suffix))
+					tlog(6,"Plotting in file '",plot.file,"'")
+					#V(cg2)$label <- rep(NA, gorder(cg2))
+					custom.gplot(g=cg2, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=paste0(plot.file,"_lambert",suffix), asp=1, color.isolates=TRUE)
+					cg3 <- cg2; V(cg3)$x <- V(cg2)$x2; V(cg3)$y <- V(cg2)$y2; E(cg3)$weight <- E(cg2)$weight*2; 
+					custom.gplot(g=cg3, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=paste0(plot.file,"_algo",suffix), rescale=FALSE, xlim=range(V(cg3)$x), ylim=range(V(cg3)$y), color.isolates=TRUE, min.size=15, max.size=100)
 				}
-				
-				# plot as graph with pie-charts as nodes
-				tlog(4,"Plotting group graph with the distribution of \"",attr,"\"")
-				for(c in 1:ncol(tt))
-					cg2 <- set_vertex_attr(graph=cg2, name=colnames(tt)[c], value=tt[,c])
-				plot.file <- file.path(attr.folder, paste0(attr,"_comgraph"))
-				tlog(6,"Plotting in file '",plot.file,"'")
-				#V(cg2)$label <- rep(NA, gorder(cg2))
-				custom.gplot(g=cg2, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=paste0(plot.file,"_lambert"), color.isolates=TRUE)
-				cg3 <- cg2; V(cg3)$x <- V(cg2)$x2; V(cg3)$y <- V(cg2)$y2; E(cg3)$weight <- E(cg2)$weight*2; 
-				custom.gplot(g=cg3, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(cg3)$x), ylim=range(V(cg3)$y), color.isolates=TRUE, min.size=15, max.size=100)
-				
+					
 				# compute group purity for each group
 				grp.pur.tab <- apply(tt, 1, function(row) max(row)/sum(row))
 				tab <- as.data.frame(grp.pur.tab)
@@ -531,22 +570,22 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 					vals <- c(vals, grp.pur.total, att.pur.total)
 					meas <- c(meas, "GrpPurity", "ValPurity")
 					# chi-squared test of independence (dpt if p<0.05)
-					tt <- table(tmp, membership[est.idx])
+					tt <- table(tmp, mbr0)
 					if(length(tt)==0 || length(which(apply(tt,1,function(row) any(row>0))))<3 || length(which(apply(tt,2,function(col) any(col>0))))<3)
 						chisq <- NA
 					else
-						chisq <- suppressWarnings(chisq.test(tmp, membership[est.idx], correct=FALSE))$p.value # warning=groups too small
+						chisq <- suppressWarnings(chisq.test(tmp, mbr0, correct=FALSE))$p.value # warning=groups too small
 					vals <- c(vals, chisq)
 					meas <- c(meas, "Chi2_pval")
 					# Cramér's V
 					if(all(is.na(tmp)) || length(unique(tmp))==2 || any(is.na(tmp)) && length(unique(tmp))==3)
 						cram <- NA
 					else
-						cram <- CramerV(x=tmp, y=membership[est.idx])
+						cram <- CramerV(x=tmp, y=mbr0)
 					vals <- c(vals, cram)
 					meas <- c(meas, "C_V")
 					# Goodman’s Kruskal Tau
-					tau <- GKtau(membership[est.idx], tmp)
+					tau <- GKtau(mbr0, tmp)
 					vals <- c(vals, tau$tauxy, tau$tauyx)
 					meas <- c(meas, "GK_tau_Com->Att", "GK_tau_Att->Com")
 				# record as a table
@@ -573,21 +612,27 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 			# compute values
 			attrc <- intersect(COL_TAG_SELECT[[attr]], vertex_attr_names(g))
 			m <- sapply(attrc, function(att) vertex_attr(g0, att))
+			
+			# count tag distribution
 			idx.nas <- which(apply(m,1,function(r) all(is.na(r))))	# detect individuals with only NAs
-			uvals <- sort(unique(c(m)))
+			nbr.nas <- length(idx.nas) 								# count them
+			dt <- c(m)[!is.na(c(m))]								# handles non-NA values
+			dt <- c(dt,rep(NA,nbr.nas))								# insert the appropriate number of NAs
+			# colors
+			cols <- retrieve.palette.cat(values=dt, attr=attr)$pal.cols
 			
 			# processing all values at once
 			tlog(6,"Exporting group-wise distribution for attribute-tag \"",attr,"\"")
 			all.nas <- apply(m, 1, function(row) all(is.na(row)))
 			tt <- t(sapply(coms, function(i) 
 			{	idx <- which(membership[est.idx]==i & !all.nas)
-				tmp <- factor(c(m[idx,], rep(NA, length(which(membership[est.idx]==i & all.nas)))), levels=uvals)
+				tmp <- factor(c(m[idx,], rep("NA", length(which(membership[est.idx]==i & all.nas)))), levels=names(cols))
 				table(tmp, useNA="no")
 			}))
-			colnames(tt)[which(is.na(colnames(tt)))] <- "NA"
 			if(nrow(tt)==1 && ncol(tt)>1)
-			{	tt <- t(tt)
-				colnames(tt)[1] <- "NA"
+			{	nn <- colnames(tt)[1]
+				tt <- t(tt)
+				colnames(tt)[1] <- nn
 				rownames(tt) <- NULL
 			}
 			tab <- as.data.frame(tt)
@@ -596,68 +641,70 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 			tab.file <- file.path(attr.folder, paste0(attr,"_distribution"))
 			tlog(8,"Recording CSV in '",tab.file,"'")
 			write.csv(tab, file=paste0(tab.file,".csv"), row.names=FALSE)
-			
-			# produce bar plot for the whole community structure
-			cols <- COLS_ATT[[attr]]
-			if(is.null(cols))
-				cols <- get.palette(val.nbr=ncol(tt))
-			else
-				cols <- cols[colnames(tt)]
-			for(fformat in FORMAT)
-			{	if(fformat=="pdf")
-					pdf(paste0(tab.file,".pdf"), width=25, height=25)
-				else if(fformat=="png")
-					png(paste0(tab.file,".png"), width=1024, height=1024)
-				barplot(
-					height=t(tt), 
-					beside=FALSE, 
-					names.arg=paste0("C",1:nrow(tt)), 
-					col=cols, 
-					main=NA, ylab="Frequency",
-					las=2
-				)
-				text2 <- colnames(tt)
-				idx <- which(is.na(text2))
-				if(length(idx)>0)
-					text2[idx] <- VAL_UNKNOWN
-				# legend in separate plot
-				if(length(text2)>7)
-				{	dev.off()
-					if(fformat=="pdf")
-						pdf(paste0(tab.file,"_legend.pdf"))
-					else if(fformat=="png")
-						png(paste0(tab.file,"_legend.png"))
-					plot(NULL, xaxt="n", yaxt="n", bty="n", ylab="", xlab="", xlim=0:1, ylim=0:1)
-					legend(
-						x="topleft",
-						fill=cols,
-						title=attr,
-						legend=text2
-					)
-				}
-				# legend inside the plot
-				else
-				{	legend(
-						x="topleft",
-						fill=cols,
-						title=attr,
-						legend=text2
-					)
-				}
-				dev.off()
-			}
-			
-			# plot as graph with pie-charts as nodes
-			tlog(6,"Plotting group graph with the distribution of \"",attr,"\"")
-			for(c in 1:ncol(tt))
-				cg2 <- set_vertex_attr(graph=cg2, name=colnames(tt)[c], value=tt[,c])
-			plot.file <- file.path(attr.folder, paste0(attr,"_comgraph"))
-			tlog(8,"Plotting graph in '",plot.file,"'")
-			#V(cg2)$label <- rep(NA, gorder(cg2))
-			custom.gplot(g=cg2, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=paste0(plot.file,"_lambert"), color.isolates=TRUE)
-			cg3 <- cg2; V(cg3)$x <- V(cg2)$x2; V(cg3)$y <- V(cg2)$y2; E(cg3)$weight <- E(cg2)$weight*2; 
-			custom.gplot(g=cg3, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(cg3)$x), ylim=range(V(cg3)$y), color.isolates=TRUE, min.size=15, max.size=100)
 
+			for(i in 1:2)
+			{	# remove NA values from the table
+				suffix <- ""
+				if(i==2 && "NA" %in% colnames(tt))
+				{	tt <- tt[,-which(colnames(tt)=="NA"),drop=FALSE]
+					cols <- cols[-which(names(cols)=="NA")]
+					suffix <- "_withoutNA"
+				}
+				#attr.name <- paste0(attr,suffix)
+				
+				# produce bar plot for the whole community structure
+				for(fformat in FORMAT)
+				{	if(fformat=="pdf")
+						pdf(paste0(tab.file,suffix,".pdf"), width=25, height=25)
+					else if(fformat=="png")
+						png(paste0(tab.file,suffix,".png"), width=1024, height=1024)
+					barplot(
+						height=t(tt), 
+						beside=FALSE, 
+						names.arg=paste0("C",1:nrow(tt)), 
+						col=cols, 
+						main=NA, ylab="Frequency",
+						las=2
+					)
+					# legend in separate plot
+					if(length(cols)>17)
+					{	dev.off()
+						if(fformat=="pdf")
+							pdf(paste0(tab.file,suffix,"_legend.pdf"), width=7, height=28)
+						else if(fformat=="png")
+							png(paste0(tab.file,suffix,"_legend.png"), width=480, height=2000)
+						plot(NULL, xaxt="n", yaxt="n", bty="n", ylab="", xlab="", xlim=0:1, ylim=c(0,10))
+						legend(
+							x="topleft",
+							fill=cols,
+							title=LONG_NAME[attr],
+							legend=names(cols)
+						)
+					}
+					# legend inside the plot
+					else
+					{	legend(
+							x="topleft",
+							fill=cols,
+							title=LONG_NAME[attr],
+							legend=names(cols)
+						)
+					}
+					dev.off()
+				}
+				
+				# plot as graph with pie-charts as nodes
+				tlog(6,"Plotting group graph with the distribution of \"",attr,"\"")
+				for(c in 1:ncol(tt))
+					cg2 <- set_vertex_attr(graph=cg2, name=colnames(tt)[c], value=tt[,c])
+				plot.file <- file.path(attr.folder, paste0(attr,"_comgraph",suffix))
+				tlog(8,"Plotting graph in '",plot.file,"'")
+				#V(cg2)$label <- rep(NA, gorder(cg2))
+				custom.gplot(g=cg2, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=paste0(plot.file,"_lambert"), asp=1, color.isolates=TRUE)
+				cg3 <- cg2; V(cg3)$x <- V(cg2)$x2; V(cg3)$y <- V(cg2)$y2; E(cg3)$weight <- E(cg2)$weight*2; 
+				custom.gplot(g=cg3, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(cg3)$x), ylim=range(V(cg3)$y), color.isolates=TRUE, min.size=15, max.size=100)
+			}
+				
 			# compute group purity for each group
 			grp.pur.tab <- apply(tt, 1, function(row) max(row)/sum(row))
 			tab <- as.data.frame(grp.pur.tab)
@@ -679,7 +726,7 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 			
 			# processing each value separately
 			if(!fast)
-			{	for(uval in uvals)
+			{	for(uval in names(cols))
 				{	# binarize tags
 					tmp <- apply(m, 1, function(v) uval %in% v[!is.na(v)])
 					idxt <- which(tmp)
@@ -700,8 +747,9 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 					tt <- t(sapply(coms, function(i) table(tmp[membership[est.idx]==i], useNA="always")))
 					colnames(tt)[which(is.na(colnames(tt)))] <- "NA"
 					if(nrow(tt)==1 && ncol(tt)>1)
-					{	tt <- t(tt)
-						colnames(tt)[1] <- "NA"
+					{	nn <- colnames(tt)[1]
+						tt <- t(tt)
+						colnames(tt)[1] <- nn
 						rownames(tt) <- NULL
 					}
 					tab <- as.data.frame(tt)
@@ -718,7 +766,7 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 					plot.file <- file.path(attrval.folder, paste0("comgraph"))
 					tlog(8,"Plotting graph in '",plot.file,"'")
 					#V(cg2)$label <- rep(NA, gorder(cg2))
-					custom.gplot(g=cg2, col.att=colnames(tt), col.att.cap=paste0(attr," : ",uval), size.att="size", cat.att=TRUE, file=paste0(plot.file,"_lambert"), color.isolates=TRUE)
+					custom.gplot(g=cg2, col.att=colnames(tt), col.att.cap=paste0(attr," : ",uval), size.att="size", cat.att=TRUE, file=paste0(plot.file,"_lambert"), asp=1, color.isolates=TRUE)
 					cg3 <- cg2; V(cg3)$x <- V(cg2)$x2; V(cg3)$y <- V(cg2)$y2; E(cg3)$weight <- E(cg2)$weight*2; 
 					custom.gplot(g=cg3, col.att=colnames(tt), col.att.cap=paste0(attr," : ",uval), size.att="size", cat.att=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(cg3)$x), ylim=range(V(cg3)$y), color.isolates=TRUE, min.size=15, max.size=100)
 		
@@ -750,8 +798,12 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 					vals <- c(vals, grp.pur.total, att.pur.total)
 					meas <- c(meas, "GrpPurity", "ValPurity")
 					# chi-squared test of independence (dpt if p<0.05)
-					chisq <- suppressWarnings(chisq.test(tmp, membership[est.idx], correct=FALSE))$p.value # warning=groups too small
-					vals <- c(vals, chisq)
+					if(length(unique(tmp[!is.na(tmp)]))>1)
+					{	chisq <- suppressWarnings(chisq.test(tmp, membership[est.idx], correct=FALSE))$p.value # warning=groups too small
+						vals <- c(vals, chisq)
+					}
+					else
+						vals <- c(vals, NA)
 					meas <- c(meas, "Chi2_pval")
 					# Cramér's V
 					cram <- CramerV(x=tmp, y=membership[est.idx])
@@ -807,7 +859,7 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 				# export group-wise distributions as csv
 				tlog(6,"Exporting group-wise distribution for numerical attribute \"",attr,"\"")
 				if(length(unique(att.vals[!is.na(att.vals)]))==1)
-				{	tmp<-factor(att.vals)
+				{	tmp <- factor(att.vals)
 					tt <- t(sapply(coms, function(i) table(tmp[membership[est.idx]==i], useNA="always")))
 				}
 				else	
@@ -835,21 +887,56 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 				tab <- as.data.frame(tt)
 				tab <- cbind(coms, tab)
 				colnames(tab)[1] <- "Group"
-				tab.file <- file.path(attr.folder, paste0(attr,"_distribution.csv"))
+				tab.file <- file.path(attr.folder, paste0(attr,"_distribution"))
 				tlog(8,"Recording CSV in '",tab.file,"'")
-				write.csv(tab, file=tab.file, row.names=FALSE)
+				write.csv(tab, file=paste0(tab.file,".csv"), row.names=FALSE)
 				
-				# plot as graph with pie-charts as nodes
-				tlog(6,"Plotting group graph with the distribution of \"",attr,"\"")
-				for(c in 1:ncol(tt))
-					cg2 <- set_vertex_attr(graph=cg2, name=colnames(tt)[c], value=tt[,c])
-				plot.file <- file.path(attr.folder, paste0(attr,"_comgraph"))
-				tlog(6,"Plotting graph in '",plot.file,"'")
-				#V(cg2)$label <- rep(NA, gorder(cg2))
-				custom.gplot(g=cg2, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=paste0(plot.file,"_lambert"), color.isolates=TRUE)
-				cg3 <- cg2; V(cg3)$x <- V(cg2)$x2; V(cg3)$y <- V(cg2)$y2; E(cg3)$weight <- E(cg2)$weight*2; 
-				custom.gplot(g=cg3, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(cg3)$x), ylim=range(V(cg3)$y), color.isolates=TRUE, min.size=15, max.size=100)
-
+				cols <- retrieve.palette.tag(values=tt, attr=attr)$pal.cols
+				for(i in 1:2)
+				{	# remove NA values from the table
+					suffix <- ""
+					if(i==2 && "NA" %in% colnames(tt))
+					{	tt <- tt[,-which(colnames(tt)=="NA"),drop=FALSE]
+						cols <- cols[-which(names(cols)=="NA")]
+						suffix <- "_withoutNA"
+					}
+					#attr.name <- paste0(attr,suffix)
+					
+					# produce bar plot for the whole community structure
+					for(fformat in FORMAT)
+					{	if(fformat=="pdf")
+							pdf(paste0(tab.file,suffix,".pdf"), width=25, height=25)
+						else if(fformat=="png")
+							png(paste0(tab.file,suffix,".png"), width=1024, height=1024)
+						barplot(
+							height=t(tt), 
+							beside=FALSE, 
+							names.arg=paste0("C",1:nrow(tt)), 
+							col=cols, 
+							main=NA, ylab="Frequency",
+							las=2
+						)
+						legend(
+							x="topleft",
+							fill=cols,
+							title=LONG_NAME[attr],
+							legend=names(cols)
+						)
+						dev.off()
+					}
+					
+					# plot as graph with pie-charts as nodes
+					tlog(6,"Plotting group graph with the distribution of \"",attr,"\"")
+					for(c in 1:ncol(tt))
+						cg2 <- set_vertex_attr(graph=cg2, name=colnames(tt)[c], value=tt[,c])
+					plot.file <- file.path(attr.folder, paste0(attr,"_comgraph",suffix))
+					tlog(6,"Plotting graph in '",plot.file,"'")
+					#V(cg2)$label <- rep(NA, gorder(cg2))
+					custom.gplot(g=cg2, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=paste0(plot.file,"_lambert"), asp=1, color.isolates=TRUE)
+					cg3 <- cg2; V(cg3)$x <- V(cg2)$x2; V(cg3)$y <- V(cg2)$y2; E(cg3)$weight <- E(cg2)$weight*2; 
+					custom.gplot(g=cg3, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(cg3)$x), ylim=range(V(cg3)$y), color.isolates=TRUE, min.size=15, max.size=100)
+				}
+				
 #				# compute purity for each group
 #				pur.tab <- apply(tt, 1, function(row) max(row)/sum(row))
 #				tab <- as.data.frame(pur.tab)
@@ -1111,12 +1198,12 @@ plot.comstruct.comparison <- function()
 				V(g2)$label <- paste(vertex_attr(g2,name=COL_LOC_ID), get.location.names(g2),sep="_")
 				# lambert plot
 				g2 <- delete_edge_attr(g2, LK_TYPE); g2 <- simplify(g2)
-				custom.gplot(g=g2, col.att="Coms", cat.att=TRUE, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
-				custom.gplot(g=g2, col.att="Coms", cat.att=TRUE, file=paste0(plot.file,"_lambert_hulls"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1, show.coms=TRUE)
+				custom.gplot(g=g2, col.att="Coms", col.att.cap="Comparison", cat.att=TRUE, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+				custom.gplot(g=g2, col.att="Coms", col.att.cap="Comparison", cat.att=TRUE, file=paste0(plot.file,"_lambert_hulls"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1, show.coms=TRUE)
 				# kk plot
 				V(g2)$x <- V(g2)$x2; V(g2)$y <- V(g2)$y2; E(g2)$weight <- 0.5
-				custom.gplot(g=g2, col.att="Coms", cat.att=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
-				custom.gplot(g=g2, col.att="Coms", cat.att=TRUE, file=paste0(plot.file,"_algo_hulls"), rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6, show.coms=TRUE)
+				custom.gplot(g=g2, col.att="Coms", col.att.cap="Comparison", cat.att=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+				custom.gplot(g=g2, col.att="Coms", col.att.cap="Comparison", cat.att=TRUE, file=paste0(plot.file,"_algo_hulls"), rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6, show.coms=TRUE)
 			}
 		}
 	}

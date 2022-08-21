@@ -94,13 +94,13 @@ analyze.net.components <- function(g, out.folder, fast)
 		#V(g)$label <- rep(NA, gorder(g))
 		V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
 		g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-		custom.gplot(g=g1, col.att=fname, cat.att=TRUE, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+		custom.gplot(g=g1, col.att=fname, col.att.cap=MEAS_LONG_NAMES[MEAS_COMPONENTS], cat.att=TRUE, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
 		g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-		custom.gplot(g=g1, col.att=fname, cat.att=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+		custom.gplot(g=g1, col.att=fname, col.att.cap=MEAS_LONG_NAMES[MEAS_COMPONENTS], cat.att=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
 		g <- set_vertex_attr(graph=g, name=fname, value=cmp$membership)
 	
 		# plot components separately
-		sep.folder <- file.path(comp.folder, "_comps")
+		sep.folder <- file.path(comp.folder, "comps")
 		dir.create(path=sep.folder, showWarnings=FALSE, recursive=TRUE)
 		for(i in idx)
 		{	# plot subgraph
@@ -124,7 +124,11 @@ analyze.net.components <- function(g, out.folder, fast)
 		}
 		
 		# assess component purity for all attributes
-		g <- analyze.net.comstruct.attributes(g, comp.folder, mbrs, fast)
+		att.folder <- file.path(comp.folder, "attributes")
+		dir.create(path=att.folder, showWarnings=FALSE, recursive=TRUE)
+		g <- analyze.net.comstruct.attributes(g=g, coms.folder=att.folder, membership=mbrs, fast=fast)
+		
+		# TODO detail the computation for each separate component? (like we already do for communities)
 	}
 	
 	# export CSV with results

@@ -175,9 +175,15 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 		vvals <- get.vertex.attribute(graph=g, name=col.att[1])
 		if(!all(!connected))
 		{	if(hasArg(col.att.cap))
-				leg.cap <- col.att.cap
+			{	leg.cap <- LONG_NAME[col.att.cap]
+				if(is.na(leg.cap))
+					leg.cap <- col.att.cap
+			}
 			else
-				leg.cap <- LONG_NAME[col.att[1]]
+			{	leg.cap <- LONG_NAME[col.att[1]]
+				if(is.na(leg.cap))
+					leg.cap <- col.att[1]
+			}
 			
 			# just one attribute
 			if(length(col.att)==1)
@@ -203,7 +209,7 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 					else
 					{	tmp <- retrieve.palette.num(values=vvals[connected])
 						vcols[connected] <- tmp$val.cols
-						leg.pal <- tmp$leg.pal
+						leg.pal <- tmp$pal.grad
 					}
 				}
 			}
@@ -213,7 +219,7 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 				# get attribute values as a matrix
 				mat <- sapply(col.att, function(att) vertex_attr(g, att))
 				
-				# several boolean attributes, to combine (like multiple tags)
+				# several tag-type attributes
 				if(!is.numeric(vvals))
 				{	are.nas <- apply(mat,1,function(r) all(is.na(r)))					# detect individuals with only NAs
 					are.pie <- apply(mat,1,function(r) length(r[!is.na(r)])>1)			# detect individuals with several non-NA values
@@ -247,7 +253,7 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 				else
 				{	#colnames(mat) <- col.att
 					are.pie <- apply(mat,1,function(r) length(which(r>0))>1)			# detect coms with several non-zero values
-					tmp <- retrieve.palette.tag(values=mat, attr=col.att[1])
+					tmp <- retrieve.palette.tag(values=mat, attr=col.att.cap)
 					lgd.col <- tmp$pal.cols
 					lgd.txt <- tmp$pal.txts
 					pie.values <- split(mat,1:nrow(mat))
@@ -527,33 +533,46 @@ custom.gplot <- function(g, paths, col.att, col.att.cap, size.att, cat.att=FALSE
 				}
 				# numerical attributes
 				else
-				{	# get plot boundaries
-					if(!rescale)
-					{	xmin <- par("usr")[1]
-						xmax <- par("usr")[2]
-						ymin <- par("usr")[3] + 0.25
-						ymax <- par("usr")[4]
+				{	if(length(leg.pal)==1)
+					{	lgd.txt <- vvals[connected & !is.infinite(vvals)][1]
+						legend(
+							title=leg.cap,			# title of the legend box
+							x="bottomleft",			# position
+							legend=lgd.txt,			# text of the legend
+							fill=leg.pal,			# color of the nodes
+							bty="n",				# no box around the legend
+							cex=0.8					# size of the text in the legend
+						)
 					}
 					else
-					{	xmin <- -1.25
-						ymin <- -1
+					{	# get plot boundaries
+						if(!rescale)
+						{	xmin <- par("usr")[1]
+							xmax <- par("usr")[2]
+							ymin <- par("usr")[3] + 0.25
+							ymax <- par("usr")[4]
+						}
+						else
+						{	xmin <- -1.25
+							ymin <- -1
+						}
+						# 
+						width <- 0.05
+						height <- 0.3
+						x1 <- xmin
+						x2 <- x1 + width
+						y2 <- ymin
+						y1 <- y2 + height
+						leg.loc <- cbind(x=c(x1, x2, x2, x1), y=c(y1, y1, y2, y2))
+						legend.gradient(
+							pnts=leg.loc,
+							cols=leg.pal,
+							#limits=format(range(vvals[connected],na.rm=TRUE), digits=2, nsmall=2),	# pb: uses scientific notation when numbers too small
+							limits=sprintf("%.2f", range(vvals[connected & !is.infinite(vvals)],na.rm=TRUE)),
+							title=leg.cap, 
+							cex=0.8
+						)
 					}
-					# 
-					width <- 0.05
-					height <- 0.3
-					x1 <- xmin
-					x2 <- x1 + width
-					y2 <- ymin
-					y1 <- y2 + height
-					leg.loc <- cbind(x=c(x1, x2, x2, x1), y=c(y1, y1, y2, y2))
-					legend.gradient(
-						pnts=leg.loc,
-						cols=leg.pal,
-						#limits=format(range(vvals[connected],na.rm=TRUE), digits=2, nsmall=2),	# pb: uses scientific notation when numbers too small
-						limits=sprintf("%.2f", range(vvals[connected & !is.infinite(vvals)],na.rm=TRUE)),
-						title=leg.cap, 
-						cex=0.8
-					)
 				}
 			}
 		}
@@ -672,7 +691,7 @@ custom.barplot <- function(vals, text, xlab, ylab, file, cols=NA, ...)
 			barplot(
 				height=vals,				# data
 				names.arg=text,				# bar names
-				col=cols,					# bar color
+				col=cols,					# bar colors
 				main=NA,					# no main title
 				xlab=if(wide) NA else xlab,	# x-axis label
 				ylab=ylab,					# y-axis label

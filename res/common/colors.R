@@ -150,6 +150,7 @@ CAT_COLORS_32 <- c(	# glasbey.colors(32) from package Polychrome
 	"#004CFF"
 )
 
+########
 COLS_ATT <- list()
 # colors for normalized component
 COLS_ATT[[COL_EST_COMP_NORM1]] <- c(
@@ -287,7 +288,7 @@ get.palette <- function(val.nbr)
 retrieve.palette.cat <- function(values, attr=NA)
 {	# get value names
 	vals <- values[!is.na(values) & values!=VAL_OTHER]
-	if(any(is.na(as.integer(vals))))
+	if(is.logical(vals) || any(is.na(suppressWarnings(as.integer(vals)))))
 		lv <- as.character(levels(factor(vals)))
 	else
 		lv <- as.character(levels(factor(as.integer(vals))))
@@ -315,8 +316,19 @@ retrieve.palette.cat <- function(values, attr=NA)
 	
 	# possibly handle "Other" values
 	if(any(values[!is.na(values)]==VAL_OTHER))
-	{	pal.cols <- c(pal.cols, COLOR_OTHERS)
+	{	# update palette
+		pal.cols <- c(pal.cols, COLOR_OTHERS)
 		pal.txts <- c(pal.txts, VAL_OTHER)
+		
+		# possibly remove empty values
+		vals <- values; vals[is.na(vals)] <- "NA"
+		vals <- factor(vals, levels=pal.txts)
+		tt <- table(vals)
+		idx <- which(tt==0)
+		if(length(idx)>0)
+		{	pal.cols <- pal.cols[-idx]
+			pal.txts <- pal.txts[-idx]
+		}
 	}
 	
 	# add names to colors
@@ -350,30 +362,44 @@ retrieve.palette.cat <- function(values, attr=NA)
 #          data matrix.
 #############################################################
 retrieve.palette.tag <- function(values, attr=NA)
-{	# possibly remove "Other" column (re-inserted later)
+{	# possibly remove "NA" column (re-inserted later)
+	nas <- NA
+	col <- which(colnames(values)=="NA" | is.na(colnames(values)))
+	if(length(col)>0)
+	{	nas <- values[,col]
+		values <- values[,-col,drop=FALSE]
+	}
+	
+	# possibly remove "Other" column (re-inserted later)
 	others <- NA
 	if(VAL_OTHER %in% colnames(values))
 	{	others <- values[,VAL_OTHER]
-		values <- values[,-which(colnames(values)==VAL_OTHER)]
+		values <- values[,-which(colnames(values)==VAL_OTHER),drop=FALSE]
 	}
+	
 	# get value names
 	pal.txts <- colnames(values)
 	
-	# try to use predefined palette
+	# if no attribute: must set palette later
 	if(is.na(attr))
 		pal.cols <- NULL
+	# otherwise, check whether attribute is numerical
+	else if(attr %in% COL_NUM)
+		pal.cols <- viridis(ncol(values),direction=-1)
+	# otherwise, use palette predefined for the categorical attribute
 	else
 		pal.cols <- COLS_ATT[[attr]]
 	
-	# if no predefined palette, build one
+	# if no palette as of now, build one
 	if(is.null(pal.cols))
 		pal.cols <- get.palette(val.nbr=length(pal.txts))
-	else
+	# otherwise, if categorical attribute: check values 
+	else if(!(attr %in% COL_NUM))
 	{	# if additional values in the data: problem
 		superfluous <- setdiff(pal.txts,names(pal.cols))
 		if(length(superfluous)>0)
 			stop("Superfluous values in the matrix: ",paste0(superfluous,collapse=", "))
-		# if values missing from the data: add empty columns
+		# if values missing from the data: add empty columns (provided there is no "Other" value)
 		missing <- setdiff(names(pal.cols), pal.txts)
 		if(length(missing)>0 && all(is.na(others)))
 		{	tmp <- matrix(0, nrow=nrow(values), ncol=length(missing))
@@ -383,13 +409,17 @@ retrieve.palette.tag <- function(values, attr=NA)
 		# sort the data matrix columns to match the predefined palette
 		pal.txts <- intersect(names(pal.cols), pal.txts)
 		pal.cols <- pal.cols[pal.txts]
-		values <- values[,pal.txts]
+		values <- values[,pal.txts,drop=FALSE]
 	}
 	
 	# possibly handle NA values
-	if(any(apply(values,1,function(r) all(r==0))))
+	if(any(apply(values,1,function(r) all(r==0))) || !all(is.na(nas)))
 	{	pal.cols <- c(pal.cols, COLOR_NA)
 		pal.txts <- c(pal.txts, "NA")
+		if(!all(is.na(nas)))
+		{	values <- cbind(values, nas)
+			colnames(values)[ncol(values)] <- "NA"
+		}
 	}
 	
 	# possibly handle "Other" values
@@ -435,7 +465,11 @@ retrieve.palette.num <- function(values)
 	#if(length(unique(values))==1)			# does not work when values are too close
 	if(isTRUE(all.equal(values[finite],		# more efficient way to compare close values
 					rep(values[finite][1],length(values[finite])))))
-		val.cols[finite] <- "YELLOW"
+	{	val.cols[finite] <- "YELLOW"
+		pal.grad <- "YELLOW"
+		pal.cols <- pal.grad
+		pal.vals <- unique(values[finite])[1]
+	}
 	# several distinct values
 	else
 	{	fine <- 500 						# granularity of the color gradient
@@ -443,10 +477,20 @@ retrieve.palette.num <- function(values)
 		#val.cols[finite] <- pal(fine)[as.numeric(cut(values[finite],breaks=fine))]
 		#leg.pal <- pal(25)
 		val.cols[finite] <- viridis(fine,direction=-1)[as.numeric(cut(values[finite],breaks=fine))]
-		leg.pal <- viridis(25,direction=-1)
+		pal.grad <- viridis(25,direction=-1)
+		pal.vals <- sort(unique(values[finite]))
+		pal.cols <- val.cols[match(pal.vals,values)]
+	}
+	names(pal.cols) <- as.character(pal.vals)
+	
+	# handle NA values
+	if(any(nas))
+	{	pal.vals <- c(pal.vals,NA)
+		pal.cols <- c(pal.cols,COLOR_NA)
+		names(pal.cols)[length(pal.cols)] <- "NA"
 	}
 	
-	res <- list(leg.pal=leg.pal, val.cols=val.cols)
+	res <- list(pal.cols=pal.cols, pal.vals=pal.vals, val.cols=val.cols, pal.grad=pal.grad)
 	return(res)
 }
 

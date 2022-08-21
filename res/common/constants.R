@@ -459,42 +459,80 @@ VAL_UNKNOWN <- "Unknown"
 # long names
 LONG_NAME <- c()
 LONG_NAME[COL_PERS_ID] <- "Person ID"
+LONG_NAME[paste0("Own_",COL_PERS_ID)] <- LONG_NAME[COL_PERS_ID]
 LONG_NAME[COL_PERS_MENTION] <- "Mention"
+LONG_NAME[paste0("Own_",COL_PERS_MENTION)] <- LONG_NAME[COL_PERS_MENTION]
 LONG_NAME[COL_PERS_NAME_FULL_LAT] <- "Full name (translated)"
+LONG_NAME[paste0("Own_",COL_PERS_NAME_FULL_LAT)] <- LONG_NAME[COL_PERS_NAME_FULL_LAT]
 LONG_NAME[COL_PERS_NAME_FULL_NORM] <- "Full name (normalized)"
+LONG_NAME[paste0("Own_",COL_PERS_NAME_FULL_NORM)] <- LONG_NAME[COL_PERS_NAME_FULL_NORM]
 LONG_NAME[COL_PERS_NAME_FIRST] <- "Firstname"
+LONG_NAME[paste0("Own_",COL_PERS_NAME_FIRST)] <- LONG_NAME[COL_PERS_NAME_FIRST]
 LONG_NAME[COL_PERS_NAME_LAST] <- "Lastname"
+LONG_NAME[paste0("Own_",COL_PERS_NAME_LAST)] <- LONG_NAME[COL_PERS_NAME_LAST]
 LONG_NAME[COL_PERS_NAME_NICK] <- "Nickname"
+LONG_NAME[paste0("Own_",COL_PERS_NAME_NICK)] <- LONG_NAME[COL_PERS_NAME_NICK]
 LONG_NAME[COL_PERS_NAME_TYPE] <- "Name type"
+LONG_NAME[paste0("Own_",COL_PERS_NAME_TYPE)] <- LONG_NAME[COL_PERS_NAME_TYPE]
 LONG_NAME[COL_PERS_GENDER] <- "Gender"
+LONG_NAME[paste0("Own_",COL_PERS_GENDER)] <- LONG_NAME[COL_PERS_GENDER]
 LONG_NAME[COL_PERS_IDENTIFICATION] <- "Identification"
+LONG_NAME[paste0("Own_",COL_PERS_IDENTIFICATION)] <- LONG_NAME[COL_PERS_IDENTIFICATION]
 LONG_NAME[COL_PERS_RESIDENCE] <- "Residence"
+LONG_NAME[paste0("Own_",COL_PERS_RESIDENCE)] <- LONG_NAME[COL_PERS_RESIDENCE]
 LONG_NAME[COL_PERS_TITLE_LAT1] <- "Title 1 (original)"
+LONG_NAME[paste0("Own_",COL_PERS_TITLE_LAT1)] <- LONG_NAME[COL_PERS_TITLE_LAT1]
 LONG_NAME[COL_PERS_TITLE_FRE1] <- "Title 1 (translated)"
+LONG_NAME[paste0("Own_",COL_PERS_TITLE_FRE1)] <- LONG_NAME[COL_PERS_TITLE_FRE1]
 LONG_NAME[COL_PERS_TITLE_NORM1] <- "Title 1 (normalized)"
+LONG_NAME[paste0("Own_",COL_PERS_TITLE_NORM1)] <- LONG_NAME[COL_PERS_TITLE_NORM1]
 LONG_NAME[COL_PERS_TITLE_LAT2] <- "Title 2 (original)"
+LONG_NAME[paste0("Own_",COL_PERS_TITLE_LAT2)] <- LONG_NAME[COL_PERS_TITLE_LAT2]
 LONG_NAME[COL_PERS_TITLE_FRE2] <- "Title 2 (translated)"
+LONG_NAME[paste0("Own_",COL_PERS_TITLE_FRE2)] <- LONG_NAME[COL_PERS_TITLE_FRE2]
 LONG_NAME[COL_PERS_TITLE_NORM2] <- "Title 2 (normalized)"
+LONG_NAME[paste0("Own_",COL_PERS_TITLE_NORM2)] <- LONG_NAME[COL_PERS_TITLE_NORM2]
 LONG_NAME[COL_PERS_OCC_LAT1] <- "Occupation 1 (original)"
+LONG_NAME[paste0("Own_",COL_PERS_OCC_LAT1)] <- LONG_NAME[COL_PERS_OCC_LAT1]
 LONG_NAME[COL_PERS_OCC_FRE1] <- "Occupation 1 (translated)"
+LONG_NAME[paste0("Own_",COL_PERS_OCC_FRE1)] <- LONG_NAME[COL_PERS_OCC_FRE1]
 LONG_NAME[COL_PERS_OCC_NORM1] <- "Occupation 1 (normalized)"
+LONG_NAME[paste0("Own_",COL_PERS_OCC_NORM1)] <- LONG_NAME[COL_PERS_OCC_NORM1]
 LONG_NAME[COL_PERS_OCC_LAT2] <- "Occupation 2 (original)"
+LONG_NAME[paste0("Own_",COL_PERS_OCC_LAT2)] <- LONG_NAME[COL_PERS_OCC_LAT2]
 LONG_NAME[COL_PERS_OCC_FRE2] <- "Occupation 2 (translated)"
+LONG_NAME[paste0("Own_",COL_PERS_OCC_FRE2)] <- LONG_NAME[COL_PERS_OCC_FRE2]
 LONG_NAME[COL_PERS_OCC_NORM2] <- "Occupation 2 (normalized)"
+LONG_NAME[paste0("Own_",COL_PERS_OCC_NORM2)] <- LONG_NAME[COL_PERS_OCC_NORM2]
 LONG_NAME[COL_PERS_OCC_CAT] <- "Occupation category"
+LONG_NAME[paste0("Own_",COL_PERS_OCC_CAT)] <- LONG_NAME[COL_PERS_OCC_CAT]
 LONG_NAME[COL_PERS_OCC_THEME] <- "Occupation theme"
+LONG_NAME[paste0("Own_",COL_PERS_OCC_THEME)] <- LONG_NAME[COL_PERS_OCC_THEME]
 LONG_NAME[COL_PERS_ECCL_LAT] <- "Ecclesiastical office (original)"
+LONG_NAME[paste0("Own_",COL_PERS_ECCL_LAT)] <- LONG_NAME[COL_PERS_ECCL_LAT]
 LONG_NAME[COL_PERS_ECCL_FRE] <- "Ecclesiastical office (translated)"
+LONG_NAME[paste0("Own_",COL_PERS_ECCL_FRE)] <- LONG_NAME[COL_PERS_ECCL_FRE]
 LONG_NAME[COL_PERS_ECCL_NORM] <- "Ecclesiastical office (normalized)"
+LONG_NAME[paste0("Own_",COL_PERS_ECCL_NORM)] <- LONG_NAME[COL_PERS_ECCL_NORM]
 LONG_NAME[COL_PERS_HEALTH_LAT] <- "Health (original)"
+LONG_NAME[paste0("Own_",COL_PERS_HEALTH_LAT)] <- LONG_NAME[COL_PERS_HEALTH_LAT]
 LONG_NAME[COL_PERS_HEALTH_FRE] <- "Health (translated)"
+LONG_NAME[paste0("Own_",COL_PERS_HEALTH_FRE)] <- LONG_NAME[COL_PERS_HEALTH_FRE]
 LONG_NAME[COL_PERS_CITY_LAT] <- "Home city (original)"
+LONG_NAME[paste0("Own_",COL_PERS_CITY_LAT)] <- LONG_NAME[COL_PERS_CITY_LAT]
 LONG_NAME[COL_PERS_CITY_FRE] <- "Home city (translated)"
+LONG_NAME[paste0("Own_",COL_PERS_CITY_FRE)] <- LONG_NAME[COL_PERS_CITY_FRE]
 LONG_NAME[COL_PERS_DIOC_LAT] <- "Diocese (original)"
+LONG_NAME[paste0("Own_",COL_PERS_DIOC_LAT)] <- LONG_NAME[COL_PERS_DIOC_LAT]
 LONG_NAME[COL_PERS_DIOC_FRE] <- "Diocese (translated)"
+LONG_NAME[paste0("Own_",COL_PERS_DIOC_FRE)] <- LONG_NAME[COL_PERS_DIOC_FRE]
 LONG_NAME[COL_PERS_STATUS_LAT] <- "Status (original)"
+LONG_NAME[paste0("Own_",COL_PERS_STATUS_LAT)] <- LONG_NAME[COL_PERS_STATUS_LAT]
 LONG_NAME[COL_PERS_STATUS_FRE] <- "Status (translated)"
+LONG_NAME[paste0("Own_",COL_PERS_STATUS_FRE)] <- LONG_NAME[COL_PERS_STATUS_FRE]
 LONG_NAME[COL_PERS_STATUS_NORM] <- "Statut (normalized)"
+LONG_NAME[paste0("Own_",COL_PERS_STATUS_NORM)] <- LONG_NAME[COL_PERS_STATUS_NORM]
+#
 LONG_NAME[COL_SOC_ID] <- "Social link ID"
 LONG_NAME[COL_SOC_SRC] <- "Source person ID"
 LONG_NAME[COL_SOC_TGT] <- "Target person ID"
@@ -512,6 +550,7 @@ LONG_NAME[COL_LOC_INTER_Y] <- "Interpolated longitude (possibly)"
 LONG_NAME[COL_LOC_INTER] <- "Interpolated coordinates"
 LONG_NAME[COL_LOC_ALGO_X] <- "Layout x coordinate"
 LONG_NAME[COL_LOC_ALGO_Y] <- "Layout y coordinate"
+#
 LONG_NAME[COL_EST_ID] <- "Estate ID"
 LONG_NAME[COL_EST_AREA_ID] <- "Area ID"
 LONG_NAME[COL_EST_STREET_ID] <- "Street ID"
@@ -519,39 +558,49 @@ LONG_NAME[COL_EST_VILLAGE_ID] <- "Village ID"
 LONG_NAME[COL_EST_FEE_ID] <- "Fee ID"
 LONG_NAME[COL_EST_LORDSHIP_ID] <- "Lordship ID"
 LONG_NAME[COL_EST_DECLARATION_ID] <- "Declaration ID"
-LONG_NAME[COL_EST_DECLARED] <- "Declared"
+LONG_NAME[COL_EST_DECLARED] <- "Declaration status"
 LONG_NAME[COL_EST_TYPE_LAT] <- "Estate type (original)"
 LONG_NAME[COL_EST_TYPE_FRE] <- "Estate type (translated)"
 LONG_NAME[COL_EST_QUALIF_LAT] <- "Estate qualification (original)"
 LONG_NAME[COL_EST_QUALIF_NORM] <- "Estate qualification (normalized)"
 LONG_NAME[COL_EST_DETAIL] <- "Estate detail"
 LONG_NAME[COL_EST_MEASURE] <- "Estate mesure"
+LONG_NAME[COL_EST_MENTION] <- "Earliest mention (year)"
 LONG_NAME[COL_EST_MATERIALS] <- "Estate materials"
 LONG_NAME[COL_EST_GEOMETRY] <- "Estate geom"
+LONG_NAME[COL_EST_POSITION] <- "Wall-wise position"
 LONG_NAME[COL_EST_COMP_LAB1] <- "Estate component 1"
+LONG_NAME[COL_EST_COMP_NORM1] <- "Estate component 1 (normalized)"
 LONG_NAME[COL_EST_COMP_NBR1] <- "Estate component 1 number"
 LONG_NAME[COL_EST_COMP_TYPE1] <- "Estate component 1 type"
 LONG_NAME[COL_EST_COMP_TYPE_S1] <- "Estate component 1 simple type"
 LONG_NAME[COL_EST_COMP_LAB2] <- "Estate component 2"
+LONG_NAME[COL_EST_COMP_NORM2] <- "Estate component 2 (normalized)"
 LONG_NAME[COL_EST_COMP_NBR2] <- "Estate component 2 number"
 LONG_NAME[COL_EST_COMP_TYPE2] <- "Estate component 2 type"
 LONG_NAME[COL_EST_COMP_TYPE_S2] <- "Estate component 2 simple type"
 LONG_NAME[COL_EST_COMP_LAB3] <- "Estate component 3"
+LONG_NAME[COL_EST_COMP_NORM3] <- "Estate component 3 (normalized)"
 LONG_NAME[COL_EST_COMP_TYPE3] <- "Estate component 3 type"
 LONG_NAME[COL_EST_COMP_TYPE_S3] <- "Estate component 3 simple type"
 LONG_NAME[COL_EST_COMP_LAB4] <- "Estate component 4"
+LONG_NAME[COL_EST_COMP_NORM4] <- "Estate component 4 (normalized)"
 LONG_NAME[COL_EST_COMP_TYPE4] <- "Estate component 4 type"
 LONG_NAME[COL_EST_COMP_TYPE_S4] <- "Estate component 4 simple type"
 LONG_NAME[COL_EST_COMP_LAB5] <- "Estate component 5"
+LONG_NAME[COL_EST_COMP_NORM5] <- "Estate component 5 (normalized)"
 LONG_NAME[COL_EST_COMP_TYPE5] <- "Estate component 5 type"
 LONG_NAME[COL_EST_COMP_TYPE_S5] <- "Estate component 5 simple type"
 LONG_NAME[COL_EST_COMP_LAB6] <- "Estate component 6"
+LONG_NAME[COL_EST_COMP_NORM6] <- "Estate component 6 (normalized)"
 LONG_NAME[COL_EST_COMP_TYPE6] <- "Estate component 6 type"
 LONG_NAME[COL_EST_COMP_TYPE_S6] <- "Estate component 6 simple type"
+#
 LONG_NAME[COL_FIX_ID] <- "Fix ID"
 LONG_NAME[COL_FIX_TYPE] <- "Type"
 LONG_NAME[COL_FIX_NAME] <- "Name"
 LONG_NAME[COL_FIX_GEOMETRY] <- "Geometry"
+#
 LONG_NAME[COL_EDIF_ID] <- "ID"
 LONG_NAME[COL_EDIF_GEOMETRY] <- "Geometry"
 LONG_NAME[COL_EDIF_TYPE] <- "Type"
@@ -565,6 +614,7 @@ LONG_NAME[COL_EDIF_BIBLIO] <- "Biblio"
 LONG_NAME[COL_EDIF_DATE_DESTR] <- "Destruction date"
 LONG_NAME[COL_EDIF_ID_SAVE] <- "Save ID"
 LONG_NAME[COL_EDIF_LOC] <- "Localization"
+#
 LONG_NAME[COL_VILG_ID] <- "ID"
 LONG_NAME[COL_VILG_NAME] <- "Name"
 LONG_NAME[COL_VILG_GEOMETRY] <- "Geometry"
@@ -574,6 +624,7 @@ LONG_NAME[COL_VILG_TYPE] <- "Type"
 LONG_NAME[COL_VILG_ID_SAVE] <- "Save ID"
 LONG_NAME[COL_VILG_DATE_FRST_OCC] <- "First occurrence date"
 LONG_NAME[COL_VILG_DATE_CREATED] <- "Creation date"
+#
 LONG_NAME[COL_CARD_ID] <- "ID"
 LONG_NAME[COL_CARD_GEOMETRY] <- "Geometry"
 LONG_NAME[COL_CARD_NAME] <- "Name"
@@ -583,6 +634,7 @@ LONG_NAME[COL_CARD_LABEL_Y] <- "Y label"
 LONG_NAME[COL_CARD_LABEL_ANGLE] <- "Angle label"
 LONG_NAME[COL_CARD_TYPE] <- "Type"
 LONG_NAME[COL_CARD_ID_SAVE] <- "Save ID"
+#
 LONG_NAME[COL_GATE_ID] <- "ID"
 LONG_NAME[COL_GATE_NAME_LAT] <- "Name (original)"
 LONG_NAME[COL_GATE_NAME_FRE] <- "Name"
@@ -598,12 +650,14 @@ LONG_NAME[COL_GATE_DATE_DESTR1] <- "Destruction date #1"
 LONG_NAME[COL_GATE_DATE_BUILD_START2] <- "Construction start date #2"
 LONG_NAME[COL_GATE_DATE_BUILD_END2] <- "Construction end date #2"
 LONG_NAME[COL_GATE_DATE_DESTR2] <- "Destruction date #2"
+#
 LONG_NAME[COL_AREA_ID] <- "Area ID"
 LONG_NAME[COL_AREA_NAME_LAT] <- "Name"
 LONG_NAME[COL_AREA_NAME_FRE] <- "Name (translated)"
 LONG_NAME[COL_AREA_SURF] <- "Area"
 LONG_NAME[COL_AREA_PERIM] <- "Perimeter"
 LONG_NAME[COL_AREA_GEOMETRY] <- "Geometry"
+#
 LONG_NAME[COL_WALL_ID] <- "ID"
 LONG_NAME[COL_WALL_GEOMETRY] <- "Geometry"
 LONG_NAME[COL_WALL_NAME_LAT] <- "Name (original)"
@@ -617,6 +671,7 @@ LONG_NAME[COL_WALL_DATE_DESTR1] <- "Destruction date #1"
 LONG_NAME[COL_WALL_DATE_BUILD_START2] <- "Construction start date #2"
 LONG_NAME[COL_WALL_DATE_BUILD_END2] <- "Construction end date #2"
 LONG_NAME[COL_WALL_DATE_DESTR2] <- "Destruction date #2"
+#
 LONG_NAME[COL_LDMRK_ID] <- "ID"
 LONG_NAME[COL_LDMRK_GEOMETRY] <- "Geometry"
 LONG_NAME[COL_LDMRK_TYPE] <- "Type"
@@ -627,6 +682,7 @@ LONG_NAME[COL_LDMRK_SRC] <- "Sources"
 LONG_NAME[COL_LDMRK_BIBLIO] <- "Biblio"
 LONG_NAME[COL_LDMRK_DATE] <- "Date"
 LONG_NAME[COL_LDMRK_ID_SAVE] <- "Save ID"
+#
 LONG_NAME[COL_STREET_ID] <- "ID"
 LONG_NAME[COL_STREET_NAME] <- "Name"
 LONG_NAME[COL_STREET_NAME_CURR] <- "Name (current)"
@@ -634,6 +690,7 @@ LONG_NAME[COL_STREET_GEOMETRY] <- "Geometry"
 LONG_NAME[COL_STREET_LENGTH] <- "Length"
 LONG_NAME[COL_STREET_TYPE] <- "Type"
 LONG_NAME[COL_STREET_LOC] <- "Location details"
+#
 LONG_NAME[COL_OWN_ID] <- "Ownership ID"
 LONG_NAME[COL_OWN_PERS_ID] <- "Owner ID"
 LONG_NAME[COL_OWN_EST_ID] <- "Estate ID"
@@ -642,6 +699,7 @@ LONG_NAME[COL_OWN_DATE2] <- "Reconnaissance date 2"
 LONG_NAME[COL_OWN_INHER_ORDER] <- "Inheritance order"
 LONG_NAME[COL_OWN_MEANS] <- "Acquisition means"
 LONG_NAME[COL_OWN_SAFE] <- "Safety date"
+#
 LONG_NAME[COL_FEE_ID] <- "Fee ID"
 LONG_NAME[COL_FEE_TYPE] <- "Fee type"
 LONG_NAME[COL_FEE_CURRENCY] <- "Fee currency"
@@ -750,7 +808,19 @@ COL_CAT <- c(
 	# landmarks
 	COL_LDMRK_TYPE,
 	# streets
-	COL_STREET_TYPE
+	COL_STREET_TYPE,
+	# social
+	paste0("Own_", c(
+		COL_PERS_ID, COL_PERS_NAME_FULL_NORM,
+		COL_PERS_NAME_FIRST, COL_PERS_NAME_LAST, COL_PERS_NAME_NICK, COL_PERS_NAME_TYPE,
+		COL_PERS_GENDER, COL_PERS_IDENTIFICATION, COL_PERS_RESIDENCE,
+		COL_PERS_ECCL_NORM,
+		COL_PERS_HEALTH_FRE,
+		COL_PERS_CITY_FRE,
+		COL_PERS_DIOC_FRE, 
+		COL_PERS_OCC_CAT, COL_PERS_OCC_THEME,
+		COL_PERS_STATUS_NORM
+	))
 )
 # only those selected for the analysis
 COL_CAT_SELECT <- c(
@@ -838,8 +908,13 @@ COL_NUM <- c(
 	# landmarks
 	COL_LDMRK_DATE_DERIV, COL_LDMRK_DATE_COUV, COL_LDMRK_DATE,
 	# streets
-	COL_STREET_LENGTH
+	COL_STREET_LENGTH,
+	# social
+	paste0("Own_", c(
+		COL_PERS_MENTION
+	))
 )
+# only those selected for the analysis
 COL_NUM_SELECT <- c(
 	# social
 	COL_PERS_MENTION,
@@ -848,5 +923,7 @@ COL_NUM_SELECT <- c(
 	COL_FEE_AMOUNT_NORM1, COL_EST_MENTION,
 	COL_LOC_X, COL_LOC_Y,
 	# social
-	paste0("Own_", COL_PERS_MENTION)
+	paste0("Own_", c(
+		COL_PERS_MENTION
+	))
 )

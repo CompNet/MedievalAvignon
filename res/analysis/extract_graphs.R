@@ -2157,7 +2157,6 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #   - flat_relations_filtered
 
 # TODO
-# - analyser full graph (au moins basique) 
 # > séparer le traitement des distances (pr uniformiser entre RW vs modèle)
 #   > fait sauf la modif sur la valeur moyenne dans le plot des moyennes (binning x-axis)
 #   > puis adapter le modèle générateur pour produire les attributs de même noms, rendant ce code interopérable
@@ -2166,11 +2165,3 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #   - produire le fichier edgelist avec les id (BD) des noeuds (et les attributs des liens)
 #   - exporter la liste des noeuds avec tous les attributs dispos et aussi les coms
 #   - exporter les coms avec pureté et cie.
-
-# TODO
-# pbs:
-# - distribution taille des coms ne reprend pas les couleurs des coms
-# - les couleurs prédéfinies pr certains attributs ne sont pas respectées
-# - générer une version avec NA des graphiques ? (ds un sous-dossier)
-# - et une version avec other 
-# - le graphe du typeExterne montre une couleur différente pr chaque com
