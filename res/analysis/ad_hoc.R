@@ -107,7 +107,7 @@ extract.vertex.attributes <- function(graph.names, folder, attributes)
 		}
 
 		# record table as CSV
-		tab.file <- file.path(folder,paste0(gsub("/", "__", graph.names[i]),".csv"))
+		tab.file <- file.path(folder,paste0("vertex-attr_",gsub("/", "__", graph.names[i]),".csv"))
 		write.csv(df, file=tab.file, row.names=FALSE)
 	}
 }
@@ -141,9 +141,86 @@ export.graphs.as.edgelists <- function(graph.names, folder)
 		colnames(el) <- c("Vertex1","Vertex2","EdgeType")
 		
 		# record table as CSV
-		tab.file <- file.path(folder,paste0(gsub("/", "__", graph.names[i]),".csv"))
+		tab.file <- file.path(folder,paste0("edgelist_",gsub("/", "__", graph.names[i]),".csv"))
 		tlog(4,"Recording in file '",tab.file,"'")
 		write.csv(el, file=tab.file, row.names=FALSE)
 	}
 }
 #export.graphs.as.edgelists(graph.names=graph.types, folder=FOLDER_OUT_ANAL_EST)
+
+
+
+
+#############################################################################################
+# Compute inconsistencies in the relationships (only for NSEW relations).
+#############################################################################################
+compute.inconsistencies <- function()
+{	tlog(0,"Computing inconsistencies in the full graph, for NSEW relations")
+	
+	# load full graph
+	graph.file <- file.path(FOLDER_OUT_ANAL_EST,"whole_raw","full",paste0("graph.graphml"))
+	g <- load.graphml.file(graph.file)
+	
+	# identify NSEW relationships
+	idx <- which(E(g)$type %in% c(VAL_CONF_TYPE_NORD, VAL_CONF_TYPE_SUD, VAL_CONF_TYPE_EST, VAL_CONF_TYPE_OUEST))
+	el <- as_edgelist(graph=g, names=TRUE)[idx,]
+	types <- E(g)$type[idx]
+	
+	# conversion map
+	conv.opp <- c()
+	conv.opp[VAL_CONF_TYPE_NORD] <- VAL_CONF_TYPE_SUD
+	conv.opp[VAL_CONF_TYPE_SUD] <- VAL_CONF_TYPE_NORD
+	conv.opp[VAL_CONF_TYPE_EST] <- VAL_CONF_TYPE_OUEST
+	conv.opp[VAL_CONF_TYPE_OUEST] <- VAL_CONF_TYPE_EST
+	#
+	conv.unr <- matrix(NA, nrow=4, ncol=2)
+	rownames(conv.unr) <- c(VAL_CONF_TYPE_NORD, VAL_CONF_TYPE_SUD, VAL_CONF_TYPE_EST, VAL_CONF_TYPE_OUEST)
+	conv.unr[VAL_CONF_TYPE_NORD,] <- conv.unr[VAL_CONF_TYPE_SUD,] <- c(VAL_CONF_TYPE_EST, VAL_CONF_TYPE_OUEST)
+	conv.unr[VAL_CONF_TYPE_EST,] <- conv.unr[VAL_CONF_TYPE_OUEST,] <- c(VAL_CONF_TYPE_NORD, VAL_CONF_TYPE_SUD)
+	
+	tlog(2,"Total number of NSEW edges: ",nrow(el))
+	
+	# detect pairs of redundant relationships
+	vect.red <- rep(NA,nrow(el))
+	for(e in 1:nrow(el))
+		vect.red[e] <- length(setdiff(which(el[,1]==el[e,1] & el[,2]==el[e,2] & types==types[e]),e))
+	count.red <- sum(vect.red)/2
+	tlog(2,"Number of pairs of parallel edges connecting the same vertices with the same types: ",count.red)
+	
+	# detect pairs of inconsistent relationships
+	vect.inc <- rep(NA,nrow(el))
+	for(e in 1:nrow(el))
+		vect.inc[e] <- length(which(el[,1]==el[e,1] & el[,2]==el[e,2] & types==conv.opp[types[e]]))
+	count.inc <- sum(vect.inc)/2
+	tlog(2,"Number of pairs of parallel edges connecting the same vertices with opposed types (N vs. S, E vs.W): ",count.inc)
+	
+	# detect pairs of unrelated relationships
+	vect.unr <- rep(NA,nrow(el))
+	for(e in 1:nrow(el))
+		vect.unr[e] <- length(which(el[,1]==el[e,1] & el[,2]==el[e,2] & types %in% conv.unr[types[e]]))
+	count.unr <- sum(vect.unr)/2
+	tlog(2,"Number of pairs of parallel edges connecting the same vertices with unrelated types: ",count.unr)
+	
+	####
+	
+	# detect pairs of symmetric relationships
+	vect.sym <- rep(NA,nrow(el))
+	for(e in 1:nrow(el))
+		vect.sym[e] <- length(which(el[,1]==el[e,2] & el[,2]==el[e,1] & types==conv.opp[types[e]]))
+	count.sym <- sum(vect.sym)/2
+	tlog(2,"Number of pairs of reciprocal edges connecting the same vertices with opposed types (N vs. S, E vs.W): ",count.sym)
+	
+	# detect pairs of inconsistent relationships
+	vect.equ <- rep(NA,nrow(el))
+	for(e in 1:nrow(el))
+		vect.equ[e] <- length(which(el[,1]==el[e,2] & el[,2]==el[e,1] & types==types[e]))
+	count.equ <- sum(vect.equ)/2
+	tlog(2,"Number of pairs of reciprocal edges connecting the same vertices with the same types: ",count.equ)
+	
+	# detect pairs of unrelated relationships
+	vect.unr <- rep(NA,nrow(el))
+	for(e in 1:nrow(el))
+		vect.unr[e] <- length(which(el[,1]==el[e,2] & el[,2]==el[e,1] & types %in% conv.unr[types[e]]))
+	count.unr <- sum(vect.unr)/2
+	tlog(2,"Number of pairs of reciprocal edges connecting the same vertices with unrelated types: ",count.unr)
+}
