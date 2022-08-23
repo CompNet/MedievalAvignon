@@ -149,6 +149,41 @@ CAT_COLORS_32 <- c(	# glasbey.colors(32) from package Polychrome
 	"#93D4FF", 
 	"#004CFF"
 )
+CAT_COLORS_26_PLUS <- c(	# green.armytage.colors(26) from package Polychrome + additional colors from Margot
+	"#F0A3FF",		# amethyst 
+	"#0075DC",		# blue
+	"#993F00",		# caramel
+	"#4C005C",		# damson
+	"#191919",		# ebony
+	"#005C31",		# forest
+	"#2BCE48",		# green
+	"#FFCC99", 		# honeydew
+	"#808080",		# iron
+	"#94FFB5",		# jade
+	"#8F7C00",		# khaki
+	"#9DCC00",		# lime
+	"#C20088",		# mallow
+	"#003380",		# navy
+	"#19A405",		# orpiment
+	"#FFA8BB", 		# pink
+	"#426600",		# quagmire 
+	"#FF0010",		# red
+	"#5EF1F2",		# sky
+	"#00998F",		# turquoise
+	"#E0FF66",		# uranium
+	"#100AFF",		# violet
+	"#990000",		# wine
+	"#FFFF80", 		# xanthin
+	"#FFE100",		# yellow
+	"#FF5000",		# zinnia
+	"#9D54A8",		# violet
+	"#79AAB5",		# cyan-grey
+	"#A77E66",		# light brown
+	"#723B7f",		# depp purple
+	"#D87C48",		# orange
+	"#B7D3AB"		# pale green
+			
+)
 
 ########
 COLS_ATT <- list()
@@ -257,16 +292,19 @@ get.palette <- function(val.nbr)
 		result <- CAT_COLORS_18
 	else if(val.nbr<=length(CAT_COLORS_22))
 		result <- CAT_COLORS_22
-	else #if(val.nbr<=length(CAT_COLORS_26))
+	else if(val.nbr<=length(CAT_COLORS_26))
 		result <- CAT_COLORS_26
 #	else
 #		result <- CAT_COLORS_32
+	else
+		result <- CAT_COLORS_26_PLUS
 	
 	# adjust length
 	if(length(result)>val.nbr)
 		result <- result[1:val.nbr]
 	else if(length(result)<val.nbr)
 		result <- rep(result, length.out=val.nbr)
+	
 	return(result)
 }
 
