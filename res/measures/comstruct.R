@@ -961,7 +961,7 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 					vals <- c(vals, pval)
 					meas <- c(meas, "ANOVA_pval")
 					# eta
-					if(!is.na(fit))
+					if(!all(is.na(fit)))
 						etas <- suppressWarnings(eta_sq(fit)$etasq)	# warning=perfect fit
 					else
 						etas <- NA
