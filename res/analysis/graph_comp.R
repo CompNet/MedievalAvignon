@@ -17,8 +17,9 @@
 plot.graph.comparisons <- function(graph.names, folder)
 {	tlog(2,"Comparing graphs")
 	
-	nbr <- length(graph.names)*(length(graph.names)-1)
+	nbr <- length(graph.names)*(length(graph.names)-1)/2
 	k <- 1
+	tlog.start.loop(3,nbr,"Looping over pairs of graphs")
 	for(i in 1:(length(graph.names)-1))
 	{	# read the first graph
 		file.path <- file.path(folder, graph.names[i], FILE_GRAPH)
@@ -33,7 +34,7 @@ plot.graph.comparisons <- function(graph.names, folder)
 		for(j in (i+1):length(graph.names))
 		{	# read the second graph
 			file.path <- file.path(folder, graph.names[j], FILE_GRAPH)
-			tlog(6,"Reading graph file '",file.path,"' (",j,"/",length(graph.names)," -- ",k,"/",nbr,")")
+			tlog(6,"Reading graph file '",file.path,"' (",j,"/",length(graph.names),")")
 			g2 <- load.graphml.file(file=file.path)
 			# clean it
 			V(g2)$label <- paste(vertex_attr(g2,name=COL_LOC_ID), get.location.names(g2),sep="_")
@@ -42,6 +43,7 @@ plot.graph.comparisons <- function(graph.names, folder)
 			s2 <- grepl("split", graph.names[j], fixed=TRUE)
 			
 			# produce plots
+			tlog.loop(6,k,"Processing pair ",k,"/",nbr)
 			if(s1==s2)
 				plot.graph.comparisons.same.types(g1, g2, folder)
 			else
@@ -59,6 +61,7 @@ plot.graph.comparisons <- function(graph.names, folder)
 			k <- k + 1
 		}
 	}	
+	tlog.end.loop(3,"Loop over")
 }
 
 

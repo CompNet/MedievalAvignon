@@ -107,7 +107,7 @@ extract.vertex.attributes <- function(graph.names, folder, attributes)
 		}
 
 		# record table as CSV
-		tab.file <- file.path(folder,paste0(gsub("/", "__", graph.names[i]),".csv"))
+		tab.file <- file.path(folder,paste0("vertex-attr_",gsub("/", "__", graph.names[i]),".csv"))
 		write.csv(df, file=tab.file, row.names=FALSE)
 	}
 }
@@ -141,7 +141,7 @@ export.graphs.as.edgelists <- function(graph.names, folder)
 		colnames(el) <- c("Vertex1","Vertex2","EdgeType")
 		
 		# record table as CSV
-		tab.file <- file.path(folder,paste0(gsub("/", "__", graph.names[i]),".csv"))
+		tab.file <- file.path(folder,paste0("edgelist_",gsub("/", "__", graph.names[i]),".csv"))
 		tlog(4,"Recording in file '",tab.file,"'")
 		write.csv(el, file=tab.file, row.names=FALSE)
 	}
