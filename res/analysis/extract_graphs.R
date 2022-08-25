@@ -813,11 +813,19 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	info.all[(last+1):(last+nrow(info.street)),com.cols] <- info.street[,com.cols]
 	last <- last + nrow(info.street)
 	
-	# create new attributes based on existing ones
+	# restrict the range of certain existing attributes
+	# area
 	area.restr <- info.all[,COL_EST_AREA_ID]
 	area.restr[area.restr>7] <- NA
 	info.all <- cbind(info.all, area.restr)
 	colnames(info.all)[ncol(info.all)] <- COL_EST_AREA_ID_RESTR
+	# location
+	pos.restr <- info.all[,COL_EST_POSITION]
+	pos.restr[pos.restr=="def"] <- NA
+	pos.restr[pos.restr=="extra"] <- "Extra-muros"
+	pos.restr[pos.restr=="intra"] <- "Intra-muros"
+	info.all <- cbind(info.all, pos.restr)
+	colnames(info.all)[ncol(info.all)] <- COL_EST_POSITION_RESTR
 	
 	# load table of individuals
 	tlog(4,"Loading individual information")

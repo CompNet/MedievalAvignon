@@ -133,7 +133,7 @@ FILE_GRAPH <- "graph.graphml"
 	# ids
 	COL_EST_ID <- "idBien"							# unique id of an estate
 	COL_EST_AREA_ID <- "idQuartier"					# geographical subdivision
-	COL_EST_AREA_ID_RESTR <- "idQuartierRestr"		# geographical subdivision
+	COL_EST_AREA_ID_RESTR <- "idQuartierRestr"		# geographical subdivision narrowed to paroisses
 	COL_EST_STREET_ID <- "idRue"					# unique street id
 	COL_EST_VILLAGE_ID <- "idBourg"					# smaller geographical subdivision
 	COL_EST_FEE_ID <- "idRedevance"					# tax fees
@@ -150,6 +150,7 @@ FILE_GRAPH <- "graph.graphml"
 	COL_EST_GEOMETRY <- "geom"
 	COL_EST_MENTION <- "mention1"					# year of first mention in a text
 	COL_EST_POSITION <- "loc"						# intra- vs. extra-muros
+	COL_EST_POSITION_RESTR <- "locRestr"			# strictly intra- vs. extra-muros
 	# components
 	COL_EST_COMP_LAB1 <- "composant1"				# the estate may be constituted of several separte parts
 	COL_EST_COMP_NORM1 <- "composantN1"				# normalized component name
@@ -571,6 +572,7 @@ LONG_NAME[COL_EST_MENTION] <- "Earliest mention (year)"
 LONG_NAME[COL_EST_MATERIALS] <- "Estate materials"
 LONG_NAME[COL_EST_GEOMETRY] <- "Estate geom"
 LONG_NAME[COL_EST_POSITION] <- "Wall-wise position"
+LONG_NAME[COL_EST_POSITION_RESTR] <- "Wall-wise position (narrowed)"
 LONG_NAME[COL_EST_COMP_LAB1] <- "Estate component 1"
 LONG_NAME[COL_EST_COMP_NORM1] <- "Estate component 1 (normalized)"
 LONG_NAME[COL_EST_COMP_NBR1] <- "Estate component 1 number"
@@ -793,7 +795,8 @@ COL_CAT <- c(
 	COL_EST_QUALIF_NORM, #COL_EST_QUALIF_LAT
 	#COL_EST_DETAIL, COL_EST_MEASURE, COL_EST_MATERIALS,
 	COL_EST_DECLARED,
-	COL_EST_POSITION, COL_LOC_INTER,
+	COL_EST_POSITION, COL_EST_POSITION_RESTR,
+	COL_LOC_INTER,
 	# edifices
 	COL_EDIF_TYPE, COL_EDIF_STATUS, COL_EDIF_LOC, #COL_EDIF_SRC,
 	# villages
@@ -843,7 +846,7 @@ COL_CAT_SELECT <- c(
 	COL_LOC_TYPE, 
 	COL_EST_DECLARED,
 	COL_FEE_AMOUNT_CAT1,
-	COL_EST_POSITION,
+	COL_EST_POSITION, COL_EST_POSITION_RESTR,
 	# social
 	paste0("Own_", c(
 		COL_PERS_ID, COL_PERS_NAME_FULL_NORM,
