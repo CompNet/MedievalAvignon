@@ -160,7 +160,7 @@ g <- analyze.network(gname="split_ext/full",                    out.folder=FOLDE
 g <- analyze.network(gname="split_ext/flat_minus",              out.folder=FOLDER_OUT_ANAL_EST, fast=TRUE)
 g <- analyze.network(gname="split_ext/flat_minus_filtered",     out.folder=FOLDER_OUT_ANAL_EST, fast=TRUE)
 g <- analyze.network(gname="split_ext/flat_minus_303",          out.folder=FOLDER_OUT_ANAL_EST, fast=TRUE)
-g <- analyze.network(gname="split_ext/flat_minus_303_filtered", out.folder=FOLDER_OUT_ANAL_EST, fast=FALSE)
+g <- analyze.network(gname="split_ext/flat_minus_303_filtered", out.folder=FOLDER_OUT_ANAL_EST, fast=FALSE)	# selected network
 g <- analyze.network(gname="split_ext/flat_relations",          out.folder=FOLDER_OUT_ANAL_EST, fast=TRUE)
 g <- analyze.network(gname="split_ext/flat_relations_filtered", out.folder=FOLDER_OUT_ANAL_EST, fast=TRUE)
 #

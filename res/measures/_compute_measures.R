@@ -86,51 +86,51 @@ analyze.network <- function(gname, out.folder, fast=FALSE)
 	{	# compute attribute stats 
 		# (must be done first, before other results are added as attributes)
 		g <- analyze.net.attributes(g, out.folder, fast)
-		
-		# compute diameters, eccentricity, radius
-		g <- analyze.net.eccentricity(g, out.folder, fast)
-		
-		# compute degree
-		g <- analyze.net.degree(g, out.folder, fast)
-		
-		# compute eigencentrality
-		g <- analyze.net.eigencentrality(g, out.folder, fast)
-		
-		# compute betweenness
-		g <- analyze.net.betweenness(g, out.folder, fast)
-		
-		# compute closeness
-		g <- analyze.net.closeness(g, out.folder, fast)
-		
-		# compute harmonic closeness
-		g <- analyze.net.harmonic.closeness(g, out.folder, fast)
-		
-		# compute distances
-		g <- analyze.net.distance(g, out.folder, fast)
-		
-		# compute articulation points
-		g <- analyze.net.articulation(g, out.folder, fast)
-		
-		# detect communities
+#		
+#		# compute diameters, eccentricity, radius
+#		g <- analyze.net.eccentricity(g, out.folder, fast)
+#		
+#		# compute degree
+#		g <- analyze.net.degree(g, out.folder, fast)
+#		
+#		# compute eigencentrality
+#		g <- analyze.net.eigencentrality(g, out.folder, fast)
+#		
+#		# compute betweenness
+#		g <- analyze.net.betweenness(g, out.folder, fast)
+#		
+#		# compute closeness
+#		g <- analyze.net.closeness(g, out.folder, fast)
+#		
+#		# compute harmonic closeness
+#		g <- analyze.net.harmonic.closeness(g, out.folder, fast)
+#		
+#		# compute distances
+#		g <- analyze.net.distance(g, out.folder, fast)
+#		
+#		# compute articulation points
+#		g <- analyze.net.articulation(g, out.folder, fast)
+#		
+#		# detect communities
 		g <- analyze.net.comstruct(g, out.folder, fast)
-		
-		# compute transitivity
-		g <- analyze.net.transitivity(g, out.folder, fast)
-		
-		# compute vertex connectivity
-		g <- analyze.net.connectivity(g, out.folder, fast)
-		
-		# compute components
-		g <- analyze.net.components(g, out.folder, fast)
-
-		# correlation between component size and attributes
+#		
+#		# compute transitivity
+#		g <- analyze.net.transitivity(g, out.folder, fast)
+#		
+#		# compute vertex connectivity
+#		g <- analyze.net.connectivity(g, out.folder, fast)
+#		
+#		# compute components
+#		g <- analyze.net.components(g, out.folder, fast)
+#
+#		# correlation between component size and attributes
 		g <- analyze.net.components.corr(g, out.folder, fast)
-		
-		# compute assortativity
-		g <- analyze.net.assortativity(g, out.folder, fast)
-		
-		# compute structural similarity
-		g <- analyze.net.structsim(g, out.folder, fast)			
+#		
+#		# compute assortativity
+#		g <- analyze.net.assortativity(g, out.folder, fast)
+#		
+#		# compute structural similarity
+#		g <- analyze.net.structsim(g, out.folder, fast)			
 	}
 	
 	return(g)
