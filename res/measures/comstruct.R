@@ -235,8 +235,8 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 				custom.gplot(g=g1, col.att=fname, col.att.cap=algos[[a]]$clean.name, cat.att=TRUE, file=paste0(plot.file,"_lambert_hulls"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1, show.coms=TRUE)
 				#
 				g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-				custom.gplot(g=g1, col.att=fname, col.att.cap=algos[[a]]$clean.name, cat.att=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
-				custom.gplot(g=g1, col.att=fname, col.att.cap=algos[[a]]$clean.name, cat.att=TRUE, file=paste0(plot.file,"_algo_hulls"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6, show.coms=TRUE)
+				custom.gplot(g=g1, col.att=fname, col.att.cap=algos[[a]]$clean.name, cat.att=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
+				custom.gplot(g=g1, col.att=fname, col.att.cap=algos[[a]]$clean.name, cat.att=TRUE, file=paste0(plot.file,"_algo_hulls"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8, show.coms=TRUE)
 				
 				# compute community-related nodal measures
 				role.folder <- file.path(coms.folder, "roles")
@@ -293,7 +293,7 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 							custom.gplot(g=g1, file=paste0(plot.file,"_lambert_watermark"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
 							#
 							g1 <- g; V(g1)$watermark <- mbrs!=com;  V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; #g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-							custom.gplot(g=g1, file=paste0(plot.file,"_algo_watermark"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+							custom.gplot(g=g1, file=paste0(plot.file,"_algo_watermark"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
 			
 							# create subgraph
 							g.com <- induced_subgraph(graph=g, vids=which(mbrs==com))
@@ -302,12 +302,12 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 							# plot only the community
 							custom.gplot(g=g.com, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
 							g1 <- g.com; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5
-							custom.gplot(g=g1, file=paste0(plot.file,"_algo0"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+							custom.gplot(g=g1, file=paste0(plot.file,"_algo0"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
 							# update layout
 							layout <- layout_with_kk(g1, kkconst=5); #scale <- max(abs(layout))/7; layout <- layout/scale
 							V(g.com)$x2 <- layout[,1]; V(g.com)$y2 <- layout[,2]; 
 							g1 <- g.com; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5
-							custom.gplot(g=g1, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+							custom.gplot(g=g1, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
 							# record as graphml
 							write.graphml.file(g=g.com, file=paste0(plot.file,".graphml"))
 							
@@ -1268,8 +1268,8 @@ plot.comstruct.comparison <- function()
 				custom.gplot(g=g2, col.att="Coms", col.att.cap="Comparison", cat.att=TRUE, file=paste0(plot.file,"_lambert_hulls"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1, show.coms=TRUE)
 				# kk plot
 				V(g2)$x <- V(g2)$x2; V(g2)$y <- V(g2)$y2; E(g2)$weight <- 0.5
-				custom.gplot(g=g2, col.att="Coms", col.att.cap="Comparison", cat.att=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
-				custom.gplot(g=g2, col.att="Coms", col.att.cap="Comparison", cat.att=TRUE, file=paste0(plot.file,"_algo_hulls"), rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6, show.coms=TRUE)
+				custom.gplot(g=g2, col.att="Coms", col.att.cap="Comparison", cat.att=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
+				custom.gplot(g=g2, col.att="Coms", col.att.cap="Comparison", cat.att=TRUE, file=paste0(plot.file,"_algo_hulls"), rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8, show.coms=TRUE)
 			}
 		}
 	}

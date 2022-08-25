@@ -1672,7 +1672,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		
 		# plot using precomputed layout
 		V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2
-		custom.gplot(g=g1, file=paste0(plot.file,"_algo"), axes=FALSE, rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+		custom.gplot(g=g1, file=paste0(plot.file,"_algo"), axes=FALSE, rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
 		write.graphml.file(g=g1, file=paste0(plot.file,"_algo.graphml"))
 	}
 	
@@ -1887,7 +1887,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			tlog(8,"Plotting graph using layouting algorithm in \"",plot.file,"\"")
 			V(g2)$x <- V(g2)$x2; V(g2)$y <- V(g2)$y2
 			E(g2)$weight <- 0.5
-			custom.gplot(g=g2, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), vertex.label.cex=0.1, size.att=6, v.hl=v.hl, e.hl=e.hl)
+			custom.gplot(g=g2, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), vertex.label.cex=0.1, size.att=8, v.hl=v.hl, e.hl=e.hl)
 			#FORMAT <<- c("pdf", "png")
 		}
 		
@@ -1971,7 +1971,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #			g0 <- g1
 #			#layout <- layout_with_algo(g0, kkconst=1)
 #			#V(g0)$x <- layout[,1]; V(g0)$y <- layout[,2]; 
-#			#custom.gplot(g=g0, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g0)$x), ylim=range(V(g0)$y), vertex.label.cex=0.1, size.att=6)
+#			#custom.gplot(g=g0, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g0)$x), ylim=range(V(g0)$y), vertex.label.cex=0.1, size.att=8)
 #			write.graphml.file(g=as.undirected(g0), file=paste0(plot.file,".graphml"))
 #			# <do your magic with gephi, then record graph with new layout>
 #			# <procedure: 1) detect components and use as vertex color (largest only); 2) vertex size 50; 3) random layout; 4) standard Yifan-Hu; 5) FR layout speed=10 grav~=1; 6) manually adjust while layouting on.
@@ -1995,7 +1995,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			V(g2)$x <- layout[lay.idx,"x"]; V(g2)$y <- layout[lay.idx,"y"]
 			E(g2)$weight <- 0.5
 			#
-			custom.gplot(g=g2, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), vertex.label.cex=0.1, size.att=6)
+			custom.gplot(g=g2, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), vertex.label.cex=0.1, size.att=8)
 			#custom.gplot(g=g2)
 			write.graphml.file(g=g2, file=paste0(plot.file,".graphml"))
 			
@@ -2034,7 +2034,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 				custom.gplot(g=g1, file=plot.file, asp=1, size.att=2, vertex.label.cex=0.1)
 				write.graphml.file(g=g1, file=paste0(plot.file,".graphml"))
 				plot.file <- file.path(graph.folder, "graph_algo")
-				custom.gplot(g=g2, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), vertex.label.cex=0.1, size.att=6)
+				custom.gplot(g=g2, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), vertex.label.cex=0.1, size.att=8)
 				write.graphml.file(g=g2, file=paste0(plot.file,".graphml"))
 			}
 		}

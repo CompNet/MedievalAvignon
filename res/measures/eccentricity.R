@@ -73,7 +73,7 @@ analyze.net.eccentricity <- function(g, out.folder, fast)
 				g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
 				custom.gplot(g=g1, paths=diam.paths[[pp]], file=file.path(diameter.folder,"lambert",paste0(MEAS_DIAMETER,"_",mode,"_graph_",pp)), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
 				g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-				custom.gplot(g=g1, paths=diam.paths[[pp]], file=file.path(diameter.folder,"kk",paste0(MEAS_DIAMETER,"_",mode,"_graph_",pp)), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+				custom.gplot(g=g1, paths=diam.paths[[pp]], file=file.path(diameter.folder,"kk",paste0(MEAS_DIAMETER,"_",mode,"_graph_",pp)), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
 				
 				if(length(diam.paths[[pp]])<=20)
 				{	tlog(8,"Plotting the ",length(diam.paths[[pp]])," variants of this diameter")			
@@ -91,7 +91,7 @@ analyze.net.eccentricity <- function(g, out.folder, fast)
 							g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
 							custom.gplot(g=g1, paths=diam.paths[[pp]][[p]], file=file.path(diameter.folder,"lambert",paste0(MEAS_DIAMETER,"_",mode,"_graph_",pp,"_",q)), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
 							g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-							custom.gplot(g=g1, paths=diam.paths[[pp]][[p]], file=file.path(diameter.folder,"kk",paste0(MEAS_DIAMETER,"_",mode,"_graph_",pp,"_",q)), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+							custom.gplot(g=g1, paths=diam.paths[[pp]][[p]], file=file.path(diameter.folder,"kk",paste0(MEAS_DIAMETER,"_",mode,"_graph_",pp,"_",q)), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
 							
 							q <- q + 1
 						}
@@ -148,7 +148,7 @@ analyze.net.eccentricity <- function(g, out.folder, fast)
 		g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
 		custom.gplot(g=g1, col.att=fname, col.att.cap=MEAS_LONG_NAMES[MEAS_ECCENTRICITY], file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
 		g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-		custom.gplot(g=g1, col.att=fname, col.att.cap=MEAS_LONG_NAMES[MEAS_ECCENTRICITY], file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+		custom.gplot(g=g1, col.att=fname, col.att.cap=MEAS_LONG_NAMES[MEAS_ECCENTRICITY], file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
 		
 		# compute radius
 		tlog(2,"Computing radius: mode=",mode)
