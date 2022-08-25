@@ -17,12 +17,18 @@ MEAS_MODULARITY <- "modularity"
 MEAS_NMI <- "comsim-nmi"
 MEAS_RI <- "comsim-ri"
 MEAS_ARI <- "comsim-ari"
+MEAS_ROLE_CAT <- "role-cat"
+MEAS_ROLE_P <- "part-coef"
+MEAS_ROLE_Z <- "within-mod"
 MEAS_LONG_NAMES[MEAS_COMMUNITIES] <- "Communities"
 MEAS_LONG_NAMES[MEAS_COMMUNITY_NBR] <- "Community number"
 MEAS_LONG_NAMES[MEAS_MODULARITY] <- "Modularity"
 MEAS_LONG_NAMES[MEAS_NMI] <- "Normalized Mutual Information"
 MEAS_LONG_NAMES[MEAS_RI] <- "Rand Index"
 MEAS_LONG_NAMES[MEAS_ARI] <- "Adjusted Rand Index"
+MEAS_LONG_NAMES[MEAS_ROLE_CAT] <- "Role"
+MEAS_LONG_NAMES[MEAS_ROLE_P] <- "Participation Coefficient"
+MEAS_LONG_NAMES[MEAS_ROLE_Z] <- "Within-Module Degree"
 
 
 
@@ -206,11 +212,10 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 				
 				# export CSV with community membership
 				#if(COMPUTE)
-				{	tab.file <- file.path(coms.folder,paste0(fname,"_membership.csv"))
-					tlog(6,"Exporting community membership as CSV in '",tab.file,"'")
+				{	tlog(6,"Exporting community membership as CSV in '",com.file,"'")
 					df <- data.frame(vertex_attr(g, ND_NAME), get.names(g), mbrs)
 					colnames(df) <- c("Id","Name","Community") 
-					write.csv(df, file=tab.file, row.names=FALSE)
+					write.csv(df, file=com.file, row.names=FALSE)
 				}
 				
 				# add results to the graph (as attributes) and stats table
@@ -232,6 +237,34 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 				g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
 				custom.gplot(g=g1, col.att=fname, col.att.cap=algos[[a]]$clean.name, cat.att=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
 				custom.gplot(g=g1, col.att=fname, col.att.cap=algos[[a]]$clean.name, cat.att=TRUE, file=paste0(plot.file,"_algo_hulls"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6, show.coms=TRUE)
+				
+				# compute community-related nodal measures
+				role.folder <- file.path(coms.folder, "roles")
+				dir.create(path=role.folder, showWarnings=FALSE, recursive=TRUE)
+				role.meas <- community.role.measures(g=g, membership=mbrs)
+				# export to CSV
+				tab.file <- file.path(role.folder,paste0(fname,"_measures.csv"))
+				tlog(6,"Exporting community-related nodal measures as CSV in '",tab.file,"'")
+				df <- data.frame(vertex_attr(g, ND_NAME), get.names(g), mbrs)
+				colnames(df) <- c("Id","Name","Community") 
+				df <- cbind(df, role.meas)
+				write.csv(df, file=tab.file, row.names=FALSE)
+				# plot G&A role figure
+				plot.file <- file.path(role.folder,paste0(fname,"_points"))
+				tlog(8,"Plotting node roles as a figure in '",plot.file,"'")
+				cats <- plot.original.guimera.amaral(ga.p=df[,"P"], ga.z=df[,"z"], plot.file=plot.file)
+				# add to graph as attributes
+				g <- set_vertex_attr(graph=g, name=MEAS_ROLE_P, value=role.meas[,"P"])
+				g <- set_vertex_attr(graph=g, name=MEAS_ROLE_Z, value=role.meas[,"z"])
+				g <- set_vertex_attr(graph=g, name=MEAS_ROLE_CAT, value=cats)
+				# plot the graph with roles
+				plot.file <- file.path(role.folder,paste0(fname,"_graph"))
+				tlog(8,"Plotting node roles as a graph in '",plot.file,"'")
+				g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+				custom.gplot(g=g1, col.att=MEAS_ROLE_CAT, cat.att=TRUE, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+				#
+				g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+				custom.gplot(g=g1, col.att=MEAS_ROLE_CAT, cat.att=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
 				
 				# possibly assess community purity for all attributes
 				if(!fast)
