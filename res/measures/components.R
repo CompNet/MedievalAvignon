@@ -15,6 +15,7 @@ MEAS_COMPONENTS <- "components"
 MEAS_NBR_COMPONENTS <- "component_nbr"
 MEAS_NBR_NODES <- "node_nbr"
 MEAS_NBR_LINKS <- "link_nbr"
+MEAS_DENSITY <- "density"
 MEAS_LONG_NAMES[MEAS_COMPONENTS] <- "Components"
 MEAS_LONG_NAMES[MEAS_NBR_COMPONENTS] <- "Component number"
 MEAS_LONG_NAMES[MEAS_NBR_NODES] <- "Node number"
@@ -40,6 +41,7 @@ analyze.net.components <- function(g, out.folder, fast)
 	# numbers of nodes and edges
 	stats[paste0(MEAS_NBR_NODES), ] <- list(Value=gorder(g), Mean=NA, Stdv=NA)
 	stats[paste0(MEAS_NBR_LINKS), ] <- list(Value=gsize(g), Mean=NA, Stdv=NA)
+	stats[paste0(MEAS_DENSITY), ] <- list(Value=edge_density(g,loops=FALSE), Mean=NA, Stdv=NA)
 	
 	# retrieve the list of vertex attributes
 	nodal.atts <- list.vertex.attributes(g)

@@ -1031,6 +1031,30 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 			}			
 			tab[i,meas] <- gsize(gcom)
 			
+			# density
+			meas <- MEAS_DENSITY
+			if(!(meas %in% colnames(tab)))
+			{	tab <- cbind(tab, rep(NA,nrow(tab)))
+				colnames(tab)[ncol(tab)] <- meas
+			}
+			tab[i,meas] <- edge_density(graph=gcom, loops=FALSE)
+			
+			# average distances
+			dmeass <- c(MEAS_DISTANCE_AVG_GEODESIC, MEAS_DISTANCE_HARM_GEODESIC)
+			vals <- distances(graph=gcom, mode="all")
+			diag(vals) <- NA
+			flat.vals <- vals[upper.tri(vals,diag=FALSE)]
+			for(meas in dmeass)
+			{	if(!(meas %in% colnames(tab)))
+				{	tab <- cbind(tab, rep(NA,nrow(tab)))
+					colnames(tab)[ncol(tab)] <- meas
+				}
+				if(meas==MEAS_DISTANCE_AVG_GEODESIC)
+					tab[i,meas] <- mean(flat.vals[!is.infinite(flat.vals)], na.rm=TRUE)
+				else if(meas==MEAS_DISTANCE_HARM_GEODESIC)
+					tab[i,meas] <- 1/mean(1/flat.vals[flat.vals>0], na.rm=TRUE)
+			}
+			
 #			modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
 			modes <- c(MEAS_MODE_UNDIR)
 			for(mode in modes)
@@ -1108,7 +1132,7 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 			if(!(meas %in% colnames(tab)))
 			{	tab <- cbind(tab, rep(NA,nrow(tab)))
 				colnames(tab)[ncol(tab)] <- meas
-			}			
+			}
 			idx <- which(membership==com)
 			posx <- vertex_attr(graph=g, name=COL_LOC_X, index=idx)
 			width <- max(posx,na.rm=TRUE) - min(posx,na.rm=TRUE)
@@ -1116,7 +1140,15 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 			height <- max(posy,na.rm=TRUE) - min(posy,na.rm=TRUE)
 			tab[i,meas] <- width*height
 			
-			# TODO add other community-specific measures
+			# hub dominance
+			meas <- "hub_dominance"
+			if(!(meas %in% colnames(tab)))
+			{	tab <- cbind(tab, rep(NA,nrow(tab)))
+				colnames(tab)[ncol(tab)] <- meas
+			}
+			tab[i,meas] <- max(degree(g=gcom, mode="all")/(gorder(gcom)-1))
+			
+			# TODO add other community-specific measures?
 		}
 		
 		# record stat table
