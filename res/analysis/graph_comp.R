@@ -146,12 +146,12 @@ plot.graph.comparisons.same.types <- function(g1, g2, folder)
 	plot.file <- paste0(plot.file1,"_algo")
 	tlog(8,"Plotting in file '",plot.file,"'")
 	V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5
-	custom.gplot(g=g1, col.att="comparison", col.att.cap="Comparison", cat.att=TRUE, file=plot.file, rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+	custom.gplot(g=g1, col.att="comparison", col.att.cap="Comparison", cat.att=TRUE, file=plot.file, rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
 	#
 	plot.file <- paste0(plot.file2,"_algo")
 	tlog(8,"Plotting in file '",plot.file,"'")
 	V(g2)$x <- V(g2)$x2; V(g2)$y <- V(g2)$y2; E(g2)$weight <- 0.5
-	custom.gplot(g=g2, col.att="comparison", col.att.cap="Comparison", cat.att=TRUE, file=plot.file, rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+	custom.gplot(g=g2, col.att="comparison", col.att.cap="Comparison", cat.att=TRUE, file=plot.file, rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
 }
 
 
@@ -262,12 +262,12 @@ plot.graph.comparisons.diff.types <- function(g.non, g.split, folder)
 	plot.file <- paste0(plot.file.non,"_algo")
 	tlog(8,"Plotting in file '",plot.file,"'")
 	V(g.non)$x <- V(g.non)$x2; V(g.non)$y <- V(g.non)$y2; E(g.non)$weight <- 0.5
-	custom.gplot(g=g.non, col.att="comparison", col.att.cap="Comparison", cat.att=TRUE, file=plot.file, rescale=FALSE, xlim=range(V(g.non)$x), ylim=range(V(g.non)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+	custom.gplot(g=g.non, col.att="comparison", col.att.cap="Comparison", cat.att=TRUE, file=plot.file, rescale=FALSE, xlim=range(V(g.non)$x), ylim=range(V(g.non)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
 	#
 	plot.file <- paste0(plot.file.split,"_algo")
 	tlog(8,"Plotting in file '",plot.file,"'")
 	V(g.split)$x <- V(g.split)$x2; V(g.split)$y <- V(g.split)$y2; E(g.split)$weight <- 0.5
-	custom.gplot(g=g.split, col.att="comparison", col.att.cap="Comparison", cat.att=TRUE, file=plot.file, rescale=FALSE, xlim=range(V(g.split)$x), ylim=range(V(g.split)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+	custom.gplot(g=g.split, col.att="comparison", col.att.cap="Comparison", cat.att=TRUE, file=plot.file, rescale=FALSE, xlim=range(V(g.split)$x), ylim=range(V(g.split)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
 }
 
 

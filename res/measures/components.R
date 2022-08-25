@@ -15,6 +15,7 @@ MEAS_COMPONENTS <- "components"
 MEAS_NBR_COMPONENTS <- "component_nbr"
 MEAS_NBR_NODES <- "node_nbr"
 MEAS_NBR_LINKS <- "link_nbr"
+MEAS_DENSITY <- "density"
 MEAS_LONG_NAMES[MEAS_COMPONENTS] <- "Components"
 MEAS_LONG_NAMES[MEAS_NBR_COMPONENTS] <- "Component number"
 MEAS_LONG_NAMES[MEAS_NBR_NODES] <- "Node number"
@@ -40,6 +41,7 @@ analyze.net.components <- function(g, out.folder, fast)
 	# numbers of nodes and edges
 	stats[paste0(MEAS_NBR_NODES), ] <- list(Value=gorder(g), Mean=NA, Stdv=NA)
 	stats[paste0(MEAS_NBR_LINKS), ] <- list(Value=gsize(g), Mean=NA, Stdv=NA)
+	stats[paste0(MEAS_DENSITY), ] <- list(Value=edge_density(g,loops=FALSE), Mean=NA, Stdv=NA)
 	
 	# retrieve the list of vertex attributes
 	nodal.atts <- list.vertex.attributes(g)
@@ -96,7 +98,7 @@ analyze.net.components <- function(g, out.folder, fast)
 		g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
 		custom.gplot(g=g1, col.att=fname, col.att.cap=MEAS_LONG_NAMES[MEAS_COMPONENTS], cat.att=TRUE, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
 		g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-		custom.gplot(g=g1, col.att=fname, col.att.cap=MEAS_LONG_NAMES[MEAS_COMPONENTS], cat.att=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+		custom.gplot(g=g1, col.att=fname, col.att.cap=MEAS_LONG_NAMES[MEAS_COMPONENTS], cat.att=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
 		g <- set_vertex_attr(graph=g, name=fname, value=cmp$membership)
 	
 		# plot components separately
@@ -115,7 +117,7 @@ analyze.net.components <- function(g, out.folder, fast)
 			g1 <- g2; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
 			custom.gplot(g=g1, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
 			g1 <- g2; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-			custom.gplot(g=g1, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+			custom.gplot(g=g1, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
 	
 			# export subgraph
 			graph.file <- file.path(sep.folder,paste0("component_",i,".graphml"))

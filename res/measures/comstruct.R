@@ -17,12 +17,18 @@ MEAS_MODULARITY <- "modularity"
 MEAS_NMI <- "comsim-nmi"
 MEAS_RI <- "comsim-ri"
 MEAS_ARI <- "comsim-ari"
+MEAS_ROLE_CAT <- "role-cat"
+MEAS_ROLE_P <- "part-coef"
+MEAS_ROLE_Z <- "within-mod"
 MEAS_LONG_NAMES[MEAS_COMMUNITIES] <- "Communities"
 MEAS_LONG_NAMES[MEAS_COMMUNITY_NBR] <- "Community number"
 MEAS_LONG_NAMES[MEAS_MODULARITY] <- "Modularity"
 MEAS_LONG_NAMES[MEAS_NMI] <- "Normalized Mutual Information"
 MEAS_LONG_NAMES[MEAS_RI] <- "Rand Index"
 MEAS_LONG_NAMES[MEAS_ARI] <- "Adjusted Rand Index"
+MEAS_LONG_NAMES[MEAS_ROLE_CAT] <- "Role"
+MEAS_LONG_NAMES[MEAS_ROLE_P] <- "Participation Coefficient"
+MEAS_LONG_NAMES[MEAS_ROLE_Z] <- "Within-Module Degree"
 
 
 
@@ -206,11 +212,10 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 				
 				# export CSV with community membership
 				#if(COMPUTE)
-				{	tab.file <- file.path(coms.folder,paste0(fname,"_membership.csv"))
-					tlog(6,"Exporting community membership as CSV in '",tab.file,"'")
+				{	tlog(6,"Exporting community membership as CSV in '",com.file,"'")
 					df <- data.frame(vertex_attr(g, ND_NAME), get.names(g), mbrs)
 					colnames(df) <- c("Id","Name","Community") 
-					write.csv(df, file=tab.file, row.names=FALSE)
+					write.csv(df, file=com.file, row.names=FALSE)
 				}
 				
 				# add results to the graph (as attributes) and stats table
@@ -230,8 +235,36 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 				custom.gplot(g=g1, col.att=fname, col.att.cap=algos[[a]]$clean.name, cat.att=TRUE, file=paste0(plot.file,"_lambert_hulls"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1, show.coms=TRUE)
 				#
 				g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-				custom.gplot(g=g1, col.att=fname, col.att.cap=algos[[a]]$clean.name, cat.att=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
-				custom.gplot(g=g1, col.att=fname, col.att.cap=algos[[a]]$clean.name, cat.att=TRUE, file=paste0(plot.file,"_algo_hulls"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6, show.coms=TRUE)
+				custom.gplot(g=g1, col.att=fname, col.att.cap=algos[[a]]$clean.name, cat.att=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
+				custom.gplot(g=g1, col.att=fname, col.att.cap=algos[[a]]$clean.name, cat.att=TRUE, file=paste0(plot.file,"_algo_hulls"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8, show.coms=TRUE)
+				
+				# compute community-related nodal measures
+				role.folder <- file.path(coms.folder, "roles")
+				dir.create(path=role.folder, showWarnings=FALSE, recursive=TRUE)
+				role.meas <- community.role.measures(g=g, membership=mbrs)
+				# export to CSV
+				tab.file <- file.path(role.folder,paste0(fname,"_measures.csv"))
+				tlog(6,"Exporting community-related nodal measures as CSV in '",tab.file,"'")
+				df <- data.frame(vertex_attr(g, ND_NAME), get.names(g), mbrs)
+				colnames(df) <- c("Id","Name","Community") 
+				df <- cbind(df, role.meas)
+				write.csv(df, file=tab.file, row.names=FALSE)
+				# plot G&A role figure
+				plot.file <- file.path(role.folder,paste0(fname,"_points"))
+				tlog(8,"Plotting node roles as a figure in '",plot.file,"'")
+				cats <- plot.original.guimera.amaral(ga.p=df[,"P"], ga.z=df[,"z"], plot.file=plot.file)
+				# add to graph as attributes
+				g <- set_vertex_attr(graph=g, name=MEAS_ROLE_P, value=role.meas[,"P"])
+				g <- set_vertex_attr(graph=g, name=MEAS_ROLE_Z, value=role.meas[,"z"])
+				g <- set_vertex_attr(graph=g, name=MEAS_ROLE_CAT, value=cats)
+				# plot the graph with roles
+				plot.file <- file.path(role.folder,paste0(fname,"_graph"))
+				tlog(8,"Plotting node roles as a graph in '",plot.file,"'")
+				g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+				custom.gplot(g=g1, col.att=MEAS_ROLE_CAT, cat.att=TRUE, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+				#
+				g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+				custom.gplot(g=g1, col.att=MEAS_ROLE_CAT, cat.att=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
 				
 				# possibly assess community purity for all attributes
 				if(!fast)
@@ -260,7 +293,7 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 							custom.gplot(g=g1, file=paste0(plot.file,"_lambert_watermark"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
 							#
 							g1 <- g; V(g1)$watermark <- mbrs!=com;  V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; #g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-							custom.gplot(g=g1, file=paste0(plot.file,"_algo_watermark"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+							custom.gplot(g=g1, file=paste0(plot.file,"_algo_watermark"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
 			
 							# create subgraph
 							g.com <- induced_subgraph(graph=g, vids=which(mbrs==com))
@@ -269,12 +302,12 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 							# plot only the community
 							custom.gplot(g=g.com, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
 							g1 <- g.com; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5
-							custom.gplot(g=g1, file=paste0(plot.file,"_algo0"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+							custom.gplot(g=g1, file=paste0(plot.file,"_algo0"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
 							# update layout
 							layout <- layout_with_kk(g1, kkconst=5); #scale <- max(abs(layout))/7; layout <- layout/scale
 							V(g.com)$x2 <- layout[,1]; V(g.com)$y2 <- layout[,2]; 
 							g1 <- g.com; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5
-							custom.gplot(g=g1, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
+							custom.gplot(g=g1, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
 							# record as graphml
 							write.graphml.file(g=g.com, file=paste0(plot.file,".graphml"))
 							
@@ -1031,6 +1064,30 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 			}			
 			tab[i,meas] <- gsize(gcom)
 			
+			# density
+			meas <- MEAS_DENSITY
+			if(!(meas %in% colnames(tab)))
+			{	tab <- cbind(tab, rep(NA,nrow(tab)))
+				colnames(tab)[ncol(tab)] <- meas
+			}
+			tab[i,meas] <- edge_density(graph=gcom, loops=FALSE)
+			
+			# average distances
+			dmeass <- c(MEAS_DISTANCE_AVG_GEODESIC, MEAS_DISTANCE_HARM_GEODESIC)
+			vals <- distances(graph=gcom, mode="all")
+			diag(vals) <- NA
+			flat.vals <- vals[upper.tri(vals,diag=FALSE)]
+			for(meas in dmeass)
+			{	if(!(meas %in% colnames(tab)))
+				{	tab <- cbind(tab, rep(NA,nrow(tab)))
+					colnames(tab)[ncol(tab)] <- meas
+				}
+				if(meas==MEAS_DISTANCE_AVG_GEODESIC)
+					tab[i,meas] <- mean(flat.vals[!is.infinite(flat.vals)], na.rm=TRUE)
+				else if(meas==MEAS_DISTANCE_HARM_GEODESIC)
+					tab[i,meas] <- 1/mean(1/flat.vals[flat.vals>0], na.rm=TRUE)
+			}
+			
 #			modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
 			modes <- c(MEAS_MODE_UNDIR)
 			for(mode in modes)
@@ -1108,7 +1165,7 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 			if(!(meas %in% colnames(tab)))
 			{	tab <- cbind(tab, rep(NA,nrow(tab)))
 				colnames(tab)[ncol(tab)] <- meas
-			}			
+			}
 			idx <- which(membership==com)
 			posx <- vertex_attr(graph=g, name=COL_LOC_X, index=idx)
 			width <- max(posx,na.rm=TRUE) - min(posx,na.rm=TRUE)
@@ -1116,7 +1173,15 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 			height <- max(posy,na.rm=TRUE) - min(posy,na.rm=TRUE)
 			tab[i,meas] <- width*height
 			
-			# TODO add other community-specific measures
+			# hub dominance
+			meas <- "hub_dominance"
+			if(!(meas %in% colnames(tab)))
+			{	tab <- cbind(tab, rep(NA,nrow(tab)))
+				colnames(tab)[ncol(tab)] <- meas
+			}
+			tab[i,meas] <- max(degree(g=gcom, mode="all")/(gorder(gcom)-1))
+			
+			# TODO add other community-specific measures?
 		}
 		
 		# record stat table
@@ -1203,8 +1268,8 @@ plot.comstruct.comparison <- function()
 				custom.gplot(g=g2, col.att="Coms", col.att.cap="Comparison", cat.att=TRUE, file=paste0(plot.file,"_lambert_hulls"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1, show.coms=TRUE)
 				# kk plot
 				V(g2)$x <- V(g2)$x2; V(g2)$y <- V(g2)$y2; E(g2)$weight <- 0.5
-				custom.gplot(g=g2, col.att="Coms", col.att.cap="Comparison", cat.att=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6)
-				custom.gplot(g=g2, col.att="Coms", col.att.cap="Comparison", cat.att=TRUE, file=paste0(plot.file,"_algo_hulls"), rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=6, show.coms=TRUE)
+				custom.gplot(g=g2, col.att="Coms", col.att.cap="Comparison", cat.att=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
+				custom.gplot(g=g2, col.att="Coms", col.att.cap="Comparison", cat.att=TRUE, file=paste0(plot.file,"_algo_hulls"), rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8, show.coms=TRUE)
 			}
 		}
 	}

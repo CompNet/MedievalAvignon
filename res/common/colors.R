@@ -271,7 +271,18 @@ COLS_ATT[[paste0("Own_",COL_PERS_GENDER)]] <- COLS_ATT[[COL_PERS_GENDER]]
 cols <- viridis(n=length(FEE_CATS))
 names(cols) <- FEE_CATS
 COLS_ATT[[COL_FEE_AMOUNT_CAT1]] <- cols
-		
+# colors for role categories
+MEAS_ROLE_CAT <- "role-cat"
+COLS_ATT[[MEAS_ROLE_CAT]] <- c(
+	"Ultra-peripheral Non-hubs"="lightgrey", 
+	"Peripheral Non-hubs"="red", 
+	"Connnector Non-hubs"="green", 
+	"Kinless Non-hubs"="blue", 
+	"Provincial Hubs"="yellow", 
+	"Connector Hubs"="magenta", 
+	"Kinless Hub"="#444444"
+)
+
 
 
 
