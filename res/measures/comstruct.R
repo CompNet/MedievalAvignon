@@ -92,7 +92,7 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 		folder="labelprop",
 		clean.name="LabelPropagation"
 	)
-	algos[["leadingeigen"]] <- list(
+	algos[["eigenvect"]] <- list(
 		fun=function(g, mode) 
 			cluster_leading_eigen(graph=as.undirected(g),
 				weights=NULL,
@@ -235,10 +235,7 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 				
 				# possibly assess community purity for all attributes
 				if(!fast)
-				{	att.folder <- file.path(coms.folder, "attributes")
-					dir.create(path=att.folder, showWarnings=FALSE, recursive=TRUE)
-					g <- analyze.net.comstruct.attributes(g=g, coms.folder=att.folder, membership=mbrs, fast=fast)
-				}
+					g <- analyze.net.comstruct.attributes(g=g, coms.folder=coms.folder, membership=mbrs, fast=fast)
 				
 				# possibly process each community separately
 				if(algo.name %in% select.algos)
@@ -434,14 +431,18 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 	
 	# several groups
 	else
-	{	#############################
+	{	# create folder for attribute-related results
+		attrs.folder <- file.path(coms.folder, "attributes")
+		dir.create(path=attrs.folder, showWarnings=FALSE, recursive=TRUE)
+		
+		#############################
 		# deal with categorical attributes
 		
 		# gather regular categorical attributes
 		attrs <- intersect(COL_CAT_SELECT, vertex_attr_names(g))
 		for(attr in attrs)
 		{	# attribute folder
-			attr.folder <- file.path(coms.folder, attr)
+			attr.folder <- file.path(attrs.folder, attr)
 			dir.create(path=attr.folder, showWarnings=FALSE, recursive=TRUE)
 			
 			# get values only for real-estate vertices
@@ -606,7 +607,7 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 			g0 <- delete_vertices(graph=g, v=non.est.idx)
 			
 			# attribute folder
-			attr.folder <- file.path(coms.folder, attr)
+			attr.folder <- file.path(attrs.folder, attr)
 			dir.create(path=attr.folder, showWarnings=FALSE, recursive=TRUE)
 			
 			# compute values
@@ -832,7 +833,7 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 		{	tlog(4,"Processing attribute \"",attr,"\"")
 			
 			# attribute folder
-			attr.folder <- file.path(coms.folder, attr)
+			attr.folder <- file.path(attrs.folder, attr)
 			dir.create(path=attr.folder, showWarnings=FALSE, recursive=TRUE)
 			
 			# get values only for real-estate vertices

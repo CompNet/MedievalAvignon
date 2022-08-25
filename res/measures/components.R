@@ -124,9 +124,7 @@ analyze.net.components <- function(g, out.folder, fast)
 		}
 		
 		# assess component purity for all attributes
-		att.folder <- file.path(comp.folder, "attributes")
-		dir.create(path=att.folder, showWarnings=FALSE, recursive=TRUE)
-		g <- analyze.net.comstruct.attributes(g=g, coms.folder=att.folder, membership=mbrs, fast=fast)
+		g <- analyze.net.comstruct.attributes(g=g, coms.folder=comp.folder, membership=mbrs, fast=fast)
 		
 		# TODO detail the computation for each separate component? (like we already do for communities)
 	}
