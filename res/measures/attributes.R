@@ -252,57 +252,57 @@ analyze.net.attributes <- function(g, out.folder, fast)
 			custom.gplot(g=g1, col.att=attrc, cat.att=TRUE, color.isolates=TRUE, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
 			g1 <- g00; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
 			custom.gplot(g=g1, col.att=attrc, cat.att=TRUE, color.isolates=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
-		}
-		
-		# add to matrix
-		if(!fast)
-		{	tlog(4,"Adding attribute \"",attr,"\" to data matrix")
-			uvals <- sort(unique(c(m)))
-			for(uval in uvals)
-			{	# binarize tags
-				vals <- apply(m, 1, function(v) uval %in% v[!is.na(v)])
-				idxt <- which(vals)
-				idxf <- which(!vals)
-				vals[idxt] <- VAL_TRUE
-				vals[idxf] <- VAL_FALSE
-				vals[idx.nas] <- NA
-				cat.data <- cbind(cat.data, vals)
-				att_name <- paste(attr,uval,sep="_")
-				colnames(cat.data)[ncol(cat.data)] <- att_name
-				
-				# setup folder
-				short_val <- trimws(substr(uval,1,30))
-				plot.folder2 <- file.path(plot.folder, short_val)
-				dir.create(path=plot.folder2, showWarnings=FALSE, recursive=TRUE)
-				
-				# produce TRUE/FALSE barplots
-				tlog(6,"Producing barplots for attribute \"",att_name,"\"")
-				tt <- table(vals, useNA="ifany")
-				plot.file <- file.path(plot.folder2, "bars")
-				tlog(8,"Plot distribution in '",plot.file,"'")
-				custom.barplot(tt, 
-					text=names(tt), 
-					xlab=paste0(LONG_NAME[attr]," : ",uval), ylab="Frequence", 
-					file=plot.file,
-					ylim=c(0,ymax))
-				# record values as table
-				tt <- as.data.frame(tt)
-				colnames(tt) <- c("Value","Frequency")
-				table.file <- file.path(plot.folder2, "vals.csv")
-				tlog(8,"Record data in '",table.file,"'")
-				write.csv(tt, file=table.file, row.names=FALSE)
-				
-				# plot the graph using colors for attribute values
-				tlog(6,"Graph-plotting attribute \"",att_name,"\"")
-				plot.file <- file.path(plot.folder2, "graphs")
-				tlog(8,"Plot graph in '",plot.file,"'")
-				g00 <- set_vertex_attr(graph=g, name=att_name, index=non.est.idx, value=rep(NA,length(non.est.idx)))
-				g00 <- set_vertex_attr(graph=g00, name=att_name, index=est.idx, value=vals)
-				V(g00)$label <- paste(vertex_attr(g00,name=COL_LOC_ID), get.location.names(g00),sep="_")
-				g1 <- g00; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-				custom.gplot(g=g1, col.att=att_name, col.att.cap=paste0(LONG_NAME[attr]," : ",uval), cat.att=TRUE, color.isolates=TRUE, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
-				g1 <- g00; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-				custom.gplot(g=g1, col.att=att_name, col.att.cap=paste0(LONG_NAME[attr]," : ",uval), cat.att=TRUE, color.isolates=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
+			
+			# add to matrix
+			if(!fast && length(main.vals)==0)
+			{	tlog(4,"Adding attribute \"",attr,"\" to data matrix")
+				uvals <- sort(unique(c(m)))
+				for(uval in uvals)
+				{	# binarize tags
+					vals <- apply(m, 1, function(v) uval %in% v[!is.na(v)])
+					idxt <- which(vals)
+					idxf <- which(!vals)
+					vals[idxt] <- VAL_TRUE
+					vals[idxf] <- VAL_FALSE
+					vals[idx.nas] <- NA
+					cat.data <- cbind(cat.data, vals)
+					att_name <- paste(attr,uval,sep="_")
+					colnames(cat.data)[ncol(cat.data)] <- att_name
+					
+					# setup folder
+					short_val <- trimws(substr(uval,1,30))
+					plot.folder2 <- file.path(plot.folder, short_val)
+					dir.create(path=plot.folder2, showWarnings=FALSE, recursive=TRUE)
+					
+					# produce TRUE/FALSE barplots
+					tlog(6,"Producing barplots for attribute \"",att_name,"\"")
+					tt <- table(vals, useNA="ifany")
+					plot.file <- file.path(plot.folder2, "bars")
+					tlog(8,"Plot distribution in '",plot.file,"'")
+					custom.barplot(tt, 
+						text=names(tt), 
+						xlab=paste0(LONG_NAME[attr]," : ",uval), ylab="Frequence", 
+						file=plot.file,
+						ylim=c(0,ymax))
+					# record values as table
+					tt <- as.data.frame(tt)
+					colnames(tt) <- c("Value","Frequency")
+					table.file <- file.path(plot.folder2, "vals.csv")
+					tlog(8,"Record data in '",table.file,"'")
+					write.csv(tt, file=table.file, row.names=FALSE)
+					
+					# plot the graph using colors for attribute values
+					tlog(6,"Graph-plotting attribute \"",att_name,"\"")
+					plot.file <- file.path(plot.folder2, "graphs")
+					tlog(8,"Plot graph in '",plot.file,"'")
+					g00 <- set_vertex_attr(graph=g, name=att_name, index=non.est.idx, value=rep(NA,length(non.est.idx)))
+					g00 <- set_vertex_attr(graph=g00, name=att_name, index=est.idx, value=vals)
+					V(g00)$label <- paste(vertex_attr(g00,name=COL_LOC_ID), get.location.names(g00),sep="_")
+					g1 <- g00; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+					custom.gplot(g=g1, col.att=att_name, col.att.cap=paste0(LONG_NAME[attr]," : ",uval), cat.att=TRUE, color.isolates=TRUE, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+					g1 <- g00; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+					custom.gplot(g=g1, col.att=att_name, col.att.cap=paste0(LONG_NAME[attr]," : ",uval), cat.att=TRUE, color.isolates=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
+				}
 			}
 		}
 	}
