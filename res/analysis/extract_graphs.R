@@ -2182,5 +2182,3 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 
 # on dirait que les attributs en vs ne sont pas recalculés
 # de même que les dossiers dans les attr tags
-
-# manque les plots de z et P

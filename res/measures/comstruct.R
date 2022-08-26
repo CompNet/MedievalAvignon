@@ -243,29 +243,32 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 				dir.create(path=role.folder, showWarnings=FALSE, recursive=TRUE)
 				role.meas <- community.role.measures(g=g, membership=mbrs)
 				# export to CSV
-				tab.file <- file.path(role.folder,paste0(fname,"_measures.csv"))
+				tab.file <- file.path(role.folder,"measures.csv")
 				tlog(6,"Exporting community-related nodal measures as CSV in '",tab.file,"'")
 				df <- data.frame(vertex_attr(g, ND_NAME), get.names(g), mbrs)
 				colnames(df) <- c("Id","Name","Community") 
 				df <- cbind(df, role.meas)
 				write.csv(df, file=tab.file, row.names=FALSE)
 				# plot G&A role figure
-				plot.file <- file.path(role.folder,paste0(fname,"_points"))
+				plot.file <- file.path(role.folder,"points")
 				tlog(8,"Plotting node roles as a figure in '",plot.file,"'")
 				cats <- plot.original.guimera.amaral(ga.p=df[,"P"], ga.z=df[,"z"], plot.file=plot.file)
 				# add to graph as attributes
-				g <- set_vertex_attr(graph=g, name=MEAS_ROLE_P, value=role.meas[,"P"])
-				g <- set_vertex_attr(graph=g, name=MEAS_ROLE_Z, value=role.meas[,"z"])
-				g <- set_vertex_attr(graph=g, name=MEAS_ROLE_CAT, value=cats)
-				# plot the graph with roles
-				plot.file <- file.path(role.folder,paste0(fname,"_graph"))
-				tlog(8,"Plotting node roles as a graph in '",plot.file,"'")
-				g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-				custom.gplot(g=g1, col.att=MEAS_ROLE_CAT, cat.att=TRUE, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
-				#
-				g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-				custom.gplot(g=g1, col.att=MEAS_ROLE_CAT, cat.att=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
-				
+				g <- set_vertex_attr(graph=g, name=paste0(fname,"_",MEAS_ROLE_P), value=role.meas[,"P"])
+				g <- set_vertex_attr(graph=g, name=paste0(fname,"_",MEAS_ROLE_Z), value=role.meas[,"z"])
+				g <- set_vertex_attr(graph=g, name=paste0(fname,"_",MEAS_ROLE_CAT), value=cats)
+				# plot the graph with these attributes
+				for(att in c(MEAS_ROLE_P, MEAS_ROLE_Z, MEAS_ROLE_CAT))
+				{	plot.file <- file.path(role.folder,paste0("graph_",att))
+					tlog(8,"Plotting node roles as a graph in '",plot.file,"'")
+					g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+					g1 <- set_vertex_attr(graph=g1, name=att, value=vertex_attr(graph=g1, name=paste0(fname,"_",att)))
+					custom.gplot(g=g1, col.att=att, col.att.cap=MEAS_LONG_NAMES[att], cat.att=att==MEAS_ROLE_CAT, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+					#
+					g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+					g1 <- set_vertex_attr(graph=g1, name=att, value=vertex_attr(graph=g1, name=paste0(fname,"_",att)))
+					custom.gplot(g=g1, col.att=att, col.att.cap=MEAS_LONG_NAMES[att], cat.att=att==MEAS_ROLE_CAT, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
+				}
 				# possibly assess community purity for all attributes
 				if(!fast)
 					g <- analyze.net.comstruct.attributes(g=g, coms.folder=coms.folder, membership=mbrs, fast=fast)

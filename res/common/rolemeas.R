@@ -470,7 +470,7 @@ plot.original.guimera.amaral <- function(ga.p, ga.z, plot.file)
 	# generate plot
 	for(fformat in FORMAT)
 	{	if(fformat=="pdf")
-			pdf(paste0(plot.file,".pdf"))#, width=25, height=25)
+			pdf(paste0(plot.file,".pdf"), width=10, height=10)
 		else if(fformat=="png")
 			png(paste0(plot.file,".png"), width=1024, height=1024)
 		# main plot
