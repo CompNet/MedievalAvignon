@@ -151,12 +151,14 @@ analyze.net.attributes <- function(g, out.folder, fast)
 	{	# possibly focus only on the most frequent values (if too many)
 		again <- TRUE		# should we go through the loop?
 		main.vals <- c()	# most frequent values
+		first <- TRUE
 		while(again)
 		{	# get values only for real-estate vertices
 			g0 <- delete_vertices(graph=g, v=non.est.idx)
 			attrc <- intersect(COL_TAG_SELECT[[attr]], vertex_attr_names(g))
 			if(length(main.vals)>0)	# repetition for the top values
-			{	suffix <- "_main"
+			{	first <- FALSE
+				suffix <- "_main"
 				for(att in attrc)
 				{	tmp <- vertex_attr(graph=g0, name=att)
 					tmp[!(tmp %in% main.vals) & !is.na(tmp)] <- "Other"
@@ -182,7 +184,7 @@ analyze.net.attributes <- function(g, out.folder, fast)
 			ymax <- max(tt)											# compute highest frequency for later use (to handle plot y-scale)
 			
 			# possibly remove empty values
-			if(length(main.vals)>0)
+			if(!first)
 			{	idx <- which(tt==0)
 				if(length(idx)>0)
 				{	tt <- tt[-idx]
@@ -254,7 +256,7 @@ analyze.net.attributes <- function(g, out.folder, fast)
 			custom.gplot(g=g1, col.att=attrc, cat.att=TRUE, color.isolates=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
 			
 			# add to matrix
-			if(!fast && length(main.vals)==0)
+			if(!fast && first)
 			{	tlog(4,"Adding attribute \"",attr,"\" to data matrix")
 				uvals <- sort(unique(c(m)))
 				for(uval in uvals)
