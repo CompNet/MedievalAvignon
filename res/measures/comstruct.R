@@ -1277,3 +1277,45 @@ plot.comstruct.comparison <- function()
 		}
 	}
 }
+
+
+
+
+#############################################################
+# Compares two community structures, possibly from different graphs.
+#############################################################
+comstruct.comparison <- function()
+{	graph.file <- file.path(FOLDER_OUT_ANAL_EST, "split_ext/flat_minus_303_filtered", FILE_GRAPH)
+	g1 <- load.graphml.file(file=graph.file)
+	graph.file <- file.path(FOLDER_OUT_ANAL_EST, "split_ext/flat_minus_311_filtered", FILE_GRAPH)
+	g2 <- load.graphml.file(file=graph.file)
+	
+	n1 <- V(g1)$name
+	n2 <- V(g2)$name
+	n <- intersect(n1,n2)
+	
+	idx1 <- match(n,n1)
+	idx2 <- match(n,n2)
+	
+	m1 <- V(g1)$coms_undirected_louvain[idx1]
+	m2 <- V(g2)$coms_undirected_louvain[idx2]
+#	m2 <- cluster_edge_betweenness(graph=as.undirected(g2), weights=NULL, directed=FALSE, edge.betweenness=FALSE, merges=FALSE, bridges=FALSE, modularity=TRUE, membership=TRUE)$membership[idx2]
+#	m2 <- cluster_fast_greedy(graph=as.undirected(g2), merges=FALSE, modularity=TRUE, membership=TRUE, weights=NULL)$membership[idx2]
+	m2 <- cluster_louvain(graph=as.undirected(g2), weights=NULL)$membership[idx2]
+#	m2 <- cluster_walktrap(graph=as.undirected(g2), weights=NULL, steps=4, merges=TRUE, modularity=TRUE, membership=TRUE)$membership[idx2]
+			
+	tt <- table(m1,m2)
+	s1 <- sapply(1:nrow(tt), function(com) which.max(tt[com,]))
+	s2 <- sapply(1:ncol(tt), function(com) which.max(tt[,com]))
+	
+	tt1 <- table(s1)
+	tt2 <- table(s2)
+	
+	tlog(0,"Matching C1 in C2:",paste0(sort(s2),collapse=", "))
+	tlog(0,"Missing C1 in C2: ",paste0(setdiff(1:nrow(tt),s2),collapse=", "))
+	tlog(0,"Duplicate C1 in C2: ",paste0(sort(names(tt2)[which(tt2>1)]),collapse=", "))
+	
+	tlog(0,"Matching C2 in C1:",paste0(sort(s1),collapse=", "))
+	tlog(0,"Missing C2 in C1: ",paste0(setdiff(1:ncol(tt),s1),collapse=", "))
+	tlog(0,"Duplicate C2 in C1: ",paste0(sort(names(tt1)[which(tt1>1)]),collapse=", "))
+}
