@@ -299,8 +299,12 @@ plot.street.removal <- function(mode)
 		dir.create(path=muros.folder, showWarnings=FALSE, recursive=TRUE)
 		
 		# list graph files
-		ll <- list.files(path=graph.folder, pattern="graph_rem=[0-9]+\\.graphml", full.names=TRUE)
+		ll <- list.files(path=graph.folder, pattern="graph_rem=[0-9.]+\\.graphml", full.names=TRUE)
 		tlog(4,"Found ",length(ll)," graph files in folder '",graph.folder,"'")
+		
+		# get street numbers or thresholds
+		str <- basename(ll)
+		street.num <- as.numeric(substr(str, start=nchar("graph_rem="), stop=nchar(str)-nchar(".graphml")))
 		
 		# read graphs
 		tlog(4,"Reading graph files")
@@ -661,7 +665,7 @@ partial.street.ablation <- function(mode)
 {	tlog(2, "Performing pseudo street ablation for graph mode='",mode,"'")
 	
 	# read flat minus graph to get the list of street lengths
-	graph.file <- file.path(FOLDER_OUT_ANAL_EST, mode, "flat_minus", FILE_GRAPH)
+	graph.file <- file.path(FOLDER_OUT_ANAL_EST, if(mode=="split_ext") "whole_ext" else "whole_raw", "flat_minus", FILE_GRAPH)
 	tlog(4, "Reading graph '",graph.file,"'")
 	g <- load.graphml.file(graph.file)
 	lengths <- V(g)$length
@@ -670,6 +674,6 @@ partial.street.ablation <- function(mode)
 	
 	# loop over the extraction function
 	for(length in lengths)
-		extract.estate.networks(split.surf=length,  compl.streets=TRUE, street.ablation=TRUE)
+		extract.estate.networks(split.surf=length,  compl.streets=mode=="split_ext", street.ablation=TRUE)
 	
 }

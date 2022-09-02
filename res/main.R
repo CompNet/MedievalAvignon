@@ -109,7 +109,9 @@ for(i in 1:length(sels))
 
 # pseudo street-ablation for partial split
 partial.street.ablation(mode="split_raw")
+plot.street.removal(mode="split_raw")
 partial.street.ablation(mode="split_ext")
+plot.street.removal(mode="split_ext")
 
 
 

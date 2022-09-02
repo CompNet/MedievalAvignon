@@ -887,7 +887,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	if(is.logical(split.surf) && split.surf || is.numeric(split.surf))
 	{	tlog(4,"Splitting linear and surface vertices")
 		split.vertices <- c()
-		ldsi <- NA
+		ldsi.tmp <- NA
 		# load list of split vertices
 		info.split <- load.location.table(FILE_IN_ANAL_SPLIT_FIX,"vertex")
 		# replace in main table
@@ -910,19 +910,16 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			if(is.logical(split.surf) || street.flag)
 			{	# store some values in the graph, only if in street ablation mode
 				if(is.numeric(split.surf) && street.ablation)
-				{	if(is.na(ldsi))
-					{	ldsi <- info.all[idx,COL_STREET_ID]
-						g1$LastDeletedStreetId <- paste0("Rue:",ldsi)
-						g1$LastDeletedStreetLength <- info.all[idx,COL_STREET_LENGTH]
-						g1$LastDeletedStreetSpan <- NA
-						g1$LastDeletedStreetCurrentDegree <-NA
-						g1$LastDeletedStreetOriginalDegree <-NA
+				{	if(is.na(ldsi.tmp))
+					{	ldsi.tmp <- info.all[idx,COL_STREET_ID]
+						ldsi <- paste0("Rue:",ldsi.tmp)
+						ldsl <- info.all[idx,COL_STREET_LENGTH]
 					}
 					else
-					{	if(info.all[idx,COL_STREET_LENGTH]<g1$LastDeletedStreetLength)
-						{	ldsi <- info.all[idx,COL_STREET_ID]
-							g1$LastDeletedStreetId <- paste0("Rue:",ldsi)
-							g1$LastDeletedStreetLength <- info.all[idx,COL_STREET_LENGTH]
+					{	if(info.all[idx,COL_STREET_LENGTH]<ldsl)
+						{	ldsi.tmp <- info.all[idx,COL_STREET_ID]
+							ldsi <- paste0("Rue:",ldsi.tmp)
+							ldsl <- info.all[idx,COL_STREET_LENGTH]
 						}
 					}
 				}
@@ -1716,7 +1713,13 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		}
 		else
 		{	if(is.numeric(split.surf))
-				graph.types <- paste0(GR_EST_FLAT_MINUS,"_",split.surf)
+			{	graph.types <- paste0(GR_EST_FLAT_MINUS,"_",split.surf)
+				g$LastDeletedStreetId <- ldsi
+				g$LastDeletedStreetLength <- ldsl
+				g$LastDeletedStreetSpan <- NA
+				g$LastDeletedStreetCurrentDegree <-NA
+				g$LastDeletedStreetOriginalDegree <-NA
+			}
 			else 
 			{	measured.streets <- which(vertex_attr(g,COL_LOC_TYPE)=="Rue" & !is.na(vertex_attr(g,COL_STREET_LENGTH)))
 				graph.types <- paste0(GR_EST_FLAT_MINUS,"_",1:length(measured.streets))
