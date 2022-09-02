@@ -648,3 +648,26 @@ plot.street.removal <- function(mode)
 		}
 	}
 }
+
+
+
+
+#############################################################################################
+# Perform street ablation for partial split graph types.
+#
+# mode: either "split_raw" or "split_ext".
+#############################################################################################
+partial.street.ablation <- function(mode)
+{	tlog(2, "Performing pseudo street ablation for graph mode='",mode,"'")
+	
+	# read flat minus graph to get the list of street lengths
+	graph.file <- file.path(FOLDER_OUT_ANAL_EST, mode, "flat_minus", FILE_GRAPH)
+	tlog(4, "Reading graph '",graph.file,"'")
+	g <- load.graphml.file(graph.file)
+	lengths <- V(g)$length
+	lengths <- floor(sort(lengths[!is.na(lengths)], decreasing=TRUE)*100)/100
+	# which(table(lengths)>1)		# check unicity
+	
+	# loop over the extraction function
+	# TODO
+}

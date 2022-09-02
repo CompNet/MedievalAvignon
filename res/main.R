@@ -107,6 +107,10 @@ for(i in 1:length(sels))
 	}
 }
 
+# pseudo street-ablation for partial split
+partial.street.ablation(mode="split_raw")
+partial.street.ablation(mode="split_ext")
+
 
 
 
@@ -196,6 +200,9 @@ graph.types <- c(
 
 # merge previously computed whole-graph stats
 merge.stats(graph.names=graph.types, folder=FOLDER_OUT_ANAL_EST)
+
+# plot decision figure
+plot.stats.comparison()
 
 # plot comparison graphs
 plot.graph.comparisons(graph.names=graph.types, folder=FOLDER_OUT_ANAL_EST)
