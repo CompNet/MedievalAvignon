@@ -335,7 +335,7 @@ plot.street.removal <- function(mode)
 		
 		# compute stats
 		meas.names <- c(
-			MEAS_NBR_NODES, MEAS_NBR_LINKS, 
+			MEAS_NBR_NODES, "estate_nbr", MEAS_NBR_LINKS, 
 			MEAS_NBR_COMPONENTS, 
 			MEAS_COMMUNITY_NBR, MEAS_MODULARITY, MEAS_NMI, MEAS_RI, MEAS_ARI,
 			MEAS_DISTANCE_AVG_SPATIAL, MEAS_DISTANCE_AVG_GEODESIC, MEAS_DISTANCE_HARM_SPATIAL, MEAS_DISTANCE_HARM_GEODESIC
@@ -355,6 +355,7 @@ plot.street.removal <- function(mode)
 			# counts
 			tlog(8,"Compute node and edge counts")
 			tab.stats[i,MEAS_NBR_NODES] <- gorder(gs[[i]])
+			tab.stats[i,"estate_nbr"] <- length(which(V(gs[[i]])$type=="Bien"))
 			tab.stats[i,MEAS_NBR_LINKS] <- gsize(gs[[i]])
 			
 			# components

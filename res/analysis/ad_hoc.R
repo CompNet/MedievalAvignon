@@ -62,7 +62,39 @@ merge.stats <- function(graph.names, folder)
 		write.csv(tab, file=tab.file, row.names=TRUE)
 	}
 	
+	vals <- tab[,"SpearmanInf_DB"]
+	vals <- tab[,"KendallInf_DB"]
+	pdf(file="test.pdf")
+	plot(
+		x=tab[,"estate_nbr"],
+		y=vals,
+		xlab="Number of estate vertices",
+		ylab="Distance correlation"
+	)
+	text(
+		x=tab[,"estate_nbr"],
+		y=vals,
+		labels=rownames(tab),
+		cex=0.1
+	)
+	dev.off()
 	return(tab)
+}
+
+
+
+
+#############################################################################################
+# Loads previously computed stats and plot the distance correlation vs. the number of estate 
+# nodes.
+#############################################################################################
+plot.stats.comparison <- function()
+{	# load overall stats
+	tab.file <- file.path(FOLDER_OUT_ANAL_EST, "stats_comparison.csv")
+	tab <- read.csv(file=tab.file, header=TRUE, row.names=1)
+	
+	# load street removal stats
+	file.path(FOLDER_OUT_ANAL_EST,"whole_ext","flat_minus","_removed_streets")
 }
 
 
@@ -152,10 +184,10 @@ export.graphs.as.edgelists <- function(graph.names, folder)
 
 
 #############################################################################################
-# Compute inconsistencies in the relationships (only for NSEW relations).
+# Compute inconsistencies in the relationships (only for N-S-E-W relations).
 #############################################################################################
 compute.inconsistencies <- function()
-{	tlog(0,"Computing inconsistencies in the full graph, for NSEW relations")
+{	tlog(0,"Computing inconsistencies in the full graph, for N-S-E-W relations")
 	
 	# load full graph
 	graph.file <- file.path(FOLDER_OUT_ANAL_EST,"whole_raw","full",paste0("graph.graphml"))

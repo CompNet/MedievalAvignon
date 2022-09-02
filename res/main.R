@@ -148,22 +148,18 @@ g <- analyze.network(gname="whole_raw/flat_minus_6_filtered",   out.folder=FOLDE
 g <- analyze.network(gname="whole_raw/flat_relations",          out.folder=FOLDER_OUT_ANAL_EST, fast=TRUE)
 g <- analyze.network(gname="whole_raw/flat_relations_filtered", out.folder=FOLDER_OUT_ANAL_EST, fast=TRUE)
 
-# merge previously computed whole-graph stats
-merge.stats(graph.names=graph.types, folder=FOLDER_OUT_ANAL_EST)
-
 
 
 
 ########################################################################
-# plot comparison graphs
 graph.types <- c(
 	"split_ext/full",
 	"split_ext/flat_minus",
 	"split_ext/flat_minus_filtered",
 	"split_ext/flat_minus_311",
 	"split_ext/flat_minus_311_filtered",
-#	"split_ext/flat_minus_303",
-#	"split_ext/flat_minus_303_filtered",
+	"split_ext/flat_minus_303",
+	"split_ext/flat_minus_303_filtered",
 	"split_ext/flat_relations",
 	"split_ext/flat_relations_filtered",
 	#
@@ -182,8 +178,8 @@ graph.types <- c(
 	"whole_ext/flat_minus_filtered",
 	"whole_ext/flat_minus_7",
 	"whole_ext/flat_minus_7_filtered",
-#	"whole_ext/flat_minus_9",
-#	"whole_ext/flat_minus_9_filtered",
+	"whole_ext/flat_minus_9",
+	"whole_ext/flat_minus_9_filtered",
 	"whole_ext/flat_relations",
 	"whole_ext/flat_relations_filtered",
 	#
@@ -197,6 +193,11 @@ graph.types <- c(
 	"whole_raw/flat_relations",
 	"whole_raw/flat_relations_filtered"
 )
+
+# merge previously computed whole-graph stats
+merge.stats(graph.names=graph.types, folder=FOLDER_OUT_ANAL_EST)
+
+# plot comparison graphs
 plot.graph.comparisons(graph.names=graph.types, folder=FOLDER_OUT_ANAL_EST)
 
 # comparison of community structures
