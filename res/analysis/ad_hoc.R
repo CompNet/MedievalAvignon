@@ -150,7 +150,7 @@ extract.vertex.attributes <- function(graph.names, folder, attributes)
 		graph.file <- file.path(graph.folder, FILE_GRAPH)
 		tlog(4,"Reading file '",graph.file,"'")
 		g <- load.graphml.file(file=graph.file)
-
+		
 		# init table containing attribute values
 		df <- data.frame(vertex_attr(g, COL_LOC_ID), get.names(g))
 		colnames(df) <- c("Id","Name") 
@@ -168,7 +168,7 @@ extract.vertex.attributes <- function(graph.names, folder, attributes)
 			else
 				tlog(8,"ERROR: did not find this vertex attribute in this graph")
 		}
-
+		
 		# record table as CSV
 		tab.file <- file.path(folder,paste0("vertex-attr_",gsub("/", "__", graph.names[i]),".csv"))
 		write.csv(df, file=tab.file, row.names=FALSE)
