@@ -669,5 +669,7 @@ partial.street.ablation <- function(mode)
 	# which(table(lengths)>1)		# check unicity
 	
 	# loop over the extraction function
-	# TODO
+	for(length in lengths)
+		extract.estate.networks(split.surf=length,  compl.streets=TRUE, street.ablation=TRUE)
+	
 }
