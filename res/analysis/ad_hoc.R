@@ -82,7 +82,7 @@ plot.stats.comparison <- function()
 	stats <- tab[,c("estate_nbr", "SpearmanInf_DB", "KendallInf_DB")]
 	
 	# load street removal stats
-	for(graph.type in c("whole_raw","whole_ext","split_raw","split_ext"))
+	for(graph.type in c("whole_raw","whole_ext"))#,"split_raw","split_ext"))
 	{	for(filt.txt in c("","_filtered"))
 		{	tab.file <- file.path(FOLDER_OUT_ANAL_EST,graph.type,paste0("flat_minus",filt.txt),"_removed_streets","stats.csv")
 			tlog(4, "Reading table '",tab.file,"'")
@@ -119,8 +119,11 @@ plot.stats.comparison <- function()
 				ylab="Distance correlation"
 			)
 			# draw Pareto front
-			ndp <- t(nondominated_points(t(cbind(x,y))))
-			plotParetoEmp(nondominatedPoints=ndp, add=TRUE, max=TRUE, col="RED")
+			df <- data.frame(x=stats[,"estate_nbr"], y=vals)
+			pref <- high(x)*high(y)
+			sky <- psel(df=df, pref=pref)
+			plot_front(df=df, pref=pref, col="RED")
+			#points(df[,"x"], df[,"y"], lwd=3)
 			# add point names
 			text(
 				x=stats[,"estate_nbr"],
