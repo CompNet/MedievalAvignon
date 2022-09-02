@@ -355,7 +355,7 @@ plot.street.removal <- function(mode)
 			# counts
 			tlog(8,"Compute node and edge counts")
 			tab.stats[i,MEAS_NBR_NODES] <- gorder(gs[[i]])
-			tab.stats[i,"estate_nbr"] <- length(which(V(gs[[i]])$type=="Bien"))
+			tab.stats[i,"estate_nbr"] <- length(which(V(gs[[i]])$typeExterne=="Bien"))
 			tab.stats[i,MEAS_NBR_LINKS] <- gsize(gs[[i]])
 			
 			# components

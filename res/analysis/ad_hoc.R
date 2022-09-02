@@ -62,22 +62,6 @@ merge.stats <- function(graph.names, folder)
 		write.csv(tab, file=tab.file, row.names=TRUE)
 	}
 	
-	vals <- tab[,"SpearmanInf_DB"]
-	vals <- tab[,"KendallInf_DB"]
-	pdf(file="test.pdf")
-	plot(
-		x=tab[,"estate_nbr"],
-		y=vals,
-		xlab="Number of estate vertices",
-		ylab="Distance correlation"
-	)
-	text(
-		x=tab[,"estate_nbr"],
-		y=vals,
-		labels=rownames(tab),
-		cex=0.1
-	)
-	dev.off()
 	return(tab)
 }
 
@@ -92,9 +76,43 @@ plot.stats.comparison <- function()
 {	# load overall stats
 	tab.file <- file.path(FOLDER_OUT_ANAL_EST, "stats_comparison.csv")
 	tab <- read.csv(file=tab.file, header=TRUE, row.names=1)
+	stats <- tab[,c("estate_nbr", "SpearmanInf_DB", "KendallInf_DB")]
 	
 	# load street removal stats
-	file.path(FOLDER_OUT_ANAL_EST,"whole_ext","flat_minus","_removed_streets")
+	for(graph.type in c("whole_raw","whole_ext"))
+	{	for(filt.txt in c("","_filtered"))
+		{	tab.file <- file.path(FOLDER_OUT_ANAL_EST,graph.type,paste0("flat_minus",filt.txt),"_removed_streets","stats.csv")
+			tab <- read.csv(file=tab.file, header=TRUE, row.names=1)
+			tmp <- tab[,c("estate_nbr", "distance.cor.spearman.infinite", "distance.cor.kendall.infinite")]
+			colnames(tmp) <- c("estate_nbr", "SpearmanInf_DB", "KendallInf_DB")
+			rownames(tmp) <- paste0(graph.type,"/flat_minus",filt.txt,"_",tab[,"NumberDeletedStreets"],"(",floor(tab[,"LastDeletedStreetLength"]),")")
+			stats <- rbind(stats)
+		}
+	}
+	
+	# create plots
+	for(corr.txt in c("spearman","kendall"))
+	{	plot.file <- file.path(FOLDER_OUT_ANAL_EST, paste0("pareto-plot_",corr.txt))
+		for(fformat in c("png"))	# FORMAT
+		{	if(fformat=="pdf")
+				pdf(paste0(plot.file,".pdf"))
+			else if(fformat=="png")
+				png(paste0(plot.file,".png"))
+			plot(
+				x=tab[,"estate_nbr"],
+				y=vals,
+				xlab="Number of estate vertices",
+				ylab="Distance correlation"
+			)
+			text(
+				x=tab[,"estate_nbr"],
+				y=vals,
+				labels=rownames(tab),
+				cex=0.1
+			)
+			dev.off()
+		}
+	}
 }
 
 
