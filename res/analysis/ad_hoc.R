@@ -120,7 +120,7 @@ plot.stats.comparison <- function()
 			)
 			# draw Pareto front
 			ndp <- t(nondominated_points(t(cbind(x,y))))
-			plotParetoEmp(nondominatedPoints=ndp, add=TRUE, col="RED")
+			plotParetoEmp(nondominatedPoints=ndp, add=TRUE, max=TRUE, col="RED")
 			# add point names
 			text(
 				x=stats[,"estate_nbr"],
