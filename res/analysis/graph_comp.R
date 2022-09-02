@@ -304,29 +304,28 @@ plot.street.removal <- function(mode)
 		
 		# get street numbers or thresholds
 		str <- basename(ll)
-		street.num <- as.numeric(substr(str, start=nchar("graph_rem="), stop=nchar(str)-nchar(".graphml")))
+		street.vals <- as.numeric(substr(str, start=nchar("graph_rem=")+1, stop=nchar(str)-nchar(".graphml")))
+		idx <- rank(-street.vals)
 		
 		# read graphs
 		tlog(4,"Reading graph files")
 		gs <- list()
-		street.names <- rep(NA, length(ll))
-		street.lengths <- rep(NA, length(ll))
-		street.spans <- rep(NA, length(ll))
-		street.cur.degs <- rep(NA, length(ll))
-		street.orig.degs <- rep(NA, length(ll))
-		for(i in 1:length(ll))
+		street.names <- c()
+		street.lengths <- c()
+		street.spans <- c()
+		street.cur.degs <- c()
+		street.orig.degs <- c()
+		for(i in idx)
 		{	graph.file <- ll[[i]]
-			tlog(6,"Reading file '",graph.file,"'")
+			tlog(6,"Reading file '",graph.file,"' (",length(gs)+1,"/",length(idx),")")
 			g <- load.graphml.file(file=graph.file)
-			#r <- as.integer(substr(basename(graph.file), start=nchar("graph_rem=")+1, stop=unlist(gregexpr(pattern=".graphml",basename(graph.file)))-1))
-			tmp <- strsplit(g$name,"_")[[1]]
-			r <- as.integer(tmp[4])
+			r <- as.character(street.vals[i])
 			gs[[r]] <- g 
-			street.names[r] <- g$LastDeletedStreetId
-			street.lengths[r] <- g$LastDeletedStreetLength
-			street.spans[r] <- g$LastDeletedStreetSpan
-			street.cur.degs[r] <- g$LastDeletedStreetCurrentDegree
-			street.orig.degs[r] <- g$LastDeletedStreetOriginalDegree
+			street.names <- c(street.names, g$LastDeletedStreetId)
+			street.lengths <- c(street.lengths, g$LastDeletedStreetLength)
+			street.spans <- c(street.spans, g$LastDeletedStreetSpan)
+			street.cur.degs <- c(street.cur.degs, g$LastDeletedStreetCurrentDegree)
+			street.orig.degs <- c(street.orig.degs, g$LastDeletedStreetOriginalDegree)
 		}
 		#sapply(gs,function(g) g$name)
 		
@@ -664,12 +663,20 @@ plot.street.removal <- function(mode)
 partial.street.ablation <- function(mode)
 {	tlog(2, "Performing pseudo street ablation for graph mode='",mode,"'")
 	
-	# read flat minus graph to get the list of street lengths
+	# read the list of splittable streets
+	info.split <- load.location.table(FILE_IN_ANAL_SPLIT_FIX,"vertex")
+	splittable <- paste0("Rue:",sort(unique(info.split[,COL_STREET_ID])))
+	
+	# read flat minus graph
 	graph.file <- file.path(FOLDER_OUT_ANAL_EST, if(mode=="split_ext") "whole_ext" else "whole_raw", "flat_minus", FILE_GRAPH)
 	tlog(4, "Reading graph '",graph.file,"'")
 	g <- load.graphml.file(graph.file)
-	lengths <- V(g)$length
-	lengths <- floor(sort(lengths[!is.na(lengths)], decreasing=TRUE)*100)/100
+	
+	# get the lengths of available and splittable streets
+	available <- V(g)$idExterne[V(g)$typeExterne=="Rue"]
+	streets <- intersect(splittable,available)
+	lengths <- V(g)$length[which(V(g)$idExterne %in% streets)]
+	lengths <- floor(sort(lengths[!is.na(lengths)], decreasing=TRUE)*10)/10
 	# which(table(lengths)>1)		# check unicity
 	
 	# loop over the extraction function
