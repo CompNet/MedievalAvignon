@@ -197,6 +197,9 @@ graph.types <- c(
 # merge previously computed whole-graph stats
 merge.stats(graph.names=graph.types, folder=FOLDER_OUT_ANAL_EST)
 
+# plot decision figure
+plot.stats.comparison()
+
 # plot comparison graphs
 plot.graph.comparisons(graph.names=graph.types, folder=FOLDER_OUT_ANAL_EST)
 

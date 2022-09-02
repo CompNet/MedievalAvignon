@@ -73,8 +73,11 @@ merge.stats <- function(graph.names, folder)
 # nodes.
 #############################################################################################
 plot.stats.comparison <- function()
-{	# load overall stats
+{	tlog(2, "Producing decision figure")
+	
+	# load overall stats
 	tab.file <- file.path(FOLDER_OUT_ANAL_EST, "stats_comparison.csv")
+	tlog(4, "Reading table '",tab.file,"'")
 	tab <- read.csv(file=tab.file, header=TRUE, row.names=1)
 	stats <- tab[,c("estate_nbr", "SpearmanInf_DB", "KendallInf_DB")]
 	
@@ -82,32 +85,42 @@ plot.stats.comparison <- function()
 	for(graph.type in c("whole_raw","whole_ext"))
 	{	for(filt.txt in c("","_filtered"))
 		{	tab.file <- file.path(FOLDER_OUT_ANAL_EST,graph.type,paste0("flat_minus",filt.txt),"_removed_streets","stats.csv")
-			tab <- read.csv(file=tab.file, header=TRUE, row.names=1)
+			tlog(4, "Reading table '",tab.file,"'")
+			tab <- read.csv(file=tab.file, header=TRUE)
 			tmp <- tab[,c("estate_nbr", "distance.cor.spearman.infinite", "distance.cor.kendall.infinite")]
 			colnames(tmp) <- c("estate_nbr", "SpearmanInf_DB", "KendallInf_DB")
 			rownames(tmp) <- paste0(graph.type,"/flat_minus",filt.txt,"_",tab[,"NumberDeletedStreets"],"(",floor(tab[,"LastDeletedStreetLength"]),")")
-			stats <- rbind(stats)
+			stats <- rbind(stats, tmp)
 		}
 	}
+	
+	# record as csv file
+	tab.file <- file.path(FOLDER_OUT_ANAL_EST, paste0("pareto-plot.csv"))
+	write.csv(stats, file=tab.file, row.names=TRUE)
 	
 	# create plots
 	for(corr.txt in c("spearman","kendall"))
 	{	plot.file <- file.path(FOLDER_OUT_ANAL_EST, paste0("pareto-plot_",corr.txt))
-		for(fformat in c("png"))	# FORMAT
+		if(corr.txt=="")
+			vals <- stats[,"SpearmanInf_DB"]
+		else
+			vals <- stats[,"KendallInf_DB"]
+		tlog(4, "Creating plots '",plot.file,"'")
+		for(fformat in c("png","pdf"))	# FORMAT
 		{	if(fformat=="pdf")
 				pdf(paste0(plot.file,".pdf"))
 			else if(fformat=="png")
 				png(paste0(plot.file,".png"))
 			plot(
-				x=tab[,"estate_nbr"],
+				x=stats[,"estate_nbr"],
 				y=vals,
 				xlab="Number of estate vertices",
 				ylab="Distance correlation"
 			)
 			text(
-				x=tab[,"estate_nbr"],
+				x=stats[,"estate_nbr"],
 				y=vals,
-				labels=rownames(tab),
+				labels=rownames(stats),
 				cex=0.1
 			)
 			dev.off()
