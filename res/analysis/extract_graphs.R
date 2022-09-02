@@ -2179,3 +2179,5 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #   - produire le fichier edgelist avec les id (BD) des noeuds (et les attributs des liens)
 #   - exporter la liste des noeuds avec tous les attributs dispos et aussi les coms
 #   - exporter les coms avec pureté et cie.
+
+# compute pareto front to select best graph?
