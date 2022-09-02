@@ -36,6 +36,7 @@ library("Hmisc")			# fast spearman correlation computation
 library("pcaPP")			# fast kendall correlation computation
 library("ggplot2")			# additional plot types
 library("geometry")			# convex hull, triangulation
+library("GPareto")			# plot pareto front
 
 
 

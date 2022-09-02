@@ -111,12 +111,17 @@ plot.stats.comparison <- function()
 				pdf(paste0(plot.file,".pdf"))
 			else if(fformat=="png")
 				png(paste0(plot.file,".png"))
+			# draw all values
 			plot(
 				x=stats[,"estate_nbr"],
 				y=vals,
 				xlab="Number of estate vertices",
 				ylab="Distance correlation"
 			)
+			# draw Pareto front
+			ndp <- t(nondominated_points(t(cbind(x,y))))
+			plotParetoEmp(nondominatedPoints=ndp, add=TRUE, col="RED")
+			# add point names
 			text(
 				x=stats[,"estate_nbr"],
 				y=vals,
