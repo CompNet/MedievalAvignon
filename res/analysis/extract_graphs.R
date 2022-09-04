@@ -864,24 +864,52 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	{	info.own[which(info.own[,i]==" "),i] <- ""
 		info.own[which(info.own[,i]==""), i] <- NA
 	}
-
+	# keep only the first owners
+	info.own <- info.own[info.own[,COL_OWN_INHER_ORDER]==1,]
+	tlog(6,"Keep only first owners: ",nrow(info.own)," rows")
+	
 	# add individual attributes to estate table
 	tlog(4,"Adding owners' attributes to estate table")
-	idx.indiv <- match(info.own[,COL_OWN_PERS_ID], info.indiv[,COL_PERS_ID])
+	# match owners to individuals
+	owner.ids <- sort(unique(info.own[,COL_OWN_PERS_ID]))
+	idx.indiv <- match(owner.ids, info.indiv[,COL_PERS_ID])
 	miss <- which(is.na(idx.indiv))
 	if(length(miss)>0)
-		stop("ERROR: could not match certain owners to the table of individuals")
-	idx.est <- match(info.own[,COL_OWN_EST_ID], info.all[,COL_EST_ID])
+		stop("ERROR: could not match ",length(miss)," owners to the table of individuals")
+	# match owned estates to estates
+	owned.ids <- sort(unique(info.own[,COL_OWN_EST_ID]))
+	idx.est <- match(owned.ids, info.all[,COL_EST_ID])
 	miss <- which(is.na(idx.est))
 	if(length(miss)>0)
-		stop("ERROR: could not match certain real estate of the ownership table to the estate table")
+		stop("ERROR: could not match ",length(miss)," real estates of the ownership table to the estate table")
+	# handle multiple owners
+	idx.match <- c()
+	owner.nbr <- c()
+	for(i in 1:length(owned.ids))
+	{	if(info.all[idx.est[i],COL_LOC_TYPE]=="Bien")
+		{	owners <- info.own[info.own[,COL_OWN_EST_ID]==owned.ids[i],COL_OWN_PERS_ID]
+			owner.nbr <- c(owner.nbr,length(owners))
+			if(length(owners)>1)
+			{	infos <- sapply(owners, function(owner) length(which(!is.na(info.indiv[info.indiv[,COL_PERS_ID]==owner,]))))
+				owners <- owners[which.max(infos)[1]]
+			}
+			owners <- which(info.indiv[,COL_PERS_ID]==owners)
+			idx.match <- c(idx.match, owners)
+		}
+	}
+	# update vertex table
 	for(att in COL_SOC_SELECT)
-	{	tlog(6,"Adding attrivute '",att,"'")
+	{	tlog(6,"Adding attribute '",att,"' to the main table")
 		vals <- rep(NA, nrow(info.all))
-		vals[idx.est] <- info.indiv[idx.indiv,att]
+		vals[idx.est] <- info.indiv[idx.match,att]
 		info.all <- cbind(info.all, vals)
 		colnames(info.all)[ncol(info.all)] <- paste0("Own_",att)
 	}
+	# add new attribute: number of co-owners
+	vals <- rep(NA, nrow(info.all))
+	vals[idx.est] <- owner.nbr
+	info.all <- cbind(info.all, vals)
+	colnames(info.all)[ncol(info.all)] <- "Own_nbrProprietaires"
 	
 	# possibly split certain linear or surface vertices
 	if(is.logical(split.surf) && split.surf || is.numeric(split.surf))
@@ -2170,39 +2198,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #
 # TODO simplifier les relations genrées
 
-# traitement : 
-# - split_ext
-#   - flat_minus
-#   - flat_minus_filtered
-#   - flat_minus_303
-#   - flat_minus_303_filtered
-#   - flat_relations
-#   - flat_relations_filtered
-# - split_raw
-#   - flat_minus
-#   - flat_minus_filtered
-#   - flat_minus_311
-#   - flat_minus_311_filtered
-#   - flat_relations
-#   - flat_relations_filtered
-# - whole_ext
-#   - estate_level
-#   - estate_level_filtered
-#   - flat_minus
-#   - flat_minus_filtered
-#   - flat_minus_9
-#   - flat_minus_9_filtered
-#   - flat_relations
-#   - flat_relations_filtered
-# - whole_raw
-#   - estate_level
-#   - estate_level_filtered
-#   - flat_minus
-#   - flat_minus_filtered
-#   - flat_minus_6
-#   - flat_minus_6_filtered
-#   - flat_relations
-#   - flat_relations_filtered
+
 
 # TODO
 # > séparer le traitement des distances (pr uniformiser entre RW vs modèle)
@@ -2214,4 +2210,4 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #   - exporter la liste des noeuds avec tous les attributs dispos et aussi les coms
 #   - exporter les coms avec pureté et cie.
 
-# compute pareto front to select best graph?
+# date: 04/09/2022

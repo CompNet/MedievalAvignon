@@ -81,8 +81,27 @@ plot.stats.comparison <- function()
 	tab <- read.csv(file=tab.file, header=TRUE, row.names=1)
 	stats <- tab[,c("estate_nbr", "SpearmanInf_DB", "KendallInf_DB")]
 	
+	# remove redundant graphs
+	stats <- stats[-which(rownames(stats)=="split_ext/flat_minus_311"),]
+	stats <- stats[-which(rownames(stats)=="split_ext/flat_minus_311_filtered"),]
+	stats <- stats[-which(rownames(stats)=="split_ext/flat_minus_303"),]
+	stats <- stats[-which(rownames(stats)=="split_ext/flat_minus_303_filtered"),]
+	stats <- stats[-which(rownames(stats)=="split_raw/flat_minus_311"),]
+	stats <- stats[-which(rownames(stats)=="split_raw/flat_minus_311_filtered"),]
+	stats <- stats[-which(rownames(stats)=="whole_ext/flat_minus_7"),]
+	stats <- stats[-which(rownames(stats)=="whole_ext/flat_minus_7_filtered"),]
+	stats <- stats[-which(rownames(stats)=="whole_ext/flat_minus_9"),]
+	stats <- stats[-which(rownames(stats)=="whole_ext/flat_minus_9_filtered"),]
+	stats <- stats[-which(rownames(stats)=="whole_raw/flat_minus_6"),]
+	stats <- stats[-which(rownames(stats)=="whole_raw/flat_minus_6_filtered"),]
+	
+	# set up colors
+	col <- 1
+	col.names <- "Basic"
+	cols <- rep(col,nrow(stats))
+			
 	# load street removal stats
-	for(graph.type in c("whole_raw","whole_ext"))#,"split_raw","split_ext"))
+	for(graph.type in c("whole_raw","whole_ext","split_raw","split_ext"))
 	{	for(filt.txt in c("","_filtered"))
 		{	tab.file <- file.path(FOLDER_OUT_ANAL_EST,graph.type,paste0("flat_minus",filt.txt),"_removed_streets","stats.csv")
 			tlog(4, "Reading table '",tab.file,"'")
@@ -91,6 +110,9 @@ plot.stats.comparison <- function()
 			colnames(tmp) <- c("estate_nbr", "SpearmanInf_DB", "KendallInf_DB")
 			rownames(tmp) <- paste0(graph.type,"/flat_minus",filt.txt,"_",tab[,"NumberDeletedStreets"],"(",floor(tab[,"LastDeletedStreetLength"]),")")
 			stats <- rbind(stats, tmp)
+			col <- col + 1
+			col.names <- c(col.names, paste0(graph.type,"/flat_minus",filt.txt,"_X"))
+			cols <- c(cols, rep(col,nrow(tmp)))
 		}
 	}
 	
@@ -99,6 +121,7 @@ plot.stats.comparison <- function()
 	write.csv(stats, file=tab.file, row.names=TRUE)
 	
 	# create plots
+	pal <- get.palette(max(cols))
 	for(corr.txt in c("spearman","kendall"))
 	{	plot.file <- file.path(FOLDER_OUT_ANAL_EST, paste0("pareto-plot_",corr.txt))
 		if(corr.txt=="")
@@ -116,20 +139,28 @@ plot.stats.comparison <- function()
 				x=stats[,"estate_nbr"],
 				y=vals,
 				xlab="Number of estate vertices",
-				ylab="Distance correlation"
+				ylab="Distance correlation",
+				col=pal[cols]
 			)
 			# draw Pareto front
 			df <- data.frame(x=stats[,"estate_nbr"], y=vals)
 			pref <- high(x)*high(y)
 			sky <- psel(df=df, pref=pref)
-			plot_front(df=df, pref=pref, col="RED")
+			plot_front(df=df, pref=pref, col="GREY", lty=2)
 			#points(df[,"x"], df[,"y"], lwd=3)
 			# add point names
 			text(
 				x=stats[,"estate_nbr"],
 				y=vals,
 				labels=rownames(stats),
-				cex=0.1
+				cex=0.1,
+				col=pal[cols]
+			)
+			# add legend
+			legend(
+				"bottomleft",
+				fill=pal,
+				legend=col.names
 			)
 			dev.off()
 		}

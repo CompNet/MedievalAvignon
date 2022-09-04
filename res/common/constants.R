@@ -918,7 +918,8 @@ COL_NUM <- c(
 	COL_STREET_LENGTH,
 	# social
 	paste0("Own_", c(
-		COL_PERS_MENTION
+		COL_PERS_MENTION,
+		"nbrProprietaires"
 	))
 )
 # only those selected for the analysis
@@ -931,6 +932,7 @@ COL_NUM_SELECT <- c(
 	COL_LOC_X, COL_LOC_Y,
 	# social
 	paste0("Own_", c(
-		COL_PERS_MENTION
+		COL_PERS_MENTION,
+		"nbrProprietaires"
 	))
 )
