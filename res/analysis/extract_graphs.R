@@ -1880,7 +1880,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		tlog(6,"Remaining: n=",gorder(g1)," m=",gsize(g1))
 		
 		# specific case of street removal test
-		if(startsWith(graph.types[i], paste0(GR_EST_FLAT_MINUS,"_")))
+		if(startsWith(graph.types[i], paste0(GR_EST_FLAT_MINUS,"_")) && street.ablation)
 		{	# setup file names
 			graph.folder <- file.path(FOLDER_OUT_ANAL_EST, base.folder, GR_EST_FLAT_MINUS, "_removed_streets", "graphs")
 			dir.create(path=graph.folder, showWarnings=FALSE, recursive=TRUE)
