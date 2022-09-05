@@ -124,7 +124,7 @@ plot.stats.comparison <- function()
 	pal <- get.palette(max(cols))
 	for(corr.txt in c("spearman","kendall"))
 	{	plot.file <- file.path(FOLDER_OUT_ANAL_EST, paste0("pareto-plot_",corr.txt))
-		if(corr.txt=="")
+		if(corr.txt=="spearman")
 			vals <- stats[,"SpearmanInf_DB"]
 		else
 			vals <- stats[,"KendallInf_DB"]
