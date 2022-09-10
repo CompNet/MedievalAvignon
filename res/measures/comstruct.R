@@ -230,9 +230,9 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 				tlog(6,"Plotting graph in '",plot.file,"'")
 				#V(g)$label <- rep(NA, gorder(g))
 				V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
-				g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-				custom.gplot(g=g1, col.att=fname, col.att.cap=algos[[a]]$clean.name, cat.att=TRUE, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
-				custom.gplot(g=g1, col.att=fname, col.att.cap=algos[[a]]$clean.name, cat.att=TRUE, file=paste0(plot.file,"_lambert_hulls"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1, show.coms=TRUE)
+				g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1); g1 <- rescale.coordinates(g1)
+				custom.gplot(g=g1, col.att=fname, col.att.cap=algos[[a]]$clean.name, cat.att=TRUE, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1, rescale=FALSE)
+				custom.gplot(g=g1, col.att=fname, col.att.cap=algos[[a]]$clean.name, cat.att=TRUE, file=paste0(plot.file,"_lambert_hulls"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1, show.coms=TRUE, rescale=FALSE)
 				#
 				g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
 				custom.gplot(g=g1, col.att=fname, col.att.cap=algos[[a]]$clean.name, cat.att=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
@@ -261,9 +261,9 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 				for(att in c(MEAS_ROLE_P, MEAS_ROLE_Z, MEAS_ROLE_CAT))
 				{	plot.file <- file.path(role.folder,paste0("graph_",att))
 					tlog(8,"Plotting node roles as a graph in '",plot.file,"'")
-					g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+					g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1); g1 <- rescale.coordinates(g1)
 					g1 <- set_vertex_attr(graph=g1, name=att, value=vertex_attr(graph=g1, name=paste0(fname,"_",att)))
-					custom.gplot(g=g1, col.att=att, col.att.cap=MEAS_LONG_NAMES[att], cat.att=att==MEAS_ROLE_CAT, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+					custom.gplot(g=g1, col.att=att, col.att.cap=MEAS_LONG_NAMES[att], cat.att=att==MEAS_ROLE_CAT, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1, rescale=FALSE)
 					#
 					g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
 					g1 <- set_vertex_attr(graph=g1, name=att, value=vertex_attr(graph=g1, name=paste0(fname,"_",att)))
@@ -292,8 +292,8 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 							
 							# plot as watermark
 							V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
-							g1 <- g; V(g1)$watermark <- mbrs!=com; #g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-							custom.gplot(g=g1, file=paste0(plot.file,"_lambert_watermark"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+							g1 <- g; V(g1)$watermark <- mbrs!=com; g1 <- rescale.coordinates(g1); #g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
+							custom.gplot(g=g1, file=paste0(plot.file,"_lambert_watermark"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1, recale=FALSE)
 							#
 							g1 <- g; V(g1)$watermark <- mbrs!=com;  V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; #g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
 							custom.gplot(g=g1, file=paste0(plot.file,"_algo_watermark"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
@@ -303,7 +303,8 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 							g.com$type <- g$type
 							g.com$name <- file.path(g$name, MEAS_COMMUNITIES, mode, algos[[a]]$folder, "communities", com)
 							# plot only the community
-							custom.gplot(g=g.com, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+							g1 <- rescale.coordinates(g.com)
+							custom.gplot(g=g1, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1, rescale=FALSE)
 							g1 <- g.com; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5
 							custom.gplot(g=g1, file=paste0(plot.file,"_algo0"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
 							# update layout
@@ -573,8 +574,8 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 						cg2 <- set_vertex_attr(graph=cg2, name=colnames(tt)[c], value=tt[,c])
 					plot.file <- file.path(attr.folder, paste0(attr,"_comgraph",suffix))
 					tlog(6,"Plotting in file '",plot.file,"'")
-					#V(cg2)$label <- rep(NA, gorder(cg2))
-					custom.gplot(g=cg2, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=paste0(plot.file,"_lambert",suffix), asp=1, color.isolates=TRUE)
+					cg3 <- rescale.coordinates(cg2); #V(cg3)$label <- rep(NA, gorder(cg3))
+					custom.gplot(g=cg3, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=paste0(plot.file,"_lambert",suffix), asp=1, color.isolates=TRUE, rescale=FALSE)
 					cg3 <- cg2; V(cg3)$x <- V(cg2)$x2; V(cg3)$y <- V(cg2)$y2; E(cg3)$weight <- E(cg2)$weight*2; 
 					custom.gplot(g=cg3, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=paste0(plot.file,"_algo",suffix), rescale=FALSE, xlim=range(V(cg3)$x), ylim=range(V(cg3)$y), color.isolates=TRUE, min.size=15, max.size=100)
 				}
@@ -736,8 +737,8 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 					cg2 <- set_vertex_attr(graph=cg2, name=colnames(tt)[c], value=tt[,c])
 				plot.file <- file.path(attr.folder, paste0(attr,"_comgraph",suffix))
 				tlog(8,"Plotting graph in '",plot.file,"'")
-				#V(cg2)$label <- rep(NA, gorder(cg2))
-				custom.gplot(g=cg2, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=paste0(plot.file,"_lambert"), asp=1, color.isolates=TRUE)
+				cg3 <- rescale.coordinates(cg2); #V(cg3)$label <- rep(NA, gorder(cg3))
+				custom.gplot(g=cg3, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=paste0(plot.file,"_lambert"), asp=1, color.isolates=TRUE, rescale=FALSE)
 				cg3 <- cg2; V(cg3)$x <- V(cg2)$x2; V(cg3)$y <- V(cg2)$y2; E(cg3)$weight <- E(cg2)$weight*2; 
 				custom.gplot(g=cg3, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(cg3)$x), ylim=range(V(cg3)$y), color.isolates=TRUE, min.size=15, max.size=100)
 			}
@@ -802,8 +803,8 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 						cg2 <- set_vertex_attr(graph=cg2, name=colnames(tt)[c], value=tt[,c])
 					plot.file <- file.path(attrval.folder, paste0("comgraph"))
 					tlog(8,"Plotting graph in '",plot.file,"'")
-					#V(cg2)$label <- rep(NA, gorder(cg2))
-					custom.gplot(g=cg2, col.att=colnames(tt), col.att.cap=paste0(attr," : ",uval), size.att="size", cat.att=TRUE, file=paste0(plot.file,"_lambert"), asp=1, color.isolates=TRUE)
+					cg3 <- rescale.coordinates(cg2); #V(cg3)$label <- rep(NA, gorder(cg3))
+					custom.gplot(g=cg3, col.att=colnames(tt), col.att.cap=paste0(attr," : ",uval), size.att="size", cat.att=TRUE, file=paste0(plot.file,"_lambert"), asp=1, color.isolates=TRUE, rescale=FALSE)
 					cg3 <- cg2; V(cg3)$x <- V(cg2)$x2; V(cg3)$y <- V(cg2)$y2; E(cg3)$weight <- E(cg2)$weight*2; 
 					custom.gplot(g=cg3, col.att=colnames(tt), col.att.cap=paste0(attr," : ",uval), size.att="size", cat.att=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(cg3)$x), ylim=range(V(cg3)$y), color.isolates=TRUE, min.size=15, max.size=100)
 		
@@ -968,8 +969,8 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 						cg2 <- set_vertex_attr(graph=cg2, name=colnames(tt)[c], value=tt[,c])
 					plot.file <- file.path(attr.folder, paste0(attr,"_comgraph",suffix))
 					tlog(6,"Plotting graph in '",plot.file,"'")
-					#V(cg2)$label <- rep(NA, gorder(cg2))
-					custom.gplot(g=cg2, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=paste0(plot.file,"_lambert"), asp=1, color.isolates=TRUE)
+					cg3 <- rescale.coordinates(cg2); #V(cg3)$label <- rep(NA, gorder(cg3))
+					custom.gplot(g=cg3, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=paste0(plot.file,"_lambert"), asp=1, color.isolates=TRUE, rescale=FALSE)
 					cg3 <- cg2; V(cg3)$x <- V(cg2)$x2; V(cg3)$y <- V(cg2)$y2; E(cg3)$weight <- E(cg2)$weight*2; 
 					custom.gplot(g=cg3, col.att=colnames(tt), col.att.cap=attr, size.att="size", cat.att=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(cg3)$x), ylim=range(V(cg3)$y), color.isolates=TRUE, min.size=15, max.size=100)
 				}
@@ -1266,9 +1267,9 @@ plot.comstruct.comparison <- function()
 				tlog(8,"Plotting graph in '",plot.file,"'")
 				V(g2)$label <- paste(vertex_attr(g2,name=COL_LOC_ID), get.location.names(g2),sep="_")
 				# lambert plot
-				g2 <- delete_edge_attr(g2, LK_TYPE); g2 <- simplify(g2)
-				custom.gplot(g=g2, col.att="Coms", col.att.cap="Comparison", cat.att=TRUE, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
-				custom.gplot(g=g2, col.att="Coms", col.att.cap="Comparison", cat.att=TRUE, file=paste0(plot.file,"_lambert_hulls"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1, show.coms=TRUE)
+				g2 <- delete_edge_attr(g2, LK_TYPE); g2 <- simplify(g2); g2 <- rescale.coordinates(g2)
+				custom.gplot(g=g2, col.att="Coms", col.att.cap="Comparison", cat.att=TRUE, file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1, rescale=FALSE)
+				custom.gplot(g=g2, col.att="Coms", col.att.cap="Comparison", cat.att=TRUE, file=paste0(plot.file,"_lambert_hulls"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1, show.coms=TRUE, rescale=FALSE)
 				# kk plot
 				V(g2)$x <- V(g2)$x2; V(g2)$y <- V(g2)$y2; E(g2)$weight <- 0.5
 				custom.gplot(g=g2, col.att="Coms", col.att.cap="Comparison", cat.att=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)

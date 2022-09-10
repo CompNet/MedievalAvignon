@@ -19,6 +19,37 @@ FORMAT <- c("pdf", "png")	# plot file format: pdf png
 
 
 #############################################################
+# Rescale the coordinates of the geographic layout.
+#
+# g: graph, we use its lonEst and latEst attributes, i.e. the
+#    interpolated coordinates.
+#
+# returns: a graph whose attributes x and y are the rescaled 
+#          coordinates. 
+#############################################################
+rescale.coordinates <- function(g)
+{	# retrieve the interpolated coordinates
+	x <- V(g)$lonEst
+	y <- V(g)$latEst
+	
+	# resize range
+	scale <- max(max(x,na.rm=TRUE)-min(x,na.rm=TRUE), max(y,na.rm=TRUE)-min(y,na.rm=TRUE))/2
+	x <- x / scale
+	y <- y / scale
+	
+	# center coordinates
+	x <- x - (min(x,na.rm=TRUE)+max(x,na.rm=TRUE))/2
+	y <- y - (min(y,na.rm=TRUE)+max(y,na.rm=TRUE))/2
+	
+	V(g)$x <- x
+	V(g)$y <- y
+	return(g)
+}
+
+
+
+
+#############################################################
 # Displays the specified graph in an appropriate way, taking
 # into account the previously set link and node attributes.
 #

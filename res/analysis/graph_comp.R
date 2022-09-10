@@ -136,11 +136,13 @@ plot.graph.comparisons.same.types <- function(g1, g2, folder)
 	# create the geo plots
 	plot.file <- paste0(plot.file1,"_lambert")
 	tlog(8,"Plotting in file '",plot.file,"'")
-	custom.gplot(g=g1, col.att="comparison", col.att.cap="Comparison", cat.att=TRUE, file=plot.file, asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+	g1 <- rescale.coordinates(g1)
+	custom.gplot(g=g1, col.att="comparison", col.att.cap="Comparison", cat.att=TRUE, file=plot.file, asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1, rescale=FALSE)
 	#
 	plot.file <- paste0(plot.file2,"_lambert")
 	tlog(8,"Plotting in file '",plot.file,"'")
-	custom.gplot(g=g2, col.att="comparison", col.att.cap="Comparison", cat.att=TRUE, file=plot.file, asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+	g1 <- rescale.coordinates(g1)
+	custom.gplot(g=g2, col.att="comparison", col.att.cap="Comparison", cat.att=TRUE, file=plot.file, asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1, rescale=FALSE)
 	
 	# create the algo plots
 	plot.file <- paste0(plot.file1,"_algo")
@@ -252,11 +254,13 @@ plot.graph.comparisons.diff.types <- function(g.non, g.split, folder)
 	# create the geo plots
 	plot.file <- paste0(plot.file.non,"_lambert")
 	tlog(8,"Plotting in file '",plot.file,"'")
-	custom.gplot(g=g.non, col.att="comparison", col.att.cap="Comparison", cat.att=TRUE, file=plot.file, asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+	g1 <- rescale.coordinates(g1)
+	custom.gplot(g=g.non, col.att="comparison", col.att.cap="Comparison", cat.att=TRUE, file=plot.file, asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1, rescale=FALSE)
 	#
 	plot.file <- paste0(plot.file.split,"_lambert")
 	tlog(8,"Plotting in file '",plot.file,"'")
-	custom.gplot(g=g.split, col.att="comparison", col.att.cap="Comparison", cat.att=TRUE, file=plot.file, asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+	g1 <- rescale.coordinates(g1)
+	custom.gplot(g=g.split, col.att="comparison", col.att.cap="Comparison", cat.att=TRUE, file=plot.file, asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1, rescale=FALSE)
 	
 	# create the algo plots
 	plot.file <- paste0(plot.file.non,"_algo")

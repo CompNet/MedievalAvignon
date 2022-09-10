@@ -369,7 +369,6 @@ extract.social.networks <- function()
 		plot.file <- file.path(graph.folder, "graph")
 		tlog(4,"Plotting graph in \"",plot.file,"\"")
 		custom.gplot(g=g1, file=plot.file)
-		#custom.gplot(g=g1)
 		
 		# record graph as a graphml file
 		graph.file <- file.path(graph.folder, FILE_GRAPH)
@@ -449,7 +448,6 @@ extract.social.networks <- function()
 			plot.file <- file.path(graph.folder, "graph")
 			tlog(6,"Plotting graph in \"",plot.file,"\"")
 			custom.gplot(g=g1, file=plot.file)
-			#custom.gplot(g=g1)
 			
 			# record graph as a graphml file
 			graph.file <- file.path(graph.folder, FILE_GRAPH)
@@ -1530,7 +1528,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	# consequently, the split+compl graph must be computed *before* the others
 	{	if(compl.streets && is.logical(split.surf) && split.surf)
 		{	tlog(5,"Compute interpolation")
-			# compute range (to place node whose position could not be interpolated) 
+			# compute range (to place nodes whose position could not be interpolated) 
 			rx <- range(V(g)$x, na.rm=TRUE)
 			gapx <- 2*(rx[2]-rx[1])/100
 			ry <- range(V(g)$y, na.rm=TRUE)
@@ -1709,9 +1707,8 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		V(g1)$label <- paste(vertex_attr(g1,name=COL_LOC_ID), get.location.names(g1),sep="_")
 		
 		# plot using geographic coordinates
-		V(g1)$x <- V(g1)$lonEst; V(g1)$y <- V(g1)$latEst
-		custom.gplot(g=g1, file=paste0(plot.file,"_lambert"), size.att=2, vertex.label.cex=0.1)
-		#custom.gplot(g=g1)
+		g1 <- rescale.coordinates(g1)
+		custom.gplot(g=g1, file=paste0(plot.file,"_lambert"), size.att=2, vertex.label.cex=0.1, rescale=FALSE)
 		write.graphml.file(g=g1, file=paste0(plot.file,"_lambert.graphml"))
 		
 		# plot using precomputed layout
@@ -1938,7 +1935,8 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 				dir.create(path=graph.folder, showWarnings=FALSE, recursive=TRUE)
 				plot.file <- file.path(graph.folder, paste0("graph_rem=",nbr))
 				tlog(8,"Plotting graph using geographic coordinates in \"",plot.file,"\"")
-				custom.gplot(g=g1, file=plot.file, asp=1, size.att=2, vertex.label.cex=0.1, v.hl=v.hl, e.hl=e.hl)
+				g1 <- rescale.coordinates(g1)
+				custom.gplot(g=g1, file=plot.file, asp=1, size.att=2, vertex.label.cex=0.1, v.hl=v.hl, e.hl=e.hl, rescale=FALSE)
 				
 				# plot using a layouting algorithm 
 				g2 <- g1#; V(g2)$x <- V(g2)$x2; V(g2)$y <- V(g2)$y2
@@ -2017,8 +2015,8 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			V(g1)$label <- paste(vertex_attr(g1,name=COL_LOC_ID), get.location.names(g1),sep="_")
 			plot.file <- file.path(graph.folder, "graph_lambert")
 			tlog(4,"Plotting graph using geographic coordinates in \"",plot.file,"\"")
-			custom.gplot(g=g1, file=plot.file, asp=1, size.att=2, vertex.label.cex=0.1)
-			#custom.gplot(g=g1)
+			g1 <- rescale.coordinates(g1)
+			custom.gplot(g=g1, file=plot.file, asp=1, size.att=2, vertex.label.cex=0.1, rescale=FALSE)
 			write.graphml.file(g=g1, file=paste0(plot.file,".graphml"))
 	
 			# plot the graph using a layouting algorithm 
@@ -2058,7 +2056,6 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			E(g2)$weight <- 0.5
 			#
 			custom.gplot(g=g2, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), vertex.label.cex=0.1, size.att=8)
-			#custom.gplot(g=g2)
 			write.graphml.file(g=g2, file=paste0(plot.file,".graphml"))
 			
 			# record graph as a graphml file
@@ -2093,7 +2090,8 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 				write.graphml.file(g=g1, file=graph.file)
 				# plot
 				plot.file <- file.path(graph.folder, "graph_lambert")
-				custom.gplot(g=g1, file=plot.file, asp=1, size.att=2, vertex.label.cex=0.1)
+				g1 <- rescale.coordinates(g1)
+				custom.gplot(g=g1, file=plot.file, asp=1, size.att=2, vertex.label.cex=0.1, rescale=FALSE)
 				write.graphml.file(g=g1, file=paste0(plot.file,".graphml"))
 				plot.file <- file.path(graph.folder, "graph_algo")
 				custom.gplot(g=g2, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g2)$x), ylim=range(V(g2)$y), vertex.label.cex=0.1, size.att=8)
@@ -2211,3 +2209,26 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #   - exporter les coms avec pureté et cie.
 
 # date: 04/09/2022
+
+#library("grImport")
+#file <- "exempleFondCarteXIV.ps"
+#file <- "MONARIv2.ps"
+#PostScriptTrace(file, "exempleFondCarteXIV.xml")
+#bg <- readPicture("exempleFondCarteXIV.xml")
+#grid.picture(bg)
+
+#library("grImport2")
+#file <- "exempleFondCarteXIV.svg"
+#p <- grImport2::readPicture(file)
+#grid.picture(p)
+
+#file.path <- file.path(out.folder, gname, FILE_GRAPH)
+#g <- load.graphml.file(file=file.path)
+# V(g)$x <- V(g)$x*1.419126
+# plot.file <- "graph_lambert"
+#scale <- max(max(V(g)$x,na.rm=TRUE)-min(V(g)$x,na.rm=TRUE), max(V(g)$y,na.rm=TRUE)-min(V(g)$y,na.rm=TRUE))/2
+#V(g)$x <- V(g)$x / scale
+#V(g)$y <- V(g)$y / scale
+#V(g)$x <- V(g)$x - (min(V(g)$x,na.rm=TRUE)+max(V(g)$x,na.rm=TRUE))/2
+#V(g)$y <- V(g)$y - (min(V(g)$y,na.rm=TRUE)+max(V(g)$y,na.rm=TRUE))/2
+#custom.gplot(g=g, file=plot.file, asp=1, size.att=2, vertex.label.cex=0.1, rescale=TRUE)

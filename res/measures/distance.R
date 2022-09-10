@@ -109,8 +109,8 @@ analyze.net.distance.spatial <- function(g, distance.folder, fast)
 				avg.vals[idx0] <- svals.avg.harmo
 			g <- set_vertex_attr(graph=g, name=satt, value=avg.vals)
 			V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
-			g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-			custom.gplot(g=g1, col.att=satt, col.att.cap=MEAS_LONG_NAMES[MEAS_DISTANCE_AVG_SPATIAL], file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+			g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1); g1 <- rescale.coordinates(g1)
+			custom.gplot(g=g1, col.att=satt, col.att.cap=MEAS_LONG_NAMES[MEAS_DISTANCE_AVG_SPATIAL], file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1, rescale=FALSE)
 			g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
 			custom.gplot(g=g1, col.att=satt, col.att.cap=MEAS_LONG_NAMES[MEAS_DISTANCE_AVG_SPATIAL], file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
 		}
@@ -192,8 +192,8 @@ analyze.net.distance.geodesic <- function(g, mode, distance.folder, fast, stat.f
 			tlog(8,"Plotting graph in '",plot.file,"'")
 			#g <- update.node.labels(g, avg.vals)
 			V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
-			g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-			custom.gplot(g=g1, col.att=paste0(fname,"-",avg.type,"_avg"), col.att.cap=MEAS_LONG_NAMES[MEAS_DISTANCE_AVG_GEODESIC], file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+			g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1); g1 <- rescale.coordinates(g1)
+			custom.gplot(g=g1, col.att=paste0(fname,"-",avg.type,"_avg"), col.att.cap=MEAS_LONG_NAMES[MEAS_DISTANCE_AVG_GEODESIC], file=paste0(plot.file,"_lambert"), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1, rescale=FALSE)
 			g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
 			custom.gplot(g=g1, col.att=paste0(fname,"-",avg.type,"_avg"), col.att.cap=MEAS_LONG_NAMES[MEAS_DISTANCE_AVG_GEODESIC], file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
 		}
@@ -225,8 +225,8 @@ analyze.net.distance.geodesic <- function(g, mode, distance.folder, fast, stat.f
 					id.cln <- gsub("/", "_", id.cln, fixed=TRUE)
 					V(g)$label <- paste(vertex_attr(g,name=COL_LOC_ID), get.location.names(g),sep="_")
 					tlog(6,"Plotting graph for node #",id," (",nname, ", ",n,"/",gorder(g),") in '",file.path(mode.folder,"xxxx",paste0(id.cln,"_",shrt.nm )),"'")
-					g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
-					custom.gplot(g=g1, col.att=fname, col.att.cap=MEAS_LONG_NAMES[MEAS_DISTANCE], v.hl=n, file=file.path(mode.folder,"lambert",paste0(id.cln,"_",shrt.nm )), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1)
+					g1 <- g; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1); g1 <- rescale.coordinates(g1)
+					custom.gplot(g=g1, col.att=fname, col.att.cap=MEAS_LONG_NAMES[MEAS_DISTANCE], v.hl=n, file=file.path(mode.folder,"lambert",paste0(id.cln,"_",shrt.nm )), asp=1, size.att=2, edge.arrow.mode=0, vertex.label.cex=0.1, rescale=FALSE)
 					g1 <- g; V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2; E(g1)$weight <- 0.5; g1 <- delete_edge_attr(g1, LK_TYPE); g1 <- simplify(g1)
 					custom.gplot(g=g1, col.att=fname, col.att.cap=MEAS_LONG_NAMES[MEAS_DISTANCE], v.hl=n, file=file.path(mode.folder,"kk",paste0(id.cln,"_",shrt.nm )), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
 				}
