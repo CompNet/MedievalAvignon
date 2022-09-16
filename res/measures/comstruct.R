@@ -238,6 +238,37 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 				custom.gplot(g=g1, col.att=fname, col.att.cap=algos[[a]]$clean.name, cat.att=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
 				custom.gplot(g=g1, col.att=fname, col.att.cap=algos[[a]]$clean.name, cat.att=TRUE, file=paste0(plot.file,"_algo_hulls"), rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8, show.coms=TRUE)
 				
+				# build group graph
+				cg <- g
+				for(eattr in edge_attr_names(graph=cg))
+					cg <- delete_edge_attr(graph=cg, name=eattr)
+				E(cg)$weight <- 1
+				cg <- simplify(cg, remove.multiple=TRUE, edge.attr.comb=list(weight="sum"), remove.loops=FALSE)
+				cg <- contract.vertices(cg, mapping=mbrs)			# TODO we could keep edges of different types separated (familial, professional, etc.)
+				cg <- simplify(cg, 
+						remove.multiple=TRUE,						# count multiple edges to get intercommunity weights
+						edge.attr.comb=list(weight="sum"),
+						remove.loops=TRUE 							# keeping the loops makes the plot difficult to read
+				)
+				# setup its attributes
+				coms <- sort(unique(mbrs))
+				V(cg)$name <- paste("C",coms,sep="")
+				V(cg)$label <- paste("C",coms,sep="")
+				V(cg)$size <- sapply(coms, function(i) length(which(mbrs==i)))
+				V(cg)$x <- V(cg)$lonEst <- sapply(coms, function(i) mean(V(g)$x[mbrs==i]))
+				V(cg)$y <- V(cg)$latEst <- sapply(coms, function(i) mean(V(g)$y[mbrs==i]))
+				V(cg)$x2 <- sapply(coms, function(i) mean(V(g)$x2[mbrs==i]))
+				V(cg)$y2 <- sapply(coms, function(i) mean(V(g)$y2[mbrs==i]))
+				V(cg)$Community <- coms
+				cg2 <- cg
+				# plot community graph
+				plot.file <- file.path(coms.folder,paste0(fname,"_comgraph"))
+				tlog(6,"Plotting community graph in '",plot.file,"'")
+				cg3 <- rescale.coordinates(cg2); #V(cg3)$label <- rep(NA, gorder(cg3))
+				custom.gplot(g=cg3, col.att="Community", col.att.cap=algos[[a]]$clean.name, size.att="size", cat.att=TRUE, file=paste0(plot.file,"_lambert"), asp=1, color.isolates=TRUE, rescale=FALSE)
+				cg3 <- cg2; V(cg3)$x <- V(cg2)$x2; V(cg3)$y <- V(cg2)$y2; E(cg3)$weight <- E(cg2)$weight*2; 
+				custom.gplot(g=cg3, col.att="Community", col.att.cap=algos[[a]]$clean.name, size.att="size", cat.att=TRUE, file=paste0(plot.file,"_algo"), rescale=FALSE, xlim=range(V(cg3)$x), ylim=range(V(cg3)$y), color.isolates=TRUE, min.size=15, max.size=100)
+				
 				# compute community-related nodal measures
 				role.folder <- file.path(coms.folder, "roles")
 				dir.create(path=role.folder, showWarnings=FALSE, recursive=TRUE)
@@ -415,7 +446,7 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 
 
 #############################################################
-# Compares the previously detected groupes (communites, components)
+# Compares the previously detected groups (communites, components)
 # and the attributes of the nodes.
 #
 # g: original graph to process.
