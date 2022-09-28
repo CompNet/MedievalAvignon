@@ -214,6 +214,7 @@ extract.vertex.attributes <- function(graph.names, folder, attributes)
 	}
 }
 #extract.vertex.attributes(graph.names=graph.types, folder=FOLDER_OUT_ANAL_EST, attributes=c(COL_LOC_X,COL_LOC_Y,COL_LOC_INTER_X,COL_LOC_INTER_Y,COL_LOC_INTER))
+#extract.vertex.attributes(graph.names=graph.types, folder=FOLDER_OUT_ANAL_EST, attributes=c("SpatialDist_database-arith_mean","SpatialDist_database-harmo_mean","SpatialDist_interpolation-arith_mean","SpatialDist_interpolation-harmo_mean","distance_undirected-arith_avg","distance_undirected-harmo_avg"))
 
 
 
