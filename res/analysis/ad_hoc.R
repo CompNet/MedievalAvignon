@@ -210,6 +210,7 @@ extract.vertex.attributes <- function(graph.names, folder, attributes)
 		
 		# record table as CSV
 		tab.file <- file.path(folder,paste0("vertex-attr_",gsub("/", "__", graph.names[i]),".csv"))
+#		tab.file <- file.path(folder,paste0("distances_",gsub("/", "__", graph.names[i]),".csv"))
 		write.csv(df, file=tab.file, row.names=FALSE)
 	}
 }
