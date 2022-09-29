@@ -177,7 +177,7 @@ plot.stats.comparison <- function()
 # folder: root folder to find the graph and record the files.
 # attributes: names of the attributes to extract from the graphs.
 #############################################################################################
-extract.vertex.attributes <- function(graph.names, folder, attributes)
+extract.vertex.attributes <- function(graph.names, folder, attributes=NA)
 {	tlog(0,"Retrieving vertex attributes in graphs")
 	
 	# loop over graphs
@@ -193,6 +193,10 @@ extract.vertex.attributes <- function(graph.names, folder, attributes)
 		# init table containing attribute values
 		df <- data.frame(vertex_attr(g, COL_LOC_ID), get.names(g))
 		colnames(df) <- c("Id","Name") 
+		
+		# possibly init attribute list
+		if(all(is.na(attributes)))
+			attributes <- vertex_attr_names(g)
 		
 		# loop over attributes
 		tlog(4,"Looping over vertex attributes")
@@ -214,6 +218,7 @@ extract.vertex.attributes <- function(graph.names, folder, attributes)
 		write.csv(df, file=tab.file, row.names=FALSE)
 	}
 }
+#extract.vertex.attributes(graph.names=graph.types, folder=FOLDER_OUT_ANAL_EST)
 #extract.vertex.attributes(graph.names=graph.types, folder=FOLDER_OUT_ANAL_EST, attributes=c(COL_LOC_X,COL_LOC_Y,COL_LOC_INTER_X,COL_LOC_INTER_Y,COL_LOC_INTER))
 #extract.vertex.attributes(graph.names=graph.types, folder=FOLDER_OUT_ANAL_EST, attributes=c("SpatialDist_database-arith_mean","SpatialDist_database-harmo_mean","SpatialDist_interpolation-arith_mean","SpatialDist_interpolation-harmo_mean","distance_undirected-arith_avg","distance_undirected-harmo_avg"))
 
