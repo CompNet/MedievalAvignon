@@ -1537,6 +1537,8 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			idx <- which(!is.na(V(g)$x))
 			flags <- !(V(g)$typeExterne[idx] %in% c("Bien","Bourg", "Edifice", "Porte", "Livree", "Rue", "Rempart") | (V(g)$typeExterne[idx]=="Repere" & grepl("_", V(g)$idExterne[idx], fixed=TRUE)))
 			g <- set_vertex_attr(graph=g, name=COL_LOC_EXCLUDE, index=idx, value=flags)
+			# version of the graph without the hierarchical relationships, used later to get the neighbors
+			g.c <- delete_edges(graph=g, edges=which(E(g)$type %in% c(VAL_CONF_TYPE_EGALE, VAL_CONF_TYPE_INTERIEUR, VAL_CONF_TYPE_EXTERIEUR, VAL_CONF_TYPE_DELA, VAL_CONF_TYPE_ENTRE)))
 			# loop over node without coordinate
 			changed <- TRUE
 			moved <- 0
@@ -1545,7 +1547,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 				idx <- which(is.na(V(g)$x))
 				tlog(6,"Nodes without position: ",length(idx),"/",gorder(g))
 				if(length(idx)>0)
-				{	neighs <- ego(graph=g, order=1, nodes=idx, mode="all", mindist=1)
+				{	neighs <- ego(graph=g.c, order=1, nodes=idx, mode="all", mindist=1)
 					for(v in 1:length(idx))
 					{	#tlog(6,"node=",v)
 						ns <- as.integer(neighs[[v]])	# get the neighbors' ids
