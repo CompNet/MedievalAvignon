@@ -75,7 +75,8 @@ fast <- TRUE
 # extrat the graphs
 	# split extended
 	graph.types <- extract.estate.networks(split.surf=TRUE, compl.streets=TRUE, street.ablation=FALSE)
-	graph.types <- extract.estate.networks(split.surf=311,  compl.streets=TRUE, street.ablation=FALSE)		# equiv. 7 (prev. 303 equiv. 9)
+	graph.types <- extract.estate.networks(split.surf=303,  compl.streets=TRUE, street.ablation=FALSE)		# equiv. 9
+	graph.types <- extract.estate.networks(split.surf=311,  compl.streets=TRUE, street.ablation=FALSE)		# equiv. 7
 	# whole extended
 	graph.types <- extract.estate.networks(split.surf=FALSE, compl.streets=TRUE, street.ablation=FALSE)
 	graph.types <- extract.estate.networks(split.surf=FALSE, compl.streets=TRUE, street.ablation=TRUE)
