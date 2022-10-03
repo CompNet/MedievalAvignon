@@ -342,8 +342,9 @@ compute.inconsistencies <- function()
 #
 # graph.types: list of graph types to consider.
 # mode: undirected (default) or directed.
+# sep.legend: whether to plot the legend in a separate file in the global plot.
 #############################################################################################
-normalize.distance.plots <- function(graph.types, mode=MEAS_MODE_UNDIR)
+normalize.distance.plots <- function(graph.types, mode=MEAS_MODE_UNDIR, sep.legend=FALSE)
 {	tlog(0,"Redrawing distance-distance plots to get a fixed range on the axes")
 	
 	# init min/max values
@@ -373,8 +374,8 @@ normalize.distance.plots <- function(graph.types, mode=MEAS_MODE_UNDIR)
 			tlog(4,"Reading file ",tab.file)
 			vals <- read.csv(file=tab.file, header=TRUE)
 			# update boundaries
-			env.min <- min(g.min, vals[,"SpatialAvg"]-vals[,"SpatialStdev"], na.rm=TRUE)
-			env.max <- max(g.max, vals[,"SpatialAvg"]+vals[,"SpatialStdev"], na.rm=TRUE)
+			env.min <- min(env.min, vals[,"SpatialAvg"]-vals[,"SpatialStdev"], na.rm=TRUE)
+			env.max <- max(env.max, vals[,"SpatialAvg"]+vals[,"SpatialStdev"], na.rm=TRUE)
 		}
 	}
 	
@@ -488,6 +489,14 @@ normalize.distance.plots <- function(graph.types, mode=MEAS_MODE_UNDIR)
 					x=xs, y=avg.dist, 
 					col=col, lty=lty
 				)
+			}
+			if(sep.legend)
+			{	dev.off()
+				if(fformat=="pdf")
+					pdf(paste0(plot.file,"_legend.pdf"), width=10, height=20)
+				else if(fformat=="png")
+					png(paste0(plot.file,"_legend.png"), width=512, height=1024)
+				plot(NULL, xaxt="n", yaxt="n", bty="n", ylab="", xlab="", xlim=0:1, ylim=0:1)
 			}
 			legend(
 				x="topleft",
