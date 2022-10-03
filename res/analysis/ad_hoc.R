@@ -333,3 +333,170 @@ compute.inconsistencies <- function()
 	count.unr <- sum(vect.unr)/2
 	tlog(2,"Number of pairs of reciprocal edges connecting the same vertices with unrelated types: ",count.unr)
 }
+
+
+
+
+#############################################################################################
+# Redraws the distance-distance plots so that they all use the same ranges for both distances.
+#
+# graph.types: list of graph types to consider.
+# mode: undirected (default) or directed.
+#############################################################################################
+normalize.distance.plots <- function(graph.types, mode=MEAS_MODE_UNDIR)
+{	tlog(0,"Redrawing distance-distance plots to get a fixed range on the axes")
+	
+	# init min/max values
+	g.min <- NA
+	g.max <- NA
+	s.min <- NA
+	s.max <- NA
+	env.min <- NA
+	env.max <- NA
+	
+	# read the previously computed results
+	tlog(2,"Reading previously computed distance values")
+	for(gt in graph.types)
+	{	for(sdist in c("database","interpolation"))
+		{	# read data
+			tab.file <- file.path(FOLDER_OUT_ANAL_EST, gt, MEAS_DISTANCE, mode, "comparison", paste0("geodesic_vs_spatial-",sdist,"_values.csv"))
+			tlog(4,"Reading file ",tab.file)
+			vals <- read.csv(file=tab.file, header=TRUE)
+			# update boundaries
+			g.min <- min(g.min, vals[,"Geodesic"], na.rm=TRUE)
+			g.max <- max(g.max, vals[,"Geodesic"], na.rm=TRUE)
+			s.min <- min(s.min, vals[,"Spatial"], na.rm=TRUE)
+			s.max <- max(s.max, vals[,"Spatial"], na.rm=TRUE)
+			
+			# read stats
+			tab.file <- file.path(FOLDER_OUT_ANAL_EST, gt, MEAS_DISTANCE, mode, "comparison", paste0("geodesic_vs_spatial-",sdist,"_avg-std.csv"))
+			tlog(4,"Reading file ",tab.file)
+			vals <- read.csv(file=tab.file, header=TRUE)
+			# update boundaries
+			env.min <- min(g.min, vals[,"SpatialAvg"]-vals[,"SpatialStdev"], na.rm=TRUE)
+			env.max <- max(g.max, vals[,"SpatialAvg"]+vals[,"SpatialStdev"], na.rm=TRUE)
+		}
+	}
+	
+	tlog(2,"Detected range: geodesic: [",g.min,";",g.max,"] - spatial: [",s.min,";",s.max,"] - envelope: [",env.min,";",env.max,"]")
+	series.xs <- list(database=list(), interpolation=list())
+	series.avgs <- list(database=list(), interpolation=list())
+	series.sds <- list(database=list(), interpolation=list())
+	s <- 1
+	
+	# generate all plots again
+	tlog(2,"Creating new plots")
+	for(gt in graph.types)
+	{	tlog(4, "Dealing with graph ",gt)
+		
+		for(sdist in c("database","interpolation"))
+		{	# read data
+			tab.file <- file.path(FOLDER_OUT_ANAL_EST, gt, MEAS_DISTANCE, mode, "comparison", paste0("geodesic_vs_spatial-",sdist,"_values.csv"))
+			tlog(4,"Reading file ",tab.file)
+			vals <- read.csv(file=tab.file, header=TRUE)
+			gvals <- vals[,"Geodesic"]
+			svals <- vals[,"Spatial"]
+			# read stats
+			tab.file <- file.path(FOLDER_OUT_ANAL_EST, gt, MEAS_DISTANCE, mode, "comparison", paste0("geodesic_vs_spatial-",sdist,"_avg-std.csv"))
+			tlog(4,"Reading file ",tab.file)
+			vals <- read.csv(file=tab.file, header=TRUE)
+			xs <- vals[,"Geodesic"]
+			avg.dist <- vals[,"SpatialAvg"]
+			stdev.dist <- vals[,"SpatialStdev"]
+			
+			# add to lists
+			series.xs[[sdist]][[s]] <- xs
+			series.avgs[[sdist]][[s]] <- avg.dist
+			series.sds[[sdist]][[s]] <- stdev.dist
+			
+			# plot both distances as a binned scatterplot
+			plot.file <- file.path(FOLDER_OUT_ANAL_EST, gt, MEAS_DISTANCE, mode, "comparison", paste0("geodesic_vs_spatial-",sdist,"_binned_fixed-range"))
+			tlog(4,"Plot binned version in '",plot.file,"'")
+			for(fformat in FORMAT)
+			{	if(fformat=="pdf")
+					pdf(paste0(plot.file,".pdf"))
+				else if(fformat=="png")
+					png(paste0(plot.file,".png"))
+				plot(
+					NULL,
+					xlab="Undirected geodesic distance", ylab="Spatial distance",
+					las=1, #log="xy", 
+					ylim=c(env.min, env.max),
+					xlim=c(g.min, g.max)
+				)
+				polygon(
+					x=c(xs,rev(xs)), y=c(avg.dist-stdev.dist,rev(avg.dist+stdev.dist)), 
+					col=make.color.transparent("RED",85), border=NA
+				)
+				lines(
+					x=xs, y=avg.dist, 
+					col="RED", pch=19
+				)
+				dev.off()
+			}
+		}
+		s <- s + 1
+	}
+	
+	tlog(2,"Creating overall plot")
+	ns <- which(!grepl("_filtered", graph.types, fixed=TRUE))
+	pal <- get.palette(length(ns))
+	
+	for(sdist in c("database","interpolation"))
+	{	plot.file <- file.path(FOLDER_OUT_ANAL_EST, paste0("geodesic_vs_spatial-",sdist,"_binned_fixed-range"))
+		tlog(4,"Plot binned version in '",plot.file,"'")
+		for(fformat in FORMAT)
+		{	if(fformat=="pdf")
+				pdf(paste0(plot.file,".pdf"))
+			else if(fformat=="png")
+				png(paste0(plot.file,".png"))
+			# init plot
+			plot(
+				NULL,
+				xlab="Undirected geodesic distance", ylab="Spatial distance",
+				las=1, #log="xy", 
+				ylim=c(env.min, env.max),
+				xlim=c(g.min, g.max)
+			)
+			# add each series separately
+			cols <- c()
+			ltys <- c()
+			for(s in 1:length(graph.types))
+			{	# retrieve data
+				xs <- series.xs[[sdist]][[s]]
+				avg.dist <- series.avgs[[sdist]][[s]]
+				stdev.dist <- series.sds[[sdist]][[s]]
+				# update graphic params
+				if(grepl("_filtered", graph.types[s], fixed=TRUE))
+				{	gt <- gsub("_filtered", replacement="", x=graph.types[s], fixed=TRUE)
+					lty <- 2	# 2 (dashed) or 3 (dotted)
+				}
+				else
+				{	gt <- graph.types[s]
+					lty <- 1
+				}
+				col <- pal[graph.types[ns]==gt]
+				cols <- c(cols, col)
+				ltys <- c(ltys, lty)
+				# draw envelope
+#				polygon(
+#					x=c(xs,rev(xs)), y=c(avg.dist-stdev.dist,rev(avg.dist+stdev.dist)), 
+#					col=make.color.transparent(col,90), border=NA
+#				)
+				# draw average
+				lines(
+					x=xs, y=avg.dist, 
+					col=col, lty=lty
+				)
+			}
+			legend(
+				x="topleft",
+				col=cols, lty=ltys,
+				title="Graphs",
+				legend=graph.types
+			)
+			dev.off()
+		}
+	}
+}
+#normalize.distance.plots(graph.types=graph.types, mode=MEAS_MODE_UNDIR)

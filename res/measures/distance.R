@@ -354,6 +354,19 @@ analyze.net.distance.compare.raw <- function(g, mode, distance.folder, fast)
 			avg.dist <- sapply(xs, function(x) mean(svals[gvals==x],na.rm=TRUE))
 			stdev.dist <- sapply(xs, function(x) sd(svals[gvals==x],na.rm=TRUE))
 			stdev.dist[is.na(stdev.dist)] <- 0
+			# record to file
+			tab.file <- file.path(comp.folder, paste0("geodesic_vs_spatial-",sdist,"_avg-std.csv"))
+			dist.tab <- data.frame(xs, avg.dist, stdev.dist)
+			colnames(dist.tab) <- c("Geodesic","SpatialAvg","SpatialStdev")
+			tlog(4,"Recording distance mean values in file '",tab.file,"'")
+			write.csv(dist.tab, file=tab.file, row.names=FALSE)	
+			
+			# record distance values
+			tab.file <- file.path(comp.folder, paste0("geodesic_vs_spatial-",sdist,"_values.csv"))
+			dist.tab <- data.frame(gvals, svals)
+			colnames(dist.tab) <- c("Geodesic","Spatial")
+			tlog(4,"Recording distance values in file '",tab.file,"'")
+			write.csv(dist.tab, file=tab.file, row.names=FALSE)	
 			
 			# plot the spatial distance as a function of the graph-based one
 			plot.file <- file.path(comp.folder, paste0("geodesic_vs_spatial-",sdist))

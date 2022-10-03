@@ -205,6 +205,9 @@ graph.types <- c(
 	"whole_raw/flat_relations_filtered"
 )
 
+# re-generate certain plots with fixed ranges
+normalize.distance.plots(graph.types=graph.types, mode=MEAS_MODE_UNDIR)
+
 # merge previously computed whole-graph stats
 merge.stats(graph.names=graph.types, folder=FOLDER_OUT_ANAL_EST)
 
