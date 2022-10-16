@@ -309,7 +309,10 @@ plot.street.removal <- function(mode)
 		# get street numbers or thresholds
 		str <- basename(ll)
 		street.vals <- as.numeric(substr(str, start=nchar("graph_rem=")+1, stop=nchar(str)-nchar(".graphml")))
-		idx <- rank(-street.vals)
+		if(grepl("split", mode, fixed=TRUE))
+			idx <- order(-street.vals)
+		else
+			idx <- order(street.vals)
 		
 		# read graphs
 		tlog(4,"Reading graph files")
@@ -320,7 +323,7 @@ plot.street.removal <- function(mode)
 		street.cur.degs <- c()
 		street.orig.degs <- c()
 		for(i in idx)
-		{	graph.file <- ll[[i]]
+		{	graph.file <- ll[i]
 			tlog(6,"Reading file '",graph.file,"' (",length(gs)+1,"/",length(idx),")")
 			g <- load.graphml.file(file=graph.file)
 			r <- as.character(street.vals[i])
