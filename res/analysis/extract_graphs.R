@@ -825,7 +825,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 	info.all <- cbind(info.all, pos.restr)
 	colnames(info.all)[ncol(info.all)] <- COL_EST_POSITION_RESTR
 	
-	# load table of individuals
+	# load table of people
 	tlog(4,"Loading individual information")
 	info.indiv <- read.table(
 		file=FILE_IN_ANAL_PERSON_NODES,

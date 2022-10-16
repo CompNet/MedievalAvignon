@@ -21,7 +21,6 @@ source("res/measures/_compute_measures.R")
 ########################################################################
 # start logging
 start.rec.log(text="Nets")
-fast <- TRUE
 
 
 
