@@ -341,7 +341,9 @@ plot.street.removal <- function(mode)
 		colnames(cor.data) <- c("Length", "Span", "CurrentDegree", "OriginalDegree")
 		cor.mat <- cor(cor.data, use="pairwise.complete.obs")
 		tab.file <- file.path(main.folder, "street_stats.csv")
+		tlog(4,"Recording correlations in '",tab.file,"' (note: this does not work for the split graphs)")
 		write.csv(cor.mat, file=tab.file, row.names=TRUE)
+		print(cor.mat)
 		
 		# compute stats
 		meas.names <- c(
