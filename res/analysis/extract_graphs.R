@@ -2158,6 +2158,9 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #    quelles méthodes marchent le mieux pour extraire le réseau ?
 #    et pour corriger ? par ex. peut on trouver un moyen de rajouter les liens connectant les composants de façon appropriée ? 
 #    (e.g. prédiction de lien sur la base des distances spatiales?)
+# x) la partie interprétation des coms pourrait à la fois 
+#	 - venir illustrer le papier 1) 
+#    - faire l'objet de son propre papier (par ex. dans j of hist net res)
 # 2) comment utiliser les graphes pour détecter les erreurs de saisie
 #              + effet des erreurs sur les graphes extraits
 # 3) GNN pour prédire les positions manquantes
