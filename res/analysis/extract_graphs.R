@@ -2157,7 +2157,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 # 1) intérêt du réseau de confront pour approximer la distance spatiale
 #    quelles méthodes marchent le mieux pour extraire le réseau ?
 #    et pour corriger ? par ex. peut on trouver un moyen de rajouter les liens connectant les composants de façon appropriée ? 
-#    (eg prédiction de lien sur la base des distances spatiales?)
+#    (e.g. prédiction de lien sur la base des distances spatiales?)
 # 2) comment utiliser les graphes pour détecter les erreurs de saisie
 #              + effet des erreurs sur les graphes extraits
 # 3) GNN pour prédire les positions manquantes
@@ -2201,36 +2201,6 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 
 
 # TODO
-# > séparer le traitement des distances (pr uniformiser entre RW vs modèle)
+# > séparer le traitement des distances (pr uniformiser entre réel vs modèle)
 #   > fait sauf la modif sur la valeur moyenne dans le plot des moyennes (binning x-axis)
 #   > puis adapter le modèle générateur pour produire les attributs de même noms, rendant ce code interopérable
-
-# - pr didier: 
-#   - produire le fichier edgelist avec les id (BD) des noeuds (et les attributs des liens)
-#   - exporter la liste des noeuds avec tous les attributs dispos et aussi les coms
-#   - exporter les coms avec pureté et cie.
-
-# date: 04/09/2022
-
-#library("grImport")
-#file <- "exempleFondCarteXIV.ps"
-#file <- "MONARIv2.ps"
-#PostScriptTrace(file, "exempleFondCarteXIV.xml")
-#bg <- readPicture("exempleFondCarteXIV.xml")
-#grid.picture(bg)
-
-#library("grImport2")
-#file <- "exempleFondCarteXIV.svg"
-#p <- grImport2::readPicture(file)
-#grid.picture(p)
-
-#file.path <- file.path(out.folder, gname, FILE_GRAPH)
-#g <- load.graphml.file(file=file.path)
-# V(g)$x <- V(g)$x*1.419126
-# plot.file <- "graph_lambert"
-#scale <- max(max(V(g)$x,na.rm=TRUE)-min(V(g)$x,na.rm=TRUE), max(V(g)$y,na.rm=TRUE)-min(V(g)$y,na.rm=TRUE))/2
-#V(g)$x <- V(g)$x / scale
-#V(g)$y <- V(g)$y / scale
-#V(g)$x <- V(g)$x - (min(V(g)$x,na.rm=TRUE)+max(V(g)$x,na.rm=TRUE))/2
-#V(g)$y <- V(g)$y - (min(V(g)$y,na.rm=TRUE)+max(V(g)$y,na.rm=TRUE))/2
-#custom.gplot(g=g, file=plot.file, asp=1, size.att=2, vertex.label.cex=0.1, rescale=TRUE)
