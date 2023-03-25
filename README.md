@@ -27,9 +27,6 @@ This set of R scripts aims at extracting and analyzing confront networks extract
 # Data
 The raw dataset was manually constituted by Margot Ferrand during her PhD. The detail of her historical sources is given in her PhD [[F'22](#references)]. The output files (graphs, plots, tables...) can be obtained by running the scripts, but they are also directly available on [Zenodo](https://doi.org/.....) **<To be published>**.
 
-<!--
-![ThorgalStaticNet](/data/Thorgal/network.svg)
--->
 
 # Organization
 Here are the folders composing the project:
