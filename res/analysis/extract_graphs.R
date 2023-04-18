@@ -1314,7 +1314,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		}
 	}
 	
-	# possibly add street-street confronts
+	# possibly add street-street and street-edifice confronts
 	if(compl.streets)
 	{	tlog(4,"Adding confronts between streets")
 		# the data is different if we are in split mode
@@ -1535,7 +1535,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			gapy <- 2*(ry[2]-ry[1])/100
 			# init distance exclusion flag
 			idx <- which(!is.na(V(g)$x))
-			flags <- !(V(g)$typeExterne[idx] %in% c("Bien","Bourg", "Edifice", "Porte", "Livree", "Rue", "Rempart") | (V(g)$typeExterne[idx]=="Repere" & grepl("_", V(g)$idExterne[idx], fixed=TRUE)))
+			flags <- !(V(g)$typeExterne[idx] %in% c("Bien", "Bourg", "Edifice", "Porte", "Livree", "Rue", "Rempart") | (V(g)$typeExterne[idx]=="Repere" & grepl("_", V(g)$idExterne[idx], fixed=TRUE)))
 			g <- set_vertex_attr(graph=g, name=COL_LOC_EXCLUDE, index=idx, value=flags)
 			# version of the graph without the hierarchical relationships, used later to get the neighbors
 			g.c <- delete_edges(graph=g, edges=which(E(g)$type %in% c(VAL_CONF_TYPE_EGALE, VAL_CONF_TYPE_INTERIEUR, VAL_CONF_TYPE_EXTERIEUR, VAL_CONF_TYPE_DELA, VAL_CONF_TYPE_ENTRE)))
@@ -2133,7 +2133,6 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #      > différence avec sim structurelle ?
 
 # TODO
-# - améliorer la comparaison entre comstruct consécutives
 # + correlation : 
 #   - décomposer en fonction de la distance géodesique ou spatiale
 #   - distinguer extra/intra muros
@@ -2150,8 +2149,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #     - effet des rues longues. mais ça demanderait de partir d'un plan stochastique.
 # - on doit pouvoir estimer la position des biens non placés avec un GNN tenant compte de la nature des liens
 
-# MARGOT:
-# - traduction de 'confront' en anglais ? urbarium ?
+# - traduction de 'confront' en anglais ? (terrier = urbarium ; bien = property, piece of real estate) https://sciendo.com/es/article/10.2478/adhi-2019-0002
 
 # idées papiers: 
 # 1) intérêt du réseau de confront pour approximer la distance spatiale
@@ -2165,6 +2163,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #              + effet des erreurs sur les graphes extraits
 # 3) GNN pour prédire les positions manquantes
 #    besoin d'une version multiplexe pour représenter les différents types de confronts
+# 	 et besoin du modèle également
 
 # arguments suppression de rues :
 # - pour :
