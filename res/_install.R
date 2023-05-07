@@ -24,3 +24,4 @@ install.packages("pcaPP")			# fast kendall correlation computation
 install.packages("ggplot2")			# additional plot types
 install.packages("geometry")		# convex hull, triangulation
 install.packages("rPref")			# plot pareto front
+install.packages("plotrix")			# plots with gaps
