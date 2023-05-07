@@ -291,8 +291,11 @@ analyze.net.distance.compare.raw <- function(g, mode, distance.folder, fast)
 		diag(gvals) <- NA
 		gvals <- gvals[upper.tri(gvals, diag=FALSE)]
 		idx <- !is.infinite(gvals)
-		gvals2 <- gvals; gvals2[which(is.infinite(gvals))] <- rep(max(gvals[idx],na.rm=TRUE)+1, length(which(is.infinite(gvals))))	# values with max+1 instead of Inf (for rank-based correlation measures)
-		svals2 <- svals
+		gvals0 <- gvals
+		svals0 <- svals
+		gap <- 5
+		gvals2 <- gvals0; gvals2[which(is.infinite(gvals0))] <- rep(max(gvals0[idx],na.rm=TRUE)+gap+1, length(which(is.infinite(gvals0))))	# values with max+1 instead of Inf (for rank-based correlation measures)
+		svals2 <- svals0
 		gvals <- gvals[idx]
 		svals <- svals[idx]
 		
@@ -351,9 +354,16 @@ analyze.net.distance.compare.raw <- function(g, mode, distance.folder, fast)
 			# compute average & stdev
 			tlog(10,"Computing averages and standard deviations")
 			xs <- sort(unique(gvals))
+xs0 <- c(xs, Inf)
+xs2 <- sort(unique(gvals2))
 			avg.dist <- sapply(xs, function(x) mean(svals[gvals==x],na.rm=TRUE))
+avg.dist0 <- c(avg.dist, mean(svals0[is.infinite(gvals0)]))
+avg.dist2 <- sapply(xs2, function(x) mean(svals2[gvals2==x],na.rm=TRUE))
 			stdev.dist <- sapply(xs, function(x) sd(svals[gvals==x],na.rm=TRUE))
 			stdev.dist[is.na(stdev.dist)] <- 0
+stdev.dist0 <- c(stdev.dist, sd(svals0[is.infinite(gvals0)]))
+stdev.dist2 <- sapply(xs2, function(x) sd(svals2[gvals2==x],na.rm=TRUE))
+stdev.dist2[is.na(stdev.dist2)] <- 0
 			# record to file
 			tab.file <- file.path(comp.folder, paste0("geodesic_vs_spatial-",sdist,"_avg-std.csv"))
 			dist.tab <- data.frame(xs, avg.dist, stdev.dist)
@@ -376,18 +386,37 @@ analyze.net.distance.compare.raw <- function(g, mode, distance.folder, fast)
 					pdf(paste0(plot.file,".pdf"))
 				else if(fformat=="png")
 					png(paste0(plot.file,".png"))
-				plot(
-					x=gvals, y=svals, 
-					xlab=xlab, ylab=ylabs[sdist],
-					#log="xy", 
-					las=1, col=make.color.transparent("RED",75)
-					#xlim=c(1,max(deg.vals)*1.1)
+				par(mar=c(4,4,0,0)+0.1) 	# remove the title space -- Bottom Left Top Right
+				plot(NULL,
+					#xlab=xlab, ylab=ylabs[sdist],
+					xlab="Undirected geodesic distance", ylab="Spatial distance",
+					las=1, #log="xy", 
+					xaxt="n",
+					ylim=range(svals2,na.rm=TRUE),
+					xlim=range(gvals2,na.rm=TRUE)
 				)
-				# mean
-				lines(	
-					x=min(gvals):max(gvals), avg.dist,
+				points(
+					x=gvals, y=svals, 
+					col=make.color.transparent("RED",75)
+				)
+				lines(
+					x=xs, y=avg.dist,
 					col="BLACK"
 				)
+				last <- length(xs2)
+				points(
+					x=gvals2[gvals2==xs2[last]], y=svals2[gvals2==xs2[last]], 
+					col=make.color.transparent("RED",75)
+				)
+				points(x=xs2[last], y=avg.dist2[last], col="BLACK")
+				arrows(
+					x0=xs2[last], y0=avg.dist2[last]-stdev.dist2[last], 
+					x1=xs2[last], y1=avg.dist2[last]+stdev.dist2[last], 
+					code=3, angle=90, length=0.05, 
+					col="BLACK", lwd=2
+				)
+				axis(side=1, at=c(seq(0,max(xs),10),max(xs2)), labels=c(seq(0,max(xs),10),expression(+infinity)))
+				axis.break(axis=1,breakpos=max(xs2)-gap,style="gap",brw=0.02)
 				dev.off()
 			}
 			
@@ -395,10 +424,10 @@ analyze.net.distance.compare.raw <- function(g, mode, distance.folder, fast)
 			meas <- MEAS_DEGREE
 			vals <- igraph::degree(graph=g, mode="all", v=idx0)
 			cb <- t(combn(1:length(idx0),2))
-			vals <- (vals[cb[,1]] * vals[cb[,2]])[idx]
+			vals <- (vals[cb[,1]] * vals[cb[,2]])#[idx]
 			# set colors
 			fine <- 500 									# granularity of the color gradient
-#				cols <- sapply(viridis(fine,direction=-1)[as.numeric(cut(vals,breaks=fine))], function(col) make.color.transparent(col,75))
+#			cols <- sapply(viridis(fine,direction=-1)[as.numeric(cut(vals,breaks=fine))], function(col) make.color.transparent(col,75))
 			cols <- viridis(fine,direction=-1)[as.numeric(cut(vals,breaks=fine))]
 			plot.file <- file.path(comp.folder, paste0("geodesic_vs_spatial-",sdist,"_col=",meas))
 			tlog(10,"Plotting data in '",plot.file,"'")
@@ -407,20 +436,38 @@ analyze.net.distance.compare.raw <- function(g, mode, distance.folder, fast)
 					pdf(paste0(plot.file,".pdf"))
 				else if(fformat=="png")
 					png(paste0(plot.file,".png"))
-				plot(
-					x=gvals[order(vals)], y=svals[order(vals)], 
-					xlab=xlab, ylab=ylabs[sdist],
-					#log="xy", 
-					las=1, col=cols[order(vals)],
-					#xlim=c(1,max(deg.vals)*1.1)
+				plot(NULL,
+					#xlab=xlab, ylab=ylabs[sdist],
+					xlab="Undirected geodesic distance", ylab="Spatial distance",
+					las=1, #log="xy", 
+					xaxt="n",
+					ylim=range(svals2,na.rm=TRUE),
+					xlim=range(gvals2,na.rm=TRUE)
 				)
-				# mean
-				lines(	
-					x=min(gvals):max(gvals), avg.dist,
+				points(
+					x=gvals[order(vals[idx])], y=svals[order(vals[idx])], 
+					col=cols[order(vals[idx])]
+				)
+				lines(
+					x=xs, y=avg.dist,
 					col="BLACK"
 				)
+				last <- length(xs2)
+				points(
+					x=gvals2[gvals2==xs2[last]][order(vals[!idx])], y=svals2[gvals2==xs2[last]][order(vals[!idx])], 
+					col=cols[order(vals[!idx])]
+				)
+				points(x=xs2[last], y=avg.dist2[last], col="BLACK")
+				arrows(
+					x0=xs2[last], y0=avg.dist2[last]-stdev.dist2[last], 
+					x1=xs2[last], y1=avg.dist2[last]+stdev.dist2[last], 
+					code=3, angle=90, length=0.05, 
+					col="BLACK", lwd=2
+				)
+				axis(side=1, at=c(seq(0,max(xs),10),max(xs2)), labels=c(seq(0,max(xs),10),expression(+infinity)))
+				axis.break(axis=1,breakpos=max(xs2)-gap,style="gap",brw=0.02)
 				# legend
-				gradientLegend(range(vals), color=viridis(fine,direction=-1), inside=TRUE)
+				gradientLegend(range(vals), color=viridis(fine,direction=-1), inside=TRUE, side=2)
 				dev.off()
 			}
 			
@@ -432,27 +479,34 @@ analyze.net.distance.compare.raw <- function(g, mode, distance.folder, fast)
 					pdf(paste0(plot.file,".pdf"))
 				else if(fformat=="png")
 					png(paste0(plot.file,".png"))
+				par(mar=c(4,4,0,0)+0.1) 	# remove the title space -- Bottom Left Top Right
 				plot(
 					NULL,
 					xlab="Undirected geodesic distance", ylab="Spatial distance",
+					#xlab=xlab, ylab=ylabs[sdist],
 					las=1, #log="xy", 
-					ylim=range(svals,na.rm=TRUE),
-					xlim=range(gvals,na.rm=TRUE)
+					xaxt="n",
+					ylim=range(svals2,na.rm=TRUE),
+					xlim=range(gvals2,na.rm=TRUE)
 				)
 				polygon(
 					x=c(xs,rev(xs)), y=c(avg.dist-stdev.dist,rev(avg.dist+stdev.dist)), 
 					col=make.color.transparent("RED",85), border=NA
 				)
-				#arrows(
-				#	x0=xs, y0=avg.dist-stdev.dist, 
-				#	x1=xs, y1=avg.dist+stdev.dist, 
-				#	code=3, angle=90, length=0.05, 
-				#	col="PINK", lwd=2
-				#)
 				lines(
-					x=xs, y=avg.dist, 
+					x=xs, y=avg.dist,
 					col="RED", pch=19
 				)
+				last <- length(xs2)
+				points(x=xs2[last], y=avg.dist2[last], col="RED")
+				arrows(
+					x0=xs2[last], y0=avg.dist2[last]-stdev.dist2[last], 
+					x1=xs2[last], y1=avg.dist2[last]+stdev.dist2[last], 
+					code=3, angle=90, length=0.05, 
+					col=make.color.transparent("RED",85), lwd=2
+				)
+				axis(side=1, at=c(seq(0,max(xs),10),max(xs2)), labels=c(seq(0,max(xs),10),expression(+infinity)))
+				axis.break(axis=1,breakpos=max(xs2)-gap,style="gap",brw=0.02)
 				dev.off()
 			}
 		}
