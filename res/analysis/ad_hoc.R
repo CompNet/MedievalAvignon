@@ -364,8 +364,9 @@ normalize.distance.plots <- function(graph.types, mode=MEAS_MODE_UNDIR, sep.lege
 			tlog(4,"Reading file ",tab.file)
 			vals <- read.csv(file=tab.file, header=TRUE)
 			# update boundaries
-			g.min <- min(g.min, vals[,"Geodesic"], na.rm=TRUE)
-			g.max <- max(g.max, vals[,"Geodesic"], na.rm=TRUE)
+			idx <- !is.infinite(vals[,"Geodesic"])
+			g.min <- min(g.min, vals[idx,"Geodesic"], na.rm=TRUE)
+			g.max <- max(g.max, vals[idx,"Geodesic"], na.rm=TRUE)
 			s.min <- min(s.min, vals[,"Spatial"], na.rm=TRUE)
 			s.max <- max(s.max, vals[,"Spatial"], na.rm=TRUE)
 			
@@ -379,14 +380,19 @@ normalize.distance.plots <- function(graph.types, mode=MEAS_MODE_UNDIR, sep.lege
 		}
 	}
 	
+	# set gap used when plotting infinite distances
 	tlog(2,"Detected range: geodesic: [",g.min,";",g.max,"] - spatial: [",s.min,";",s.max,"] - envelope: [",env.min,";",env.max,"]")
+	gap <- round(0.070*(g.max-g.min))
+	infinite.val <- g.max + gap + 1
+	
+	# init lists
 	series.xs <- list(database=list(), interpolation=list())
 	series.avgs <- list(database=list(), interpolation=list())
 	series.sds <- list(database=list(), interpolation=list())
 	s <- 1
 	
 	# generate all plots again
-	tlog(2,"Creating new plots")
+	tlog(2,"Recreating graph-specific plots, but using the same range")
 	for(gt in graph.types)
 	{	tlog(4, "Dealing with graph ",gt)
 		
@@ -397,18 +403,35 @@ normalize.distance.plots <- function(graph.types, mode=MEAS_MODE_UNDIR, sep.lege
 			vals <- read.csv(file=tab.file, header=TRUE)
 			gvals <- vals[,"Geodesic"]
 			svals <- vals[,"Spatial"]
+if(!any(is.infinite(gvals)))
+	stop("No infinite distance at all, is that even possible? (",gt,")")
+			idx <- !is.infinite(gvals)
+			gvals0 <- gvals
+			svals0 <- svals
+			gvals2 <- gvals0; gvals2[which(is.infinite(gvals0))] <- rep(infinite.val, length(which(is.infinite(gvals0))))
+			svals2 <- svals0
+			gvals <- gvals[idx]
+			svals <- svals[idx]
+			
 			# read stats
 			tab.file <- file.path(FOLDER_OUT_ANAL_EST, gt, MEAS_DISTANCE, mode, "comparison", paste0("geodesic_vs_spatial-",sdist,"_avg-std.csv"))
 			tlog(4,"Reading file ",tab.file)
 			vals <- read.csv(file=tab.file, header=TRUE)
-			xs <- vals[,"Geodesic"]
-			avg.dist <- vals[,"SpatialAvg"]
-			stdev.dist <- vals[,"SpatialStdev"]
+			xs0 <- vals[,"Geodesic"]
+			xs <- xs0[!is.infinite(xs0)]
+			xs2 <- sort(unique(gvals2))
+			avg.dist0 <- vals[,"SpatialAvg"]
+			avg.dist <- avg.dist0[!is.infinite(xs0)]
+			avg.dist2 <- sapply(xs2, function(x) mean(svals2[gvals2==x],na.rm=TRUE))
+			stdev.dist0 <- vals[,"SpatialStdev"]
+			stdev.dist <- stdev.dist0[!is.infinite(xs0)]
+			stdev.dist2 <- sapply(xs2, function(x) sd(svals2[gvals2==x],na.rm=TRUE))
+			stdev.dist2[is.na(stdev.dist2)] <- 0
 			
 			# add to lists
-			series.xs[[sdist]][[s]] <- xs
-			series.avgs[[sdist]][[s]] <- avg.dist
-			series.sds[[sdist]][[s]] <- stdev.dist
+			series.xs[[sdist]][[s]] <- xs0
+			series.avgs[[sdist]][[s]] <- avg.dist0
+			series.sds[[sdist]][[s]] <- stdev.dist0
 			
 			# plot both distances as a binned scatterplot
 			plot.file <- file.path(FOLDER_OUT_ANAL_EST, gt, MEAS_DISTANCE, mode, "comparison", paste0("geodesic_vs_spatial-",sdist,"_binned_fixed-range"))
@@ -418,12 +441,14 @@ normalize.distance.plots <- function(graph.types, mode=MEAS_MODE_UNDIR, sep.lege
 					pdf(paste0(plot.file,".pdf"))
 				else if(fformat=="png")
 					png(paste0(plot.file,".png"))
+				par(mar=c(4,4,0,0)+0.1) 	# remove the title space -- Bottom Left Top Right
 				plot(
 					NULL,
 					xlab="Undirected geodesic distance", ylab="Spatial distance",
 					las=1, #log="xy", 
+					xaxt="n",
 					ylim=c(env.min, env.max),
-					xlim=c(g.min, g.max)
+					xlim=c(g.min, infinite.val)
 				)
 				polygon(
 					x=c(xs,rev(xs)), y=c(avg.dist-stdev.dist,rev(avg.dist+stdev.dist)), 
@@ -433,6 +458,16 @@ normalize.distance.plots <- function(graph.types, mode=MEAS_MODE_UNDIR, sep.lege
 					x=xs, y=avg.dist, 
 					col="RED", pch=19
 				)
+				last <- length(xs2)
+				points(x=xs2[last], y=avg.dist2[last], col="RED")
+				arrows(
+					x0=xs2[last], y0=avg.dist2[last]-stdev.dist2[last], 
+					x1=xs2[last], y1=avg.dist2[last]+stdev.dist2[last], 
+					code=3, angle=90, length=0.05, 
+					col=make.color.transparent("RED",85), lwd=2
+				)
+				axis(side=1, at=c(seq(0,g.max,10),infinite.val), labels=c(seq(0,g.max,10),expression(+infinity)))
+				axis.break(axis=1,breakpos=infinite.val-gap,style="gap",brw=0.02)
 				dev.off()
 			}
 		}
@@ -452,21 +487,30 @@ normalize.distance.plots <- function(graph.types, mode=MEAS_MODE_UNDIR, sep.lege
 			else if(fformat=="png")
 				png(paste0(plot.file,".png"))
 			# init plot
+			par(mar=c(4,4,0,0)+0.1) 	# remove the title space -- Bottom Left Top Right
 			plot(
 				NULL,
 				xlab="Undirected geodesic distance", ylab="Spatial distance",
 				las=1, #log="xy", 
+				xaxt="n",
 				ylim=c(env.min, env.max),
-				xlim=c(g.min, g.max)
+				xlim=c(g.min, infinite.val)
 			)
 			# add each series separately
 			cols <- c()
 			ltys <- c()
 			for(s in 1:length(graph.types))
-			{	# retrieve data
-				xs <- series.xs[[sdist]][[s]]
-				avg.dist <- series.avgs[[sdist]][[s]]
-				stdev.dist <- series.sds[[sdist]][[s]]
+			{	# retrieve stats
+				xs0 <- series.xs[[sdist]][[s]]
+				xs <- xs0[!is.infinite(xs0)]
+				xs2 <- xs0; xs2[is.infinite(xs0)] <- infinite.val
+				avg.dist0 <- series.avgs[[sdist]][[s]]
+				avg.dist <- avg.dist0[!is.infinite(xs0)]
+				avg.dist2 <- avg.dist0
+				stdev.dist0 <- series.sds[[sdist]][[s]]
+				stdev.dist <- stdev.dist0[!is.infinite(xs0)]
+				stdev.dist2 <- stdev.dist0
+				
 				# update graphic params
 				if(grepl("_filtered", graph.types[s], fixed=TRUE))
 				{	gt <- gsub("_filtered", replacement="", x=graph.types[s], fixed=TRUE)
@@ -490,6 +534,16 @@ normalize.distance.plots <- function(graph.types, mode=MEAS_MODE_UNDIR, sep.lege
 					col=col, lty=lty
 				)
 			}
+			last <- length(xs2)
+			points(x=xs2[last], y=avg.dist2[last], col=col)
+#			arrows(
+#				x0=xs2[last], y0=avg.dist2[last]-stdev.dist2[last], 
+#				x1=xs2[last], y1=avg.dist2[last]+stdev.dist2[last], 
+#				code=3, angle=90, length=0.05, 
+#				col=make.color.transparent(col,85), lwd=2
+#			)
+			axis(side=1, at=c(seq(0,g.max,10),infinite.val), labels=c(seq(0,g.max,10),expression(+infinity)))
+			axis.break(axis=1, breakpos=infinite.val-gap, style="gap", brw=0.02)
 			if(sep.legend)
 			{	dev.off()
 				if(fformat=="pdf")
