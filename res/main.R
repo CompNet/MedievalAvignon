@@ -71,7 +71,7 @@ start.rec.log(text="Nets")
 ########################################################################
 # load the data and create various versions of the spatial graph
 
-# extrat the graphs
+# extract the graphs
 	# split extended
 	graph.types <- extract.estate.networks(split.surf=TRUE, compl.streets=TRUE, street.ablation=FALSE)
 	graph.types <- extract.estate.networks(split.surf=303,  compl.streets=TRUE, street.ablation=FALSE)		# equiv. 9
