@@ -290,10 +290,11 @@ analyze.net.distance.compare.raw <- function(g, mode, distance.folder, fast)
 		gvals <- distances(graph=g, mode=if(mode==MEAS_MODE_UNDIR) "all" else mode, v=idx0, to=idx0)
 		diag(gvals) <- NA
 		gvals <- gvals[upper.tri(gvals, diag=FALSE)]
+		all.finite <- !any(is.infinite(gvals))
 		idx <- !is.infinite(gvals)
 		gvals0 <- gvals
 		svals0 <- svals
-		gap <- 5
+		gap <- round(0.075*(max(gvals0[!is.infinite(gvals0)]) - min(gvals0[!is.infinite(gvals0)])))
 		gvals2 <- gvals0; gvals2[which(is.infinite(gvals0))] <- rep(max(gvals0[idx],na.rm=TRUE)+gap+1, length(which(is.infinite(gvals0))))	# values with max+1 instead of Inf (for rank-based correlation measures)
 		svals2 <- svals0
 		gvals <- gvals[idx]
@@ -366,21 +367,21 @@ stdev.dist2 <- sapply(xs2, function(x) sd(svals2[gvals2==x],na.rm=TRUE))
 stdev.dist2[is.na(stdev.dist2)] <- 0
 			# record to file
 			tab.file <- file.path(comp.folder, paste0("geodesic_vs_spatial-",sdist,"_avg-std.csv"))
-			dist.tab <- data.frame(xs, avg.dist, stdev.dist)
+			dist.tab <- data.frame(xs0, avg.dist0, stdev.dist0)
 			colnames(dist.tab) <- c("Geodesic","SpatialAvg","SpatialStdev")
 			tlog(4,"Recording distance mean values in file '",tab.file,"'")
 			write.csv(dist.tab, file=tab.file, row.names=FALSE)	
 			
 			# record distance values
 			tab.file <- file.path(comp.folder, paste0("geodesic_vs_spatial-",sdist,"_values.csv"))
-			dist.tab <- data.frame(gvals, svals)
+			dist.tab <- data.frame(gvals0, svals0)
 			colnames(dist.tab) <- c("Geodesic","Spatial")
 			tlog(4,"Recording distance values in file '",tab.file,"'")
 			write.csv(dist.tab, file=tab.file, row.names=FALSE)	
 			
 			# plot the spatial distance as a function of the graph-based one
 			plot.file <- file.path(comp.folder, paste0("geodesic_vs_spatial-",sdist))
-			tlog(10,"Plotting data in 'plot.file'")
+			tlog(10,"Plotting data in '",plot.file,"'")
 			for(fformat in FORMAT)
 			{	if(fformat=="pdf")
 					pdf(paste0(plot.file,".pdf"))
@@ -391,7 +392,7 @@ stdev.dist2[is.na(stdev.dist2)] <- 0
 					#xlab=xlab, ylab=ylabs[sdist],
 					xlab="Undirected geodesic distance", ylab="Spatial distance",
 					las=1, #log="xy", 
-					xaxt="n",
+					xaxt=if(all.finite) "s" else "n",
 					ylim=range(svals2,na.rm=TRUE),
 					xlim=range(gvals2,na.rm=TRUE)
 				)
@@ -403,20 +404,22 @@ stdev.dist2[is.na(stdev.dist2)] <- 0
 					x=xs, y=avg.dist,
 					col="BLACK"
 				)
-				last <- length(xs2)
-				points(
-					x=gvals2[gvals2==xs2[last]], y=svals2[gvals2==xs2[last]], 
-					col=make.color.transparent("RED",75)
-				)
-				points(x=xs2[last], y=avg.dist2[last], col="BLACK")
-				arrows(
-					x0=xs2[last], y0=avg.dist2[last]-stdev.dist2[last], 
-					x1=xs2[last], y1=avg.dist2[last]+stdev.dist2[last], 
-					code=3, angle=90, length=0.05, 
-					col="BLACK", lwd=2
-				)
-				axis(side=1, at=c(seq(0,max(xs),10),max(xs2)), labels=c(seq(0,max(xs),10),expression(+infinity)))
-				axis.break(axis=1,breakpos=max(xs2)-gap,style="gap",brw=0.02)
+				if(!all.finite)
+				{	last <- length(xs2)
+					points(
+						x=gvals2[gvals2==xs2[last]], y=svals2[gvals2==xs2[last]], 
+						col=make.color.transparent("RED",75)
+					)
+					points(x=xs2[last], y=avg.dist2[last], col="BLACK")
+					arrows(
+						x0=xs2[last], y0=avg.dist2[last]-stdev.dist2[last], 
+						x1=xs2[last], y1=avg.dist2[last]+stdev.dist2[last], 
+						code=3, angle=90, length=0.05, 
+						col="BLACK", lwd=2
+					)
+					axis(side=1, at=c(seq(0,max(xs),10),max(xs2)), labels=c(seq(0,max(xs),10),expression(+infinity)))
+					axis.break(axis=1,breakpos=max(xs2)-gap,style="gap",brw=0.02)
+				}
 				dev.off()
 			}
 			
@@ -440,7 +443,7 @@ stdev.dist2[is.na(stdev.dist2)] <- 0
 					#xlab=xlab, ylab=ylabs[sdist],
 					xlab="Undirected geodesic distance", ylab="Spatial distance",
 					las=1, #log="xy", 
-					xaxt="n",
+					xaxt=if(all.finite) "s" else "n",
 					ylim=range(svals2,na.rm=TRUE),
 					xlim=range(gvals2,na.rm=TRUE)
 				)
@@ -452,20 +455,22 @@ stdev.dist2[is.na(stdev.dist2)] <- 0
 					x=xs, y=avg.dist,
 					col="BLACK"
 				)
-				last <- length(xs2)
-				points(
-					x=gvals2[gvals2==xs2[last]][order(vals[!idx])], y=svals2[gvals2==xs2[last]][order(vals[!idx])], 
-					col=cols[order(vals[!idx])]
-				)
-				points(x=xs2[last], y=avg.dist2[last], col="BLACK")
-				arrows(
-					x0=xs2[last], y0=avg.dist2[last]-stdev.dist2[last], 
-					x1=xs2[last], y1=avg.dist2[last]+stdev.dist2[last], 
-					code=3, angle=90, length=0.05, 
-					col="BLACK", lwd=2
-				)
-				axis(side=1, at=c(seq(0,max(xs),10),max(xs2)), labels=c(seq(0,max(xs),10),expression(+infinity)))
-				axis.break(axis=1,breakpos=max(xs2)-gap,style="gap",brw=0.02)
+				if(!all.finite)
+				{	last <- length(xs2)
+					points(
+						x=gvals2[gvals2==xs2[last]][order(vals[!idx])], y=svals2[gvals2==xs2[last]][order(vals[!idx])], 
+						col=cols[order(vals[!idx])]
+					)
+					points(x=xs2[last], y=avg.dist2[last], col="BLACK")
+					arrows(
+						x0=xs2[last], y0=avg.dist2[last]-stdev.dist2[last], 
+						x1=xs2[last], y1=avg.dist2[last]+stdev.dist2[last], 
+						code=3, angle=90, length=0.05, 
+						col="BLACK", lwd=2
+					)
+					axis(side=1, at=c(seq(0,max(xs),10),max(xs2)), labels=c(seq(0,max(xs),10),expression(+infinity)))
+					axis.break(axis=1,breakpos=max(xs2)-gap,style="gap",brw=0.02)
+				}
 				# legend
 				gradientLegend(range(vals), color=viridis(fine,direction=-1), inside=TRUE, side=2)
 				dev.off()
@@ -485,7 +490,7 @@ stdev.dist2[is.na(stdev.dist2)] <- 0
 					xlab="Undirected geodesic distance", ylab="Spatial distance",
 					#xlab=xlab, ylab=ylabs[sdist],
 					las=1, #log="xy", 
-					xaxt="n",
+					xaxt=if(all.finite) "s" else "n",
 					ylim=range(svals2,na.rm=TRUE),
 					xlim=range(gvals2,na.rm=TRUE)
 				)
@@ -497,16 +502,18 @@ stdev.dist2[is.na(stdev.dist2)] <- 0
 					x=xs, y=avg.dist,
 					col="RED", pch=19
 				)
-				last <- length(xs2)
-				points(x=xs2[last], y=avg.dist2[last], col="RED")
-				arrows(
-					x0=xs2[last], y0=avg.dist2[last]-stdev.dist2[last], 
-					x1=xs2[last], y1=avg.dist2[last]+stdev.dist2[last], 
-					code=3, angle=90, length=0.05, 
-					col=make.color.transparent("RED",85), lwd=2
-				)
-				axis(side=1, at=c(seq(0,max(xs),10),max(xs2)), labels=c(seq(0,max(xs),10),expression(+infinity)))
-				axis.break(axis=1,breakpos=max(xs2)-gap,style="gap",brw=0.02)
+				if(!all.finite)
+				{	last <- length(xs2)
+					points(x=xs2[last], y=avg.dist2[last], col="RED")
+					arrows(
+						x0=xs2[last], y0=avg.dist2[last]-stdev.dist2[last], 
+						x1=xs2[last], y1=avg.dist2[last]+stdev.dist2[last], 
+						code=3, angle=90, length=0.05, 
+						col=make.color.transparent("RED",85), lwd=2
+					)
+					axis(side=1, at=c(seq(0,max(xs),10),max(xs2)), labels=c(seq(0,max(xs),10),expression(+infinity)))
+					axis.break(axis=1,breakpos=max(xs2)-gap,style="gap",brw=0.02)
+				}
 				dev.off()
 			}
 		}
