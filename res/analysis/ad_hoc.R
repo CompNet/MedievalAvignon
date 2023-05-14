@@ -403,8 +403,10 @@ normalize.distance.plots <- function(graph.types, mode=MEAS_MODE_UNDIR, sep.lege
 			vals <- read.csv(file=tab.file, header=TRUE)
 			gvals <- vals[,"Geodesic"]
 			svals <- vals[,"Spatial"]
-if(!any(is.infinite(gvals)))
-	stop("No infinite distance at all, is that even possible? (",gt,")")
+			all.finite <- !any(is.infinite(gvals))
+#if(all.finite)
+#	stop("No infinite distance at all, is that even possible? (",gt,")")
+#	cat(">>>>>>>>>>>>>>>>>>>>>>>>>> No infinite distance at all, is that even possible? (",gt,")\n")
 			idx <- !is.infinite(gvals)
 			gvals0 <- gvals
 			svals0 <- svals
@@ -458,14 +460,16 @@ if(!any(is.infinite(gvals)))
 					x=xs, y=avg.dist, 
 					col="RED", pch=19
 				)
-				last <- length(xs2)
-				points(x=xs2[last], y=avg.dist2[last], col="RED")
-				arrows(
-					x0=xs2[last], y0=avg.dist2[last]-stdev.dist2[last], 
-					x1=xs2[last], y1=avg.dist2[last]+stdev.dist2[last], 
-					code=3, angle=90, length=0.05, 
-					col=make.color.transparent("RED",85), lwd=2
-				)
+				if(!all.finite)
+				{	last <- length(xs2)
+					points(x=xs2[last], y=avg.dist2[last], col="RED")
+					arrows(
+						x0=xs2[last], y0=avg.dist2[last]-stdev.dist2[last], 
+						x1=xs2[last], y1=avg.dist2[last]+stdev.dist2[last], 
+						code=3, angle=90, length=0.05, 
+						col=make.color.transparent("RED",85), lwd=2
+					)
+				}
 				axis(side=1, at=c(seq(0,g.max,10),infinite.val), labels=c(seq(0,g.max,10),expression(+infinity)))
 				axis.break(axis=1,breakpos=infinite.val-gap,style="gap",brw=0.02)
 				dev.off()
@@ -533,15 +537,17 @@ if(!any(is.infinite(gvals)))
 					x=xs, y=avg.dist, 
 					col=col, lty=lty
 				)
+				#if(!all.finite)
+				{	last <- length(xs2)
+					points(x=xs2[last], y=avg.dist2[last], col=col)
+#					arrows(
+#						x0=xs2[last], y0=avg.dist2[last]-stdev.dist2[last], 
+#						x1=xs2[last], y1=avg.dist2[last]+stdev.dist2[last], 
+#						code=3, angle=90, length=0.05, 
+#						col=make.color.transparent(col,85), lwd=2
+#					)
+				}
 			}
-			last <- length(xs2)
-			points(x=xs2[last], y=avg.dist2[last], col=col)
-#			arrows(
-#				x0=xs2[last], y0=avg.dist2[last]-stdev.dist2[last], 
-#				x1=xs2[last], y1=avg.dist2[last]+stdev.dist2[last], 
-#				code=3, angle=90, length=0.05, 
-#				col=make.color.transparent(col,85), lwd=2
-#			)
 			axis(side=1, at=c(seq(0,g.max,10),infinite.val), labels=c(seq(0,g.max,10),expression(+infinity)))
 			axis.break(axis=1, breakpos=infinite.val-gap, style="gap", brw=0.02)
 			if(sep.legend)
