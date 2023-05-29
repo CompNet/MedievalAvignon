@@ -56,7 +56,8 @@ analyze.net.distance.spatial <- function(g, distance.folder, fast)
 		if(sdist=="database")
 			coords <- cbind(vertex_attr(g, name=COL_LOC_X), vertex_attr(g, name=COL_LOC_Y))
 		else
-			coords <- cbind(V(g)$x, V(g)$y)
+			#coords <- cbind(V(g)$x, V(g)$y)
+			coords <- cbind(vertex_attr(g, name=COL_LOC_INTER_X), vertex_attr(g, name=COL_LOC_INTER_Y))
 		idx0 <- which(!is.na(coords[,1]) & !is.na(coords[,2]) & !vertex_attr(g, name=COL_LOC_EXCLUDE))
 		svals <- as.matrix(dist(x=coords[idx0,], method="euclidean", diag=TRUE, upper=TRUE))
 		diag(svals) <- NA
@@ -279,7 +280,8 @@ analyze.net.distance.compare.raw <- function(g, mode, distance.folder, fast)
 		if(sdist=="database")
 			coords <- cbind(vertex_attr(g, name=COL_LOC_X), vertex_attr(g, name=COL_LOC_Y))
 		else
-			coords <- cbind(V(g)$x, V(g)$y)
+			#coords <- cbind(V(g)$x, V(g)$y)
+			coords <- cbind(vertex_attr(g, name=COL_LOC_INTER_X), vertex_attr(g, name=COL_LOC_INTER_Y))
 		idx0 <- which(!is.na(coords[,1]) & !is.na(coords[,2]) & !vertex_attr(g, name=COL_LOC_EXCLUDE))
 		svals <- as.matrix(dist(x=coords[idx0,], method="euclidean", diag=TRUE, upper=TRUE))
 		diag(svals) <- NA
@@ -573,7 +575,8 @@ analyze.net.distance.compare.avg <- function(g, mode, distance.folder, fast)
 			if(sdist=="database")
 				coords <- cbind(vertex_attr(g, name=COL_LOC_X), vertex_attr(g, name=COL_LOC_Y))
 			else
-				coords <- cbind(V(g)$x, V(g)$y)
+				#coords <- cbind(V(g)$x, V(g)$y)
+				coords <- cbind(vertex_attr(g, name=COL_LOC_INTER_X), vertex_attr(g, name=COL_LOC_INTER_Y))
 			idx0 <- which(!is.na(coords[,1]) & !is.na(coords[,2]) & !vertex_attr(g, name=COL_LOC_EXCLUDE))
 			svals <- as.matrix(dist(x=coords[idx0,], method="euclidean", diag=TRUE, upper=TRUE))
 			diag(svals) <- NA
@@ -826,7 +829,7 @@ analyze.net.distance <- function(g, out.folder, fast)
 		
 		# compare graph and spatial distances
 		g <- analyze.net.distance.compare.raw(g=g, mode=mode, distance.folder=distance.folder, fast=fast)
-			
+		
 		# compare graph and spatial average distances
 		g <- analyze.net.distance.compare.avg(g=g, mode=mode, distance.folder=distance.folder, fast=fast)
 	}
