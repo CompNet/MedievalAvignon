@@ -62,7 +62,7 @@ analyze.net.distance.spatial <- function(g, distance.folder, fast)
 		svals <- as.matrix(dist(x=coords[idx0,], method="euclidean", diag=TRUE, upper=TRUE))
 		diag(svals) <- NA
 		svals.avg.arith <- apply(X=svals, MARGIN=1, FUN=function(v) mean(v[!is.na(v)]))
-		svals.avg.harmo <- apply(X=svals, MARGIN=1, FUN=function(v) 1/mean(1/v[!is.na(v) & v>0]))
+		svals.avg.harmo <- apply(X=svals, MARGIN=1, FUN=function(v) 1/mean(1/v[!is.na(v) & v!=0]))
 		svals <- svals[upper.tri(svals, diag=FALSE)]
 		
 		# distribution
@@ -159,14 +159,18 @@ analyze.net.distance.geodesic <- function(g, mode, distance.folder, fast, stat.f
 	for(avg.type in c("arith","harmo"))
 	{	tlog(6,"Computing mean type ",avg.type)
 		
-		# compute mean
+		# compute means
 		if(avg.type=="arith")
 		{	avg.vals <- apply(X=vals,MARGIN=1,FUN=function(v) mean(v[!is.infinite(v)], na.rm=TRUE))
 			xlab <- paste0("Average ",MEAS_LONG_NAMES[mode]," Geodesic ",MEAS_LONG_NAMES[MEAS_DISTANCE])
+			graph.mean <- mean(flat.vals[!is.infinite(flat.vals)], na.rm=TRUE)
+			graph.stdev <- sd(flat.vals[!is.infinite(flat.vals)], na.rm=TRUE)
 		}
 		else if(avg.type=="harmo")
-		{	avg.vals <- apply(X=vals,MARGIN=1,FUN=function(v) 1/mean(1/v[v>0], na.rm=TRUE))
+		{	avg.vals <- apply(X=vals,MARGIN=1,FUN=function(v) 1/mean(1/v[v!=0], na.rm=TRUE))
 			xlab <- paste0("Harmonic Mean of the ",MEAS_LONG_NAMES[mode]," Geodesic ",MEAS_LONG_NAMES[MEAS_DISTANCE])
+			graph.mean <- 1/mean(1/flat.vals[flat.vals!=0], na.rm=TRUE)
+			graph.stdev <- NA
 		}
 		
 		# record values and create plots
@@ -184,9 +188,9 @@ analyze.net.distance.geodesic <- function(g, mode, distance.folder, fast, stat.f
 			
 			# add results to the graph (as attributes) and stats table
 			g <- set_vertex_attr(graph=g, name=paste0(fname,"-",avg.type,"_avg"), value=avg.vals)
-			g <- set_graph_attr(graph=g, name=paste0(fname,"-",avg.type,"_mean"), value=mean(flat.vals[!is.infinite(flat.vals)], na.rm=TRUE))
-			g <- set_graph_attr(graph=g, name=paste0(fname,"-",avg.type,"_stdev"), value=sd(flat.vals[!is.infinite(flat.vals)], na.rm=TRUE))
-			stats[paste0(fname,"-",avg.type), ] <- list(Value=NA, Mean=mean(vals[!is.infinite(vals)], na.rm=TRUE), Stdv=sd(vals[!is.infinite(vals)], na.rm=TRUE))
+			g <- set_graph_attr(graph=g, name=paste0(fname,"-",avg.type,"_mean"), value=graph.mean)
+			g <- set_graph_attr(graph=g, name=paste0(fname,"-",avg.type,"_stdev"), value=graph.stdev)
+			stats[paste0(fname,"-",avg.type), ] <- list(Value=NA, Mean=graph.mean, Stdv=graph.stdev)
 			
 			# plot graph using color for average distance
 			plot.file <- file.path(mode.folder,paste0("geodesic","-avg-",avg.type,"_graph"))

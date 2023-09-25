@@ -397,7 +397,7 @@ plot.street.removal <- function(mode)
 			diag(svals) <- NA
 			svals <- svals[upper.tri(svals, diag=FALSE)]
 			tab.stats[i,MEAS_DISTANCE_AVG_SPATIAL] <- mean(svals, na.rm=TRUE)
-			tab.stats[i,MEAS_DISTANCE_HARM_SPATIAL] <- 1/mean(1/svals[svals>0], na.rm=TRUE)
+			tab.stats[i,MEAS_DISTANCE_HARM_SPATIAL] <- 1/mean(1/svals[svals!=0], na.rm=TRUE)
 			
 			# geodesic distance
 			tlog(8,"Compute geodesic distance")

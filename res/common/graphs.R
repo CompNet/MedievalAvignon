@@ -134,3 +134,30 @@ disconnect.nodes <- function(g, nodes)
 	
 	return(g)
 }
+
+
+
+
+#############################################################
+# Computes the harmonic mean.
+#
+# vals: values to average.
+# returns: a single value corresponding to the harmonic mean.
+#############################################################
+#harmonic.mean <- function(vals, na.rm=FALSE)
+#{	# possibly remove NAs
+#	if(na.rm)
+#		tmp <- vals[!is.na(vals) & !is.nan(vals)]
+#	else
+#		tmp <- vals
+#	
+#	# compute harmonic mean
+#	if(length(tmp)==0)
+#		res <- NA
+#	else
+#	{	# NOTE: should we discard zeroes beforehand?
+#		res <- 1/mean(1/tmp)
+#	}
+#	
+#	return(res)
+#}
