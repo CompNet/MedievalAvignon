@@ -1762,7 +1762,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		# keep all links and nodes
 		if(graph.types[i]==GR_EST_FULL)
 			g1 <- g
-		# keep only the estate level (which includes short streets)
+		# keep only the estate level vertices (including short streets)
 		# remove all the other types of vertices as well as "between" confronts
 		else if(graph.types[i]==GR_EST_ESTATE_LEVEL)
 		{	g1 <- g
@@ -1782,11 +1782,11 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 			idx <-  startsWith(V(g1)$name,"Rue:") & !short.street.flag & !streets.all.flag
 			tlog(8,"Removing ",length(which(idx))," street nodes")
 			g1 <- delete_vertices(graph=g1, v=idx)
-			# remove nodes of higher type (areas, villages, walls)
+			# remove vertices of higher type (areas, villages, walls)
 			idx <- startsWith(V(g1)$name,"Quartier:") | startsWith(V(g1)$name,"Bourg:") | startsWith(V(g1)$name,"Rempart:")
 			tlog(8,"Removing ",length(which(idx))," areas/villages/walls")
 			g1 <- delete_vertices(graph=g1, v=idx)
-			# remove certain geological objects
+			# remove certain geological vertices
 			idx <- startsWith(V(g1)$name,"Repere:") #& vertex_attr(g1,COL_LDMRK_TYPE)!="Rocher"
 			tlog(8,"Removing ",length(which(idx))," geological object(s)")
 			g1 <- delete_vertices(graph=g1, v=idx)
@@ -2106,8 +2106,6 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 }
 
 ###### GÉNÉRAL ######
-# TODO calculer plutot la moyenne harmonique pour la distance ?
-#
 # TODO similarité structurelle : généraliser en tenant compte des labels des liens?
 
 
