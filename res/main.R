@@ -119,6 +119,7 @@ plot.street.removal(mode="split_ext")
 ########################################################################
 # compute topological measures for the extracted networks
 g <- analyze.network(gname="split_ext/full",                    out.folder=FOLDER_OUT_ANAL_EST, fast=TRUE)
+g <- analyze.network(gname="split_ext/full_filtered",           out.folder=FOLDER_OUT_ANAL_EST, fast=TRUE)
 g <- analyze.network(gname="split_ext/flat_minus",              out.folder=FOLDER_OUT_ANAL_EST, fast=TRUE)
 g <- analyze.network(gname="split_ext/flat_minus_filtered",     out.folder=FOLDER_OUT_ANAL_EST, fast=TRUE)
 g <- analyze.network(gname="split_ext/flat_minus_303",          out.folder=FOLDER_OUT_ANAL_EST, fast=TRUE)
@@ -129,6 +130,7 @@ g <- analyze.network(gname="split_ext/flat_relations",          out.folder=FOLDE
 g <- analyze.network(gname="split_ext/flat_relations_filtered", out.folder=FOLDER_OUT_ANAL_EST, fast=TRUE)
 
 g <- analyze.network(gname="split_raw/full",                    out.folder=FOLDER_OUT_ANAL_EST, fast=TRUE)
+g <- analyze.network(gname="split_raw/full_filtered",			out.folder=FOLDER_OUT_ANAL_EST, fast=TRUE)
 g <- analyze.network(gname="split_raw/flat_minus",              out.folder=FOLDER_OUT_ANAL_EST, fast=TRUE)
 g <- analyze.network(gname="split_raw/flat_minus_filtered",     out.folder=FOLDER_OUT_ANAL_EST, fast=TRUE)
 g <- analyze.network(gname="split_raw/flat_minus_311",          out.folder=FOLDER_OUT_ANAL_EST, fast=TRUE)
@@ -137,6 +139,7 @@ g <- analyze.network(gname="split_raw/flat_relations",          out.folder=FOLDE
 g <- analyze.network(gname="split_raw/flat_relations_filtered", out.folder=FOLDER_OUT_ANAL_EST, fast=TRUE)
 
 g <- analyze.network(gname="whole_ext/full",                    out.folder=FOLDER_OUT_ANAL_EST, fast=TRUE)
+g <- analyze.network(gname="whole_ext/full_filtered",			out.folder=FOLDER_OUT_ANAL_EST, fast=TRUE)
 g <- analyze.network(gname="whole_ext/estate_level",            out.folder=FOLDER_OUT_ANAL_EST, fast=TRUE)
 g <- analyze.network(gname="whole_ext/estate_level_filtered",   out.folder=FOLDER_OUT_ANAL_EST, fast=TRUE)
 g <- analyze.network(gname="whole_ext/flat_minus",              out.folder=FOLDER_OUT_ANAL_EST, fast=TRUE)
@@ -149,6 +152,7 @@ g <- analyze.network(gname="whole_ext/flat_relations",          out.folder=FOLDE
 g <- analyze.network(gname="whole_ext/flat_relations_filtered", out.folder=FOLDER_OUT_ANAL_EST, fast=TRUE)
 
 g <- analyze.network(gname="whole_raw/full",                    out.folder=FOLDER_OUT_ANAL_EST, fast=TRUE)
+g <- analyze.network(gname="whole_raw/full_filtered",			out.folder=FOLDER_OUT_ANAL_EST, fast=TRUE)
 g <- analyze.network(gname="whole_raw/estate_level",            out.folder=FOLDER_OUT_ANAL_EST, fast=TRUE)
 g <- analyze.network(gname="whole_raw/estate_level_filtered",   out.folder=FOLDER_OUT_ANAL_EST, fast=TRUE)
 g <- analyze.network(gname="whole_raw/flat_minus",              out.folder=FOLDER_OUT_ANAL_EST, fast=TRUE)
@@ -164,6 +168,7 @@ g <- analyze.network(gname="whole_raw/flat_relations_filtered", out.folder=FOLDE
 ########################################################################
 graph.types <- c(
 	"split_ext/full",
+	"split_ext/full_filtered",
 	"split_ext/flat_minus",
 	"split_ext/flat_minus_filtered",
 	"split_ext/flat_minus_311",
@@ -174,6 +179,7 @@ graph.types <- c(
 	"split_ext/flat_relations_filtered",
 	#
 	"split_raw/full",
+	"split_raw/full_filtered",
 	"split_raw/flat_minus",
 	"split_raw/flat_minus_filtered",
 	"split_raw/flat_minus_311",
@@ -182,6 +188,7 @@ graph.types <- c(
 	"split_raw/flat_relations_filtered",
 	#
 	"whole_ext/full",
+	"whole_ext/full_filtered",
 	"whole_ext/estate_level",
 	"whole_ext/estate_level_filtered",
 	"whole_ext/flat_minus",
@@ -194,6 +201,7 @@ graph.types <- c(
 	"whole_ext/flat_relations_filtered",
 	#
 	"whole_raw/full",
+	"whole_raw/full_filtered",
 	"whole_raw/estate_level",
 	"whole_raw/estate_level_filtered",
 	"whole_raw/flat_minus",

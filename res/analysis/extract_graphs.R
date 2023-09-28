@@ -1717,6 +1717,38 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2
 		custom.gplot(g=g1, file=paste0(plot.file,"_algo"), axes=FALSE, rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
 		write.graphml.file(g=g1, file=paste0(plot.file,"_algo.graphml"))
+		
+		# filter graph by keeping only the main components
+		g1 <- g
+		cmp.thre <- 25
+		tmp <- components(graph=g1, mode="weak")
+		cmps <- which(tmp$csize<cmp.thre)
+		idx <- which(tmp$membership %in% cmps)
+		# possibly remove smaller components
+		tlog(4,"Filtering out component under ",cmp.thre," nodes")
+		if(length(idx)>1)
+			g1 <- delete_vertices(graph=g1, v=idx)
+		g1$name <- paste0(g1$name,"_filtered")
+		
+		# record as graphml
+		graph.folder <- file.path(FOLDER_OUT_ANAL_EST, base.folder, "full_filtered")
+		dir.create(path=graph.folder, showWarnings=FALSE, recursive=TRUE)
+		plot.file <- file.path(graph.folder, "graph")
+		tlog(4,"Recording graph in \"",plot.file,"\"")
+		write.graphml.file(g=g1, file=paste0(plot.file,".graphml"))
+		
+		# set labels
+		V(g1)$label <- paste(vertex_attr(g1,name=COL_LOC_ID), get.location.names(g1),sep="_")
+		
+		# plot using geographic coordinates
+		g1 <- rescale.coordinates(g1)
+		custom.gplot(g=g1, file=paste0(plot.file,"_lambert"), size.att=2, vertex.label.cex=0.1, rescale=FALSE)
+		write.graphml.file(g=g1, file=paste0(plot.file,"_lambert.graphml"))
+		
+		# plot using precomputed layout
+		V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2
+		custom.gplot(g=g1, file=paste0(plot.file,"_algo"), axes=FALSE, rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
+		write.graphml.file(g=g1, file=paste0(plot.file,"_algo.graphml"))
 	}
 	
 #	# possibly filter to focus on a single historical source
