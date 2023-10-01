@@ -89,13 +89,14 @@ start.rec.log(text="Nets")
 # compute and plot street removal-related stats
 plot.street.removal(mode="whole_raw")
 plot.street.removal(mode="whole_ext")
-	
+
 # copy selected street ablation graphs to appropriate folder
 sels <- c(7, 6)		# prev. c(9, 6)
 fols <- c("whole_ext", "whole_raw")
 for(i in 1:length(sels))
 {	for(filt in c("","_filtered"))
-	{	from.file <- file.path(FOLDER_OUT_ANAL_EST,fols[i],paste0("flat_minus",filt),"_removed_streets","graphs",paste0("graph_rem=",sels[i],".graphml"))
+	{	# copy graph file
+		from.file <- file.path(FOLDER_OUT_ANAL_EST,fols[i],paste0("flat_minus",filt),"_removed_streets","graphs",paste0("graph_rem=",sels[i],".graphml"))
 		to.folder <- file.path(FOLDER_OUT_ANAL_EST,fols[i],paste0("flat_minus_",sels[i],filt))
 		dir.create(path=to.folder, showWarnings=FALSE, recursive=TRUE)
 		tlog(2,"Copying file '",from.file,"' to folder '",to.folder,"'")
@@ -104,6 +105,22 @@ for(i in 1:length(sels))
 			to=file.path(to.folder,"graph.graphml"),
 			overwrite=TRUE
 		)
+		
+		# generate plots
+		g <- load.graphml.file(file=from.file)
+		# geographic coordinates
+		plot.file <- file.path(to.folder,"graph_lambert")
+		tlog(2,"Plotting graph using geographic coordinates in \"",plot.file,"\"")
+		g <- rescale.coordinates(g)
+		custom.gplot(g=g, file=plot.file, asp=1, size.att=2, vertex.label.cex=0.1, rescale=FALSE)
+		write.graphml.file(g=g, file=paste0(plot.file,".graphml"))
+		# layouting algorithm
+		tlog(8,"Plotting graph using layouting algorithm in \"",plot.file,"\"")
+		V(g)$x <- V(g)$x2; V(g)$y <- V(g)$y2
+		E(g)$weight <- 0.5
+		plot.file <- file.path(to.folder,"graph_algo")
+		custom.gplot(g=g, file=plot.file, axes=FALSE, rescale=FALSE, xlim=range(V(g)$x), ylim=range(V(g)$y), vertex.label.cex=0.1, size.att=8)
+		write.graphml.file(g=g, file=paste0(plot.file,".graphml"))
 	}
 }
 

@@ -1972,7 +1972,7 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 				g1 <- rescale.coordinates(g1)
 				custom.gplot(g=g1, file=plot.file, asp=1, size.att=2, vertex.label.cex=0.1, v.hl=v.hl, e.hl=e.hl, rescale=FALSE)
 				
-				# plot using a layouting algorithm 
+				# plot using a layouting algorithm
 				g2 <- g1#; V(g2)$x <- V(g2)$x2; V(g2)$y <- V(g2)$y2
 				graph.folder <- file.path(FOLDER_OUT_ANAL_EST, base.folder, paste0(GR_EST_FLAT_MINUS,"_filtered"), "_removed_streets", "kk")
 				dir.create(path=graph.folder, showWarnings=FALSE, recursive=TRUE)
