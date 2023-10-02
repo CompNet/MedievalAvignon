@@ -1710,12 +1710,12 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		
 		# plot using geographic coordinates
 		g1 <- rescale.coordinates(g1)
-		custom.gplot(g=as.undirected(g1), file=paste0(plot.file,"_lambert"), size.att=2, vertex.label.cex=0.1, rescale=FALSE)
+		custom.gplot(g=g1, file=paste0(plot.file,"_lambert"), size.att=2, vertex.label.cex=0.1, rescale=FALSE)
 		write.graphml.file(g=g1, file=paste0(plot.file,"_lambert.graphml"))
 		
 		# plot using precomputed layout
 		V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2
-		custom.gplot(g=as.undirected(g1), file=paste0(plot.file,"_algo"), axes=FALSE, rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
+		custom.gplot(g=g1, file=paste0(plot.file,"_algo"), axes=FALSE, rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
 		write.graphml.file(g=g1, file=paste0(plot.file,"_algo.graphml"))
 		
 		# filter graph by keeping only the main components
@@ -1742,12 +1742,12 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 		
 		# plot using geographic coordinates
 		g1 <- rescale.coordinates(g1)
-		custom.gplot(g=as.undirected(g1), file=paste0(plot.file,"_lambert"), size.att=2, vertex.label.cex=0.1, rescale=FALSE)
+		custom.gplot(g=g1, file=paste0(plot.file,"_lambert"), size.att=2, vertex.label.cex=0.1, rescale=FALSE)
 		write.graphml.file(g=g1, file=paste0(plot.file,"_lambert.graphml"))
 		
 		# plot using precomputed layout
 		V(g1)$x <- V(g1)$x2; V(g1)$y <- V(g1)$y2
-		custom.gplot(g=as.undirected(g1), file=paste0(plot.file,"_algo"), axes=FALSE, rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
+		custom.gplot(g=g1, file=paste0(plot.file,"_algo"), axes=FALSE, rescale=FALSE, xlim=range(V(g1)$x), ylim=range(V(g1)$y), edge.arrow.mode=0, vertex.label.cex=0.1, size.att=8)
 		write.graphml.file(g=g1, file=paste0(plot.file,"_algo.graphml"))
 	}
 	
