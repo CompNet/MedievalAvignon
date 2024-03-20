@@ -801,8 +801,7 @@ plot.additional.stats <- function()
 
 
 #############################################################################################
-# Produces the Pareto plot for all the variants of a network undergoing iterative street
-# removal.
+# Produces the Pareto plot for all the variants of a network undergoing iterative street removal.
 #
 # graph.type: folder containing the targeted graph.
 #############################################################################################
