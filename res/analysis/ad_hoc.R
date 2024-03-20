@@ -9,6 +9,12 @@
 
 
 #############################################################################################
+ESTATE_NBR <- 2693 	# total number of properties (real estate) in the database
+
+
+
+
+#############################################################################################
 # Loads the previously computed stats (for whole graphs) and put them all in a global file,
 # located in the root folder (=parameter folder).
 #
@@ -70,7 +76,7 @@ merge.stats <- function(graph.names, folder)
 
 #############################################################################################
 # Loads previously computed stats and plot the distance correlation vs. the number of estate 
-# nodes.
+# nodes, as a Pareto plot.
 #############################################################################################
 plot.stats.comparison <- function()
 {	tlog(2, "Producing decision figure")
@@ -99,7 +105,7 @@ plot.stats.comparison <- function()
 	col <- 1
 	col.names <- "Basic"
 	cols <- rep(col,nrow(stats))
-			
+	
 	# load street removal stats
 	for(graph.type in c("whole_raw","whole_ext","split_raw","split_ext"))
 	{	for(filt.txt in c("","_filtered"))
@@ -161,6 +167,143 @@ plot.stats.comparison <- function()
 				"bottomleft",
 				fill=pal,
 				legend=col.names
+			)
+			dev.off()
+		}
+	}
+}
+
+
+
+
+#############################################################################################
+# Loads previously computed stats and plot the distance correlation vs. the number of estate 
+# nodes. This modified version produces the plots from the article.
+#############################################################################################
+plot.stats.comparison2 <- function()
+{	tlog(2, "Producing decision figure")
+	
+	# load overall stats
+	tab.file <- file.path(FOLDER_OUT_ANAL_EST, "stats_comparison.csv")
+	tlog(4, "Reading table '",tab.file,"'")
+	tab <- read.csv(file=tab.file, header=TRUE, row.names=1)
+	stats <- tab[,c("estate_nbr", "SpearmanInf_DB", "KendallInf_DB")]
+	
+	# remove redundant graphs (with street removal stats)
+	stats <- stats[-which(rownames(stats)=="split_ext/flat_minus_311"),]
+#	stats <- stats[-which(rownames(stats)=="split_ext/flat_minus_311_filtered"),]
+	stats <- stats[-which(rownames(stats)=="split_ext/flat_minus_303"),]
+	stats <- stats[-which(rownames(stats)=="split_ext/flat_minus_303_filtered"),]
+	stats <- stats[-which(rownames(stats)=="split_raw/flat_minus_311"),]
+#	stats <- stats[-which(rownames(stats)=="split_raw/flat_minus_311_filtered"),]
+	stats <- stats[-which(rownames(stats)=="whole_ext/flat_minus_7"),]
+#	stats <- stats[-which(rownames(stats)=="whole_ext/flat_minus_7_filtered"),]
+	stats <- stats[-which(rownames(stats)=="whole_ext/flat_minus_9"),]
+	stats <- stats[-which(rownames(stats)=="whole_ext/flat_minus_9_filtered"),]
+	stats <- stats[-which(rownames(stats)=="whole_raw/flat_minus_6"),]
+#	stats <- stats[-which(rownames(stats)=="whole_raw/flat_minus_6_filtered"),]
+	
+	# remove non-filtered graphs
+	stats <- stats[-which(rownames(stats)=="split_ext/full"),]
+	stats <- stats[-which(rownames(stats)=="split_ext/flat_minus"),]
+	stats <- stats[-which(rownames(stats)=="split_ext/flat_relations"),]
+	stats <- stats[-which(rownames(stats)=="split_raw/full"),]
+	stats <- stats[-which(rownames(stats)=="split_raw/flat_minus"),]
+	stats <- stats[-which(rownames(stats)=="split_raw/flat_relations"),]
+	stats <- stats[-which(rownames(stats)=="whole_ext/full"),]
+	stats <- stats[-which(rownames(stats)=="whole_ext/estate_level"),]
+	stats <- stats[-which(rownames(stats)=="whole_ext/estate_level_filtered"),]
+	stats <- stats[-which(rownames(stats)=="whole_ext/flat_minus"),]
+	stats <- stats[-which(rownames(stats)=="whole_ext/flat_relations"),]
+	stats <- stats[-which(rownames(stats)=="whole_raw/estate_level"),]
+	stats <- stats[-which(rownames(stats)=="whole_raw/estate_level_filtered"),]
+	stats <- stats[-which(rownames(stats)=="whole_raw/flat_minus"),]
+	stats <- stats[-which(rownames(stats)=="whole_raw/flat_relations"),]
+	
+	# set up article names
+	point.names <- c(
+		"whole_raw/full"="RHW_all",
+		"whole_raw/full_filtered"="RHW_all", "whole_raw/flat_relations_filtered"="RFW_all", "whole_raw/flat_minus_filtered"="RFW_streets", "whole_raw/flat_minus_6_filtered"="RFW_k",
+		"whole_ext/full_filtered"="EHW_all", "whole_ext/flat_relations"="EFW_all",          "whole_ext/flat_minus_filtered"="EFW_streets", "whole_ext/flat_minus_7_filtered"="EFW_k",
+		"split_raw/full_filtered"="RHS_all", "split_raw/flat_relations_filtered"="RFS_all", "split_raw/flat_minus_filtered"="RFS_streets", "split_raw/flat_minus_311_filtered"="RFS_k",
+		"split_ext/full_filtered"="EHS_all", "split_ext/flat_relations_filtered"="EFS_all", "split_ext/flat_minus_filtered"="EFS_streets", "split_ext/flat_minus_311_filtered"="EFS_k"
+	)
+	
+	
+	# set up colors
+	cols <- c(
+		"whole_raw/full"=1,
+		"whole_raw/full_filtered"=2, "whole_raw/flat_relations_filtered"=2, "whole_raw/flat_minus_filtered"=2, "whole_raw/flat_minus_6_filtered"=2,
+		"whole_ext/full_filtered"=3, "whole_ext/flat_relations"=3,          "whole_ext/flat_minus_filtered"=3, "whole_ext/flat_minus_7_filtered"=3,
+		"split_raw/full_filtered"=4, "split_raw/flat_relations_filtered"=4, "split_raw/flat_minus_filtered"=4, "split_raw/flat_minus_311_filtered"=4,
+		"split_ext/full_filtered"=5, "split_ext/flat_relations_filtered"=5, "split_ext/flat_minus_filtered"=5, "split_ext/flat_minus_311_filtered"=5
+	)
+	pal.names <- c("Full graph", "Raw data & Whole vertices (R.W_.)", "Extended data & Whole vertices (E.W_.)", "Raw data & Split vertices (R.S_.)", "Extended data & Split vertices (E.S_.)")
+	pal.cols <- c("BLACK", CAT_COLORS_8[1:4])
+			
+#	# load street removal stats
+#	for(graph.type in c("whole_raw","whole_ext","split_raw","split_ext"))
+#	{	for(filt.txt in c("","_filtered"))
+#		{	tab.file <- file.path(FOLDER_OUT_ANAL_EST,graph.type,paste0("flat_minus",filt.txt),"_removed_streets","stats.csv")
+#			tlog(4, "Reading table '",tab.file,"'")
+#			tab <- read.csv(file=tab.file, header=TRUE)
+#			tmp <- tab[,c("estate_nbr", "distance.cor.spearman.infinite", "distance.cor.kendall.infinite")]
+#			colnames(tmp) <- c("estate_nbr", "SpearmanInf_DB", "KendallInf_DB")
+#			rownames(tmp) <- paste0(graph.type,"/flat_minus",filt.txt,"_",tab[,"NumberDeletedStreets"],"(",floor(tab[,"LastDeletedStreetLength"]),")")
+#			stats <- rbind(stats, tmp)
+#			col <- col + 1
+#			col.names <- c(col.names, paste0(graph.type,"/flat_minus",filt.txt,"_X"))
+#			cols <- c(cols, rep(col,nrow(tmp)))
+#		}
+#	}
+	
+	# record as csv file
+	tab.file <- file.path(FOLDER_OUT_ANAL_EST, paste0("pareto-plot_2.csv"))
+	write.csv(stats, file=tab.file, row.names=TRUE)
+	
+	# create plots
+	for(corr.txt in c("spearman","kendall"))
+	{	plot.file <- file.path(FOLDER_OUT_ANAL_EST, paste0("pareto-plot_",corr.txt,"_2"))
+		if(corr.txt=="spearman")
+			vals <- stats[,"SpearmanInf_DB"]
+		else
+			vals <- stats[,"KendallInf_DB"]
+		tlog(4, "Creating plots '",plot.file,"'")
+		for(fformat in c("png","pdf"))	# FORMAT
+		{	if(fformat=="pdf")
+				pdf(paste0(plot.file,".pdf"))
+			else if(fformat=="png")
+				png(paste0(plot.file,".png"))
+			# draw all values
+			xs <- stats[,"estate_nbr"]/ESTATE_NBR*100
+			par(mar=c(4,4,0,0)+0.1) 	# remove the title space -- Bottom Left Top Right
+			plot(
+				x=xs,
+				y=vals,
+#				xlab="Number of estate vertices",
+				xlab="Proportion of properties among vertices (%)",		
+				ylab="Distance correlation",
+				col=pal.cols[cols[rownames(stats)]],
+				xlim=c(0,100), ylim=c(0,1)
+			)
+			# draw Pareto front
+			df <- data.frame(x=xs, y=vals)
+			pref <- high(x)*high(y)
+			sky <- psel(df=df, pref=pref)
+			plot_front(df=df, pref=pref, col="GREY", lty=2)
+			# add point names
+			text(
+				x=xs,
+				y=vals,
+				labels=point.names[rownames(stats)],
+				cex=0.1,
+				col=pal.cols[cols[rownames(stats)]]
+			)
+			# add legend
+			legend(
+				"bottomleft",
+				fill=pal.cols,
+				legend=pal.names
 			)
 			dev.off()
 		}
@@ -569,3 +712,157 @@ normalize.distance.plots <- function(graph.types, mode=MEAS_MODE_UNDIR, sep.lege
 	}
 }
 #normalize.distance.plots(graph.types=graph.types, mode=MEAS_MODE_UNDIR)
+
+
+
+
+#############################################################################################
+# Plots a few additional plots specifically for the paper.
+#############################################################################################
+plot.additional.stats <- function()
+{	# evolution of reliability and coverage as functions of street removal, on the same plot
+	stat.texts <- c("Proportion of properties among vertices (%)", "Distance correlation")
+	stat.codes <- c("estate_nbr", "distance-cor-spearman-infinite") 
+	in.folders <- c("whole_raw", "whole_ext", "split_raw", "split_ext")
+	in.cols <- c(CAT_COLORS_8[1], CAT_COLORS_8[2], CAT_COLORS_8[1], CAT_COLORS_8[2])
+	in.ltys <- c(1, 1, 2, 2)
+	in.names <- c("RFW_k", "AFW_k", "RFS_k", "AFS_k")
+	for(m in 1:length(stat.texts))
+	{	stat.text <- stat.texts[m]
+		tlog(2,"..Dealing with ",stat.text)
+		
+		# load the series
+		ys <- list()
+		xs <- list()
+		for(in.folder in in.folders)
+		{	# load the original value (unchanged network)
+			if(m==1)
+			{	attr.folder <- file.path(FOLDER_OUT_ANAL_EST, in.folder, "flat_minus_filtered", MEAS_ATTRIBUTES)
+				att.file <- file.path(attr.folder, COL_LOC_TYPE, paste0(COL_LOC_TYPE,"_vals.csv"))
+				tt <- read.csv(file=att.file, header=TRUE)
+				vals <- tt[which(tt[,"Value"]=="Bien"),"Frequency"]
+			}
+			else
+			{	dist.file <- file.path(FOLDER_OUT_ANAL_EST, in.folder, "flat_minus_filtered", "distance", "undirected", "comparison", "distance_correlations.csv")
+				tt <- read.csv(file=dist.file, header=TRUE)
+				vals <- tt[which(tt[,"Coordinates"]=="Database"), "SpearmanInfiniteCoef"]
+			}
+			
+			# load the values resulting from street ablation
+			tab.file <- file.path(FOLDER_OUT_ANAL_EST, in.folder, "flat_minus_filtered", "_removed_streets", "stats.csv")
+			tab <- read.csv(file=tab.file, header=TRUE, row.names=1, check.names=FALSE)
+			vals <- c(vals, tab[,stat.codes[m]])
+			if(m==1)
+				vals <- vals / ESTATE_NBR * 100
+			ys[[in.folder]] <- vals
+			xs[[in.folder]] <- (1:length(vals)-1) / (length(vals)-1) * 100
+		}
+		
+		# set bounds
+		xlim <- c(0,100)
+		if(m==1)
+			ylim <- c(0,100)
+		else
+			ylim <- c(0,1)
+		
+		# generate the plot
+		plot.file <- file.path(FOLDER_OUT_ANAL_EST, paste0("street-ablation_",stat.codes[m]))
+		tlog(4, "Plotting \"",plot.file,"\"")
+		for(fformat in FORMAT)
+		{	if(fformat=="pdf")
+				pdf(paste0(plot.file,".pdf"))
+			else if(fformat=="png")
+				png(paste0(plot.file,".png"))
+			par(mar=c(4,4,0,0)+0.1) 	# remove the title space -- Bottom Left Top Right
+			plot(
+				NULL,
+				xlab="Proportion of removed/split streets (%)", ylab=stat.text,
+				#las=1, #log="xy", 
+				xlim=xlim, ylim=ylim
+			)
+			for(s in 1:length(in.folders))
+			{	lines(
+					x=xs[[s]], y=ys[[s]], 
+					col=in.cols[s], lty=in.ltys[s]#, pch=19
+				)
+			}
+			legend(
+				x="bottomright",
+				col=in.cols, lty=in.ltys,
+				title="Graphs",
+				legend=in.names
+			)
+			dev.off()
+		}
+	}
+}
+
+
+
+
+#############################################################################################
+# Produces the Pareto plot for all the variants of a network undergoing iterative street
+# removal.
+#
+# graph.type: folder containing the targeted graph.
+#############################################################################################
+plot.pareto.streetrem <- function(graph.type)
+{	tlog(0, "Producing Pareto plot for graph.type=\"",graph.type,"\"")
+	main.folder <- file.path(FOLDER_OUT_ANAL_EST, graph.type, "_removed_streets")
+	
+	# load stats
+	tab.file <- file.path(main.folder,"stats.csv")
+	tlog(2, "Reading table '",tab.file,"'")
+	tmp <- read.csv(file=tab.file, header=TRUE)
+	tab <- tmp[,c("estate_nbr", "distance.cor.spearman.infinite", "distance.cor.kendall.infinite")]
+	colnames(tab) <- c("estate_nbr", "SpearmanInf_DB", "KendallInf_DB")
+	rownames(tab) <- paste0("k=",tmp[,"NumberDeletedStreets"])
+	
+	# record as csv file
+	tab.file <- file.path(main.folder, "pareto-plot.csv")
+	write.csv(tab, file=tab.file, row.names=TRUE)
+	
+	# create plots
+	cols <- viridis(n=nrow(tab))
+	for(corr.txt in c("spearman","kendall"))
+	{	plot.file <- file.path(main.folder, paste0("pareto-plot_",corr.txt))
+		if(corr.txt=="spearman")
+			vals <- tab[,"SpearmanInf_DB"]
+		else
+			vals <- tab[,"KendallInf_DB"]
+		tlog(4, "Creating plots '",plot.file,"'")
+		for(fformat in c("png","pdf"))	# FORMAT
+		{	if(fformat=="pdf")
+				pdf(paste0(plot.file,".pdf"))
+			else if(fformat=="png")
+				png(paste0(plot.file,".png"))
+			# draw all values
+			plot(
+				x=tab[,"estate_nbr"],
+				y=vals,
+				xlab="Number of property vertices",
+				ylab="Distance correlation",
+				col=cols
+			)
+			# draw Pareto front
+			df <- data.frame(x=tab[,"estate_nbr"], y=vals)
+			pref <- high(x)*high(y)
+			sky <- psel(df=df, pref=pref)
+			idx <- psel.indices(df=df, pref=pref)
+			plot_front(df=df, pref=pref, col="GREY", lty=2)
+			#points(df[,"x"], df[,"y"], lwd=3)
+			# add point names
+			text(
+				x=tab[idx,"estate_nbr"],
+				y=vals[idx],
+				pos=4,
+				labels=rownames(tab)[idx],
+				cex=1,
+				col=cols[idx]
+			)
+			# add legend
+			gradientLegend(valRange=range(tmp[,"NumberDeletedStreets"]), color=cols, inside=TRUE, side=2, labels=rownames(tab))
+			dev.off()
+		}
+	}
+}
