@@ -70,7 +70,7 @@ merge.stats <- function(graph.names, folder)
 
 #############################################################################################
 # Loads previously computed stats and plot the distance correlation vs. the number of estate 
-# nodes.
+# nodes, as a Pareto plot.
 #############################################################################################
 plot.stats.comparison <- function()
 {	tlog(2, "Producing decision figure")
@@ -569,3 +569,73 @@ normalize.distance.plots <- function(graph.types, mode=MEAS_MODE_UNDIR, sep.lege
 	}
 }
 #normalize.distance.plots(graph.types=graph.types, mode=MEAS_MODE_UNDIR)
+
+
+
+
+#############################################################################################
+# Produces the Pareto plot for all the variants of a network undergoing iterative street
+# removal.
+#
+# graph.type: folder containing the targeted graph.
+#############################################################################################
+plot.pareto.streetrem <- function(graph.type)
+{	tlog(0, "Producing Pareto plot for graph.type=\"",graph.type,"\"")
+	main.folder <- file.path(FOLDER_OUT_ANAL_EST, graph.type, "_removed_streets")
+	
+	# load stats
+	tab.file <- file.path(main.folder,"stats.csv")
+	tlog(2, "Reading table '",tab.file,"'")
+	tmp <- read.csv(file=tab.file, header=TRUE)
+	tab <- tmp[,c("estate_nbr", "distance.cor.spearman.infinite", "distance.cor.kendall.infinite")]
+	colnames(tab) <- c("estate_nbr", "SpearmanInf_DB", "KendallInf_DB")
+	rownames(tab) <- paste0("k=",tmp[,"NumberDeletedStreets"])
+	
+	# record as csv file
+	tab.file <- file.path(main.folder, "pareto-plot.csv")
+	write.csv(tab, file=tab.file, row.names=TRUE)
+	
+	# create plots
+	cols <- viridis(n=nrow(tab))
+	for(corr.txt in c("spearman","kendall"))
+	{	plot.file <- file.path(main.folder, paste0("pareto-plot_",corr.txt))
+		if(corr.txt=="spearman")
+			vals <- tab[,"SpearmanInf_DB"]
+		else
+			vals <- tab[,"KendallInf_DB"]
+		tlog(4, "Creating plots '",plot.file,"'")
+		for(fformat in c("png","pdf"))	# FORMAT
+		{	if(fformat=="pdf")
+				pdf(paste0(plot.file,".pdf"))
+			else if(fformat=="png")
+				png(paste0(plot.file,".png"))
+			# draw all values
+			plot(
+				x=tab[,"estate_nbr"],
+				y=vals,
+				xlab="Number of property vertices",
+				ylab="Distance correlation",
+				col=cols
+			)
+			# draw Pareto front
+			df <- data.frame(x=tab[,"estate_nbr"], y=vals)
+			pref <- high(x)*high(y)
+			sky <- psel(df=df, pref=pref)
+			idx <- psel.indices(df=df, pref=pref)
+			plot_front(df=df, pref=pref, col="GREY", lty=2)
+			#points(df[,"x"], df[,"y"], lwd=3)
+			# add point names
+			text(
+				x=tab[idx,"estate_nbr"],
+				y=vals[idx],
+				pos=4,
+				labels=rownames(tab)[idx],
+				cex=1,
+				col=cols[idx]
+			)
+			# add legend
+			gradientLegend(valRange=range(tmp[,"NumberDeletedStreets"]), color=cols, inside=TRUE, side=2, labels=rownames(tab))
+			dev.off()
+		}
+	}
+}

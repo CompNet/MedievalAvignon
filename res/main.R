@@ -4,7 +4,7 @@
 # Vincent Labatut
 # 06/2020
 #
-# setwd("D:/users/Vincent/Eclipse/workspaces/Extraction/MedievalAvignon")
+# setwd("C:/users/Vincent/Eclipse/workspaces/Extraction/MedievalAvignon")
 # setwd("~/eclipse/workspaces/Extraction/MedievalAvignon")
 # source("res/main.R")
 ########################################################################
@@ -88,7 +88,12 @@ start.rec.log(text="Nets")
 
 # compute and plot street removal-related stats
 plot.street.removal(mode="whole_raw")
+plot.pareto.streetrem(graph.type="whole_raw/flat_minus")
+plot.pareto.streetrem(graph.type="whole_raw/flat_minus_filtered")
+#
 plot.street.removal(mode="whole_ext")
+plot.pareto.streetrem(graph.type="whole_ext/flat_minus")
+plot.pareto.streetrem(graph.type="whole_ext/flat_minus_filtered")
 
 # copy selected street ablation graphs to appropriate folder
 sels <- c(7, 6)		# prev. c(9, 6)
@@ -127,8 +132,13 @@ for(i in 1:length(sels))
 # pseudo street-ablation for partial split
 partial.street.ablation(mode="split_raw")
 plot.street.removal(mode="split_raw")
+plot.pareto.streetrem(graph.type="split_raw/flat_minus")
+plot.pareto.streetrem(graph.type="split_raw/flat_minus_filtered")
+#
 partial.street.ablation(mode="split_ext")
 plot.street.removal(mode="split_ext")
+plot.pareto.streetrem(graph.type="split_ext/flat_minus")
+plot.pareto.streetrem(graph.type="split_ext/flat_minus_filtered")
 
 
 
