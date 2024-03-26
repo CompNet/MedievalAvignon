@@ -726,7 +726,7 @@ plot.additional.stats <- function()
 	in.folders <- c("whole_raw", "whole_ext", "split_raw", "split_ext")
 	in.cols <- c(CAT_COLORS_8[1], CAT_COLORS_8[2], CAT_COLORS_8[1], CAT_COLORS_8[2])
 	in.ltys <- c(1, 1, 2, 2)
-	in.names <- c("RFW_k", "AFW_k", "RFS_k", "AFS_k")
+	in.names <- c("RFW_k", "EFW_k", "RFS_k", "EFS_k")
 	for(m in 1:length(stat.texts))
 	{	stat.text <- stat.texts[m]
 		tlog(2,"..Dealing with ",stat.text)
