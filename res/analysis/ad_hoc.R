@@ -789,7 +789,7 @@ plot.additional.stats <- function()
 			legend(
 				x="bottomright",
 				col=in.cols, lty=in.ltys,
-				title="Graphs",
+				title="Method",
 				legend=in.names
 			)
 			dev.off()
