@@ -179,8 +179,11 @@ plot.stats.comparison <- function()
 #############################################################################################
 # Loads previously computed stats and plot the distance correlation vs. the number of estate 
 # nodes. This modified version produces the plots from the article.
+#
+# norm.est: whether to express coverage as the proportion (FALSE) of estate properties remaning
+#           in the graph, instead of their absolute number (TRUE).
 #############################################################################################
-plot.stats.comparison2 <- function()
+plot.stats.comparison2 <- function(norm.est=FALSE)
 {	tlog(2, "Producing decision figure")
 	
 	# load overall stats
@@ -222,9 +225,9 @@ plot.stats.comparison2 <- function()
 	
 	# set up article names
 	point.names <- c(
-		"whole_raw/full"="RHW_all",
+		"whole_raw/full"="Full",
 		"whole_raw/full_filtered"="RHW_all", "whole_raw/flat_relations_filtered"="RFW_all", "whole_raw/flat_minus_filtered"="RFW_streets", "whole_raw/flat_minus_6_filtered"="RFW_k",
-		"whole_ext/full_filtered"="EHW_all", "whole_ext/flat_relations"="EFW_all",          "whole_ext/flat_minus_filtered"="EFW_streets", "whole_ext/flat_minus_7_filtered"="EFW_k",
+		"whole_ext/full_filtered"="EHW_all", "whole_ext/flat_relations_filtered"="EFW_all", "whole_ext/flat_minus_filtered"="EFW_streets", "whole_ext/flat_minus_7_filtered"="EFW_k",
 		"split_raw/full_filtered"="RHS_all", "split_raw/flat_relations_filtered"="RFS_all", "split_raw/flat_minus_filtered"="RFS_streets", "split_raw/flat_minus_311_filtered"="RFS_k",
 		"split_ext/full_filtered"="EHS_all", "split_ext/flat_relations_filtered"="EFS_all", "split_ext/flat_minus_filtered"="EFS_streets", "split_ext/flat_minus_311_filtered"="EFS_k"
 	)
@@ -234,7 +237,7 @@ plot.stats.comparison2 <- function()
 	cols <- c(
 		"whole_raw/full"=1,
 		"whole_raw/full_filtered"=2, "whole_raw/flat_relations_filtered"=2, "whole_raw/flat_minus_filtered"=2, "whole_raw/flat_minus_6_filtered"=2,
-		"whole_ext/full_filtered"=3, "whole_ext/flat_relations"=3,          "whole_ext/flat_minus_filtered"=3, "whole_ext/flat_minus_7_filtered"=3,
+		"whole_ext/full_filtered"=3, "whole_ext/flat_relations_filtered"=3, "whole_ext/flat_minus_filtered"=3, "whole_ext/flat_minus_7_filtered"=3,
 		"split_raw/full_filtered"=4, "split_raw/flat_relations_filtered"=4, "split_raw/flat_minus_filtered"=4, "split_raw/flat_minus_311_filtered"=4,
 		"split_ext/full_filtered"=5, "split_ext/flat_relations_filtered"=5, "split_ext/flat_minus_filtered"=5, "split_ext/flat_minus_311_filtered"=5
 	)
@@ -261,6 +264,14 @@ plot.stats.comparison2 <- function()
 	tab.file <- file.path(FOLDER_OUT_ANAL_EST, paste0("pareto-plot_2.csv"))
 	write.csv(stats, file=tab.file, row.names=TRUE)
 	
+	# set x values
+	xs <- stats[,"estate_nbr"]
+	xlab <- "Number of property vertices"
+	if(norm.est)
+	{	xs <- xs/ESTATE_NBR*100
+		xlab <- "Proportion of property vertices (%)"
+	}
+	
 	# create plots
 	for(corr.txt in c("spearman","kendall"))
 	{	plot.file <- file.path(FOLDER_OUT_ANAL_EST, paste0("pareto-plot_",corr.txt,"_2"))
@@ -275,16 +286,15 @@ plot.stats.comparison2 <- function()
 			else if(fformat=="png")
 				png(paste0(plot.file,".png"))
 			# draw all values
-			xs <- stats[,"estate_nbr"]/ESTATE_NBR*100
 			par(mar=c(4,4,0,0)+0.1) 	# remove the title space -- Bottom Left Top Right
 			plot(
 				x=xs,
 				y=vals,
 #				xlab="Number of estate vertices",
-				xlab="Proportion of properties among vertices (%)",		
+				xlab=xlab,		
 				ylab="Distance correlation",
-				col=pal.cols[cols[rownames(stats)]],
-				xlim=c(0,100), ylim=c(0,1)
+				col=pal.cols[cols[rownames(stats)]]
+#				xlim=c(0,100), ylim=c(0,1)
 			)
 			# draw Pareto front
 			df <- data.frame(x=xs, y=vals)

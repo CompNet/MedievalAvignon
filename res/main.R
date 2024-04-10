@@ -250,6 +250,7 @@ plot.additional.stats()
 
 # plot decision figure
 plot.stats.comparison()
+plot.stats.comparison2()
 
 # plot comparison graphs
 plot.graph.comparisons(graph.names=graph.types, folder=FOLDER_OUT_ANAL_EST)
