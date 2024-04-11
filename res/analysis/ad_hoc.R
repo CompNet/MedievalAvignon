@@ -232,7 +232,6 @@ plot.stats.comparison2 <- function(norm.est=FALSE)
 		"split_ext/full_filtered"="EHS_all", "split_ext/flat_relations_filtered"="EFS_all", "split_ext/flat_minus_filtered"="EFS_streets", "split_ext/flat_minus_311_filtered"="EFS_k"
 	)
 	
-	
 	# set up colors
 	cols <- c(
 		"whole_raw/full"=1,
@@ -875,3 +874,36 @@ plot.pareto.streetrem <- function(graph.type)
 		}
 	}
 }
+
+
+
+
+#############################################################################################
+# Retries and renames the distance comparison for the paper.
+#############################################################################################
+collect.dist.comp.plots <- function()
+{	# used to name the files
+	plot.names <- c(
+		"whole_raw/full"="Full",
+		"whole_raw/full_filtered"="RHW_all", "whole_raw/flat_relations_filtered"="RFW_all", "whole_raw/flat_minus_filtered"="RFW_streets", "whole_raw/flat_minus_6_filtered"="RFW_k",
+		"whole_ext/full_filtered"="EHW_all", "whole_ext/flat_relations_filtered"="EFW_all", "whole_ext/flat_minus_filtered"="EFW_streets", "whole_ext/flat_minus_7_filtered"="EFW_k",
+		"split_raw/full_filtered"="RHS_all", "split_raw/flat_relations_filtered"="RFS_all", "split_raw/flat_minus_filtered"="RFS_streets", "split_raw/flat_minus_311_filtered"="RFS_k",
+		"split_ext/full_filtered"="EHS_all", "split_ext/flat_relations_filtered"="EFS_all", "split_ext/flat_minus_filtered"="EFS_streets", "split_ext/flat_minus_311_filtered"="EFS_k"
+	)
+	
+	for(plot in names(plot.names))
+	{	name <- plot.names[plot]
+		
+		from.file <- file.path("out/analysis/estate",plot,"distance/undirected/comparison/geodesic_vs_spatial-database_binned_fixed-range")
+		to.file <- file.path("out/analysis",paste0(name,"__comp-dist.pdf"))
+		
+		cat("Copying",from.file,">>>>",to.file,"\n")
+		
+		file.copy(
+			from=from.file, 
+			to=to.file,
+			overwrite=TRUE
+		)
+	}
+}
+#collect.dist.comp.plots()
