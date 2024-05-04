@@ -894,7 +894,7 @@ collect.dist.comp.plots <- function()
 	for(plot in names(plot.names))
 	{	name <- plot.names[plot]
 		
-		from.file <- file.path("out/analysis/estate",plot,"distance/undirected/comparison/geodesic_vs_spatial-database_binned_fixed-range")
+		from.file <- file.path("out/analysis/estate",plot,"distance/undirected/comparison/geodesic_vs_spatial-database_binned_fixed-range.pdf")
 		to.file <- file.path("out/analysis",paste0(name,"__comp-dist.pdf"))
 		
 		cat("Copying",from.file,">>>>",to.file,"\n")
@@ -906,4 +906,4 @@ collect.dist.comp.plots <- function()
 		)
 	}
 }
-#collect.dist.comp.plots()
+collect.dist.comp.plots()
