@@ -302,7 +302,7 @@ analyze.net.comstruct <- function(g, out.folder, fast)
 				}
 				# possibly assess community purity for all attributes
 				if(!fast)
-					g <- analyze.net.comstruct.attributes(g=g, coms.folder=coms.folder, membership=mbrs, fast=fast)
+					g <- analyze.net.comstruct.attributes(g=g, coms.folder=coms.folder, membership=mbrs, fast=fast) 
 				
 				# possibly process each community separately
 				if(algo.name %in% select.algos)
@@ -1031,7 +1031,8 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 					meas <- c(meas, "ANOVA_pval")
 					# eta
 					if(!all(is.na(fit)))
-						etas <- suppressWarnings(eta_sq(fit)$etasq)	# warning=perfect fit
+#						etas <- suppressWarnings(eta_sq(fit)$etasq)	# warning=perfect fit	# now obsolete
+						etas <- suppressWarnings(eta_squared(model=fit)$Eta2)	# warning=perfect fit
 					else
 						etas <- NA
 					vals <- c(vals, etas)
@@ -1091,6 +1092,14 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 			}			
 			tab[i,meas] <- gorder(gcom)
 			
+			# number of real estate nodes
+			meas <- "estate_nbr"
+			if(!(meas %in% colnames(tab)))
+			{	tab <- cbind(tab, rep(NA,nrow(tab)))
+				colnames(tab)[ncol(tab)] <- meas
+			}			
+			tab[i,meas] <- length(which(V(gcom)$typeExterne=="Bien"))
+			
 			# number of links
 			meas <- MEAS_NBR_LINKS
 			if(!(meas %in% colnames(tab)))
@@ -1122,6 +1131,32 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 				else if(meas==MEAS_DISTANCE_HARM_GEODESIC)
 					tab[i,meas] <- 1/mean(1/flat.vals[flat.vals>0], na.rm=TRUE)
 			}
+			
+			# distance correlation (only the one selected in the paper)
+			meas <- "SpearmanInf_DB"
+			if(!(meas %in% colnames(tab)))
+			{	tab <- cbind(tab, rep(NA,nrow(tab)))
+				colnames(tab)[ncol(tab)] <- meas
+			}
+			# compute spatial distance
+			coords <- cbind(vertex_attr(gcom, name=COL_LOC_X), vertex_attr(gcom, name=COL_LOC_Y))
+			idx0 <- which(!is.na(coords[,1]) & !is.na(coords[,2]) & !vertex_attr(gcom, name=COL_LOC_EXCLUDE))
+			svals <- as.matrix(dist(x=coords[idx0,], method="euclidean", diag=TRUE, upper=TRUE))
+			diag(svals) <- NA
+			svals <- svals[upper.tri(svals, diag=FALSE)]
+			# compute undirected graph distance
+			gvals <- distances(graph=gcom, mode="all", v=idx0, to=idx0)
+			diag(gvals) <- NA
+			gvals <- gvals[upper.tri(gvals, diag=FALSE)]
+			all.finite <- !any(is.infinite(gvals))
+			idx <- !is.infinite(gvals)
+			gvals0 <- gvals
+			svals0 <- svals
+			gap <- round(0.075*(max(gvals0[!is.infinite(gvals0)]) - min(gvals0[!is.infinite(gvals0)])))
+			gvals2 <- gvals0; gvals2[which(is.infinite(gvals0))] <- rep(max(gvals0[idx],na.rm=TRUE)+gap+1, length(which(is.infinite(gvals0))))	# values with max+1 instead of Inf (for rank-based correlation measures)
+			svals2 <- svals0
+			# compute correlation
+			tab[i,meas] <- rcorr(x=gvals2, y=svals2, type="spearman")$r[1,2]
 			
 #			modes <- c(MEAS_MODE_UNDIR, MEAS_MODE_DIR)
 			modes <- c(MEAS_MODE_UNDIR)
@@ -1171,7 +1206,7 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 				{	tab <- cbind(tab, rep(NA,nrow(tab)))
 					colnames(tab)[ncol(tab)] <- meas
 				}			
-				tab[i,meas] <- radius(g, mode=if(mode==MEAS_MODE_UNDIR) "all" else mode)
+				tab[i,meas] <- radius(gcom, mode=if(mode==MEAS_MODE_UNDIR) "all" else mode)
 				
 				# degree centralization
 				meas <- paste(MEAS_DEGREE,"_centralization_",mode)
@@ -1194,6 +1229,7 @@ analyze.net.comstruct.attributes <- function(g, coms.folder, membership, fast)
 		tlog(4,"Compute community-specific topological measures for each group")
 		for(i in 1:length(coms))
 		{	com <- coms[i]
+			gcom <- induced_subgraph(graph=g, vids=which(membership==com))
 			
 			# approximate the community spatial area through its bounding box
 			meas <- "rect_area"

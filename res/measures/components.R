@@ -254,7 +254,8 @@ analyze.net.components.corr <- function(g, out.folder, fast)
 				else
 				{	cd[is.na(cd)] <- max(cd,na.rm=TRUE) + 1
 					fit <- aov(comp.sizes~as.factor(cd))
-					cor <- tryCatch(eta_sq(fit)$etasq, error=function(e) NA)
+#					cor <- tryCatch(eta_sq(fit)$etasq, error=function(e) NA)	# now obsolete
+					cor <- tryCatch(eta_squared(model=fit)$Eta2, error=function(e) NA)
 					if(is.null(cor)) cor <- NA
 				}
 				tlog(8,"Association for attribute \"",attr,"\" (mode=",mode,") when representing NAs explicitly: ",cor)

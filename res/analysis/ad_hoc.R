@@ -906,4 +906,4 @@ collect.dist.comp.plots <- function()
 		)
 	}
 }
-collect.dist.comp.plots()
+#collect.dist.comp.plots()
