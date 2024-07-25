@@ -2,18 +2,18 @@ MedievalAvignon
 =======
 *Reconstruction of the map of Avignon during medieval times*
 
-* Copyright 2020-2023 Vincent Labatut & Margot Ferrand
+* Copyright 2020-2024 Vincent Labatut & Margot Ferrand
 
 MedievalAvignon is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation. For source availability and license information see `licence.txt`
 
 * Lab site: http://lia.univ-avignon.fr/
 * GitHub repo: https://github.com/CompNet/MedievalAvignon
-* Data: **<To be published>**
+* Data: https://doi.org/10.5281/zenodo.12804379
 * Contact: Vincent Labatut <vincent.labatut@univ-avignon.fr>, Margot Ferrand <margot.ferrand@alumni.univ-avignon.fr>
 
 -----------------------------------------------------------------------
 
-If you use this source code or the associated dataset, please cite reference [[F'22](#references)].
+If you use this source code or the associated dataset, please cite reference [[FL'24](#references)].
 
 ![MedievalAvignonNet](/out/graph_both.jpg)
 
@@ -25,7 +25,7 @@ This set of R scripts aims at extracting and analyzing confront networks extract
 
 
 # Data
-The raw dataset was manually constituted by Margot Ferrand during her PhD. The detail of her historical sources is given in her PhD [[F'22](#references)]. The output files (graphs, plots, tables...) can be obtained by running the scripts, but they are also directly available on [Zenodo](https://doi.org/.....) **<To be published>**.
+The raw dataset was manually constituted by Margot Ferrand during her PhD. The detail of her historical sources is given in her PhD [[F'22](#references)]. The output files (graphs, plots, tables...) can be obtained by running the scripts, but they are also directly available on [Zenodo](https://doi.org/10.5281/zenodo.12804379).
 
 
 # Organization
@@ -66,7 +66,7 @@ In order to extract the networks from the raw data, compute the statistics, and 
 The scripts will produce a number of files in folder `out/analysis/estate`. They are grouped in subsubfolders, each one corresponding to a specific topological measure (degree, closeness, etc.). 
 
 <!---
-The script `src/Labatut2022.R` reproduces the computations described in article [[L'22](#references)]. Please, use [v1.0.2](https://github.com/CompNet/NaNet/releases/tag/v1.0.2) of the source code in the *Releases* page. Be warned that this will take a while (possibly several days). You can directly retrieve the data resulting from this process on [Zenodo](https://doi.org/10.5281/zenodo.6573491). 
+The script `src/Labatut2022.R` reproduces the computations described in article [[L'22](#references)]. Please, use [v1.0.2](https://github.com/CompNet/NaNet/releases/tag/v1.0.2) of the source code in the *Releases* page. Be warned that this will take a while (possibly several days). You can directly retrieve the data resulting from this process on [Zenodo](https://doi.org/10.5281/zenodo.12804379). 
 --->
 
 # Dependencies
@@ -93,4 +93,5 @@ Tested with `R` version 4.0.5, with the following packages:
 
 
 # References
-* **[F'22]** Ferrand, M. *Usages et représentations de l'espace urbain médiéval : Approche interdisciplinaire et exploration de données géo-historiques d’Avignon à la fin du Moyen Âge*, PhD. Thesis, Avignon University, 2022. [Web Page](https://www.theses.fr/2022AVIG1002)
+* **[F'22]** M. Ferrand *Usages et représentations de l'espace urbain médiéval : Approche interdisciplinaire et exploration de données géo-historiques d’Avignon à la fin du Moyen Âge*, PhD. Thesis, Avignon University, 2022. [Web Page](https://www.theses.fr/2022AVIG1002)
+* **[FL'24]** M. Ferrand and V. Labatut. *Approximating Spatial Distance Through Confront Networks: Application to the Segmentation of Medieval Avignon*. Submitted, 2024.
