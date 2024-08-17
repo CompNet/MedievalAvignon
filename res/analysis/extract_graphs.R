@@ -2195,16 +2195,6 @@ info.estate <- info.estate[,-which(colnames(info.estate) %in% c(COL_EST_STREET_I
 #    besoin d'une version multiplexe pour représenter les différents types de confronts
 # 	 et besoin du modèle également
 
-# arguments suppression de rues :
-# - pour :
-#   - certaines rues connectent des biens spatialement éloignés
-#     >> ça crée des raccourcis qui ammoindrissent la qualité de l'estimation pour les noeuds éloignés
-#     dans les graphiques montrant toutes les paires de distances, on voit la courbe moyenne décroitre à droite.
-# - contre :
-#   - ca morcelle trop le graphe (composants) 
-#     >> mauvaise approximation des longues distances
-#     dans les graphiques montrant toutes les paires de distances, on voit la courbe moyenne décroitre à droite car les distances infinies ne sont pas représentées.
-
 # TODO 
 # - robustesse :
 #   - évaluer la robustesse du graphe par rapport à corr dist (par ex)

@@ -53,7 +53,7 @@ You first need to install the `R` language, as well as the required packages:
 3. Install the required packages: 
    1. Open the `R` console.
    2. Set the unzipped directory as the working directory, using `setwd("<my directory>")`.
-   3. Run the install script `src/_install.R` (that may take a while).
+   3. Run the install script `res/_install.R` (that may take a while).
 
 
 # Use
@@ -61,7 +61,7 @@ In order to extract the networks from the raw data, compute the statistics, and 
 
 1. Open the `R` console.
 2. Set the current directory as the working directory, using `setwd("<my directory>")`.
-3. Run the main script `src/main.R`.
+3. Run the main script `res/main.R`.
 
 The scripts will produce a number of files in folder `out/analysis/estate`. They are grouped in subsubfolders, each one corresponding to a specific topological measure (degree, closeness, etc.). 
 
