@@ -32,7 +32,7 @@ MEAS_LONG_NAMES[MEAS_DISTANCE_COR_KENDALL] <- "Distance Correlation (Kendall)"
 
 
 #############################################################
-# Computes and plots geodesic distance distribution.
+# Computes and plots spatial distance distribution.
 #
 # g: original graph to process.
 # distance.folder: output folder.
