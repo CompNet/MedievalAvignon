@@ -94,4 +94,4 @@ Tested with `R` version 4.0.5, with the following packages:
 
 # References
 * **[F'22]** M. Ferrand *Usages et représentations de l'espace urbain médiéval : Approche interdisciplinaire et exploration de données géo-historiques d’Avignon à la fin du Moyen Âge*, PhD. Thesis, Avignon University, 2022. [Web Page](https://www.theses.fr/2022AVIG1002)
-* **[FL'24]** M. Ferrand and V. Labatut. *Approximating Spatial Distance Through Confront Networks: Application to the Segmentation of Medieval Avignon*. Submitted, 2024.
+* **[FL'24]** M. Ferrand and V. Labatut. *Approximating Spatial Distance Through Confront Networks: Application to the Segmentation of Medieval Avignon*. Journal of Complex Networks, in press, 2024. DOI: xxxxx ⟨[hal-04786705]⟩(https://hal.archives-ouvertes.fr/hal-04786705)
