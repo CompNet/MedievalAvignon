@@ -39,7 +39,6 @@ Here are the folders composing the project:
   * `estate`: keep only the vertices defined at spatial the level of the building (i.e. no long streets or other linear entities, surface entities such as villages).
   * `flat_relations`: keep only the edges representing flat relations (by opposition to hierarchical relations, such as "belonging to"). Also get read of long distance relationships (even if flat). 
   * `flat_minus`: same as `flat_relations`, but certain objects are also removed (walls, rivers), as well as the longest streets. The latter are indicated by a numeric value `x` corresponding to the top `x` longest streets (with `whole`) or to a minimal length threshold (with `split`).
-  * `xxxx`: xxxx.
   * `filtered`: remove isolated vertices and small components.
 * Folder `res`: contains the `R` source code.
 * Folders `lib` and `src`: contains the `Java` libraries and source code, currently not used.
@@ -94,4 +93,4 @@ Tested with `R` version 4.0.5, with the following packages:
 
 # References
 * **[F'22]** M. Ferrand *Usages et représentations de l'espace urbain médiéval : Approche interdisciplinaire et exploration de données géo-historiques d’Avignon à la fin du Moyen Âge*, PhD. Thesis, Avignon University, 2022. [Web Page](https://www.theses.fr/2022AVIG1002)
-* **[FL'24]** M. Ferrand and V. Labatut. *Approximating Spatial Distance Through Confront Networks: Application to the Segmentation of Medieval Avignon*. Journal of Complex Networks, in press, 2024. DOI: xxxxx - ⟨[hal-04786705](https://hal.archives-ouvertes.fr/hal-04786705)⟩
+* **[FL'24]** M. Ferrand and V. Labatut. *Approximating Spatial Distance Through Confront Networks: Application to the Segmentation of Medieval Avignon*. Journal of Complex Networks, 13(1):cnae046, 2025. DOI: [10.1093/comnet/cnae046](http://doi.org/10.1093/comnet/cnae046) - ⟨[hal-04786705](https://hal.archives-ouvertes.fr/hal-04786705)⟩
