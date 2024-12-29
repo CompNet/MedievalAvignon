@@ -14,6 +14,18 @@ MedievalAvignon is free software: you can redistribute it and/or modify it under
 -----------------------------------------------------------------------
 
 If you use this source code or the associated dataset, please cite reference [[FL'24](#references)].
+```bibtex
+@Article{Ferrand2024,
+  author    = {Ferrand, Margot and Labatut, Vincent},
+  title     = {Approximating Spatial Distance Through Confront Networks: Application to the Segmentation of Medieval {A}vignon},
+  journal   = {Journal of Complex Networks},
+  year      = {2025},
+  volume    = {13},
+  number    = {1},
+  pages     = {cnae046},
+  doi       = {10.1093/comnet/cnae046},
+}
+```
 
 ![MedievalAvignonNet](/out/graph_both.jpg)
 
